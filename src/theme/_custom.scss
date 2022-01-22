@@ -1,0 +1,42 @@
+
+@import 'extends';
+@import 'mixins';
+
+*{
+	box-sizing: border-box !important;
+}
+.form-input{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	label {
+		font-size: 14px;
+		font-weight: 500;
+	}
+	ion-input{
+		width: 100%;
+		height: 45px;
+		border-radius: 4px;
+		border:1px solid var(--ion-color-step-200);
+		background-color: var(--ion-color-step-0);
+		flex: 0 0 100%;
+	}
+
+		.error{
+			flex: 1 1 auto;
+			max-width: 100%;
+			display: block;
+		}
+		.hint{
+			flex: 0 0 auto;
+			display: block;
+			max-width: 100%;
+			font-size: 12px;
+			font-weight: 200;
+			text-align: left;
+			color:var(--ion-color-step-700);
+		}
+
+}

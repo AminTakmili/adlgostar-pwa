@@ -1,0 +1,11 @@
+ion-button{
+	height: 45px;
+	letter-spacing: 0px;
+	font-size: 16px;
+	&[size=large]{
+		height: 55px;
+	}
+	&[size=small]{
+		height: 35px;
+	}
+}

@@ -1,0 +1,227 @@
+@import 'mixins';
+
+
+@mixin breakpoint($point) {
+	@if $point==sm-up {
+		@media (min-width: 576px) {
+			@content;
+		}
+	}
+
+	@else if $point==sm-down {
+		@media (max-width: 576px) {
+			@content;
+		}
+	}
+
+	@else if $point==md-up {
+		@media (min-width: 768px) {
+			@content;
+		}
+	}
+
+	@else if $point==md-down {
+		@media (max-width: 768px) {
+			@content;
+		}
+	}
+
+	@else if $point==lg-up {
+		@media (min-width: 992px) {
+			@content;
+		}
+	}
+
+	@else if $point==lg-down {
+		@media (max-width: 992px) {
+			@content;
+		}
+	}
+
+	@else if $point==xl-up {
+		@media (min-width: 1200px) {
+			@content;
+		}
+	}
+
+	@else if $point==xl-down {
+		@media (max-width: 1200px) {
+			@content;
+		}
+	}
+}
+
+@mixin breakpoint($point) {
+    @if $point==sm-up {
+        @media (min-width: 576px) {
+            @content;
+        }
+    }
+
+    @else if $point==sm-down {
+        @media (max-width: 576px) {
+            @content;
+        }
+    }
+
+    @else if $point==md-up {
+        @media (min-width: 768px) {
+            @content;
+        }
+    }
+
+    @else if $point==md-down {
+        @media (max-width: 768px) {
+            @content;
+        }
+    }
+
+    @else if $point==lg-up {
+        @media (min-width: 992px) {
+            @content;
+        }
+    }
+
+    @else if $point==lg-down {
+        @media (max-width: 992px) {
+            @content;
+        }
+    }
+
+    @else if $point==xl-up {
+        @media (min-width: 1140px) {
+            @content;
+        }
+    }
+
+    @else if $point==xl-down {
+        @media (max-width: 1140px) {
+            @content;
+        }
+    }
+}
+
+
+%img-contain {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+%flex-column-center-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+%flex-row-center-center{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+%flex-row-start-center{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+%flex-row-start-start{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+%flex-row-between-start{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+%flex-row-between-center{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+%flex-row-between-end{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+%flex-row-between-baseline{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+%flex-row-start-stretch{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+}
+%flex-row-between-stretch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+%flex-row-end-stretch{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: stretch;
+}
+
+// column
+
+%flex-column-center-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+%flex-column-start-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+%flex-column-start-start{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+%flex-column-between-start{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+%flex-column-between-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+%flex-column-between-stretch{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+%flex-column-center-stretch{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
