@@ -1,0 +1,7 @@
+{
+  "name": "adlgostar-pwa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

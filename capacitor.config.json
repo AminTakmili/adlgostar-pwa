@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "adlgostar-pwa",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
