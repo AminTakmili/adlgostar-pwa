@@ -25,7 +25,17 @@
     }
 }
 
+
 @for $i from 0 through 20 {
+    .font-size-#{$i+10} {
+        font-size: ($i+10) + 0px;
+    }
+    .rounded-#{$i+10} {
+        border-radius: ($i) + 0px;
+    }
+}
+
+@for $i from 0 through 12 {
     .mt-#{$i*5},
     .m-#{$i*5},
     .my-#{$i*5} {
@@ -66,16 +76,15 @@
     .px-#{$i*5} {
         padding-inline-end: ($i*5) + 0px;
     }
-    .font-size-#{$i+10} {
-        font-size: ($i+10) + 0px;
-    }
-    .rounded-#{$i+10} {
-        border-radius: ($i) + 0px;
-    }
+	.mx-auto{
+		margin-right: auto;
+		margin-left: auto;
+	}
 }
 
+
 @include breakpoint(lg-up) {
-    @for $i from 0 through 20 {
+    @for $i from 0 through 12 {
         .mt-lg-#{$i*5},
         .m-lg-#{$i*5},
         .my-lg-#{$i*5} {
@@ -116,11 +125,15 @@
         .px-lg-#{$i*5} {
             padding-inline-end: ($i*5) + 0px;
         }
+		.mx-lg-auto{
+			margin-right: auto;
+			margin-left: auto;
+		}
     }
 }
 
 @include breakpoint(md-up) {
-    @for $i from 0 through 20 {
+    @for $i from 0 through 12 {
         .mt-md-#{$i*5},
         .m-md-#{$i*5},
         .my-md-#{$i*5} {
@@ -161,11 +174,15 @@
         .px-md-#{$i*5} {
             padding-inline-end: ($i*5) + 0px;
         }
+		.mx-md-auto{
+			margin-right: auto;
+			margin-left: auto;
+		}
     }
 }
 
 @include breakpoint(sm-up) {
-    @for $i from 0 through 20 {
+    @for $i from 0 through 12 {
         .mt-sm-#{$i*5},
         .m-sm-#{$i*5},
         .my-sm-#{$i*5} {
@@ -206,5 +223,9 @@
         .px-sm-#{$i*5} {
             padding-inline-end: ($i*5) + 0px;
         }
+		.mx-sm-auto{
+			margin-right: auto;
+			margin-left: auto;
+		}
     }
 }

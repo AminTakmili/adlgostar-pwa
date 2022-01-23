@@ -8,8 +8,6 @@
 /** Ioni'S Variables **/
 :root {
 
-
-
 	--ion-color-primary: #175CD5;
 	--ion-color-primary-rgb: 23, 92, 213;
 	--ion-color-primary-contrast: #ffffff;
@@ -94,6 +92,13 @@
 	--ion-color-danger-dark-shade: #a4000b;
 	--ion-color-danger-dark-tint: #c11a25;
 
+	--ion-color-white: #fff;
+	--ion-color-white-rgb: 255,255,255;
+	--ion-color-white-contrast: #000000;
+	--ion-color-white-contrast-rgb: 0,0,0;
+	--ion-color-white-shade: #e0e0e0;
+	--ion-color-white-tint: #ffffff;
+
 
 	--ion-font-family: IRANSans;
 	--ion-default-font: IRANSans;
@@ -160,6 +165,16 @@
 	--ion-color-shade: var(--ion-color-danger-dark-shade);
 	--ion-color-tint: var(--ion-color-danger-dark-tint);
 }
+
+.ion-color-white {
+	--ion-color-base: var(--ion-color-white);
+	--ion-color-base-rgb: var(--ion-color-white-rgb);
+	--ion-color-contrast: var(--ion-color-white-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-white-contrast-rgb);
+	--ion-color-shade: var(--ion-color-white-shade);
+	--ion-color-tint: var(--ion-color-white-tint);
+}
+
 // @media (prefers-color-scheme: dark) {
 //   /*
 //    * Dark Colors

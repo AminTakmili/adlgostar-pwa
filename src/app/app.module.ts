@@ -10,6 +10,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { Drivers } from '@ionic/storage';
 import { environment } from '../environments/environment';
 import { IonicStorageModule } from "@ionic/storage-angular";
+import { ShareModulePageModule } from './share-module/share-module.module';
 
 
 @NgModule({
@@ -20,16 +21,17 @@ import { IonicStorageModule } from "@ionic/storage-angular";
 		IonicModule.forRoot(),
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', {
-		enabled: environment.production,
-		// Register the ServiceWorker as soon as the app is stable
-		// or after 30 seconds (whichever comes first).
-		registrationStrategy: 'registerWhenStable:30000'
-	}),
-	IonicStorageModule.forRoot({
-		name: '__adlgostar',
-		driverOrder: [Drivers.LocalStorage]
-	}),
-],
+			enabled: environment.production,
+			// Register the ServiceWorker as soon as the app is stable
+			// or after 30 seconds (whichever comes first).
+			registrationStrategy: 'registerWhenStable:30000'
+		}),
+		IonicStorageModule.forRoot({
+			name: '__adlgostar',
+			driverOrder: [Drivers.LocalStorage]
+		}),
+		ShareModulePageModule
+	],
 	providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
 	bootstrap: [AppComponent],
 })
