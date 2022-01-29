@@ -6,30 +6,23 @@
 		<h5 class="my-0 name font-size-16 ion-text-center"><ion-text color="white">امین تکمیلی فرد</ion-text></h5>
 		<p class="desc my-0 font-size-10 ion-text-center"><ion-text color="medium">09173052209</ion-text></p>
 	</div>
-	<ion-list >
-		<ion-item color="tertiary">
-			<ion-icon name="mail" slot="start"></ion-icon>
-			<ion-label>Inbox</ion-label>
-		</ion-item>
-		<ion-item color="tertiary">
-			<ion-icon name="paper-plane" slot="start"></ion-icon>
-			<ion-label>Outbox</ion-label>
-		</ion-item>
-		<ion-item color="tertiary">
-			<ion-icon name="heart" slot="start"></ion-icon>
-			<ion-label>Favorites</ion-label>
-		</ion-item>
-		<ion-item color="tertiary">
-			<ion-icon name="archive" slot="start"></ion-icon>
-			<ion-label>Archived</ion-label>
-		</ion-item>
-		<ion-item color="tertiary">
-			<ion-icon name="trash" slot="start"></ion-icon>
-			<ion-label>Trash</ion-label>
-		</ion-item>
-		<ion-item color="tertiary">
-			<ion-icon name="warning" slot="start"></ion-icon>
-			<ion-label>Spam</ion-label>
-		</ion-item>
-	</ion-list>
+	<div class="sidebar-item">
+		<ion-list >
+			<ng-template ngFor let-item [ngForOf]="Sidemenu" >
+				<ion-item   [routerLink]="[item.url]" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}"  color="tertiary">
+					<ion-icon [name]="item.icon" slot="start"></ion-icon>
+					<ion-label >{{ item.name }}</ion-label>
+					<ion-icon  *ngIf="item.submenu.length" name="chevron-down" slot="end"></ion-icon>
+				</ion-item>
+				<div [@openAnimation]='item.state'></div>
+				<ng-template ngFor let-subitem [ngForOf]="item.submenu" >
+					<ion-item   [routerLink]="[subitem.url]" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}"  color="tertiary">
+						<ion-icon [name]="subitem.icon" slot="start"></ion-icon>
+						<ion-label >{{ subitem.name }}</ion-label>
+					</ion-item>
+				</ng-template>
+			</ng-template>
+		</ion-list>
+	</div>
+
 </ion-content>

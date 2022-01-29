@@ -5,14 +5,18 @@ import { NotLoginGuard } from './core/guards/not-login.guard';
 
 const routes: Routes = [
 	{
-		path: '',
-		loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
-		// canActivate : [LoginGuard]
-	},
-	{
 		path: 'login',
 		loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
 		// canActivate : [NotLoginGuard]
+	},
+	{
+		path: '',
+		loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule),
+		// canActivate : [LoginGuard]
+	},
+	{
+		path: 'businesses',
+		loadChildren: () => import('./business/business.module').then(m => m.BusinessPageModule)
 	},
 	// {
 	// 	path: '',

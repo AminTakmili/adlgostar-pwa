@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -12,7 +13,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 		CommonModule,
 		FormsModule,
 		IonicModule,
-
+		RouterModule
 	],
 	declarations: [
 		SidebarComponent,
