@@ -1,0 +1,81 @@
+<ion-header>
+	<app-header [title]="'افزودن بیزینس جدید'"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن کسب کار</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک کسب کار جدید اضاف کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container">
+			<div class="row">
+				<!-- form -->
+				<div class="col-md-6 my-4">
+					<!-- title -->
+					<div class="title-1 mb-4">
+						<h2 class="title">اطلاعات اولیه</h2>
+						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
+							گرافیک است</p>
+					</div>
+					<!-- form -->
+					<form>
+						<!--  -->
+						<!-- کارفرما -->
+						<div class="form-input mb-3">
+							<label>انتخاب کارفرما</label>
+							<ng-select [items]="items " bindLabel="name" [ngModelOptions]="{standalone: true}" [(ngModel)]="people">
+							</ng-select>
+							<span class="error"></span>
+							<span class="hint">مثلا : 09173052222</span>
+						</div>
+						<!-- عنوان کسب و کار -->
+						<div class="form-input mb-3">
+							<label>عنوان کسب و کار</label>
+							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<span class="error"></span>
+							<span class="hint">نام شرکت یا کسب و کار خود را وارد کنید</span>
+						</div>
+						<!--  -->
+						<div class="form-input mb-3">
+							<label>شماره ثبت</label>
+							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<span class="error"></span>
+							<span class="hint">شمارت ثبت خود را وارد کنید. شماره ثبت یک عدد 12 رقمی میباشد</span>
+						</div>
+						<!--  -->
+						<div class="form-input mb-3">
+							<label>دسته بندی کسب و کار </label>
+							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<span class="error"></span>
+							<span class="hint">دسته بندی کسب و کار خود را انتخاب کنید</span>
+						</div>
+
+
+					</form>
+				</div>
+				<!-- desc -->
+				<div class="col-md-6 my-4">
+
+				</div>
+			</div>
+		</div>
+	</main>
+
+</ion-content>

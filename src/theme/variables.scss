@@ -4,6 +4,7 @@
 @import 'custom';
 @import 'fonts';
 @import 'ionic_edit';
+@import 'bootstrapTable';
 
 /** Ioni'S Variables **/
 :root {
@@ -31,8 +32,8 @@
 
 	--ion-color-success: #61B612;
 	--ion-color-success-rgb: 97, 182, 18;
-	--ion-color-success-contrast: #000000;
-	--ion-color-success-contrast-rgb: 0, 0, 0;
+	--ion-color-success-contrast: #ffffff;
+	--ion-color-success-contrast-rgb: 255,255,255;
 	--ion-color-success-shade: #55a010;
 	--ion-color-success-tint: #71bd2a;
 

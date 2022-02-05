@@ -7,17 +7,23 @@ const routes: Routes = [
 	{
 		path: 'login',
 		loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
-		// canActivate : [NotLoginGuard]
+		canActivate: [NotLoginGuard]
 	},
 	{
 		path: '',
 		loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule),
-		// canActivate : [LoginGuard]
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'businesses',
-		loadChildren: () => import('./business/business.module').then(m => m.BusinessPageModule)
+		loadChildren: () => import('./business/business.module').then(m => m.BusinessPageModule),
+		canActivate: [LoginGuard]
 	},
+	// {
+	// 	path: 'profile',
+	// 	loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
+	// 	canActivate: [LoginGuard]
+	// },
 	// {
 	// 	path: '',
 	// 	redirectTo: 'home',
@@ -28,7 +34,7 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [
-		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules , initialNavigation: 'enabled' })
 	],
 	exports: [RouterModule]
 })
