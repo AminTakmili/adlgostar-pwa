@@ -40,7 +40,8 @@
 						<!-- کارفرما -->
 						<div class="form-input mb-3">
 							<label>انتخاب کارفرما</label>
-							<ng-select [items]="items " bindLabel="name" [ngModelOptions]="{standalone: true}" [(ngModel)]="people">
+							<ng-select [items]="employerList" bindLabel="name" bindValue="id" [disabled]="true"
+								[ngModelOptions]="{standalone: true}" [(ngModel)]="employer">
 							</ng-select>
 							<span class="error"></span>
 							<span class="hint">مثلا : 09173052222</span>
@@ -48,31 +49,130 @@
 						<!-- عنوان کسب و کار -->
 						<div class="form-input mb-3">
 							<label>عنوان کسب و کار</label>
-							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<ion-input autocomplete="new-pass"></ion-input>
 							<span class="error"></span>
 							<span class="hint">نام شرکت یا کسب و کار خود را وارد کنید</span>
 						</div>
 						<!--  -->
 						<div class="form-input mb-3">
 							<label>شماره ثبت</label>
-							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<ion-input autocomplete="new-pass"></ion-input>
 							<span class="error"></span>
 							<span class="hint">شمارت ثبت خود را وارد کنید. شماره ثبت یک عدد 12 رقمی میباشد</span>
 						</div>
 						<!--  -->
 						<div class="form-input mb-3">
 							<label>دسته بندی کسب و کار </label>
-							<ion-input autofocus="true" autocomplete="new-pass"></ion-input>
+							<ion-input autocomplete="new-pass"></ion-input>
 							<span class="error"></span>
 							<span class="hint">دسته بندی کسب و کار خود را انتخاب کنید</span>
 						</div>
 
+						<!-- کارفرما -->
+						<div class="form-input mb-3">
+							<label>نوع شخصیت</label>
+							<ng-select placeholder="نوع شخصیت حقیقی یا حقوقی را انتخاب کنید" [items]="personType"
+								[bindLabel]="'name'" [bindValue]="'id'"></ng-select>
+							<span class="error"></span>
+							<span class="hint">مثلا : 09173052222</span>
+						</div>
+						<!-- کارفرما -->
+						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
+							<label>دسته بندی کسب و کار</label>
 
+							<ng-select
+								placeholder="دسته بندی کسب و کار را انتخاب کنید"
+								[items]="businessCatgeories"
+								bindLabel="name"
+								bindValue="id"
+								groupBy="parentName"
+							>
+								<ng-template ng-optgroup-tmp let-item="item">
+									{{item.parentName || 'Unnamed group'}}
+								</ng-template>
+							</ng-select>
+							<span class="error"></span>
+						</div>
+
+						<!-- title -->
+						<div class="title-1 mt-5 mb-4">
+							<h2 class="title">اطلاعات تماس و آدرس ها</h2>
+						</div>
+						<!-- شهر استان -->
+						<div class="form-input mb-3" *ngIf="province && province.length">
+							<label>انتخاب شهر و استان</label>
+							<ng-select
+								[items]="province"
+								placeholder="یک شهر انتخاب کنید"
+								bindLabel="name"
+								bindValue="id"
+								groupBy="province"
+							>
+							</ng-select>
+							<span class="error"></span>
+						</div>
+
+						<!-- کارفرما -->
+						<div class="form-input mb-3">
+							<label>آدرس</label>
+							<ion-textarea rows="3" autocomplete="new-pass"></ion-textarea>
+							<span class="error"></span>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="form-input mb-3">
+									<label>شماره تماس</label>
+									<ion-input  autocomplete="new-pass"></ion-input>
+									<span class="error"></span>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-input mb-3">
+									<label>کد پستی</label>
+									<ion-input  autocomplete="new-pass"></ion-input>
+									<span class="error"></span>
+								</div>
+							</div>
+						</div>
+						<!-- end address -->
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p>  آیا کسب و کار شما آدرس دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن آدرس دیگر
+								</ion-button>
+							</div>
+						</div>
+						<hr>
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-5">
+								<ion-button expand="block" color="medium" fill="outline" shape="round">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-7">
+								<ion-button expand="block" color="success" fill="solid" shape="round">
+									ثبت کسب و کار
+								</ion-button>
+							</div>
+						</div>
+
+						<!-- add another address -->
 					</form>
 				</div>
 				<!-- desc -->
 				<div class="col-md-6 my-4">
-
+					<h2>توضیحات نحوه ی ثبت کسب و کار جدید</h2>
+					<p class="font-size-14">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
+						طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
+						شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+					<p class="font-size-14">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
+						طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
+						شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
 				</div>
 			</div>
 		</div>

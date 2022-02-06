@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
 		if (this.loginForm.valid) {
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('api/user/login', {
+			this.global.httpPost('user/login', {
 				mobile: this.loginForm.controls['mobile'].value,
 			}).subscribe(async (res) => {
 
@@ -94,7 +94,7 @@ export class LoginPage implements OnInit {
 	async onVerify() {
 		if (this.verifyForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('api/user/confirmLoginCode', {
+			this.global.httpPost('user/confirmLoginCode', {
 				mobile: this.mobile,
 				verifyCode: this.verifyForm.controls['verifycode'].value,
 			}).subscribe(async (res) => {
@@ -126,7 +126,7 @@ export class LoginPage implements OnInit {
 
 	reSend() {
 		this.global.showLoading('در حال ارسال مجدد پیامک');
-		this.global.httpPost('api/user/login', {
+		this.global.httpPost('user/login', {
 			mobile: this.mobile
 		}).subscribe(() => {
 			this.global.dismisLoading();

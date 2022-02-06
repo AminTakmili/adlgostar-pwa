@@ -5,6 +5,7 @@
 @import 'fonts';
 @import 'ionic_edit';
 @import 'bootstrapTable';
+@import 'utilities';
 
 /** Ioni'S Variables **/
 :root {
@@ -108,8 +109,8 @@
 	--ion-background-color: #F1F5F9;
 	--ion-background-color-rgb: 241,245,249;
 
-	--ion-text-color: #333333;
-	--ion-text-color-rgb: 51,51,51;
+	--ion-text-color: #3d3d3d;
+	--ion-text-color-rgb: 61,61,61;
 
 	--ion-color-step-0 : #fff;
 	--ion-color-step-50: #e8ebef;

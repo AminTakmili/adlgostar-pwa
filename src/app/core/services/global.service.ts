@@ -32,7 +32,7 @@ export class GlobalService {
 
 	httpPost(url: string, params: object): Observable<any> {
 
-		const token = (this.login ? '' : environment.token)
+		const token = (this.login ? this.user.access_token : environment.token)
 		let httpOptions;
 
 		httpOptions = {
@@ -47,7 +47,7 @@ export class GlobalService {
 
 	httpGet(url: string): Observable<any> {
 
-		const token = (this.login ? '' : environment.token)
+		const token = (this.login ? this.user.access_token : environment.token)
 		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export class GlobalService {
 
 	httpDelete(url: string, params: object): Observable<any> {
 
-		const token = (this.login ? '' : environment.token)
+		const token = (this.login ? this.user.access_token : environment.token)
 
 		let httpOptions = {
 			headers: new HttpHeaders({
@@ -74,7 +74,7 @@ export class GlobalService {
 		return this.http.delete<any>(this.getAppUrl(url), httpOptions);
 	}
 	httpPatch(url: string, params: object): Observable<any> {
-		const token = (this.login ? '' : environment.token)
+		const token = (this.login ? this.user.access_token : environment.token)
 
 		const httpOptions = {
 			headers: new HttpHeaders({
@@ -195,6 +195,9 @@ export class GlobalService {
 		});
 	}
 
+	parallelRequest(requests: any[]) {
+		return forkJoin(requests);
+	}
 
 
 }
