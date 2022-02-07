@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig.json",
+  "strictTemplates": false,
   "compilerOptions": {
+
     "outDir": "../out-tsc/e2e",
     "module": "commonjs",
     "target": "es2018",

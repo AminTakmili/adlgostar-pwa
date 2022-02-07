@@ -26,12 +26,18 @@
 	<!-- main -->
 	<main>
 		<div class="container">
+			<div  *ngIf="businessList && businessList.length === 0" class="alert alert-warning my-3" role="alert">
+				<h4 class="title">کسب کاری برای نمایش یافت نشد .</h4>
+				<p class="dsec">شما تا کنون کسب و کاری ثبت نکرده اید . برای اضاف کردن کسب کار بر روی افزودن کسب و کار کلیک کنید</p>
+			  </div>
+		</div>
+		<div class="container" *ngIf="businessList && businessList.length">
 			<!-- search and title -->
 			<div class="row mt-4">
 				<div class="col-md-8">
 					<div class="title-1">
 						<h2 class="title">لیست کسب و کارها</h2>
-						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است</p>
+						<p class="dsec">لیست کسب و کارهای به شرح زیر است</p>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -53,19 +59,40 @@
 					</tr>
 				  </thead>
 				  <tbody>
-					<tr *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
-					  <th class="ion-text-center" scope="row">1</th>
-					  <td><a href="#">شرکت ایده پردازان آترین سپر آریا</a></td>
-					  <td>فناری اطلاعات و ارتباطاات</td>
-					  <td>28 خرداد 1500</td>
-					  <td class="ion-text-left">
-						  <ion-button fill="clear" class="px-0 mx-0" >
-							<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
-						  </ion-button>
+					<tr *ngFor="let item of businessList | paginate : { itemsPerPage: limit , currentPage: CurrentPage ,  totalItems: total , id: 'id' } ; let i = index;">
+					  <th class="ion-text-center" scope="row">{{  i }}</th>
+					  <td><a [routerLink]="['/businesses',item.id]">{{ item.name }}</a></td>
+					  <td>{{ item.category }}</td>
+					  <td>{{ item.createdAt }}</td>
+					  <td scope="col-1">
+						  <ion-buttons class="justify-content-end">
+							  <ion-button  fill="clear" class="px-0 mx-0" >
+								<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
+							  </ion-button>
+						  </ion-buttons>
 					  </td>
 					</tr>
 				  </tbody>
+				  <tfoot>
+					  <tr>
+						  <td colspan="5">
+
+						  </td>
+					  </tr>
+
+				  </tfoot>
 			</table>
+			<pagination-controls
+							(pageChange)="PageChange($event)"
+							(pageBoundsCorrection)="PageChange($event)"
+							[maxSize]="5"
+							[responsive]="true"
+							*ngIf="limit < total && businessList && businessList.length"
+							previousLabel="قبلی"
+							nextLabel="بعدی"
+
+							>
+						</pagination-controls>
 		</div>
 	</main>
 </ion-content>

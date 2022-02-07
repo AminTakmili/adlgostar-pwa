@@ -13,7 +13,7 @@ import { IonicStorageModule } from "@ionic/storage-angular";
 import { ShareModulePageModule } from './share-module/share-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
 	declarations: [
@@ -27,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
 		AppRoutingModule,
 		BrowserAnimationsModule,
 		HttpClientModule,
+		NgxPaginationModule,
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: environment.production,
 			registrationStrategy: 'registerWhenStable:30000'

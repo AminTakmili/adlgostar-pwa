@@ -10,6 +10,7 @@ import { BusinessListComponent } from './business-list/business-list.component';
 import { ShareModulePageModule } from '../share-module/share-module.module';
 import { BusinessEditComponent } from './business-edit/business-edit.component';
 import { BusinessAddComponent } from './business-add/business-add.component';
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
 	imports: [
@@ -19,7 +20,8 @@ import { BusinessAddComponent } from './business-add/business-add.component';
 		BusinessPageRoutingModule,
 		ShareModulePageModule,
 		NgSelectModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		NgxPaginationModule
 	],
 	declarations: [
 		BusinessListComponent,
