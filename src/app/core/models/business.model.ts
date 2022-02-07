@@ -21,3 +21,14 @@ export class subBusinessCategory implements Deserializable {
 		return this;
 	}
 }
+
+export class business implements Deserializable {
+	id !: number;
+	name !: string;
+	category !: string;
+	createdAt !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}

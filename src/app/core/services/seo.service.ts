@@ -36,7 +36,7 @@ export class SeoService {
     generateTags(config) {
 
         // const fullUrl = this.global.siteUrl + '/' + decodeURI(this.router.routerState.snapshot.url.substr(1));
-        this.titleService.setTitle(config.title);
+        this.titleService.setTitle(config.title + ' | ' + this.global.sitename);
         this.metaService.updateTag({ name: 'description', content: config.description });
         this.metaService.updateTag({ name: 'abstract', content: config.description });
 

@@ -101,6 +101,13 @@
     }
 }
 
+@for $i from 0 through 10 {
+    %mat-sh-#{$i} {
+        box-shadow: 0 $i + 0px ($i * 3) + 0px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: var(--ion-card-background);
+    }
+}
 
 %img-contain {
     width: 100%;

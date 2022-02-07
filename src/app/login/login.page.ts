@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
 	ngOnInit() {
 		// seo
 		this.seo.generateTags({
-			title: this.global.sitename + ' | ' + 'ورود کاربران',
+			title:   'ورود کاربران',
 			description: 'ورود با شماره همراه ',
 			keywords: "ورود",
 			isNoIndex: false,
