@@ -259,7 +259,7 @@ a {
 	align-items: center;
 	justify-content: center;
 
-	input {
+	input,ion-input {
 		flex: 1 1 auto;
 		background-color: transparent;
 		outline: none;
@@ -271,12 +271,30 @@ a {
 
 	}
 
+
 	ion-icon {
 		flex: 0 0 60px;
 		width: 60px;
 		font-size: 18px;
 	}
 }
+.search-input-2{
+	ion-searchbar{
+		--background : var(--ion-color-white);
+		flex: 1 1 auto;
+		background-color: transparent;
+		outline: none;
+		height: 45px;
+		display: block;
+		border: none;
+		padding: 0;
+		font-size: 14px;
+		border-radius: var(--ion-border-radius-sm);
+		--box-shadow:none ;
+		border: 1px solid var(--ion-color-step-100);
+	}
+}
+
 
 //hr
 hr {
@@ -286,42 +304,64 @@ hr {
 
 }
 
-.alert{
+.alert {
 	padding: 20px;
 	border-radius: var(--ion-border-radius-sm);
 	@extend %mat-sh-2;
-	.title{
+
+	.title {
 		font-size: 18px;
 		font-weight: bold;
-		margin: 0 ;
-		margin-bottom:5px;
+		margin: 0;
+		margin-bottom: 5px;
 	}
-	.dsec{
+
+	.dsec {
 		font-size: 14px;
 		font-weight: normal;
-		margin: 0 ;
+		margin: 0;
 	}
-	border-inline-start-style: solid  ;
-	border-inline-start-width: 5px ;
-	&.alert-primary{
-		background-color: rgba(var(--ion-color-primary-rgb),0.2);
+
+	border-inline-start-style: solid;
+	border-inline-start-width: 5px;
+
+	&.alert-primary {
+		background-color: rgba(var(--ion-color-primary-rgb), 0.2);
 		border-inline-start-color: var(--ion-color-primary);
 	}
-	&.alert-secondary{
-		background-color: rgba(var(--ion-color-secondary-rgb),0.2);
+
+	&.alert-secondary {
+		background-color: rgba(var(--ion-color-secondary-rgb), 0.2);
 		border-inline-start-color: var(--ion-color-secondary);
 	}
-	&.alert-success{
-		background-color: rgba(var(--ion-color-success-rgb),0.2);
+
+	&.alert-success {
+		background-color: rgba(var(--ion-color-success-rgb), 0.2);
 		border-inline-start-color: var(--ion-color-success);
 	}
-	&.alert-danger{
-		background-color: rgba(var(--ion-color-danger-rgb),0.2);
+
+	&.alert-danger {
+		background-color: rgba(var(--ion-color-danger-rgb), 0.2);
 		border-inline-start-color: var(--ion-color-danger);
 	}
-	&.alert-warning{
 
-		background-color: rgba(var(--ion-color-warning-rgb),0.2);
+	&.alert-warning {
+
+		background-color: rgba(var(--ion-color-warning-rgb), 0.2);
 		border-inline-start-color: var(--ion-color-warning);
 	}
+}
+
+//ngx-pagination
+.ngx-pagination {
+	padding: 0 !important;
+    margin: 10px 0 !important;
+	&::before,
+	&::after {
+		display: none !important;
+	}
+	.current{
+		border-radius: var(--ion-border-radius-sm);
+	}
+
 }

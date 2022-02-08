@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginGuard } from '../core/guards/login.guard';
 import { BusinessAddComponent } from './business-add/business-add.component';
+import { BusinessDetailComponent } from './business-detail/business-detail.component';
 import { BusinessEditComponent } from './business-edit/business-edit.component';
 
 import { BusinessListComponent } from './business-list/business-list.component';
@@ -18,8 +19,13 @@ const routes: Routes = [
 	canActivate: [LoginGuard]
   },
   {
-    path: 'edit/:businessid',
+    path: 'edit/:businessId',
     component: BusinessEditComponent,
+	canActivate: [LoginGuard]
+  },
+  {
+    path: 'detail/:businessId',
+    component: BusinessDetailComponent,
 	canActivate: [LoginGuard]
   },
 

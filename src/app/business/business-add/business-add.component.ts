@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { globalData } from 'src/app/core/data/global.data'
-import { cities, countries, provinces } from 'src/app/core/models/countries.model';
-import { businessCategory } from 'src/app/core/models/business.model';
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { businessClass } from 'src/app/core/classes/business.class';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,6 +27,9 @@ export class BusinessAddComponent implements OnInit {
 	province: citiesClass[] = [];
 	businessCatgeories: businessClass[] = [];
 	businessForm: FormGroup;
+
+	categoryLimit = 1000;
+	categoryoffSet = 0;
 
 	constructor(
 		public global: GlobalService,
@@ -73,7 +73,7 @@ export class BusinessAddComponent implements OnInit {
 
 	getData() {
 		const countries = this.global.httpGet('more/countries');
-		const businessCategory = this.global.httpGet('business-category/list');
+		const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
 
 
 		this.global.parallelRequest([countries, businessCategory])
@@ -107,14 +107,10 @@ export class BusinessAddComponent implements OnInit {
 				this.province.push(cities);
 			});
 		});
-		// this.province = data[0].provinces.map((province : any) => {
-		// 	return new provinces().deserialize(province);
-		// });
-		// console.log(this.province)
 
 	}
 	setBussinessCategory(data) {
-		data.map((category: any) => {
+		data.list.map((category: any) => {
 			category.child.map((business) => {
 				const businessData: businessClass = new businessClass();
 				businessData.id = business.id
@@ -166,7 +162,7 @@ export class BusinessAddComponent implements OnInit {
 				await this.global.dismisLoading();
 				// console.log(res);
 				this.navCtrl.navigateForward('/businesses');
-
+				this.businessForm.reset();
 				this.global.showToast('کسب و کار جدید با نام '+ this.businessForm.value.name +' ثبت شد .');
 			}, async (error) => {
 				await this.global.dismisLoading();

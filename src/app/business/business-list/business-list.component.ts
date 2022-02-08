@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { business } from 'src/app/core/models/business.model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { IonInput } from '@ionic/angular';
+import { fromEvent } from 'rxjs';
+import { BusinessList } from 'src/app/core/models/business.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
-import { StorageService } from 'src/app/core/services/storage.service';
+import { debounceTime, map } from 'rxjs/operators';
 
 
 @Component({
@@ -12,33 +15,56 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class BusinessListComponent implements OnInit {
 
-	limit  = 2;
-	offset  = 0;
-	total  = 0;
-	CurrentPage : number = 1;
+	limit: number = 10;
+	offset: number = 0;
+	total: number = 0;
+	CurrentPage: number = 1;
 	end = false;
+	Searching = 0;
+	businessList: BusinessList[];
+	dataInSearch : boolean = false
 
-	businessList : business[]  ;
+	@ViewChild('Search') Search: IonInput;
+
 	constructor(
-		public global : GlobalService,
-		// private storage: StorageService,
+		public global: GlobalService,
+		private fb: FormBuilder,
 		private seo: SeoService
-	) { }
+	) {
 
-	ngOnInit() {
-		 this.getData()
 	}
 
-	async getData(){
+	ngOnInit() {
+
+	}
+
+	async ionViewWillEnter() {
+
+		this.getData();
+
+		setTimeout(async () => {
+			fromEvent(await this.Search.getInputElement() , "input").pipe(
+				debounceTime(1000),
+				map(event => {
+					this.getData(this.Search.value.toString());
+				}),
+			).subscribe();
+		}, 2000);
+	}
+
+	async getData(name: string = '') {
+		this.dataInSearch = name ? true : false;
+
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('business/list',{
-			limit : this.limit,
-			offset : this.offset
+		this.global.httpPost('business/filteredList', {
+			limit: this.limit,
+			offset: this.offset,
+			filtered_name: name,
 		}).subscribe(async (res) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
-			this.businessList = res.list.map((item)=>{
-				return new business().deserialize(item);
+			this.businessList = res.list.map((item) => {
+				return new BusinessList().deserialize(item);
 			});
 			console.log(this.businessList);
 			// console.log(res);
@@ -48,7 +74,7 @@ export class BusinessListComponent implements OnInit {
 		});
 	}
 
-	PageChange($event) {
+	pageChange($event) {
 		console.log($event)
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;

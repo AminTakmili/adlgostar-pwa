@@ -94,8 +94,8 @@
 						<!-- شناسه ملی -->
 						<div class="form-input mb-3" *ngIf="this.businessForm.value['employer_type'] === 'legal' ">
 							<label>شناسه ملی</label>
-							<ion-input autocomplete="new-pass" type="number" formControlName="business_license_number"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['business_license_number']" [controlName]="'شناسه ملی'"></app-validator></span>
+							<ion-input autocomplete="new-pass" type="number" formControlName="national_id"></ion-input>
+							<span class="error"><app-validator [control]="businessForm.controls['national_id']" [controlName]="'شناسه ملی'"></app-validator></span>
 							<span class="hint"></span>
 						</div>
 
