@@ -1,3 +1,152 @@
-<p>
-  business-detail works!
-</p>
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content *ngIf="business">
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">جزییات {{ business?.name }}</h1>
+					<p class="dsec">
+						نمایس لیست کارمندان و قرارداد ها و ویرایش کسب و کار
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round ml-3" [routerLink]="['/businesses']" color="light">
+					<ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت
+				</ion-button>
+				<ion-button shape="round" [routerLink]="['/businesses/edit/'+businessId]" color="secondary">
+					<ion-icon slot="start" name="create"></ion-icon>
+					ویرایش کسب و کار
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- main -->
+	<main>
+		<!-- کارفرما -->
+		<section>
+			<div class="container">
+				<div class="row align-items-center justify-content-between mt-4">
+					<div class="col-md-auto">
+						<div class="title-1">
+							<h2 class="title">کارفرما</h2>
+						</div>
+					</div>
+				</div>
+				<!-- list of employee -->
+				<div class="row my-3">
+					<div class="col-lg-6 mb-3">
+						<app-employer-card [employer]="business?.employer"></app-employer-card>
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<hr>
+		<!-- کارمندان -->
+		<section class="mt-3">
+			<div class="container">
+				<!-- title -->
+				<div class="row align-items-center justify-content-between mt-4">
+					<div class="col-md-auto">
+						<div class="title-1">
+							<h2 class="title">لیست کارمندان</h2>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="search-input-2">
+							<ion-searchbar enterkeyhint="" type="text" #SearchEmployee placeholder="جستجو در کارمندان">
+							</ion-searchbar>
+						</div>
+					</div>
+					<div class="col-auto">
+						<!-- افزودن کارمند -->
+						<ion-button shape="round" color="success">
+							<ion-icon slot="start" name="add-circle"></ion-icon>
+							افزودن کارمند
+						</ion-button>
+					</div>
+				</div>
+				<hr>
+				<!-- list of employee -->
+				<div class="row">
+					<div  class="col-lg-6 mb-4" *ngFor="let item of business?.employees">
+						<app-employee-card [employee]="item"></app-employee-card>
+					</div>
+				</div>
+
+			</div>
+			<!-- end title -->
+		</section>
+		<hr>
+		<!-- قرار داد ها -->
+		<section>
+			<div class="container">
+				<!-- title -->
+				<div class="row align-items-center justify-content-between mt-4">
+					<div class="col-md-6">
+						<div class="title-1">
+							<h2 class="title">لیست قرار داد ها</h2>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="search-input-2">
+							<ion-searchbar enterkeyhint="" type="text" #SearchContarct placeholder="جستجو در قراردادها">
+							</ion-searchbar>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<!-- لیست قرار داد ها -->
+				<!-- table -->
+				<table class="width-100 theme-table mt-4">
+					<thead class="thead-dark">
+						<tr class="ion-text-center">
+							<th class="ion-text-center">#</th>
+							<th scope="col">عنوان</th>
+							<th scope="col">دسته بندی</th>
+							<th scope="col">تاریخ ثبت</th>
+							<th class="ion-text-left" scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of [1,2,3,4,5,6]">
+							<th class="ion-text-center" scope="row">1</th>
+							<td><a href="#">شرکت ایده پردازان آترین سپر آریا</a></td>
+							<td>فناری اطلاعات و ارتباطاات</td>
+							<td>28 خرداد 1500</td>
+							<td class="ion-text-left">
+								<ion-button fill="clear" class="px-0 mx-0">
+									<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
+								</ion-button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<hr>
+		<!-- آدرس های کسب کار -->
+		<section>
+			<div class="container">
+				<!-- title -->
+				<div class="row align-items-center justify-content-between mt-4">
+					<div class="col">
+						<div class="title-1">
+							<h2 class="title">لیست آدرس های کسب کار</h2>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<!-- list of address -->
+
+				<!-- list of address -->
+			</div>
+		</section>
+	</main>
+</ion-content>

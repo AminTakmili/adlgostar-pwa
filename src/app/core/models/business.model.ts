@@ -1,6 +1,6 @@
 import { Address } from "./address.model";
 import { Deserializable } from "./deserializable.model";
-import { Employer } from "./employe.model";
+import { Employer } from "./employer.model";
 import { Employee } from "./employee.model";
 
 export class BusinessCategory implements Deserializable {

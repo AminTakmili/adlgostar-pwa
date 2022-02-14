@@ -1,0 +1,35 @@
+ion-card{
+	ion-item{
+		ion-thumbnail{
+			ion-img{
+				overflow: hidden;
+				border-radius: 50%;
+			}
+		}
+		ion-label{
+			.title{
+
+			}
+			.posts{
+				span{
+					color:var(--ion-color-step-700);
+					font-size: 12px;
+					&:after{
+						content: ",";
+						display: inline-block;
+						vertical-align: baseline;
+						margin-inline-end: 6px;
+						margin-inline-start: 3px;
+
+					}
+					&:first-child{
+						&:after{
+							display: none;
+						}
+					}
+				}
+			}
+		}
+	}
+
+}

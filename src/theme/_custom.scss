@@ -20,7 +20,9 @@
 
 	ion-input,
 	ng-select,
-	ion-textarea {
+	ion-textarea,
+	ckeditor
+	 {
 		width: 100%;
 		height: 45px;
 		border-radius: 4px;
@@ -29,8 +31,13 @@
 		flex: 0 0 100%;
 	}
 
-	ion-textarea {
+	ckeditor ,ion-textarea {
 		height: initial;
+	}
+	.ck-editor__editable_inline {
+		height: auto !important;
+		min-height: 300px !important;
+		width: 100%;
 	}
 
 	.ng-select.ng-select-single .ng-select-container {
@@ -364,4 +371,69 @@ hr {
 		border-radius: var(--ion-border-radius-sm);
 	}
 
+}
+
+// tootltip
+.tooltip-show {
+    position: relative;
+
+    &:before {
+        content: attr(tooltip);
+        display: block;
+        padding: 5px 10px;
+        background-color: var(--ion-color-dark);
+        color:  var( --ion-color-dark-contrast);
+        box-shadow: 0 5px 13px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        bottom: 50%;
+        border-radius: var(--ion-border-radius-sm);
+        font-size: 12px;
+        margin-top: -10px;
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        margin-top: 10px;
+        transition: 0.2s ease all;
+        white-space: nowrap;
+    }
+	&:after {
+		content: "";
+		display: block;
+		transform: translate(-50%, -50%) ;
+        left: 50%;
+        bottom: 50%;
+		position: absolute;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-top: 12px solid var(--ion-color-dark);
+
+		z-index: -1;
+        margin-top: 10px;
+		opacity: 0;
+		transition: 0.2s ease all;
+		border-radius: var(--ion-border-radius-sm);
+	}
+
+    &:hover {
+        &::before,&::after {
+            z-index: 100;
+            visibility: visible;
+            opacity: 1;
+            margin-top: 0;
+			margin-bottom: 10px;
+        }
+		&::before {
+			// z-index: 101;
+		}
+    }
+}
+
+//ckeditor
+ckeditor{
+
+	a.cke_button{
+		height: 27px;
+	}
 }

@@ -59,7 +59,7 @@ export class SidebarComponent implements OnInit {
 	},
 	{
 		name: 'قرارداد ها',
-		url: '/business',
+		url: '/contracts',
 		icon: 'document-text',
 		submenu :[],
 		open : false,

@@ -15,6 +15,7 @@ import { debounceTime, map } from 'rxjs/operators';
 })
 export class BusinessListComponent implements OnInit {
 
+	pageTitle : string = "کسب کار ها";
 	limit: number = 10;
 	offset: number = 0;
 	total: number = 0;

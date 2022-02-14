@@ -7,14 +7,13 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">افزودن کسب کار</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک کسب کار جدید اضاف کنید
-					</p>
+					<h1 class="title">ویرایش کسب کار : {{ bussiness?.name }}</h1>
+					<p class="dsec"> شما در این قسمت میتوانید کسب کار خود را ویرایش کنید </p>
 				</div>
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button shape="round" color="medium" fill="outline">
+				<ion-button shape="round" color="light" fill="solid" [routerLink]="['/businesses']">
 					<ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت
 				</ion-button>

@@ -1,0 +1,20 @@
+ion-card{
+	ion-item{
+		ion-thumbnail{
+			ion-img{
+				overflow: hidden;
+				border-radius: 50%;
+			}
+		}
+		ion-label{
+			.title{
+
+			}
+			.posts{
+				color:var(--ion-color-step-700);
+				font-size: 12px;
+			}
+		}
+	}
+
+}

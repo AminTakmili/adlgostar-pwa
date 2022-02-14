@@ -13,7 +13,7 @@ export class Employee implements Deserializable {
 		this.posts = input.posts.map((item: Post) => {
 			return new Post().deserialize(item);
 		});
-		this.media = input.posts.map((item: Media) => {
+		this.media = input.media.map((item: Media) => {
 			return new Media().deserialize(item);
 		});
 		Object.assign(this, input);

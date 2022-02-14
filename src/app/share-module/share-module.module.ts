@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ValidatorComponent } from './validator/validator.component';
+import { EmployeeCardComponent } from './employee-card/employee-card.component';
+import { EmployerCardComponent } from './employer-card/employer-card.component';
 
 
 
@@ -23,13 +25,17 @@ import { ValidatorComponent } from './validator/validator.component';
 		SidebarComponent,
 		HeaderComponent,
 		FooterComponent,
-		ValidatorComponent
+		ValidatorComponent,
+		EmployeeCardComponent,
+		EmployerCardComponent
 	],
 	exports : [
 		SidebarComponent,
 		HeaderComponent,
 		FooterComponent,
-		ValidatorComponent
+		ValidatorComponent,
+		EmployeeCardComponent,
+		EmployerCardComponent
 	]
 
 })
