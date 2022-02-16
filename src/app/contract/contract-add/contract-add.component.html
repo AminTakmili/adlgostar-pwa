@@ -30,7 +30,7 @@
 					<span class="no">1</span>
 					<span class="title">اطلاعات اولیه</span>
 				</div>
-				<div class="item"  [class.active]="step===2">
+				<div class="item" [class.active]="step===2">
 					<span class="no">2</span>
 					<span class="title">اطلاعات تکمیلی</span>
 				</div>
@@ -45,7 +45,8 @@
 					<div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">تکمیل اطلاعات اولیه قرار داد</h2>
-							<p class="dsec">قسمت اول مشخص کردن افراد در قرار داد قالب قرار داد و شروط ضمن عقد قرار داد</p>
+							<p class="dsec">قسمت اول مشخص کردن افراد در قرار داد قالب قرار داد و شروط ضمن عقد قرار داد
+							</p>
 						</div>
 					</div>
 					<!-- عنوان قرار داد -->
@@ -126,7 +127,8 @@
 								<app-validator [control]="contractsForm.controls['contractTheme']"
 									[controlName]="'قالب قرار داد'"></app-validator>
 							</span>
-							<span class="hint">اگر شرایطی برای قرار داد دارید از شروط ضمن عقد قرار داد انتخاب کنید</span>
+							<span class="hint">اگر شرایطی برای قرار داد دارید از شروط ضمن عقد قرار داد انتخاب
+								کنید</span>
 						</div>
 					</div>
 					<!--  -->
@@ -148,15 +150,169 @@
 					<!-- next step  -->
 					<div class="col-lg-7 col-md-3"></div>
 					<div class="col-lg-2 col-md-4">
-						<ion-button expand="block" color="dark" shape="round" fill="outline" >پاک کردن فرم</ion-button>
+						<ion-button expand="block" color="dark" shape="round" fill="outline">پاک کردن فرم</ion-button>
 					</div>
 					<div class="col-lg-3 col-md-5">
-						<ion-button expand="block" color="success" shape="round" fill="solid" >ثبت و ادامه</ion-button>
+						<ion-button expand="block" color="success" shape="round" fill="solid">ثبت و ادامه</ion-button>
 					</div>
 				</div>
 				<!-- end step one -->
+				<!-- -------------------------------------------------------------- -->
+				<!-- step two -->
+				<div class="row align-items-start py-5">
+					<!-- options -->
+					<div class="col-6 position-sticky top-15">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">عملگرهای قرار داد</h2>
+						</div>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>محاسبه پایه سنوات</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>قرارداد مربوط به آینده است؟</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>قرارداد ساعتی است؟</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4">
+							<ion-item color="white" lines="none">
+								<ion-label>توقف محاسبات و وارد کردن دستی</ion-label>
+								<ion-checkbox slot="start"></ion-checkbox>
+							</ion-item>
+						</ion-card>
+
+					</div>
+					<div class="col-md-6">
+
+						<div class="form-input mb-3">
+							<!-- سال عقد قرار داد -->
+							<label>سال عقد قرار داد</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- زمان شروع به کار -->
+						<div class="form-input mb-3">
+							<label>زمان شروع به کار</label>
+							<ion-input  autocomplete="new-pass" formControlName="selectedDateFormControl" [dpDayPicker]="config"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- زمان شروع قرار داد -->
+						<div class="form-input mb-3">
+							<label>زمان شروع قرار داد</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- زمان پایان قرار داد -->
+						<div class="form-input mb-3">
+							<label>زمان پایان قرار داد</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- دستمزد روزانه -->
+						<div class="form-input mb-3">
+							<label>دستمزد روزانه</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- حق سنوات -->
+						<div class="form-input mb-3">
+							<label>حق سنوات</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!--حق بن   -->
+						<div class="form-input mb-3">
+							<label>حق بن</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- حق مسکن -->
+						<div class="form-input mb-3">
+							<label>حق مسکن</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+
+						<div class="form-input mb-3">
+							<label>حق سنوات</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+
+					</div>
+					<div class="col-12"><hr></div>
+					<!-- next step  -->
+					<div class="col-lg-7 col-md-3"></div>
+					<div class="col-lg-2 col-md-4">
+						<ion-button expand="block" color="dark" shape="round" fill="outline">بازگشت به مرحله قبل</ion-button>
+					</div>
+					<div class="col-lg-3 col-md-5">
+						<ion-button expand="block" color="success" shape="round" fill="solid">ثبت نهایی قرار داد</ion-button>
+					</div>
+				</div>
 			</div>
 		</form>
 	</main>
-
 </ion-content>

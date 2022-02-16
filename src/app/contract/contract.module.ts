@@ -14,7 +14,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorComponent } from 'ckeditor4-angular';
-
+import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 @NgModule({
   imports: [
@@ -27,6 +27,7 @@ import { CKEditorComponent } from 'ckeditor4-angular';
 	NgxPaginationModule,
 	NgSelectModule,
 	CKEditorModule,
+	DpDatePickerModule
 
   ],
 

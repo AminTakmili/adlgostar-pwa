@@ -17,7 +17,7 @@ export class ContractAddComponent implements OnInit {
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
 	ckeConfig: CKEDITOR.config;
-	step : number = 1;
+	step : number = 2;
 	// public Editor = ClassicEditor;
 
 	editors = ['Classic', 'Inline'];
@@ -35,6 +35,7 @@ export class ContractAddComponent implements OnInit {
 			contract: ['سلام', Validators.compose([Validators.required])],
 			termesContratId: ['سلام', Validators.compose([Validators.required])],
 			termesContrat: ['سلام', Validators.compose([Validators.required])],
+			selectedDateFormControl: ['', Validators.compose([Validators.required])],
 		})
 	}
 
