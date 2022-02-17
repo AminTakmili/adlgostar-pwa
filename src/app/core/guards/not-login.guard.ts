@@ -21,7 +21,7 @@ export class NotLoginGuard implements CanActivate {
 		const val = await this.storageService.get("user");
 		// console.log('login',val);
 
-		if (val === null) {
+		if (val === null || !this.global.login) {
 			return true;
 		} else {
 			this.navCtrl.navigateRoot('/');

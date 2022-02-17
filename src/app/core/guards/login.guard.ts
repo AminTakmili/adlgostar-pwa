@@ -20,10 +20,10 @@ export class LoginGuard implements CanActivate {
 		// const url: string = state.url;
 		const val = await this.storageService.get("user");
 		// console.log('login',val);
-		if (val === null) {
-			this.navCtrl.navigateRoot('/login');
-		} else {
+		if (val !== null || this.global.login ) {
 			return true;
+		} else {
+			this.navCtrl.navigateRoot('/login');
 		}
 
 	}
