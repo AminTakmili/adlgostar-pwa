@@ -82,21 +82,21 @@ export class SidebarComponent implements OnInit {
 			},
 			{
 				name: 'حداقل مزد روزانه',
-				url: '/more/calc-basic-years',
+				url: '/more/minimum-daily-wage',
 				icon: 'golf',
 				function : 'showDetail'
 
 			},
 			{
 				name: 'محاسبه پایه سنوات',
-				url: '/more/extra-salary-item',
+				url: '/more/calc-basic-years ',
 				icon: 'options',
 				function : 'showDetail'
 
 			},
 			{
 				name: 'موارد اضافه حقوق',
-				url: '/more/minimum-daily-wage',
+				url: '/more/extra-salary-item',
 				icon: 'options',
 				function : 'showDetail'
 
