@@ -12,7 +12,7 @@ export class ValidatorComponent implements OnInit {
 
 	@Input() control: FormControl;
 
-	config = {};
+	config : any = {};
 
 	get errorText() {
 		return this.chkError(this.control.errors);

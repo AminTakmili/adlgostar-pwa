@@ -157,7 +157,7 @@ export class GlobalService {
 		}
 	}
 
-	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button?) {
+	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button? : any) {
 
 		const toast = await this.toastController.create({
 			message: message,

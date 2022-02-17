@@ -19,6 +19,22 @@ const routes: Routes = [
 		loadChildren: () => import('./business/business.module').then(m => m.BusinessPageModule),
 		canActivate: [LoginGuard]
 	},
+	{
+		path: 'contracts',
+		loadChildren: () => import('./contract/contract.module').then(m => m.ContractPageModule)
+	},
+	{
+		path: 'employers',
+		loadChildren: () => import('./employer/employer.module').then(m => m.EmployerPageModule)
+	},
+	{
+		path: 'employees',
+		loadChildren: () => import('./employee/employee.module').then(m => m.EmployeePageModule)
+	},
+	{
+		path: 'more',
+		loadChildren: () => import('./more/more.module').then(m => m.MorePageModule)
+	},
 	// {
 	// 	path: 'profile',
 	// 	loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
@@ -34,7 +50,7 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [
-		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules , initialNavigation: 'enabled' })
+		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' })
 	],
 	exports: [RouterModule]
 })

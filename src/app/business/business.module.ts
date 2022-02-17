@@ -11,6 +11,7 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
 import { BusinessEditComponent } from './business-edit/business-edit.component';
 import { BusinessAddComponent } from './business-add/business-add.component';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { BusinessDetailComponent } from './business-detail/business-detail.component';
 
 @NgModule({
 	imports: [
@@ -26,7 +27,8 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 	declarations: [
 		BusinessListComponent,
 		BusinessAddComponent,
-		BusinessEditComponent
+		BusinessEditComponent,
+		BusinessDetailComponent
 	]
 })
 export class BusinessPageModule { }

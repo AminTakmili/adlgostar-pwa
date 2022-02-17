@@ -14,10 +14,11 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button shape="round" color="medium" fill="outline">
-					<ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-					بازگشت
-				</ion-button>
+				<ion-back-button
+						defaultHref="businesses"
+						[text]=" 'بازگشت' "
+						[icon]="'arrow-back-outline'">
+					</ion-back-button>
 			</div>
 		</div>
 	</div>
@@ -51,7 +52,7 @@
 							<span class="error">
 								<app-validator [control]="businessForm.controls['employer_id']" [controlName]="'انتخاب کارفرما'"></app-validator>
 							</span>
-							<span class="hint">مثلا : 09173052222</span>
+							<span class="hint"></span>
 						</div>
 						<!-- عنوان کسب و کار -->
 						<div class="form-input mb-3">
@@ -71,7 +72,7 @@
 								[bindValue]="'id'"
 							></ng-select>
 							<span class="error"><app-validator [control]="businessForm.controls['name']" [controlName]="'نوع شخصیت'"></app-validator></span>
-							<span class="hint">مثلا : 09173052222</span>
+							<span class="hint">حقیقی یا حقوقی</span>
 						</div>
 						<!-- زمانیکه نوع کارفرما حقوقی باشد فیلدهای شماره ثبت و شناسه ملی دارد و زمانیکه حقیقی باشد شماره پروانه کسب دارد -->
 
@@ -94,8 +95,8 @@
 						<!-- شناسه ملی -->
 						<div class="form-input mb-3" *ngIf="this.businessForm.value['employer_type'] === 'legal' ">
 							<label>شناسه ملی</label>
-							<ion-input autocomplete="new-pass" type="number" formControlName="business_license_number"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['business_license_number']" [controlName]="'شناسه ملی'"></app-validator></span>
+							<ion-input autocomplete="new-pass" type="number" formControlName="national_id"></ion-input>
+							<span class="error"><app-validator [control]="businessForm.controls['national_id']" [controlName]="'شناسه ملی'"></app-validator></span>
 							<span class="hint"></span>
 						</div>
 

@@ -1,0 +1,11 @@
+<ion-card  color="white"  class="ion-no-padding ion-no-margin">
+	<ion-item button color="white" lines="none" detail>
+		<ion-thumbnail  slot="start">
+			<ion-img [src]=" employee?.media['path'] ? employee?.media['path'] :  './assets/img/employee-img.png' "></ion-img>
+		</ion-thumbnail>
+		<ion-label>
+			<h2 class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
+			<p class="posts"><span *ngFor="let item of employee.posts">{{ item.name }}</span></p>
+		</ion-label>
+	</ion-item>
+</ion-card>
