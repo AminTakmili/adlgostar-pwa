@@ -47,7 +47,7 @@
 				</div>
 			</div>
 			<!-- table -->
-			<div class="table-responsive-md" *ngIf="businessList && businessList.length  ">
+			<div class="table-responsive-md" *ngIf="dataList && dataList.length  ">
 				<table class="width-100 theme-table mt-4">
 					<thead class="thead-dark">
 						<tr class="ion-text-center">
@@ -60,7 +60,7 @@
 					</thead>
 					<tbody>
 						<tr
-							*ngFor="let item of businessList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td><a [routerLink]="['/businesses/detail/',item.id]">{{ item.name }}</a></td>
 							<td>{{ item.category }}</td>
@@ -79,10 +79,10 @@
 							</td>
 						</tr>
 					</tbody>
-					<tfoot *ngIf="limit < total && businessList && businessList.length">
+					<tfoot *ngIf="limit < total && dataList && dataList.length">
 						<tr>
 							<td colspan="5">
-								<pagination-controls *ngIf="limit < total && businessList && businessList.length"
+								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
 									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
 									[autoHide]="true">
 								</pagination-controls>
@@ -93,13 +93,13 @@
 				</table>
 			</div>
 			<!-- if there is no table -->
-			<div *ngIf="businessList && businessList.length === 0 && this.dataInSearch" class="alert alert-warning my-3" role="alert">
+			<div *ngIf="dataList && dataList.length === 0 && this.dataInSearch" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">کسب کاری برای نمایش یافت نشد .</h4>
 				<p class="dsec">شما تا کنون کسب و کاری ثبت نکرده اید . برای اضاف کردن کسب کار بر روی افزودن کسب و کار
 					کلیک کنید</p>
 			</div>
 			<!-- if search return empty cell -->
-			<div *ngIf="businessList && businessList.length === 0 && !this.dataInSearch" class="alert alert-warning my-3" role="alert">
+			<div *ngIf="dataList && dataList.length === 0 && !this.dataInSearch" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">کسب کاری برای نمایش یافت نشد .</h4>
 				<p class="dsec">کسب و کاری با عبارت جستجو شده یافت نشد</p>
 			</div>

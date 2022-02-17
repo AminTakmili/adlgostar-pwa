@@ -4,8 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MorePageRoutingModule } from './more-routing.module';
-import { ShareModulePageModule } from '../share-module/share-module.module';
+import { MoreExtraSalaryItemPageRoutingModule } from './more-extra-salary-item-routing.module';
 
 
 
@@ -14,11 +13,8 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    MorePageRoutingModule,
-	ShareModulePageModule
+    MoreExtraSalaryItemPageRoutingModule
   ],
-  declarations: [
-
-  ]
+  declarations: []
 })
-export class MorePageModule {}
+export class MoreExtraSalaryItemPageModule {}

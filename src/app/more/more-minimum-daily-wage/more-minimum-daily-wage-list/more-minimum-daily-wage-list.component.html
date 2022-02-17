@@ -1,0 +1,102 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">در این صفحه لیست {{ pageTitle }}
+						 را میتوانید مشاهده کنید .
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto"></div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container mb-5">
+			<!-- search and title -->
+			<div class="row mt-4 align-items-center">
+				<div class="col-md-6">
+					<div class="title-1">
+						<h2 class="title">لیست {{ pageTitle }}</h2>
+
+					</div>
+				</div>
+				<div class="col-md-6">
+					<!-- <div class="search-input-2">
+						<ion-searchbar enterkeyhint="" type="text" debounce="1000" (ionChange)="ChangeSearch($event)"
+							placeholder="جستجو در {{ pageTitle }}"></ion-searchbar>
+					</div> -->
+				</div>
+			</div>
+			<!-- search -->
+			<div class="row mt-4">
+				<div class="col-md-6">
+					<div class="form-input mb-3">
+						<label>سال عقد قرار داد</label>
+						<ng-select (change)="ChangeYear()" [(ngModel)]="year" [clearable]="true"
+							placeholder="انتخاب کنید">
+							<ng-option *ngFor="let car of [].constructor(35); let i = index" [value]="1400 - i">
+								{{1400 - i}}
+							</ng-option>
+						</ng-select>
+					</div>
+				</div>
+			</div>
+			<!-- table -->
+			<hr>
+			<div class="table-responsive-md" *ngIf="dataList && dataList.length  ">
+				<table class="width-100 theme-table mt-4">
+					<thead class="thead-dark">
+						<tr class="ion-text-center">
+							<th class="ion-text-center">#</th>
+							<th scope="col">سال </th>
+							<th scope="col">حداقل دستمزد روزانه</th>
+							<th scope="col">تاریخ ثبت</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+							<td>سال {{ item.year }}</td>
+							<td>{{ item.minimum_wage | number }} ریال</td>
+							<td>{{ item.createdAt }}</td>
+						</tr>
+					</tbody>
+					<tfoot *ngIf="limit < total && dataList && dataList.length">
+						<tr>
+							<td colspan="5">
+								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+									[autoHide]="true">
+								</pagination-controls>
+							</td>
+						</tr>
+
+					</tfoot>
+				</table>
+			</div>
+			<!-- if there is no table -->
+			<div *ngIf="dataList && dataList.length === 0 && this.dataInSearch" class="alert alert-warning my-3"
+				role="alert">
+				<h4 class="title"> {{ pageTitle }} برای نمایش یافت نشد .</h4>
+				<p class="dsec">شما تا کنون کسب و کاری ثبت نکرده اید . برای اضاف کردن کسب کار بر روی افزودن کسب و کار
+					کلیک کنید</p>
+			</div>
+			<!-- if search return empty cell -->
+			<div *ngIf="dataList && dataList.length === 0 && !this.dataInSearch" class="alert alert-warning my-3"
+				role="alert">
+				<h4 class="title"> برای نمایش یافت نشد {{ pageTitle }} .</h4>
+				<p class="dsec">{{ pageTitle }} با عبارت جستجو شده یافت نشد</p>
+			</div>
+		</div>
+	</main>
+</ion-content>
