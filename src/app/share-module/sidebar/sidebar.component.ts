@@ -67,6 +67,50 @@ export class SidebarComponent implements OnInit {
 		function : 'showDetail'
 	},
 	{
+		name: 'بیشتر',
+		icon: 'ellipsis-vertical',
+		open : false,
+		state : "close",
+		function : 'showDetail',
+		submenu :[
+			{
+				name: 'پایه سنوات',
+				url: '/more/basic-years',
+				icon: 'trending-up',
+				function : 'showDetail'
+
+			},
+			{
+				name: 'حداقل مزد روزانه',
+				url: '/more/calc-basic-years',
+				icon: 'golf',
+				function : 'showDetail'
+
+			},
+			{
+				name: 'محاسبه پایه سنوات',
+				url: '/more/extra-salary-item',
+				icon: 'options',
+				function : 'showDetail'
+
+			},
+			{
+				name: 'موارد اضافه حقوق',
+				url: '/more/minimum-daily-wage',
+				icon: 'options',
+				function : 'showDetail'
+
+			},
+			{
+				name: 'ثابت های حقوق',
+				url: '/more/salary-constants',
+				icon: 'layers',
+				function : 'showDetail'
+
+			},
+		],
+	},
+	{
 		name: 'پروفایل من',
 		icon: 'person-circle',
 		open : false,
@@ -118,7 +162,7 @@ export class SidebarComponent implements OnInit {
 	ngOnInit() { }
 
 
-	showDetail(item) {
+	showDetail(item : any) {
 		if(item.type){}
 		if(item.url){
 			this.navCtrl.navigateForward([item.url])
@@ -128,7 +172,7 @@ export class SidebarComponent implements OnInit {
 		}
 
 	}
-	logout(item){
+	logout(item : any){
 		this.global
 		.showAlert('خروج از حساب کاربری', 'آیا برای خروج اطمینان دارید ؟', [
 			{
@@ -141,9 +185,9 @@ export class SidebarComponent implements OnInit {
 				role: 'yes',
 			},
 		])
-		.then((alert) => {
+		.then((alert : any) => {
 			alert.present();
-			alert.onDidDismiss().then((e) => {
+			alert.onDidDismiss().then((e : any) => {
 				if (e.role === 'yes') {
 					this.makeLogout();
 				}

@@ -96,9 +96,9 @@ export class BusinessAddComponent implements OnInit {
 
 	}
 
-	setCountry(data) {
+	setCountry(data : any) {
 		data[0].provinces.map((province: any) => {
-			province.cities.map((city) => {
+			province.cities.map((city: any) => {
 				const cities: citiesClass = new citiesClass();
 				cities.id = city.id
 				cities.name = city.name;
@@ -109,9 +109,9 @@ export class BusinessAddComponent implements OnInit {
 		});
 
 	}
-	setBussinessCategory(data) {
+	setBussinessCategory(data: any) {
 		data.list.map((category: any) => {
-			category.child.map((business) => {
+			category.child.map((business: any) => {
 				const businessData: businessClass = new businessClass();
 				businessData.id = business.id
 				businessData.name = business.name;
@@ -143,7 +143,7 @@ export class BusinessAddComponent implements OnInit {
 				}
 			]).then((alert) => {
 				alert.present();
-				alert.onDidDismiss().then(async (e) => {
+				alert.onDidDismiss().then(async (e: any) => {
 					if (e.role === 'yes') {
 						this.businessAddress.splice(index, 1);
 						this.addresses.removeAt(index);

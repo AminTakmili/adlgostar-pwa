@@ -24,7 +24,7 @@ export class SeoService {
         // private locationStrategy: LocationStrategy,
         // private router: Router,
 
-        @Inject(DOCUMENT) private _document,
+        // @Inject(DOCUMENT) private _document,
     ) {
         this.renderer = this.rendererFactory.createRenderer(null, null);
 
@@ -33,7 +33,7 @@ export class SeoService {
         //  this.fullUrl = this.global.siteUrl +'/'+ decodeURI(this.router.routerState.snapshot.url.substr(1));
     }
 
-    generateTags(config) {
+    generateTags(config : any) {
 
         // const fullUrl = this.global.siteUrl + '/' + decodeURI(this.router.routerState.snapshot.url.substr(1));
         this.titleService.setTitle(config.title + ' | ' + this.global.sitename);

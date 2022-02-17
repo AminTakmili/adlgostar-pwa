@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -9,19 +9,23 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { EmployeeAddComponent } from './employee-add/employee-add.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { ShareModulePageModule } from '../share-module/share-module.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EmployeePageRoutingModule
+    EmployeePageRoutingModule,
+    ShareModulePageModule,
+    ReactiveFormsModule
   ],
   declarations: [
-	EmployeeListComponent,
-	EmployeeAddComponent,
-	EmployeeEditComponent,
-	EmployeeDetailComponent,
+    EmployeeListComponent,
+    EmployeeAddComponent,
+    EmployeeEditComponent,
+    EmployeeDetailComponent,
   ]
 })
-export class EmployeePageModule {}
+export class EmployeePageModule { }

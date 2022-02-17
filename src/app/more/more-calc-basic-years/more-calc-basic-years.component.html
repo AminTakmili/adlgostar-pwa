@@ -1,0 +1,71 @@
+<ion-header>
+	<app-header [title]="'محاسبه پایه سنوات'"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">محاسبه پایه سنوات</h1>
+					<p class="dsec">در این صفحه لیست کسب و کارها را میتوانید مشاهده کنید یا یک کسب و کار جدید اضاف کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-button  shape="round" color="success">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					افزودن کسب و کار جدید
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container">
+			<!-- search and title -->
+			<div class="row mt-4">
+				<div class="col-md-8">
+					<div class="title-1">
+						<h2 class="title">محاسبه پایه سنوات</h2>
+						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="search-input">
+						<input type="text" placeholder="جستجو در کسب و کارها">
+						<ion-icon name="search"></ion-icon>
+					</div>
+				</div>
+			</div>
+			<!-- table -->
+			<table class="width-100 theme-table mt-4">
+				<thead class="thead-dark">
+					<tr class="ion-text-center">
+					  <th class="ion-text-center">#</th>
+					  <th scope="col">عنوان</th>
+					  <th scope="col">دسته بندی</th>
+					  <th scope="col">تاریخ ثبت</th>
+					  <th class="ion-text-left" scope="col"></th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
+					  <th class="ion-text-center" scope="row">1</th>
+					  <td><a href="#">شرکت ایده پردازان آترین سپر آریا</a></td>
+					  <td>فناری اطلاعات و ارتباطاات</td>
+					  <td>28 خرداد 1500</td>
+					  <td class="ion-text-left">
+						  <ion-button fill="clear" class="px-0 mx-0" >
+							<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
+						  </ion-button>
+					  </td>
+					</tr>
+				  </tbody>
+			</table>
+		</div>
+	</main>
+</ion-content>

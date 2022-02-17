@@ -64,7 +64,7 @@ export class BusinessListComponent implements OnInit {
 		}).subscribe(async (res) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
-			this.businessList = res.list.map((item) => {
+			this.businessList = res.list.map((item: any) => {
 				return new BusinessList().deserialize(item);
 			});
 			console.log(this.businessList);
@@ -75,7 +75,7 @@ export class BusinessListComponent implements OnInit {
 		});
 	}
 
-	pageChange($event) {
+	pageChange($event : any) {
 		console.log($event)
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;

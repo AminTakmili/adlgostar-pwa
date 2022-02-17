@@ -13,8 +13,7 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CKEditorModule } from 'ng2-ckeditor';
-import { CKEditorComponent } from 'ckeditor4-angular';
-import { DpDatePickerModule } from 'ng2-jalali-date-picker';
+
 
 @NgModule({
   imports: [
@@ -27,7 +26,7 @@ import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 	NgxPaginationModule,
 	NgSelectModule,
 	CKEditorModule,
-	DpDatePickerModule
+
 
   ],
 
