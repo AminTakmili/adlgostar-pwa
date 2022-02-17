@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
 			this.global.httpPost('user/confirmLoginCode', {
 				mobile: this.mobile,
 				verifyCode: this.verifyForm.controls['verifycode'].value,
-			}).subscribe(async (res) => {
+			}).subscribe(async (res : any) => {
 				await this.global.dismisLoading();
 				// console.log(res.firstName,res.lastName)
 
