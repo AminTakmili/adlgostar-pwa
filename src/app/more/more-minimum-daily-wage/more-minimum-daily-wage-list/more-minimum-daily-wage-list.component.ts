@@ -62,7 +62,7 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 			this.dataList = res.list.map((item: any) => {
 				return new minimumDailyWage().deserialize(item);
 			});
-			console.log(this.dataList);
+			// console.log(this.dataList);
 			// console.log(res);
 		}, async (error) => {
 			await this.global.dismisLoading();
@@ -71,7 +71,7 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 	}
 
 	pageChange($event : any) {
-		console.log($event)
+		// console.log($event)
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;
 		this.getData();

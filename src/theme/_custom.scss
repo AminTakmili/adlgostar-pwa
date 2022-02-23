@@ -94,13 +94,13 @@ ion-menu[content-id=main-content] {
 	border-bottom: 1px solid var(--ion-color-step-50);
 
 	.page-info {
-		.title {
+		.title,h1,h2,h3 {
 			font-size: 22px;
 			font-weight: bold;
 			margin: 10px;
 		}
 
-		.dsec {
+		.dsec , p {
 			font-size: 16px;
 			font-weight: 400;
 			color: var(--ion-color-step-600);
