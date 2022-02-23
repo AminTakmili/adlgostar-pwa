@@ -1,3 +1,74 @@
-<p>
-  more-extra-salary-item-edit works!
-</p>
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-back-button defaultHref="more/extra-salary-item" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<div class="row my-4">
+				<div class="col-md-6">
+					<form [formGroup]="editForm" (submit)="onSubmit()">
+						<!-- <input type="hidden" formArrayName="id" > -->
+						<!-- عنوان کسب و کار -->
+						<div class="form-input mb-3">
+							<label>عنوان اضاف حقوق</label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['name']" [controlName]="'عنوان'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						<div class="form-input mb-3">
+							<ion-item lines="none">
+								<ion-label> اضافه شدن به عیدی و پاداش و حق سنوات </ion-label>
+								<ion-checkbox type="string"  slot="start" formControlName="add_to_bonus"></ion-checkbox>
+							  </ion-item>
+						</div>
+						<hr>
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-5">
+								<ion-button expand="block" color="medium" fill="outline" shape="round">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-7">
+								<ion-button type="submit"  expand="block" color="success" fill="solid" shape="round">
+									ویرایش {{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6">
+					<ion-card mode="ios" color="white">
+						<ion-card-header>
+							<ion-card-title class="font-size-20">توضیحات نحوه {{ pageTitle }} </ion-card-title>
+						</ion-card-header>
+						<ion-card-content>
+							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
+								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
+								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
+								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
+								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+
+						</ion-card-content>
+					</ion-card>
+				</div>
+			</div>
+		</div>
+	</main>
+</ion-content>

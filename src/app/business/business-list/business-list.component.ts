@@ -42,7 +42,7 @@ export class BusinessListComponent implements OnInit {
 	async ionViewWillEnter() {
 		this.getData();
 		setTimeout(async () => {
-			console.log(this.Search)
+			// console.log(this.Search)
 			fromEvent(await this.Search.getInputElement(), "input").pipe(
 				debounceTime(1000),
 				map(event => {
@@ -67,16 +67,16 @@ export class BusinessListComponent implements OnInit {
 			this.dataList = res.list.map((item: any) => {
 				return new BusinessList().deserialize(item);
 			});
-			console.log(this.dataList);
+			// console.log(this.dataList);
 			// console.log(res);
 		}, async (error) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
+
 	}
 
 	pageChange($event: any) {
-		console.log($event)
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;
 		this.getData();

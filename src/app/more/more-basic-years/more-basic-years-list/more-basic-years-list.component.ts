@@ -43,6 +43,7 @@ export class MoreBasicYearsListComponent implements OnInit {
 	}
 	async ionViewWillEnter() {
 		this.getData();
+		this.setTitle();
 	}
 
 	ChangeSearch(event:any){
@@ -62,7 +63,7 @@ export class MoreBasicYearsListComponent implements OnInit {
 			this.dataList = res.list.map((item: any) => {
 				return new basicYears().deserialize(item);
 			});
-			console.log(this.dataList);
+			// console.log(this.dataList);
 			// console.log(res);
 		}, async (error) => {
 			await this.global.dismisLoading();
@@ -71,7 +72,7 @@ export class MoreBasicYearsListComponent implements OnInit {
 	}
 
 	pageChange($event : any) {
-		console.log($event)
+		// console.log($event)
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;
 		this.getData();
@@ -83,4 +84,12 @@ export class MoreBasicYearsListComponent implements OnInit {
 		this.getData();
 	}
 
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
+	}
 }

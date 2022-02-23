@@ -8,15 +8,15 @@
 	</div>
 	<div class="sidebar-item">
 		<ion-list >
-			<ng-template ngFor let-item [ngForOf]="Sidemenu" >
-				<ion-item  button lines="none" [routerLink]="item.url" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}" (click)=" this[item.function](item)"  color="tertiary">
+			<ng-template ngFor let-item [ngForOf]="Sidemenu"  let-i="index" >
+				<ion-item  button lines="none" [routerLink]="item.url" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: ( item.submenu !== undefined && item?.submenu?.length ? false : true )}" (click)=" this[item.function](item)" (isActiveChange)="onRouterLinkActive($event , i )" color="tertiary">
 					<ion-icon [name]="item.icon" slot="start"></ion-icon>
 					<ion-label >{{ item.name }}</ion-label>
 					<ion-icon  *ngIf="item.submenu.length" name="chevron-down" slot="end"></ion-icon>
 				</ion-item>
 				<div class="level-2" [@openAnimation]='item.state'>
 					<ng-template  [ngIf]="item.submenu !== undefined && item.submenu.length" ngFor let-subitem [ngForOf]="item.submenu" >
-						<ion-item *ngIf="subitem.name" lines="none" button (click)="this[subitem.function](subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}" >
+						<ion-item *ngIf="subitem.name" lines="none" button [routerLink]="subitem.url"  (click)="this[subitem.function](subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event , i )" >
 							<ion-icon [name]="subitem.icon" slot="start"></ion-icon>
 							<ion-label >{{ subitem.name }}</ion-label>
 						</ion-item>
