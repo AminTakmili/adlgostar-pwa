@@ -17,7 +17,7 @@ export class ContractAddComponent implements OnInit {
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
 	ckeConfig: CKEDITOR.config;
-	step : number = 2;
+	step : number = 1;
 	// public Editor = ClassicEditor;
 
 	editors = ['Classic', 'Inline'];
@@ -63,4 +63,6 @@ export class ContractAddComponent implements OnInit {
 	onSubmit() {
 
 	}
+
+
 }

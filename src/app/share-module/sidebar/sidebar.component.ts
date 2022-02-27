@@ -60,12 +60,32 @@ export class SidebarComponent implements OnInit {
 		},
 		{
 			name: 'قرارداد ها',
-			url: '/contracts',
 			icon: 'document-text',
-			submenu: [],
 			open: false,
 			state: "close",
-			function: 'showDetail'
+			function: 'showDetail',
+			submenu: [
+				{
+					name: 'لیست قرار داد ها',
+					url: '/contracts/list',
+					icon: 'document-text',
+					function: 'showDetail'
+				},
+				{
+					name: 'قالب قرارداد',
+					url: '/contracts/template',
+					icon: 'document-attach',
+					function: 'showDetail'
+
+				},
+				{
+					name: 'شروط ضمن قرار داد',
+					url: '/contracts/conditions',
+					icon: 'document-lock',
+					function: 'showDetail'
+
+				},
+			]
 		},
 		{
 			name: 'بیشتر',

@@ -10,6 +10,8 @@ import { EmployeeAddComponent } from './employee-add/employee-add.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import { ShareModulePageModule } from '../share-module/share-module.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
     IonicModule,
     EmployeePageRoutingModule,
     ShareModulePageModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+	NgSelectModule,
+	NgxPaginationModule
   ],
   declarations: [
     EmployeeListComponent,

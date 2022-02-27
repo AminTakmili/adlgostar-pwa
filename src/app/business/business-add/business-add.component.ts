@@ -35,16 +35,16 @@ export class BusinessAddComponent implements OnInit {
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl : NavController
+		private navCtrl: NavController
 	) {
 		this.businessForm = this.fb.group({
-			employer_id: [ this.global.user.id, Validators.compose([Validators.required])],
+			employer_id: [this.global.user.id, Validators.compose([Validators.required])],
 			name: ['', Validators.compose([Validators.required])],
 			employer_type: ['', Validators.compose([Validators.required])],
 			registration_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
 			business_license_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
 			national_id: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			business_category_id: ['', Validators.compose([Validators.required,Validators.pattern("^[0-9]*$")])],
+			business_category_id: ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
 			addresses: this.fb.array([this.newAddresses()]),
 
 		});
@@ -73,7 +73,7 @@ export class BusinessAddComponent implements OnInit {
 
 	getData() {
 		const countries = this.global.httpGet('more/countries');
-		const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
+		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
 
 
 		this.global.parallelRequest([countries, businessCategory])
@@ -96,7 +96,7 @@ export class BusinessAddComponent implements OnInit {
 
 	}
 
-	setCountry(data : any) {
+	setCountry(data: any) {
 		data[0].provinces.map((province: any) => {
 			province.cities.map((city: any) => {
 				const cities: citiesClass = new citiesClass();
@@ -129,45 +129,49 @@ export class BusinessAddComponent implements OnInit {
 	}
 
 	removeAddress(index: number) {
-		this.global.showAlert('حذف آدرس',
-			'آیا برای حذف آدرس اطمینان دارید ؟ ',
-			[
 
-				{
-					text: 'خیر',
-					role: 'cancel'
-				},
-				{
-					text: 'بلی',
-					role: 'yes'
+		this.global.showAlert('حذف آدرس',
+		'آیا برای حذف آدرس اطمینان دارید ؟ ',
+		[
+
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.businessAddress.splice(index, 1);
+					this.addresses.removeAt(index);
 				}
-			]).then((alert) => {
-				alert.present();
-				alert.onDidDismiss().then(async (e: any) => {
-					if (e.role === 'yes') {
-						this.businessAddress.splice(index, 1);
-						this.addresses.removeAt(index);
-					}
-				});
 			});
+		});
 	}
 
 	async onSubmit() {
 
-		if(this.businessForm.valid){
+		if (this.businessForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('business/add', this.businessForm.value )
-			.subscribe(async (res) => {
+			this.global.httpPost('business/add', this.businessForm.value)
+				.subscribe(async (res) => {
 
-				await this.global.dismisLoading();
-				// console.log(res);
-				this.navCtrl.navigateForward('/businesses');
-				this.businessForm.reset();
-				this.global.showToast('کسب و کار جدید با نام '+ this.businessForm.value.name +' ثبت شد .');
-			}, async (error) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-			});
+					await this.global.dismisLoading();
+					// console.log(res);
+					this.navCtrl.navigateForward('/businesses');
+					this.businessForm.reset();
+					this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
+				}, async (error) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				});
 		}
 	}
+
+
+
 }

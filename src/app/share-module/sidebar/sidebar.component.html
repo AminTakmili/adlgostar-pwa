@@ -14,8 +14,8 @@
 					<ion-label >{{ item.name }}</ion-label>
 					<ion-icon  *ngIf="item.submenu.length" name="chevron-down" slot="end"></ion-icon>
 				</ion-item>
-				<div class="level-2" [@openAnimation]='item.state'>
-					<ng-template  [ngIf]="item.submenu !== undefined && item.submenu.length" ngFor let-subitem [ngForOf]="item.submenu" >
+				<div class="level-2" [@openAnimation]='item.state' *ngIf="item.submenu !== undefined && item.submenu.length">
+					<ng-template   ngFor let-subitem [ngForOf]="item.submenu" >
 						<ion-item *ngIf="subitem.name" lines="none" button [routerLink]="subitem.url"  (click)="this[subitem.function](subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event , i )" >
 							<ion-icon [name]="subitem.icon" slot="start"></ion-icon>
 							<ion-label >{{ subitem.name }}</ion-label>
