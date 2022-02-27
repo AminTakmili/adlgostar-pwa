@@ -13,28 +13,40 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { ContractTemplateListComponent } from './contract-template-list/contract-template-list.component';
+import { ContractTemplateAddComponent } from './contract-template-add/contract-template-add.component';
+import { ContractTemplateEditComponent } from './contract-template-edit/contract-template-edit.component';
+import { ContractConditionsListComponent } from './contract-conditions-list/contract-conditions-list.component';
+import { ContractConditionsAddComponent } from './contract-conditions-add/contract-conditions-add.component';
+import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ContractPageRoutingModule,
-	ShareModulePageModule,
-	ReactiveFormsModule,
-	NgxPaginationModule,
-	NgSelectModule,
-	CKEditorModule,
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		ContractPageRoutingModule,
+		ShareModulePageModule,
+		ReactiveFormsModule,
+		NgxPaginationModule,
+		NgSelectModule,
+		CKEditorModule,
 
 
-  ],
+	],
 
-  declarations: [
-	ContractListComponent,
-	ContractAddComponent,
-	ContractDetailComponent,
-	ContractEditComponent,
-  ]
+	declarations: [
+		ContractListComponent,
+		ContractAddComponent,
+		ContractDetailComponent,
+		ContractEditComponent,
+		ContractTemplateListComponent,
+		ContractTemplateAddComponent,
+		ContractTemplateEditComponent,
+		ContractConditionsListComponent,
+		ContractConditionsAddComponent,
+		ContractConditionsEditComponent
+	]
 })
-export class ContractPageModule {}
+export class ContractPageModule { }

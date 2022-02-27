@@ -83,7 +83,7 @@ export class BusinessEditComponent implements OnInit {
 
 	async getData() {
 		const countries = await this.global.httpGet('more/countries');
-		const businessCategory = await this.global.httpPost('business-category/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
+		const businessCategory = await this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
 		const businessDetail = await this.global.httpPost('business/detail', { business_id: this.businessId });
 
 		await this.global.parallelRequest([countries, businessCategory, businessDetail])

@@ -1,3 +1,27 @@
-<p>
-  employee-edit works!
-</p>
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن قرار داد جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضاف کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="contracts" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+
+</ion-content>
