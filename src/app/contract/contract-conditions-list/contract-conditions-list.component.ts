@@ -46,15 +46,15 @@ export class ContractConditionsListComponent implements OnInit {
 		this.global.httpPost('contractProvisoTemplate/list', {
 			limit: this.limit,
 			offset: this.offset,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
 				return new contractConditions().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -94,7 +94,7 @@ export class ContractConditionsListComponent implements OnInit {
 					await this.global.showLoading('لطفا منتظر بمانید...');
 					this.global.httpDelete('contractProvisoTemplate/delete', {
 						id: item.id,
-					}).subscribe(async (res) => {
+					}).subscribe(async (res:any) => {
 
 						await this.global.dismisLoading();
 
@@ -104,7 +104,7 @@ export class ContractConditionsListComponent implements OnInit {
 
 						this.global.showToast(res.msg);
 
-					}, async (error) => {
+					}, async (error:any) => {
 						await this.global.dismisLoading();
 						this.global.showError(error);
 					});

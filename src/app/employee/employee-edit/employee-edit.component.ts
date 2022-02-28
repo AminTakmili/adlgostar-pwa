@@ -51,15 +51,15 @@ export class EmployeeEditComponent implements OnInit {
 			filtered_name: this.filtered_name,
 			filtered_national_code: this.filtered_national_code,
 			filtered_phone: this.filtered_phone,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
 				return new Employee().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

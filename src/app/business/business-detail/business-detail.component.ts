@@ -33,14 +33,14 @@ export class BusinessDetailComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('business/detail', {
 			business_id: this.businessId
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 
 			await this.global.dismisLoading();
 			this.business = new Business().deserialize(res);
 			this.setTitle();
 
 
-		}, async (error) => {
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

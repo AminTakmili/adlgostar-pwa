@@ -96,14 +96,14 @@ export class ContractTemplateAddComponent implements OnInit {
 		if (this.addFrom.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('contractTemplate/add', this.addFrom.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/template');
 					this.global.showToast('قالب قرار داد با نام  ' + this.addFrom.value.name + ' ثبت شد .');
 					this.addFrom.reset();
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
@@ -115,14 +115,14 @@ export class ContractTemplateAddComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('businessCategory/business/list', {
 			business_category_ids
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 
 			await this.global.dismisLoading();
 			this.business = res.map((item : any)=>{
 				return new BusinessList().deserialize(item);
 			});
 
-		}, async (error) => {
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

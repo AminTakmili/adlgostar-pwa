@@ -56,15 +56,15 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 			limit: this.limit,
 			offset: this.offset,
 			contract_year: this.contract_year,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
 				return new severanceBaseCalculation().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -109,7 +109,7 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 					await this.global.showLoading('لطفا منتظر بمانید...');
 					this.global.httpDelete('salaryBaseInfo/contractExtraField', {
 						id: item.id,
-					}).subscribe(async (res) => {
+					}).subscribe(async (res:any) => {
 
 						await this.global.dismisLoading();
 
@@ -118,7 +118,7 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 
 						this.global.showToast(res.msg);
 
-					}, async (error) => {
+					}, async (error:any) => {
 						await this.global.dismisLoading();
 						this.global.showError(error);
 					});

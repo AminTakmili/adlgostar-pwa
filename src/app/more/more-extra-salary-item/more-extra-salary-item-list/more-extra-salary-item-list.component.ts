@@ -52,14 +52,14 @@ export class MoreExtraSalaryItemListComponent implements OnInit {
 
 	async getData() {
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpGet('salaryBaseInfo/contractExtraFieldList').subscribe(async (res) => {
+		this.global.httpGet('salaryBaseInfo/contractExtraFieldList').subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.dataList = res.map((item: any) => {
 				return new contractExtraField().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -82,7 +82,7 @@ export class MoreExtraSalaryItemListComponent implements OnInit {
 					await this.global.showLoading('لطفا منتظر بمانید...');
 					this.global.httpDelete('salaryBaseInfo/contractExtraField', {
 						id: item.id,
-					}).subscribe(async (res) => {
+					}).subscribe(async (res:any) => {
 
 						await this.global.dismisLoading();
 
@@ -92,7 +92,7 @@ export class MoreExtraSalaryItemListComponent implements OnInit {
 
 						this.global.showToast(res.msg);
 
-					}, async (error) => {
+					}, async (error:any) => {
 						await this.global.dismisLoading();
 						this.global.showError(error);
 					});

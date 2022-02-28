@@ -46,14 +46,14 @@ export class MoreCalcBasicYearsAddComponent implements OnInit {
 		if (this.addFrom.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('salaryBaseInfo/severanceBaseCalculationField', this.addFrom.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/calc-basic-years');
 					this.global.showToast('محاسبه پایه سنوات مربوط به سال ' + this.addFrom.value.contract_year + ' ثبت شد .');
 					this.addFrom.reset();
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});

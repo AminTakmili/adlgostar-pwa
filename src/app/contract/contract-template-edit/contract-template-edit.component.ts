@@ -82,7 +82,7 @@ export class ContractTemplateEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contractTemplate/detail', {
 			id: id,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 
 			this.dataList = new contractTemplate().deserialize(res);
@@ -103,8 +103,8 @@ export class ContractTemplateEditComponent implements OnInit {
 			console.log(this.editForm.value);
 
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -136,14 +136,14 @@ export class ContractTemplateEditComponent implements OnInit {
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('contractTemplate/edit', this.editForm.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/template');
 					this.global.showToast(' قالب قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
 					this.editForm.reset();
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
@@ -159,14 +159,14 @@ export class ContractTemplateEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('businessCategory/business/list', {
 			business_category_ids
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 
 			await this.global.dismisLoading();
 			this.business = res.map((item : any)=>{
 				return new BusinessList().deserialize(item);
 			});
 
-		}, async (error) => {
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

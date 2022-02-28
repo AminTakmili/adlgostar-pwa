@@ -87,7 +87,7 @@ export class BusinessEditComponent implements OnInit {
 		const businessDetail = await this.global.httpPost('business/detail', { business_id: this.businessId });
 
 		await this.global.parallelRequest([countries, businessCategory, businessDetail])
-			.subscribe(([countriesData, businessCategory, businessDetailData]) => {
+			.subscribe(([countriesData, businessCategory  ='', businessDetailData  ='']) => {
 				this.setCountry(countriesData);
 				this.setBussinessCategory(businessCategory);
 				this.setbusiness(businessDetailData);
@@ -194,14 +194,14 @@ export class BusinessEditComponent implements OnInit {
 		if (this.businessForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('business/edit', this.businessForm.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/businesses');
 					this.businessForm.reset();
 					this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});

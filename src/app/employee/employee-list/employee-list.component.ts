@@ -59,8 +59,8 @@ export class EmployeeListComponent implements OnInit {
 				return new Employee().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

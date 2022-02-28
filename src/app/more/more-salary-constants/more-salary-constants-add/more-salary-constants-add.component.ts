@@ -50,14 +50,14 @@ export class MoreSalaryConstantsAddComponent implements OnInit {
 		if(this.addFrom.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('salaryBaseInfo/contractConstantField', this.addFrom.value )
-			.subscribe(async (res) => {
+			.subscribe(async (res:any) => {
 
 				await this.global.dismisLoading();
-				// console.log(res);
+				// console.log(res:any);
 				this.navCtrl.navigateForward('/more/salary-constants');
 				this.global.showToast('ثابت های حقوق مربوط به سال '+ this.addFrom.value.year +' ثبت شد .');
 				this.addFrom.reset();
-			}, async (error) => {
+			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);
 			});

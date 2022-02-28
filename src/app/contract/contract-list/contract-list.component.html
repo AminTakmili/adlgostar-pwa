@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button shape="round" color="success" [routerLink]="['/contracts/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					قرار داد جدید
 				</ion-button>
@@ -27,43 +27,139 @@
 		<div class="container pb-5">
 			<!-- search and title -->
 			<div class="row mt-4">
-				<div class="col-md-8">
+				<div class="col-md-12">
 					<div class="title-1">
 						<h2 class="title">لیست قرار داد ها</h2>
 						<p class="dsec">لیست قرار دادها به شرح زیر است</p>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<!-- search -->
-					<div class="search-input-2">
-						<ion-searchbar enterkeyhint="" type="text" #Search placeholder="جستجو در کسب و کارها">
-						</ion-searchbar>
+
+				<!--  -->
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>جستجو در کسب کار</label>
+						<ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select>
 					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>جستجو در کارفرمایان</label>
+						<ng-select [(ngModel)]="filtered_employer_id" [items]="businessList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select>
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>جستجو در کارمندان</label>
+						<ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select>
+					</div>
+				</div>
+				<div class="col-12">
+					<hr>
 				</div>
 			</div>
 
 			<!-- لیست قرر داد ها -->
 			<!-- table -->
-			<table class="width-100 theme-table mt-4">
+			<table class="width-100 theme-table ">
 				<thead class="thead-dark">
 					<tr class="ion-text-center">
 						<th class="ion-text-center">#</th>
 						<th scope="col">عنوان</th>
-						<th scope="col">دسته بندی</th>
+						<th scope="col">کسب و کار</th>
+						<th scope="col">کارگران</th>
+						<th scope="col">شروع و پایان</th>
+						<th scope="col">مدت قرار داد</th>
 						<th scope="col">تاریخ ثبت</th>
 						<th class="ion-text-left" scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
-						<th class="ion-text-center" scope="row">1</th>
-						<td><a href="#">شرکت ایده پردازان آترین سپر آریا</a></td>
-						<td>فناری اطلاعات و ارتباطاات</td>
-						<td>28 خرداد 1500</td>
+					<tr
+						*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+						<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+						<td><a [routerLink]="['detail',item.id]">{{ item.title }}</a></td>
+						<td>
+							<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.business_info.name }}</a></p>
+							<p class="my-1 font-size-12" ><a [routerLink]="['/employers/detail/',item.employer_info.id ] "><ion-icon name="person-circle"></ion-icon> {{ item.employer_info.first_name }} {{ item.employer_info.last_name }}</a></p>
+						</td>
+						<td>
+							<!-- <span *ngFor="let emp of item.employee_info">{{ emp.first_name }} {{ emp.last_name }}</span> -->
+						</td>
+						<td>
+							<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span></p>
+							<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span></p>
+						</td>
+						<td>
+							<span class="my-1 font-size-12"><span>{{ item.month_count }} ماه</span></span> ,
+							<span class="my-1 font-size-12"><span>{{ item.day_count }} روز</span></span>
+						</td>
+						<td>{{ item.createdAt }}</td>
 						<td class="ion-text-left">
-							<ion-button fill="clear" class="px-0 mx-0">
-								<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
-							</ion-button>
+							<ion-buttons class="justify-content-end">
+								<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+									[id]="'hover-button-'+item.id">
+									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+									</ion-icon>
+								</ion-button> -->
+								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف">
+									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+									</ion-icon>
+								</ion-button>
+								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+									<ion-icon size="small" color="medium" slot="icon-only" name="build">
+									</ion-icon>
+								</ion-button>
+								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+									<ion-icon size="small" color="medium" slot="icon-only" name="copy">
+									</ion-icon>
+								</ion-button>
+								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات">
+									<ion-icon size="small" color="medium" slot="icon-only" name="search">
+									</ion-icon>
+								</ion-button>
+							</ion-buttons>
+							<!-- <ion-popover [showBackdrop]="false" [reference]="" [trigger]="'hover-button-'+item.id" triggerAction="click" side="bottom"
+								alignment="start">
+								<ng-template>
+									<ion-content>
+										<ion-list color="white" lines="full"  class="more-detail-list">
+											<ion-list-header>
+												<ion-label>عملگرها</ion-label>
+											</ion-list-header>
+											<ion-item button detail>
+												<ion-icon slot="start" name="search" size="small"></ion-icon>
+												<ion-label>نمایش قرار داد</ion-label>
+											</ion-item>
+											<ion-item   button detail>
+												<ion-icon slot="start" name="reorder-three" size="small"></ion-icon>
+												<ion-label>جزییات قرار داد</ion-label>
+											</ion-item>
+											<ion-item button detail>
+												<ion-icon slot="start" name="build" size="small"></ion-icon>
+												<ion-label>ویرایش گروهی قرار داد</ion-label>
+											</ion-item>
+											<ion-item button detail>
+												<ion-icon slot="start" name="copy" size="small"></ion-icon>
+												<ion-label>کپی قرارداد گروهی</ion-label>
+											</ion-item>
+											<ion-item button detail>
+												<ion-icon slot="start" name="build" size="small"></ion-icon>
+												<ion-label>ویرایش</ion-label>
+											</ion-item>
+											<ion-item button detail>
+												<ion-icon slot="start" name="trash" size="small"></ion-icon>
+												<ion-label>حذف</ion-label>
+											</ion-item>
+										</ion-list>
+									</ion-content>
+								</ng-template>
+							</ion-popover> -->
 						</td>
 					</tr>
 				</tbody>

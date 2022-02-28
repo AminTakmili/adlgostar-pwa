@@ -51,7 +51,7 @@ export class MoreExtraSalaryItemEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('salaryBaseInfo/contractExtraFieldDetail', {
 			id: id,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 
 			this.dataList = new contractExtraField().deserialize(res);
@@ -63,8 +63,8 @@ export class MoreExtraSalaryItemEditComponent implements OnInit {
 			});
 
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -74,14 +74,14 @@ export class MoreExtraSalaryItemEditComponent implements OnInit {
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('salaryBaseInfo/contractExtraField', this.editForm.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/extra-salary-item');
 					this.global.showToast('اضاف حقوق با نام ' + this.editForm.value.name + ' ویرایش  شد .');
 					this.editForm.reset();
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
