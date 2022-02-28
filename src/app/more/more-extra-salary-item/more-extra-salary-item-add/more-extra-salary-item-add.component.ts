@@ -45,14 +45,14 @@ export class MoreExtraSalaryItemAddComponent implements OnInit {
 		if(this.addFrom.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('salaryBaseInfo/contractExtraField', this.addFrom.value )
-			.subscribe(async (res) => {
+			.subscribe(async (res:any) => {
 
 				await this.global.dismisLoading();
-				// console.log(res);
+				// console.log(res:any);
 				this.navCtrl.navigateForward('/more/extra-salary-item');
 				this.global.showToast('اضاف حقوق با نام '+ this.addFrom.value.name +' ثبت شد .');
 				this.addFrom.reset();
-			}, async (error) => {
+			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);
 			});

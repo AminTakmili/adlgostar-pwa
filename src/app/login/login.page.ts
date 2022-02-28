@@ -52,17 +52,17 @@ export class LoginPage implements OnInit {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/login', {
 				mobile: this.loginForm.controls['mobile'].value,
-			}).subscribe(async (res) => {
+			}).subscribe(async (res:any) => {
 
 
-				// console.log(res);
+				// console.log(res:any);
 				this.mobile = this.loginForm.controls['mobile'].value;
 				await this.global.dismisLoading();
 				this.regStatus = 1;
 				clearInterval(this.interval);
 				this.countdown();
 
-			}, async (error) => {
+			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);
 			});
@@ -116,7 +116,7 @@ export class LoginPage implements OnInit {
 					this.verifyForm.reset();
 
 
-			}, async (error) => {
+			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);
 				this.verifyForm.reset();
@@ -132,7 +132,7 @@ export class LoginPage implements OnInit {
 			this.global.dismisLoading();
 			this.timer = '02:00';
 			this.countdown();
-		}, (error) => {
+		}, (error:any) => {
 			this.global.dismisLoading();
 			this.global.showError(error);
 		});

@@ -26,11 +26,11 @@
 		<div class="container">
 			<div class="stepper my-4">
 				<div class="line"></div>
-				<div class="item" [class.active]="step===1">
+				<div class="item" [class.active]="step===  1">
 					<span class="no">1</span>
 					<span class="title">اطلاعات اولیه</span>
 				</div>
-				<div class="item" [class.active]="step===2">
+				<div class="item" [class.active]="step=== 2">
 					<span class="no">2</span>
 					<span class="title">اطلاعات تکمیلی</span>
 				</div>
@@ -49,83 +49,112 @@
 							</p>
 						</div>
 					</div>
-					<!-- عنوان قرار داد -->
-					<div class="col-md-12 ">
-						<div class="form-input mb-3">
-							<label>عنوان قرار داد</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
-							<span class="error">
-								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
-							</span>
-							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
+						<!-- انتخاب کسب و کار -->
+						<div class="col-md-12" *ngIf="businessList && businessList.length">
+							<div class="form-input mb-3">
+								<label>انتخاب کسب کار</label>
+								<ng-select
+								bindLabel="name"
+								bindValue="id"
+								[clearable]="false"
+								[items]="businessList"
+								placeholder="انتخاب کنید"
+								(change)="GetEmployee()"
+								formControlName="business_id"
+								>
+								</ng-select>
+								<span class="error">
+
+								</span>
+								<span class="hint">کارفرما در قرار داد چه کسی باشد</span>
+							</div>
 						</div>
-					</div>
-					<!-- انتخاب کسب و کار -->
-					<div class="col-md-6">
-						<div class="form-input mb-3">
-							<label>انتخاب کارفرما</label>
-							<ng-select formControlName="employer_id" bindLabel="name" bindValue="id"
-								[clearable]="false">
-							</ng-select>
-							<span class="error">
-								<app-validator [control]="contractsForm.controls['employer_id']"
-									[controlName]="'انتخاب کارفرما'"></app-validator>
-							</span>
-							<span class="hint">کارفرما در قرار داد چه کسی باشد</span>
+						<!-- انتحاب کارمندان -->
+						<div class="col-md-12" *ngIf="employeeList && employeeList.length">
+							<div class="form-input mb-3">
+								<label>انتخاب کارمندان</label>
+								<ng-select
+								bindLabel="full_name"
+								bindValue="business_employee_id"
+								[clearable]="false"
+								[items]="employeeList"
+								placeholder="انتخاب کنید"
+								[multiple]="true"
+								formControlName="business_employee_id"
+								>
+								</ng-select>
+								<span class="error">
+
+								</span>
+								<span class="hint">کارمندان در این قرار داد را اضاف کنید .</span>
+							</div>
 						</div>
-					</div>
-					<!-- انتحاب کارمندان -->
-					<div class="col-md-6">
-						<div class="form-input mb-3">
-							<label>انتخاب کارمندان</label>
-							<ng-select formControlName="employee_id" placeholder="انتخاب کنید" bindLabel="name"
-								bindValue="id" [clearable]="false">
-							</ng-select>
-							<span class="error">
-								<app-validator [control]="contractsForm.controls['employee_id']"
-									[controlName]="'انتخاب کارمندان'"></app-validator>
-							</span>
-							<span class="hint">کارمندان در این قرار داد را اضاف کنید .</span>
+						<!-- عنوان قرار داد -->
+						<div class="col-md-12 ">
+							<div class="form-input mb-3">
+								<label>عنوان قرار داد</label>
+								<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
+								<span class="error">
+									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+								</span>
+								<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
+							</div>
 						</div>
-					</div>
-					<!-- قالب قرار داد -->
+					<!--  -->
+					<!-- انتخاب قالب قرار داد -->
 					<div class="col-12">
 						<div class="form-input mb-3">
 							<label>قالب قرار داد</label>
-							<ng-select formControlName="contractTheme" bindLabel="name" bindValue="id"
-								[clearable]="false">
+							<ng-select
+								formControlName="contract_template_id"
+								bindLabel="name"
+								bindValue="id"
+								[items]="contractTemplatelist"
+								placeholder="انتخاب کنید"
+								[clearable]="false"
+								(change)="setContractTheme()"
+							>
 							</ng-select>
 							<span class="error">
-								<app-validator placeholder="انتخاب کنید"
-									[control]="contractsForm.controls['contractTheme']" [controlName]="'قالب قرار داد'">
-								</app-validator>
+								<!-- <app-validator placeholder="انتخاب کنید"
+									[controlName]="'قالب قرار داد'">
+								</app-validator> -->
 							</span>
 							<span class="hint">از بین قالب های قرار داد یک قالب را انتخاب کنید.</span>
 						</div>
 					</div>
+
 					<!-- قرار داد -->
-					<div class="col-12">
+					<div class="col-12" >
 						<div class="form-input mb-3">
 							<label> قرار داد</label>
-							<ckeditor name="myckeditor" formControlName="contract" [config]="ckeConfig"></ckeditor>
+							<ckeditor name="myckeditor" formControlName="main_text" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="contractsForm.controls['employee_id']"
-									[controlName]="'قالب قرار داد'"></app-validator>
+								<!-- <app-validator
+									[controlName]="'قالب قرار داد'"></app-validator> -->
 							</span>
 							<span class="hint"></span>
 						</div>
 					</div>
 					<!--  -->
-					<!-- قالب قرار داد -->
-					<div class="col-12">
+					<!-- شروط ضمن عقد قرار داد -->
+					<div class="col-12" >
 						<div class="form-input mb-3">
-							<label> شروط ضمن عقد قرار داد</label>
-							<ng-select formControlName="termesContratId" bindLabel="name" bindValue="id"
-								[clearable]="false" placeholder="انتخاب کنید">
+							<label> انتخاب شروط ضمن عقد قرار داد </label>
+							<ng-select
+								bindLabel="name"
+								bindValue="id"
+								placeholder="انتخاب کنید"
+								[items]="contractConditionlist"
+								(add)="addCondition()"
+								formControlName="contract_condition_id"
+								[multiple]="true"
+								(remove)="RemoveCondition($event)"
+								>
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="contractsForm.controls['contractTheme']"
-									[controlName]="'قالب قرار داد'"></app-validator>
+								<!-- <app-validator
+									[controlName]="'قالب قرار داد'"></app-validator> -->
 							</span>
 							<span class="hint">اگر شرایطی برای قرار داد دارید از شروط ضمن عقد قرار داد انتخاب
 								کنید</span>
@@ -133,13 +162,29 @@
 					</div>
 					<!--  -->
 					<!-- قرار داد -->
-					<div class="col-12">
+					<div class="col-12" formArrayName="provisos">
+						<div class="row" *ngFor="let item of provisosFormGroup.controls ; let i = index" [formGroupName]="i">
+
+							<div class="col-12" >
+								<div class="form-input mb-3">
+									<label> شروط ضمن عقد قرار داد {{ i }}</label>
+									<ckeditor name="myckeditor"  formControlName="proviso_text" [config]="ckeConfig"></ckeditor>
+									<span class="error">
+										<app-validator [control]="item['controls']['proviso_text']" [controlName]="'شروط ضمن عقد قرار داد '"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- نوشته ی انتهای قرار داد -->
+					<div class="col-12" >
 						<div class="form-input mb-3">
-							<label> شروط ضمن عقد قرار داد </label>
-							<ckeditor name="myckeditor" formControlName="termesContrat" [config]="ckeConfig"></ckeditor>
+							<label> متن انتهای قرار داد</label>
+							<ckeditor name="myckeditor" formControlName="end_text" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="contractsForm.controls['employee_id']"
-									[controlName]="'قالب قرار داد'"></app-validator>
+								<app-validator [control]="contractsForm.controls['end_text']" [controlName]="'متن انتهای قرار داد '"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
@@ -222,25 +267,30 @@
 						<div class="form-input mb-3">
 							<!-- سال عقد قرار داد -->
 							<label>سال عقد قرار داد</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
 							<span class="hint"></span>
 						</div>
 						<!-- زمان شروع به کار -->
+
 						<div class="form-input mb-3">
 							<label>زمان شروع به کار</label>
-							<ion-input  autocomplete="new-pass" formControlName="selectedDateFormControl" [dpDayPicker]="config"></ion-input>
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY-jMM-jDD">
+								<input type="text" formControlName="start_date" />
+							  </ng-persian-datepicker>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
-							<span class="hint"></span>
+							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
 						</div>
+
+
 						<!-- زمان شروع قرار داد -->
 						<div class="form-input mb-3">
 							<label>زمان شروع قرار داد</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -249,7 +299,7 @@
 						<!-- زمان پایان قرار داد -->
 						<div class="form-input mb-3">
 							<label>زمان پایان قرار داد</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -258,7 +308,7 @@
 						<!-- دستمزد روزانه -->
 						<div class="form-input mb-3">
 							<label>دستمزد روزانه</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -267,7 +317,7 @@
 						<!-- حق سنوات -->
 						<div class="form-input mb-3">
 							<label>حق سنوات</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -276,7 +326,7 @@
 						<!--حق بن   -->
 						<div class="form-input mb-3">
 							<label>حق بن</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -285,7 +335,7 @@
 						<!-- حق مسکن -->
 						<div class="form-input mb-3">
 							<label>حق مسکن</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
@@ -294,7 +344,7 @@
 
 						<div class="form-input mb-3">
 							<label>حق سنوات</label>
-							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>

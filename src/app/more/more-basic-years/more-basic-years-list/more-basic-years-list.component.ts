@@ -57,15 +57,15 @@ export class MoreBasicYearsListComponent implements OnInit {
 			offset: this.offset,
 			start_year: this.start_year,
 			contract_year: this.contract_year,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
 				return new basicYears().deserialize(item);
 			});
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});

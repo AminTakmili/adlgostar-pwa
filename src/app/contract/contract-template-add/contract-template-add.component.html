@@ -58,8 +58,11 @@
 					<div class="col-12 mb-3" *ngIf="this.addFrom.value['type'] === 'private' ">
 						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
 							<label>دسته بندی کسب و کار</label>
-							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید" [items]="businessCatgeories"
-								bindLabel="name" bindValue="id" groupBy="parentName" [multiple]="true"
+							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید"
+							[items]="businessCatgeories"
+								bindLabel="name"
+								 bindValue="id"
+								 groupBy="parentName" [multiple]="true"
 								formControlName="business_categories" (change)="ChangeBusinessCat()">
 								<ng-template ng-optgroup-tmp let-item="item">
 									{{item.parentName || 'Unnamed group'}}

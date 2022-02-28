@@ -56,7 +56,7 @@ export class MoreCalcBasicYearsEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldDetail', {
 			id: id,
-		}).subscribe(async (res) => {
+		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 
 			this.dataList = new severanceBaseCalculation().deserialize(res);
@@ -70,8 +70,8 @@ export class MoreCalcBasicYearsEditComponent implements OnInit {
 			});
 
 			// console.log(this.dataList);
-			// console.log(res);
-		}, async (error) => {
+			// console.log(res:any);
+		}, async (error:any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -81,14 +81,14 @@ export class MoreCalcBasicYearsEditComponent implements OnInit {
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('salaryBaseInfo/severanceBaseCalculationField', this.editForm.value)
-				.subscribe(async (res) => {
+				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
-					// console.log(res);
+					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/calc-basic-years');
 					this.global.showToast('محاسبه پایه سنوات مربوط به سال ' + this.editForm.value.contract_year + ' به روز شد .');
 					this.editForm.reset();
-				}, async (error) => {
+				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});

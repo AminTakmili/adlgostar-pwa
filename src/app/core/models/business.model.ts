@@ -9,7 +9,7 @@ export class BusinessCategory implements Deserializable {
 	subCategory !: SubBusinessCategory[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
-		if(this.subCategory ){
+		if (this.subCategory) {
 			this.subCategory = input.child.map((column: any) => {
 				return new SubBusinessCategory().deserialize(column);
 			});
@@ -51,12 +51,16 @@ export class Business implements Deserializable {
 	employer !: Employer;
 	addresses !: Address[];
 	deserialize(input: any): this {
-		this.employees = input.employees.map((item: Employee) => {
-			return new Employee().deserialize(item);
-		});
-		this.addresses = input.addresses.map((item: Address) => {
-			return new Address().deserialize(item);
-		});
+		if (input.employees && input.employees.length) {
+			this.employees = input.employees.map((item: Employee) => {
+				return new Employee().deserialize(item);
+			});
+		}
+		if (input.addresses && input.addresses.length) {
+			this.addresses = input.addresses.map((item: Address) => {
+				return new Address().deserialize(item);
+			});
+		}
 		this.business_category = new BusinessCategory().deserialize(this.business_category);
 		this.employer = new Employer().deserialize(this.employer);
 		Object.assign(this, input);

@@ -19,7 +19,7 @@ import { ContractTemplateEditComponent } from './contract-template-edit/contract
 import { ContractConditionsListComponent } from './contract-conditions-list/contract-conditions-list.component';
 import { ContractConditionsAddComponent } from './contract-conditions-add/contract-conditions-add.component';
 import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
-
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
 @NgModule({
 	imports: [
@@ -32,6 +32,7 @@ import { ContractConditionsEditComponent } from './contract-conditions-edit/cont
 		NgxPaginationModule,
 		NgSelectModule,
 		CKEditorModule,
+		NgPersianDatepickerModule
 
 
 	],
