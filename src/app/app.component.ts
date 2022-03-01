@@ -12,11 +12,13 @@ export class AppComponent {
 	isLogin : boolean = false;
 	@ViewChild('sideBarMenu') sideBarMenu: IonMenu;
 	constructor(public global: GlobalService) {
+		this.global.setUserInfo();
 		this.global._login.subscribe((val) => {
 			if(val !== null){
 				this.isLogin = !val;
 			}
 		});
+
 	}
 
 }

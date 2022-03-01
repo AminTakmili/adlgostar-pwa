@@ -50,6 +50,15 @@ export class SidebarComponent implements OnInit {
 			function: 'showDetail'
 		},
 		{
+			name: 'کارفرمایان',
+			url: '/employers',
+			icon: 'person-circle',
+			submenu: [],
+			open: false,
+			state: "close",
+			function: 'showDetail'
+		},
+		{
 			name: 'کارمندان',
 			url: '/employees',
 			icon: 'people',

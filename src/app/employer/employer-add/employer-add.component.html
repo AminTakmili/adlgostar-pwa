@@ -1,3 +1,242 @@
-<p>
-  employer-add works!
-</p>
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/salary-constants" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="addFrom" (submit)="onSubmit()" autocomplete="off">
+				<div class="row my-4">
+					<!-- سال -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>نام</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['first_name']" [controlName]="'نام'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا رضا</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>نام خانوادگی</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="last_name">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>شماره شناسنامه</label>
+							<ion-input type="phone" autocomplete="new-pass" formControlName="birth_certificate_code">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
+								</app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>کد ملی</label>
+							<ion-input type="phone" autocomplete="new-pass" formControlName="national_code">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['national_code']" [controlName]="'کد ملی'">
+								</app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>شماره همراه</label>
+							<ion-input type="phone" autocomplete="new-pass" formControlName="mobile">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['mobile']"
+									[controlName]="'شماره همراه'"></app-validator>
+							</span>
+							<span class="hint">شماره موبایل 11 رقمی است و با 09 شروع میشود</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>محل تولد</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="birth_place"></ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['birth_place']" [controlName]="'محل تولد'">
+								</app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>تاریخ تولد</label>
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="born_at" />
+							 </ng-persian-datepicker>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['born_at']" [controlName]="'تاریخ تولد'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>محل صدور شناسنامه</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="birth_certificate_issuance_place"></ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا اصفهان</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>جنسیت</label>
+							<ng-select
+								bindLabel="name"
+								bindValue="id"
+								placeholder="انتخاب کنید"
+								[items]="gender"
+								formControlName="gender"
+								>
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['gender']" [controlName]="'جنسیت'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا اصفهان</span>
+						</div>
+					</div>
+					<!-- -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>پست الکترونیک</label>
+							<ion-input type="email" autocomplete="new-pass" formControlName="email"></ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['email']" [controlName]="'پست الکترونیک'">
+								</app-validator>
+							</span>
+							<span class="hint">info@example.com</span>
+						</div>
+					</div>
+					<!--  -->
+					<div class="col-12"><hr></div>
+					<!--  -->
+					<div class="col-12">
+						<div class="title-1 my-4">
+							<h2 class="title">آدرس های کارفرما</h2>
+						</div>
+						<!--  -->
+						<div formArrayName="addresses" >
+							<div class="row" *ngFor="let item of addressFormGroup.controls ; let i = index" class="row" [formGroupName]="i">
+								<!-- آدرس  -->
+							<div class="col-lg-12">
+								<div class="form-input mb-3" *ngIf="province && province.length">
+									<label>انتخاب شهر</label>
+									<ng-select
+										[items]="province"
+										placeholder="یک شهر انتخاب کنید"
+										bindLabel="name"
+										bindValue="id"
+										groupBy="province"
+										formControlName="city_id"
+									>
+									</ng-select>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint"> مثلا شیراز </span>
+								</div>
+							</div>
+							<!-- آدرس منزل -->
+							<div class="col-lg-12">
+								<div class="form-input mb-3">
+									<label>آدرس محل کار</label>
+									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
+								</div>
+							</div>
+							<!-- کد پستی منزل -->
+							<div class="col-lg-6">
+								<div class="form-input mb-3">
+									<label>کد پستی</label>
+									<ion-input autocomplete="new-pass" formControlName="postal_code"></ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا : 71335984668</span>
+								</div>
+							</div>
+							<!-- شماره تماس منزل -->
+							<div class="col-lg-6">
+								<div class="form-input mb-3">
+									<label>شماره تماس</label>
+									<ion-input type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا : 071*******</span>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12"><hr></div>
+
+					<div class="row ion-justify-content-between ion-align-items-center">
+						<div class="col-5">
+							<ion-button expand="block" color="medium" fill="outline" shape="round">
+								پاک کردن فرم
+							</ion-button>
+						</div>
+						<div class="col-7">
+							<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+								ثبت {{ pageTitle }}
+							</ion-button>
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+	</main>
+</ion-content>

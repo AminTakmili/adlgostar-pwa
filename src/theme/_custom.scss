@@ -587,3 +587,50 @@ ckeditor {
 		}
 	}
 }
+// list-var
+.list-var{
+	@extend %flex-row-start-center;
+	margin-bottom: 6px;
+	.name{
+		@extend %flex-row-start-center;
+		.icon{
+			ion-icon{
+				margin-inline-end: 5px;
+				cursor: pointer;
+
+			}
+		}
+
+		.variable{
+			background-color: var(--ion-color-step-50) ;
+			padding: 2px 4px;
+			font-size: 13px;
+			color:var(--ion-color-tertiary-shade);
+		}
+	}
+	.value{
+		padding-right: 10px;
+		font-size: 13px;
+		color:var(--ion-color-step-850);
+	}
+}
+
+.overflow-visible{
+	overflow: visible;
+}
+
+.item-transparent{
+	--background:transparent !important;
+	background:transparent !important;
+	background-color:transparent !important;
+	-ion-color-base: transparent !important;
+}
+
+.datepicker-content{
+	position: relative;
+	.datepicker-outer-container{
+		position: absolute;
+		z-index: 100;
+		width: 100%;
+	}
+}

@@ -26,7 +26,7 @@ export class GlobalService {
 		public navCtrl: NavController,
 		private toastController: ToastController,
 	) {
-		this.setUserInfo();
+
 	}
 
 
@@ -164,7 +164,10 @@ export class GlobalService {
 			duration: duration,
 			position: position,
 			buttons: button,
-			animated: true
+			animated: true,
+			mode : 'ios',
+			keyboardClose : true ,
+			color : 'dark'
 		});
 		toast.present();
 	}
@@ -199,5 +202,10 @@ export class GlobalService {
 		return forkJoin(requests);
 	}
 
+	filterItems(data : any, searchTerm : string) {
+        return data.filter((item : any) => {
+            return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+        });
+    }
 
 }
