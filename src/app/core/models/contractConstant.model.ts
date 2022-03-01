@@ -131,3 +131,15 @@ export class ContractExtraField implements Deserializable {
 		return this;
 	}
 }
+
+export class contractTemplateVariable implements Deserializable {
+
+	id !: number;
+	variable !: string;
+	description !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+

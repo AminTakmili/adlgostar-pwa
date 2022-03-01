@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { ContractPageRoutingModule } from './contract-routing.module';
 import { ContractListComponent } from './contract-list/contract-list.component';
@@ -21,6 +22,8 @@ import { ContractConditionsAddComponent } from './contract-conditions-add/contra
 import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
+
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -32,7 +35,8 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 		NgxPaginationModule,
 		NgSelectModule,
 		CKEditorModule,
-		NgPersianDatepickerModule
+		NgPersianDatepickerModule,
+		ClipboardModule
 
 
 	],

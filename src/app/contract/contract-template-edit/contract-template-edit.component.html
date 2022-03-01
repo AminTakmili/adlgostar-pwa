@@ -28,6 +28,35 @@
 							</p>
 						</div>
 					</div>
+					<!-- varable List -->
+					<div class="col-12">
+						<ion-card color="white"  class="my-3 mx-0 overflow-visible" mode="ios">
+							<ion-card-header>
+								<h4 class="mb-3 mt-0">لیست متغییرها در قرار داد </h4>
+								<div class="search-input-2">
+									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="100" (ionChange)="ChangeSearch($event)"
+										placeholder="جستجو در {{ pageTitle }}"></ion-searchbar>
+								</div>
+								<hr>
+							</ion-card-header>
+							<ion-card-content>
+								<div class="row">
+									<div class="col-lg-6" *ngFor="let item of filterList">
+										<div class="list-var" >
+											<div class="name " >
+												<span class="icon tooltip-show"  tooltip="برای کپی کلیک کنید" ><ion-icon size="small" color="primary" name="copy" (click)="copyText(item)"></ion-icon></span>
+												<span class="variable">{{ item.variable }}</span>
+											</div>
+											<div class="value">به جای {{ item.description }}</div>
+										</div>
+									</div>
+								</div>
+								<div *ngIf="filterList && filterList.length === 0" class="alert alert-warning" role="alert">
+									<p class="dsec"> متغیری برای نمایش یافت نشد .</p>
+								</div>
+							</ion-card-content>
+						</ion-card>
+					</div>
 					<!-- عنوان  -->
 					<div class="col-md-12 mb-4">
 						<div class="form-input mb-3">

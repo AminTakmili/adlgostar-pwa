@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { CKEditorComponent } from 'ng2-ckeditor';
+import { ClipboardService } from 'ngx-clipboard';
 import { businessClass } from 'src/app/core/classes/business.class';
 import { globalData } from 'src/app/core/data/global.data';
 import { BusinessList } from 'src/app/core/models/business.model';
+import { contractTemplateVariable } from 'src/app/core/models/contractConstant.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -27,6 +29,9 @@ export class ContractTemplateAddComponent implements OnInit {
 	ckeConfig: CKEDITOR.config;
 
 	business : BusinessList[] = [];
+	contractTemplateVariableList : contractTemplateVariable[];
+	filterList : contractTemplateVariable[];
+
 	// public Editor = ClassicEditor;
 	editors = ['Classic', 'Inline'];
 
@@ -34,7 +39,8 @@ export class ContractTemplateAddComponent implements OnInit {
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private clipboardApi: ClipboardService
 	) {
 		//
 		this.addFrom = this.fb.group({
@@ -73,9 +79,11 @@ export class ContractTemplateAddComponent implements OnInit {
 	getData() {
 
 		const businessCategory = this.global.httpPost('businessCategory/list', { limit: 1000, offset: 0 });
-		this.global.parallelRequest([businessCategory])
-			.subscribe(([businessCategory]) => {
+		const contractTemplateVariable = this.global.httpGet('salaryBaseInfo/contractTemplateVariableList');
+		this.global.parallelRequest([businessCategory , contractTemplateVariable])
+			.subscribe(([businessCategory , contractTemplateVariableRes = '' ]) => {
 				this.setBussinessCategory(businessCategory);
+				this.setcontractTemplateVariab(contractTemplateVariableRes);
 			});
 	}
 
@@ -90,6 +98,14 @@ export class ContractTemplateAddComponent implements OnInit {
 				this.businessCatgeories.push(businessData);
 			});
 		});
+	}
+
+	setcontractTemplateVariab(data : any){
+		this.contractTemplateVariableList = data.map((category: any) => {
+			return new contractTemplateVariable().deserialize(category);
+		});
+		this.filterList = this.contractTemplateVariableList;
+		// console.log(this.contractTemplateVariableList);
 	}
 
 	async onSubmit() {
@@ -128,5 +144,17 @@ export class ContractTemplateAddComponent implements OnInit {
 		});
 	}
 
+	copyText(item : any){
+		this.clipboardApi.copyFromContent(item.variable);
+		this.global.showToast('مقدار  '+item.variable+' با موفقیت کپی شد');
+	}
+
+	ChangeSearch(event: any){
+		if(event.detail.value ){
+			this.filterList = this.global.filterItems(this.contractTemplateVariableList, event.detail.value);
+		}else{
+			this.filterList = this.contractTemplateVariableList;
+		}
+	}
 
 }
