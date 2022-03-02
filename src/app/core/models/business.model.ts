@@ -6,10 +6,15 @@ import { Employee } from "./employee.model";
 export class BusinessCategory implements Deserializable {
 	id !: number;
 	name !: string;
+	createdAt !: string;
+	createdAtEn !: string;
+	updatedAt !: string;
+	updatedAtEn !: string;
+	parent_id !: number;
 	subCategory !: SubBusinessCategory[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
-		if (this.subCategory) {
+		if (input?.child && input?.child.length) {
 			this.subCategory = input.child.map((column: any) => {
 				return new SubBusinessCategory().deserialize(column);
 			});
@@ -21,6 +26,7 @@ export class BusinessCategory implements Deserializable {
 export class SubBusinessCategory implements Deserializable {
 	id !: number;
 	name !: string;
+	parent_id  !: number;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

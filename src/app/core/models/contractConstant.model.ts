@@ -47,6 +47,7 @@ export class contractTemplate implements Deserializable {
 
 export class contract implements Deserializable {
 	id !: number;
+	contract_id !: number;
 	business_employee_id !: number;
 	contract_template_id !: number;
 	title !: string;

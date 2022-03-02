@@ -3,6 +3,7 @@ import { Injectable, NgZone } from "@angular/core";
 import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
 import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 import { environment } from 'src/environments/environment'
+import { StaticData } from "../models/StaticData.model";
 import { User } from "../models/user.model";
 import { StorageService } from "./storage.service";
 
@@ -14,6 +15,7 @@ export class GlobalService {
 	public loading: any;
 	public login: boolean = false;
 	public _login = new BehaviorSubject<boolean>(this.login);
+	public baseData = new BehaviorSubject<StaticData>(null);
 	public user: User;
 	public sitename: string = environment.sitename;
 
@@ -85,6 +87,22 @@ export class GlobalService {
 		};
 
 		return this.http.patch<any>(this.getAppUrl(url), params, httpOptions);
+	}
+
+	httpUpload(url: string, params: object): Observable<any> {
+
+		const token = (this.login ? this.user.access_token : environment.token)
+		let httpOptions;
+
+		httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+				reportProgress: '1',
+				observe: 'events'
+			})
+		};
+		return this.http.post<any>(this.getAppUrl(url), JSON.stringify(params), httpOptions);
 	}
 
 	getAppUrl(method?: string) {
@@ -207,5 +225,4 @@ export class GlobalService {
             return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });
     }
-
 }

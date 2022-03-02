@@ -1,0 +1,32 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-button (click)="dismiss();">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>لیست زیر دسته های {{ name }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<ion-item *ngFor="let item of subCategory" color="white" lines="full">
+		<ion-label>{{ item.name }}</ion-label>
+		<ion-buttons slot="end">
+			<ion-button fill="clear" class="px-0 mx-0 "  title="حذف">
+				<ion-icon size="small" color="medium" (click)="removeItem(item)" slot="icon-only" name="trash">
+				</ion-icon>
+			</ion-button>
+			<ion-button fill="clear" [routerLink]="['/more/business-category/edit', item.id]" (click)="dismiss()" class="px-0 mx-0" title="ویرایش">
+				<ion-icon size="small" color="medium" slot="icon-only" name="create">
+				</ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-item>
+</ion-content>
+<ion-footer>
+	<div class="d-flex flex-row ion-justify-content-end ion-align-items-center px-15 py-10">
+		<ion-button shape="round" fill="outline" (click)="dismiss();" color="primary" class="ml-3" expand="block">بستن
+		</ion-button>
+		<ion-button shape="round" [routerLink]="['add',id]" color="success" expand="block">افزودن زیر دسته</ion-button>
+	</div>
+</ion-footer>

@@ -24,7 +24,16 @@ const routes: Routes = [
 	{
 		path: 'salary-constants',
 		loadChildren: () => import('./more-salary-constants/more-salary-constants.module').then(m => m.MoreSalaryConstantsPageModule)
+	},
+	{
+		path: 'business-category',
+		loadChildren: () => import('./more-business-category/more-business-category.module').then(m => m.MoreBusinessCategoryPageModule)
+	},
+	{
+		path: 'employee-posts',
+		loadChildren: () => import('./more-employee-posts/more-employee-posts.module').then(m => m.MoreEmployeePostsPageModule)
 	}
+
 ];
 
 @NgModule({

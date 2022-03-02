@@ -12,6 +12,7 @@ import { EmployeeDetailComponent } from './employee-detail/employee-detail.compo
 import { ShareModulePageModule } from '../share-module/share-module.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ShareModulePageModule,
     ReactiveFormsModule,
 	NgSelectModule,
-	NgxPaginationModule
+	NgxPaginationModule,
+	NgPersianDatepickerModule,
   ],
   declarations: [
     EmployeeListComponent,
