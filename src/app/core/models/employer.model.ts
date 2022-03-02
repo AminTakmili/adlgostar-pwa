@@ -19,7 +19,7 @@ export class Employer implements Deserializable {
 	media !: Media[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
-		if (input.media && input.media.length) {
+		if (input?.media && input?.media.length) {
 			this.media = input.media.map((item: Media) => {
 				return new Media().deserialize(item);
 			});

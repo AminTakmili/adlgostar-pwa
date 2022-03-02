@@ -1,4 +1,5 @@
 import { StringLiteralLike } from "typescript";
+import { contract } from "./contractConstant.model";
 import { Deserializable } from "./deserializable.model";
 import { Media } from "./media.model";
 import { Post } from "./post.model";
@@ -9,8 +10,11 @@ export class Employee implements Deserializable {
 	full_name !: String ;
 	first_name !: string;
 	last_name !: string;
+	mobile !: string;
+	national_code !: string;
 	business_employee_info !: businessEmployeeInfo[];
 	business_employee_id !: number;
+	businesses !: businessEmployeeDetail[];
 	posts !: Post[];
 	media !: Media[];
 	deserialize(input: any): this {
@@ -20,7 +24,7 @@ export class Employee implements Deserializable {
 				return new Post().deserialize(item);
 			});
 		}
-		if (input.media && input.media.length) {
+		if (input?.media && input?.media.length) {
 			this.media = input.media.map((item: Media) => {
 				return new Media().deserialize(item);
 			});
@@ -28,6 +32,11 @@ export class Employee implements Deserializable {
 		if (input.business_employee_info && input.business_employee_info.length) {
 			this.business_employee_id =  input.business_employee_info[0].id;
 			this.business_employee_info = input.business_employee_info.map((item: businessEmployeeInfo) => {
+				return new businessEmployeeInfo().deserialize(item);
+			});
+		}
+		if (input?.businesses && input?.businesses.length) {
+			this.businesses = input.businesses.map((item: businessEmployeeInfo) => {
 				return new businessEmployeeInfo().deserialize(item);
 			});
 		}
@@ -78,6 +87,22 @@ export class businessEmployee implements Deserializable {
 		if (input.posts && input.posts.length) {
 			this.posts = input.posts.map((item: Post) => {
 				return new Post().deserialize(item);
+			});
+		}
+		return this;
+	}
+}
+export class businessEmployeeDetail implements Deserializable {
+
+	business_id !: number ;
+	business_name !: string ;
+	contracts!: contract[];
+	employee_status !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		if (input?.contracts && input?.contracts.length) {
+			this.contracts = input.contracts.map((item: Post) => {
+				return new contract().deserialize(item);
 			});
 		}
 		return this;

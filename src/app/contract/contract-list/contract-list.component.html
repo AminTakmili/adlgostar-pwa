@@ -119,7 +119,7 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="copy">
 									</ion-icon>
 								</ion-button>
-								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات">
+								<ion-button [routerLink]="['/contracts/detail',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات">
 									<ion-icon size="small" color="medium" slot="icon-only" name="search">
 									</ion-icon>
 								</ion-button>

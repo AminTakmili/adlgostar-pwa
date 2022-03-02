@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -7,6 +7,7 @@ import { IonDatetime } from '@ionic/angular';
 // import { format, parseISO } from 'date-fns';
 import { compareAsc, format, newDate } from 'date-fns-jalali'
 import { citiesClass } from 'src/app/core/classes/cities.class';
+import { StaticData } from 'src/app/core/models/StaticData.model';
 
 @Component({
 	selector: 'app-employee-add',
@@ -25,7 +26,9 @@ export class EmployeeAddComponent implements OnInit {
 	familyInformation: FormArray;
 	militaryInformation: FormArray;
 	bankInformation: FormArray;
-	pageTitle: string = "افزودن کارمند جدید";
+	employeeImage: FormArray;
+	StaticData : StaticData;
+	pageTitle : string = "افزودن کارمند جدید";
 
 	@ViewChild("popoverDatetime2") datetime: IonDatetime;
 
@@ -43,7 +46,7 @@ export class EmployeeAddComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-
+		private cd: ChangeDetectorRef
 
 	) {
 
@@ -68,17 +71,25 @@ export class EmployeeAddComponent implements OnInit {
 			family_information: this.fb.array([this.family_information()]),
 			military_information: this.fb.array([this.military_information()]),
 			bank_information: this.fb.array([this.bank_information()]),
+			image : this.fb.array([this.image()]),
 		});
 
 		this.address = this.employeeForm.get('addresses') as FormArray;
 		this.familyInformation = this.employeeForm.get('family_information') as FormArray;
 		this.militaryInformation = this.employeeForm.get('military_information') as FormArray;
 		this.bankInformation = this.employeeForm.get('bank_information') as FormArray;
+		this.employeeImage = this.employeeForm.get('bank_information') as FormArray;
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.setTitle();
 		this.getData();
+
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				this.StaticData = value;
+			}
+		});
 	}
 
 	setTitle() {
@@ -140,22 +151,24 @@ export class EmployeeAddComponent implements OnInit {
 		return <FormArray>this.employeeForm.get('bank_information');
 	}
 
+	image(): FormGroup {
+		return this.fb.group({
+			birth_certificate_image: [''],
+			national_card_image: [''],
+			military_card_image: ['']
+
+		})
+	}
+
+	get imageGroup(): FormArray {
+		return <FormArray>this.employeeForm.get('image');
+	}
+
 	NextStep(){
 		this.step = this.step + 1;
 	}
 	PrevStep(){
 		this.step = this.step - 1;
-	}
-	onSubmit() {
-		console.log(this.employeeForm);
-	}
-
-	confirm() {
-		// this.datetime.nativeEl.confirm();
-	}
-
-	reset() {
-		// this.datetime.nativeEl.reset();
 	}
 
 	getData() {
@@ -183,8 +196,64 @@ export class EmployeeAddComponent implements OnInit {
 
 	}
 
-	formatDate(value: string) {
-		console.log(this.datetime.dayValues);
-		return format(new Date(value), 'yyyy-MM-dd');
+	birth_certificate_image_uploadFile(event: any, index : number) {
+		const reader = new FileReader();
+		if (event.target.files && event.target.files.length) {
+			const [file] = event.target.files;
+			reader.readAsDataURL(file);
+
+			reader.onload = () => {
+				this.imageGroup.controls[index].patchValue({
+					birth_certificate_image: reader.result
+				});
+				this.cd.markForCheck();
+			};
+		}
+	}
+	national_card_image_uploadFile(event: any, index : number) {
+		const reader = new FileReader();
+		if (event.target.files && event.target.files.length) {
+			const [file] = event.target.files;
+			reader.readAsDataURL(file);
+
+			reader.onload = () => {
+				this.imageGroup.controls[index].patchValue({
+					national_card_image: reader.result
+				});
+				this.cd.markForCheck();
+			};
+		}
+	}
+	military_card_image_uploadFile(event: any, index : number) {
+		const reader = new FileReader();
+		if (event.target.files && event.target.files.length) {
+			const [file] = event.target.files;
+			reader.readAsDataURL(file);
+
+			reader.onload = () => {
+				this.imageGroup.controls[index].patchValue({
+					military_card_image: reader.result
+				});
+				this.cd.markForCheck();
+			};
+		}
+	}
+
+	async onSubmit() {
+		if(this.employeeForm.valid){
+			await this.global.showLoading('لطفا منتظر بمانید...');
+			this.global.httpPost('employee/add', this.employeeForm.value)
+				.subscribe(async (res: any) => {
+
+					await this.global.dismisLoading();
+					// console.log(res:any);
+					this.navCtrl.navigateForward('/employees');
+					this.global.showToast('کارمند با نام ' + this.employeeForm.value.first_name + ' ' + this.employeeForm.value.last_name + ' ثبت شد .');
+					this.employeeForm.reset();
+				}, async (error: any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				});
+		}
 	}
 }

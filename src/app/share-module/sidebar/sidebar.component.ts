@@ -138,6 +138,20 @@ export class SidebarComponent implements OnInit {
 					function: 'showDetail'
 
 				},
+				{
+					name: 'دسته بندی کسب کار',
+					url: '/more/business-category',
+					icon: 'git-network',
+					function: 'showDetail'
+
+				},
+				{
+					name: 'پست های کارمندان',
+					url: '/more/employee-posts',
+					icon: 'git-compare',
+					function: 'showDetail'
+
+				},
 			],
 		},
 		{

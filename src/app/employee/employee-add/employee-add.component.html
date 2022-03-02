@@ -53,7 +53,7 @@
 			</div>
 		</div>
 
-		<form class="d-block py-4" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+		<form class="d-block py-4" [formGroup]="employeeForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
 			<div class="container">
 				<!-- step - 1 -->
 				<div [class.show]="step === 1" class="form-item">
@@ -68,31 +68,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- fields -->
-						<!-- Datetime in popover with input -->
-						<!-- <div class="col-12">
-
-							<ion-item>
-								<ion-input [value]="dateValue"></ion-input>
-								<ion-button fill="clear" id="open-date-input-2">
-								<ion-icon icon="calendar"></ion-icon>
-								</ion-button>
-								<ion-popover trigger="open-date-input-2" show-backdrop="false">
-								<ng-template>
-									<ion-datetime
-									locale="fa-IR"
-									[firstDayOfWeek]="6"
-									#popoverDatetime2
-									presentation="date"
-									displayFormat="yyyy-MM-dd"
-									hour-cycle="h12"
-
-									(ionChange)="dateValue = formatDate(popoverDatetime2.value)"
-									></ion-datetime>
-								</ng-template>
-								</ion-popover>
-							</ion-item>
-						</div> -->
+						<!-- نام -->
 						<div class="col-lg-6">
 							<div class="form-input mb-3">
 								<label>نام</label>
@@ -144,32 +120,18 @@
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<!-- <div class="form-input mb-3">
-								<label>تاریخ تولد</label>
-								<ion-input autocomplete="new-pass" formControlName="birth_date"></ion-input>
-								<span class="error"></span>
-								<span class="hint">تاریخ تولد را انتخاب کنید</span>
-							</div> -->
+						<!-- formControlName="birth_date" -->
+						<div class="form-input mb-3">
 							<label>تاریخ تولد</label>
-							<ion-item lines="none" >
-								<ion-input placeholder="تاریخ تولد" formControlName="birth_date" [value]="dateValue"></ion-input>
-								<ion-button fill="clear" id="open-date-input-2">
-								<ion-icon icon="calendar"></ion-icon>
-								</ion-button>
-								<ion-popover trigger="open-date-input-2" show-backdrop="false">
-								<ng-template>
-									<ion-datetime
-									locale="fa-IR"
-									[firstDayOfWeek]="6"
-									#popoverDatetime2
-									presentation="date"
-									displayFormat="yyyy-MM-dd"
-									hour-cycle="h12"
-									(ionChange)="dateValue = formatDate(popoverDatetime2.value)"
-									></ion-datetime>
-								</ng-template>
-								</ion-popover>
-							</ion-item>
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="birth_date" />
+							 </ng-persian-datepicker>
+							<span class="error">
+								<app-validator [control]="employeeForm.controls['birth_date']" [controlName]="'تاریخ تولد'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
 						</div>
 						<div class="col-lg-6">
 							<div class="form-input mb-3">
@@ -202,15 +164,19 @@
 								<span class="hint">مرد یا زن</span>
 							</div>
 						</div>
-						<div class="col-lg-6 ">
+						<div class="col-lg-6 " *ngIf="StaticData">
 							<div class="form-input mb-3">
 								<label>وضعیت تاهل</label>
-								<ng-select formControlName="marital_status">
-									<ng-option value="">مجرد</ng-option>
-									<ng-option value="">متاهل</ng-option>
-								</ng-select>
+								<ng-select
+										[items]="StaticData.maritalStatus"
+										placeholder="انتخاب کنید"
+										bindLabel="name"
+										bindValue="value"
+										formControlName="marital_status"
+									>
+									</ng-select>
 								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									<app-validator [control]="employeeForm.controls['marital_status']" [controlName]="'وضعیعت تاهل'"></app-validator>
 								</span>
 								<span class="hint">مجرد یا متاهل</span>
 							</div>
@@ -220,19 +186,25 @@
 								<label>نام پدر</label>
 								<ion-input autocomplete="new-pass" formControlName="father_name"></ion-input>
 								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									<app-validator [control]="employeeForm.controls['father_name']" controlName="'نام پدر'"></app-validator>
 								</span>
 								<span class="hint">مثلا : حبیب</span>
 							</div>
 						</div>
-						<div class="col-lg-6 ">
+						<div class="col-lg-6 " *ngIf="StaticData">
+
 							<div class="form-input mb-3">
 								<label>آخرین مدرک تحصیلی</label>
-								<ng-select formControlName="degree_id">
-									<ng-option value="">دیپلم</ng-option>
+								<ng-select
+									[items]="StaticData.degree"
+									placeholder="انتخاب کنید"
+									bindLabel="name"
+									bindValue="value"
+									formControlName="degree_id"
+								>
 								</ng-select>
 								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									<app-validator [control]="employeeForm.controls['degree_id']" controlName="آخرین مدرک تحصیلی"></app-validator>
 								</span>
 								<span class="hint">مثلا : 071*******</span>
 							</div>
@@ -322,12 +294,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-12 ">
+							<div class="col-lg-12 " *ngIf="StaticData">
 								<div class="form-input mb-3">
 									<label>وضعیت نظام وظیفه </label>
-									<ng-select formControlName="military_state">
-										<ng-option value="">معافی</ng-option>
-										<ng-option value="">پایان خدمت</ng-option>
+									<ng-select
+										[items]="StaticData.military_status"
+										placeholder="انتخاب کنید"
+										bindLabel="name"
+										bindValue="value"
+										formControlName="military_state"
+									>
 									</ng-select>
 									<span class="error">
 										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
@@ -475,48 +451,50 @@
 				<!-- step - 6 -->
 				<div [class.show]="step=== 6 " class="form-item">
 					<!-- step - 6 -->
-					<div class="row">
-						<div class="col-12">
-							<div class="my-4">
-								<div class="title-1">
-									<h2 class="title">چند رسانه ای</h2>
-									<p class="dsec">
-										در این بخش اطلاعات تصاویر پرسنلی و دیگر تصاویر کارمند را وارد کنید
-									</p>
+					<div formArrayName="image">
+						<div class="row" *ngFor="let item of imageGroup.controls ; let i = index"  [formGroupName]="i">
+							<div class="col-12">
+								<div class="my-4">
+									<div class="title-1">
+										<h2 class="title">چند رسانه ای</h2>
+										<p class="dsec">
+											در این بخش اطلاعات تصاویر پرسنلی و دیگر تصاویر کارمند را وارد کنید
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-4 ">
-							<div class="form-input mb-3">
-								<label>تصویر شناسنامه</label>
-								<ion-input type="file" autocomplete="new-pass" formControlName="father_name">
-								</ion-input>
-								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
-								</span>
-								<span class="hint">مثلا 2</span>
+							<div class="col-lg-4 ">
+								<div class="form-input mb-3">
+									<label>تصویر شناسنامه</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="birth_certificate_image_uploadFile($event , i )" formControlName="birth_certificate_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
 							</div>
-						</div>
-						<div class="col-lg-4 ">
-							<div class="form-input mb-3">
-								<label>تصویر کارت ملی</label>
-								<ion-input type="file" autocomplete="new-pass" formControlName="father_name">
-								</ion-input>
-								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
-								</span>
-								<span class="hint">مثلا 2</span>
+							<div class="col-lg-4 ">
+								<div class="form-input mb-3">
+									<label>تصویر کارت ملی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="national_card_image_uploadFile($event , i )" formControlName="national_card_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
 							</div>
-						</div>
-						<div class="col-lg-4 ">
-							<div class="form-input mb-3">
-								<label>کارت سربازی / معافیت سربازی</label>
-								<ion-input type="file" autocomplete="new-pass" formControlName="father_name">
-								</ion-input>
-								<span class="error">
-									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
-								</span>
-								<span class="hint">مثلا 2</span>
+							<div class="col-lg-4 ">
+								<div class="form-input mb-3">
+									<label>کارت سربازی / معافیت سربازی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="military_card_image_uploadFile($event , i )" formControlName="military_card_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -532,7 +510,7 @@
 					</div>
 					<div class="col-lg-4">
 						<ion-button  *ngIf="step !== 6" type="button" (click)="NextStep()" expand="block" color="success" fill="solid" shape="round">ثبت و ادامه</ion-button>
-						<ion-button  *ngIf="step === 6" type="submit" (click)="onSubmit();" expand="block" color="success" fill="solid" shape="round">ثبت کارمند</ion-button>
+						<ion-button  *ngIf="step === 6" type="submit" expand="block" color="success" fill="solid" shape="round">ثبت کارمند</ion-button>
 					</div>
 				</div>
 			</div>

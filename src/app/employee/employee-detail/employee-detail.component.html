@@ -1,3 +1,93 @@
-<p>
-  employee-detail works!
-</p>
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content *ngIf="Employee">
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ Employee?.full_name }}</h1>
+					<p class="dsec">
+						<span>کد ملی : {{ Employee?.national_code }}</span> |
+						<span>شماره همراه : {{ Employee?.mobile }}</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" [routerLink]="['/employees/edit/'+Employee?.id]" color="secondary">
+					<ion-icon slot="start" name="create"></ion-icon>
+					ویرایش اطلاعات
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- main -->
+	<main>
+		<!-- کارفرما -->
+		<section>
+			<div class="container">
+				<div class="row align-items-center justify-content-between mt-4">
+					<div class="col-md-auto">
+						<div class="title-1">
+							<h2 class="title">لیست قرار داد ها</h2>
+						</div>
+					</div>
+				</div>
+				<!-- list of employee -->
+				<div class="table-responsive-md my-3" *ngIf="Employee.businesses && Employee.businesses.length  ">
+					<div *ngFor="let item of Employee.businesses">
+						<h5 class="mt-4 mb-2">قراردها با {{ item.business_name}}</h5>
+						<!-- table -->
+						<table class="width-100 theme-table mt-3">
+							<thead class="thead-dark">
+								<tr class="ion-text-center">
+									<th class="ion-text-center">#</th>
+									<th scope="col">عنوان قرار داد</th>
+									<th scope="col">شروع و پایان</th>
+									<th scope="col">مدت قرار داد</th>
+									<th class="ion-text-left" scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let contract of item.contracts  ; let i = index;">
+									<th class="ion-text-center" scope="row">{{ i + 1 }}</th>
+									<td>{{ contract.title }}</td>
+									<td>
+										<p class="my-1 font-size-12"> شروع : <span>{{ contract.start_date }}</span></p>
+										<p class="my-1 font-size-12"> پایان : <span>{{ contract.end_date }}</span></p>
+									</td>
+									<td>
+										<span class="my-1 font-size-12"><span>{{ contract.month_count }} ماه</span></span> ,
+										<span class="my-1 font-size-12"><span>{{ contract.day_count }} روز</span></span>
+									</td>
+									<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
+									<td class="ion-text-left">
+										<ion-buttons class="justify-content-end">
+											<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="حذف">
+												<ion-icon size="small" color="medium" slot="icon-only" name="trash"></ion-icon>
+											</ion-button>
+											<ion-button fill="clear" [routerLink]="['edit', contract.id]"
+												class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+												<ion-icon size="small" color="medium" slot="icon-only"
+													name="create">
+												</ion-icon>
+											</ion-button>
+											<ion-button fill="clear" [routerLink]="['detail', contract.id]"
+												class="px-0 mx-0 tooltip-show" tooltip="جزییات">
+												<ion-icon size="small" color="medium" slot="icon-only"
+													name="search">
+												</ion-icon>
+											</ion-button>
+										</ion-buttons>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</ion-content>

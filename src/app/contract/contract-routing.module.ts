@@ -22,11 +22,11 @@ const routes: Routes = [
     component: ContractAddComponent
   },
   {
-    path: 'detail/:contractId',
+    path: 'detail/:id',
     component: ContractDetailComponent
   },
   {
-    path: 'edit/:contractId',
+    path: 'edit/:id',
     component: ContractEditComponent
   },
   {
