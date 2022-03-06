@@ -46,7 +46,7 @@
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label>جستجو در کارفرمایان</label>
-						<ng-select [(ngModel)]="filtered_employer_id" [items]="businessList" bindLabel="name"
+						<ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select>
 					</div>
@@ -54,7 +54,7 @@
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label>جستجو در کارمندان</label>
-						<ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="name"
+						<ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select>
 					</div>
@@ -107,62 +107,36 @@
 									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 									</ion-icon>
 								</ion-button> -->
-								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف">
+								<ion-button (click)="removeContractALert(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف">
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+								<ion-button [routerLink]="['/contracts/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
 								</ion-button>
-								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+								<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
 									<ion-icon size="small" color="medium" slot="icon-only" name="copy">
 									</ion-icon>
-								</ion-button>
+								</ion-button> -->
 								<ion-button [routerLink]="['/contracts/detail',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات">
 									<ion-icon size="small" color="medium" slot="icon-only" name="search">
 									</ion-icon>
 								</ion-button>
 							</ion-buttons>
-							<!-- <ion-popover [showBackdrop]="false" [reference]="" [trigger]="'hover-button-'+item.id" triggerAction="click" side="bottom"
-								alignment="start">
-								<ng-template>
-									<ion-content>
-										<ion-list color="white" lines="full"  class="more-detail-list">
-											<ion-list-header>
-												<ion-label>عملگرها</ion-label>
-											</ion-list-header>
-											<ion-item button detail>
-												<ion-icon slot="start" name="search" size="small"></ion-icon>
-												<ion-label>نمایش قرار داد</ion-label>
-											</ion-item>
-											<ion-item   button detail>
-												<ion-icon slot="start" name="reorder-three" size="small"></ion-icon>
-												<ion-label>جزییات قرار داد</ion-label>
-											</ion-item>
-											<ion-item button detail>
-												<ion-icon slot="start" name="build" size="small"></ion-icon>
-												<ion-label>ویرایش گروهی قرار داد</ion-label>
-											</ion-item>
-											<ion-item button detail>
-												<ion-icon slot="start" name="copy" size="small"></ion-icon>
-												<ion-label>کپی قرارداد گروهی</ion-label>
-											</ion-item>
-											<ion-item button detail>
-												<ion-icon slot="start" name="build" size="small"></ion-icon>
-												<ion-label>ویرایش</ion-label>
-											</ion-item>
-											<ion-item button detail>
-												<ion-icon slot="start" name="trash" size="small"></ion-icon>
-												<ion-label>حذف</ion-label>
-											</ion-item>
-										</ion-list>
-									</ion-content>
-								</ng-template>
-							</ion-popover> -->
 						</td>
 					</tr>
 				</tbody>
+				<tfoot *ngIf="limit < total && dataList && dataList.length">
+					<tr>
+						<td colspan="5">
+							<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+								[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+								[autoHide]="true">
+							</pagination-controls>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</main>

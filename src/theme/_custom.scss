@@ -635,6 +635,9 @@ ckeditor {
 	}
 }
 .inner-html-dev{
+	.show_date{
+		unicode-bidi: plaintext;
+	}
 	p{
 
 		line-height:30px ;

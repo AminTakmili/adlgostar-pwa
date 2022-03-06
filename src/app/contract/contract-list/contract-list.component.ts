@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { IonInput } from '@ionic/angular';
+import { AlertController, IonInput } from '@ionic/angular';
 
 import { BusinessList } from 'src/app/core/models/business.model';
 import { contract } from 'src/app/core/models/contractConstant.model';
@@ -35,8 +35,8 @@ export class ContractListComponent implements OnInit {
 	filtered_employee_id: number;
 
 	businessList: BusinessList[] = [];
-	employeeList: Employee[] = [];
 	empoloyerList: Employer[] = [];
+	employeeList: Employee[] = [];
 
 
 	@ViewChildren('searchInp') Search: IonInput;
@@ -44,7 +44,8 @@ export class ContractListComponent implements OnInit {
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
-		private seo: SeoService
+		private seo: SeoService,
+		public alertController: AlertController
 	) { }
 
 	ngOnInit() {
@@ -66,11 +67,11 @@ export class ContractListComponent implements OnInit {
 		this.global.httpPost('contract/filteredList', {
 			limit: this.limit,
 			offset: this.offset,
-			filtered_business_id : this.filtered_business_id,
-			filtered_employer_id : this.filtered_employer_id,
-			filtered_employee_id : this.filtered_employee_id,
+			filtered_business_id: this.filtered_business_id,
+			filtered_employer_id: this.filtered_employer_id,
+			filtered_employee_id: this.filtered_employee_id,
 
-		}).subscribe(async (res:any) => {
+		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
@@ -78,7 +79,7 @@ export class ContractListComponent implements OnInit {
 			});
 			console.log(this.dataList);
 
-		}, async (error:any) => {
+		}, async (error: any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -90,7 +91,7 @@ export class ContractListComponent implements OnInit {
 			{ limit: 2000, offset: 0 }
 		);
 
-		const empoloyer = this.global.httpPost('employee/filteredList',
+		const empoloyer = this.global.httpPost('employer/list',
 			{ limit: 2000, offset: 0 }
 		);
 
@@ -108,7 +109,7 @@ export class ContractListComponent implements OnInit {
 			});
 	}
 
-	changeFilter(){
+	changeFilter() {
 		this.CurrentPage = 1;
 		this.offset = 0;
 		this.getData();
@@ -117,19 +118,19 @@ export class ContractListComponent implements OnInit {
 		this.businessList = data.list.map((item: any) => {
 			return new BusinessList().deserialize(item);
 		});
-		console.log(this.businessList);
+		// console.log(this.businessList);
 	}
 	CreateEmployer(data: any) {
 		this.empoloyerList = data.list.map((item: any) => {
 			return new Employer().deserialize(item);
 		});
-		console.log(this.empoloyerList);
+		// console.log(this.empoloyerList);
 	}
 	CreateEmployee(data: any) {
 		this.employeeList = data.list.map((item: any) => {
 			return new Employee().deserialize(item);
 		});
-		console.log(this.employeeList);
+		// console.log(this.employeeList);
 	}
 
 	removeItem(item: contractExtraField) {
@@ -149,6 +150,105 @@ export class ContractListComponent implements OnInit {
 					await this.global.showLoading('لطفا منتظر بمانید...');
 					this.global.httpDelete('salaryBaseInfo/contractExtraField', {
 						id: item.id,
+					}).subscribe(async (res: any) => {
+
+						await this.global.dismisLoading();
+
+						this.offset = 0;
+						this.CurrentPage = 1;
+						this.getData();
+
+						this.global.showToast(res.msg);
+
+					}, async (error: any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
+	}
+
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
+	}
+
+	pageChange($event: any) {
+
+		this.CurrentPage = $event;
+		this.offset = (this.limit * this.CurrentPage) - this.limit;
+		this.getData();
+	}
+
+	async removeContractALert(item: contract) {
+
+		const employee : any[] = item.employee_info.map((item)=>{
+			const input = {
+				name: item.full_name,
+				type : "checkbox",
+				label : item.full_name,
+				value : item.business_employee_id,
+				checked : false,
+			}
+			return input;
+		});
+		console.log(employee);
+		const alert = await this.alertController.create({
+			cssClass: 'my-custom-class',
+			header: item.title,
+			subHeader: 'حذف قرار داد',
+			message : ' حذف افراد از قرار داد'+item.title,
+			inputs: employee,
+			buttons: [
+				{
+					text: 'بی خیال',
+					role: 'cancel',
+					cssClass: 'dark',
+					handler: () => {
+						console.log('Confirm Cancel');
+					}
+				}, {
+					text: 'حذف کن',
+					cssClass: 'medium',
+					handler: (alertData) => {
+						this.removeContract(item,alertData)
+					}
+				}
+			]
+		});
+
+		await alert.present();
+	}
+
+
+	removeContract(item : contract , data : number[]){
+		this.global.showAlert('حذف '+ this.pageTitle , 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes',
+				cssClass: 'dark',
+			},
+			{
+				text: 'خیر',
+				role: 'cancel',
+				cssClass: 'medium',
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+
+
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('contract/delete', {
+						id: item.id,
+						is_group_deleting : (item.employee_info.length === data.length ? 1 : 0 ) ,
+						business_employee_ids : data
 					}).subscribe(async (res:any) => {
 
 						await this.global.dismisLoading();
@@ -167,14 +267,4 @@ export class ContractListComponent implements OnInit {
 			});
 		});
 	}
-
-	setTitle() {
-		this.seo.generateTags({
-			title: this.pageTitle,
-			description: this.pageTitle,
-			keywords: this.pageTitle,
-			isNoIndex: false,
-		});
-	}
-
 }

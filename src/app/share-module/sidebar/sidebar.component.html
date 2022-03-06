@@ -3,8 +3,8 @@
 		<ion-thumbnail class="mx-auto mb-2">
 			<ion-img [src]="'../assets/img/user-image.png'"></ion-img>
 		</ion-thumbnail>
-		<h5 class="my-0 name font-size-16 ion-text-center"><ion-text color="white">امین تکمیلی فرد</ion-text></h5>
-		<p class="desc my-0 font-size-10 ion-text-center"><ion-text color="medium">09173052209</ion-text></p>
+		<h5 class="my-0 name font-size-16 ion-text-center"><ion-text color="white">{{ this.global?.user?.firstName + ' ' + this.global?.user?.lastName }}</ion-text></h5>
+		<p class="desc my-1 font-size-12 ion-text-center"><ion-text color="medium">{{ this.global?.user?.mobile }}</ion-text></p>
 	</div>
 	<div class="sidebar-item">
 		<ion-list >

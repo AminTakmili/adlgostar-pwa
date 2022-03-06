@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<main>
-		<div class="container">
+		<!-- <div class="container">
 			<div class="stepper my-4">
 				<div class="line"></div>
 				<div class="item" [class.active]="step===  1">
@@ -35,7 +35,7 @@
 					<span class="title">اطلاعات تکمیلی</span>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<form [formGroup]="contractsForm" (ngSubmit)="onSubmit()">
 			<!--  -->
@@ -246,6 +246,7 @@
 								placeholder="انتخاب کنید"
 								[items]="severanceBaseCalculationList"
 								formControlName="contract_year"
+								[clearable]="false"
 								(change)="CalculationField()"
 								>
 							</ng-select>
@@ -347,7 +348,7 @@
 									<span [innerText]="returnNameExtraField(item['value']['contract_extra_field_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
 								</label>
-								<ion-input type="number" autocomplete="new-pass" formControlName="price"></ion-input>
+								<ion-input type="number" autocomplete="new-pass" (ionChange)="CalculationField()" debounce="500"  formControlName="price"></ion-input>
 								<span class="error">
 									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 								</span>
@@ -409,6 +410,8 @@
 								<ion-toggle color="success" formArrayName="is_manual" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
+						<ion-button (click)="CalculationField()" expand="block" color="primary" fill="outline" >محاسبه مجدد</ion-button>
+
 					</div>
 				</div>
 				<div class="row mb-5">

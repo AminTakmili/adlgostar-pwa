@@ -47,18 +47,25 @@ export class contractTemplate implements Deserializable {
 
 export class contract implements Deserializable {
 	id !: number;
+	business_id !: number;
+	contract_condition_id !: number;
+	business_employee_ids !: number[];
 	contract_id !: number;
 	business_employee_id !: number;
 	contract_template_id !: number;
+	severance_pay !: number;
+	new_year_gift !: number;
+	bonus !: number;
 	title !: string;
 	main_text !: string;
+	employee_start_date !: string;
 	end_text !: string;
 	contract_year !: string;
 	start_date !: string;
 	end_date !: string;
 	month_count !: number;
 	day_count !: number;
-	employee_start_year !: string;
+	employee_start_year!: string;
 	wage !: number;
 	grocery_allowance !: number;
 	housing_allowance !: number;

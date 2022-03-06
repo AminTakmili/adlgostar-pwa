@@ -12,6 +12,7 @@ import { BusinessEditComponent } from './business-edit/business-edit.component';
 import { BusinessAddComponent } from './business-add/business-add.component';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { BusinessDetailComponent } from './business-detail/business-detail.component';
+import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-employee-add.component';
 
 @NgModule({
 	imports: [
@@ -28,7 +29,9 @@ import { BusinessDetailComponent } from './business-detail/business-detail.compo
 		BusinessListComponent,
 		BusinessAddComponent,
 		BusinessEditComponent,
-		BusinessDetailComponent
+		BusinessDetailComponent,
+		BussinesEmployeeAddComponent
+
 	]
 })
 export class BusinessPageModule { }

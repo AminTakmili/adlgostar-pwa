@@ -197,13 +197,17 @@ export class SidebarComponent implements OnInit {
 
 		}
 	];
+
+	userInfo : User;
 	constructor(
-		private global: GlobalService,
+		public global: GlobalService,
 		private storage: StorageService,
 		public navCtrl: NavController,
 	) { }
 
-	ngOnInit() { }
+	ngOnInit() {
+		this.userInfo = this.global.user;
+	 }
 
 
 	showDetail(item: any) {

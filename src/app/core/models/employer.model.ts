@@ -6,6 +6,7 @@ export class Employer implements Deserializable {
 	id !: number;
 	first_name !: string;
 	last_name !: string;
+	full_name !: string;
 	mobile !: string;
 	birth_certificate_code !: number;
 	national_code !: number;
@@ -23,6 +24,9 @@ export class Employer implements Deserializable {
 			this.media = input.media.map((item: Media) => {
 				return new Media().deserialize(item);
 			});
+		}
+		if (input?.first_name && input?.last_name) {
+		this.full_name = input.first_name+' '+input.last_name;
 		}
 		return this;
 	}

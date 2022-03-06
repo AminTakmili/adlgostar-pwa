@@ -125,16 +125,6 @@ export class GlobalService {
 		await this.loading.dismiss();
 	}
 
-	justNumber(event: any) {
-		const pattern = /[0-9.,]/;
-		let inputChar = String.fromCharCode(event.charCode);
-
-		if (!pattern.test(inputChar)) {
-			// invalid character, prevent input
-			event.preventDefault();
-		}
-	}
-
 	async showError(err: HttpErrorResponse) {
 		if (err.status === 403) {
 			const alert = await this.alertController.create({
@@ -224,5 +214,24 @@ export class GlobalService {
         return data.filter((item : any) => {
             return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });
+    }
+
+	justNumber(event: any) {
+        const pattern = /[0-9.,]/;
+        let inputChar = String.fromCharCode(event.charCode);
+
+        if (!pattern.test(inputChar)) {
+            // invalid character, prevent input
+            event.preventDefault();
+        }
+    }
+	justWord(event: any) {
+        const pattern = /[0-9.,]/;
+        let inputChar = String.fromCharCode(event.charCode);
+
+        if (pattern.test(inputChar)) {
+            // invalid character, prevent input
+            event.preventDefault();
+        }
     }
 }
