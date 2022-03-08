@@ -4,14 +4,31 @@ export class Media implements Deserializable {
 	id!: number;
 	name!: string;
 	path!: string;
-	options: any;
+	mimeType!: string;
+	options: mediaOption;
 	// subSizes: any;
 	deserialize(input: any): this {
-		// if (input.options) this.subSizes = input.options.subSizes;
-		this.path = input.path;
-		this.id = input.id;
-		this.name = input.name;
-		Object.assign(this);
+		Object.assign(this, input);
+
+		return this;
+	}
+}
+export class mediaOption implements Deserializable {
+	subSizes: any;
+	// subSizes: any;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class subSizes implements Deserializable {
+	'1x': string;
+	'2x': string;
+	'3x': string;
+	'4x': string;
+	// subSizes: any;
+	deserialize(input: any): this {
+		Object.assign(this, input);
 		return this;
 	}
 }

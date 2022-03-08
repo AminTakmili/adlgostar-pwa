@@ -146,13 +146,42 @@ export class SidebarComponent implements OnInit {
 
 				},
 				{
-					name: 'پست های کارمندان',
+					name: 'سمت های کارمندان',
 					url: '/more/employee-posts',
 					icon: 'git-compare',
 					function: 'showDetail'
 
 				},
 			],
+		},
+		{
+			name: 'کاربران',
+			icon: 'people-circle',
+			open: false,
+			state: "close",
+			function: 'showDetail',
+			submenu: [
+				{
+					name: 'انواع کاربران',
+					url: '/users/type',
+					icon: 'color-palette',
+					function: 'showDetail'
+
+				},
+				{
+					name: 'نقش ها',
+					url: '/users/role',
+					icon: 'construct',
+					function: 'showDetail'
+				},
+				{
+					name: 'کاربران',
+					url: '/users/list',
+					icon: 'person-add',
+					function: 'showDetail'
+				},
+			],
+
 		},
 		{
 			name: 'پروفایل من',

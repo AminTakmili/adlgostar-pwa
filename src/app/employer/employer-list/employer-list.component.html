@@ -57,8 +57,9 @@
 							<td>
 								<ion-item lines="none" class="item-transparent">
 									<ion-avatar slot="start">
+
 										<ion-img
-											[src]=" item?.media[0]?.path ? item?.media[0]?.path :  './assets/img/employer-img.png' ">
+											[src]=" item?.media[0]?.path ? ( item?.media[0]?.options?.subSizes['1x'] | image ) :  './assets/img/employer-img.png' ">
 										</ion-img>
 									</ion-avatar>
 									<ion-label>

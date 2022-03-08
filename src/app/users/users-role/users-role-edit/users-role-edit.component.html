@@ -1,0 +1,94 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید موارد پایه سنوات برای یک سال را ایجاد کنید</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/business-category" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="editForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-md-12">
+						<div class="form-input mb-3" *ngIf="this.userType && this.userType.length">
+							<label>انتخاب نوع کاربر</label>
+							<ng-select
+								[items]="userType"
+								formControlName="user_type_id"
+								bindLabel="name"
+								bindValue="id"
+								[clearable]="false"
+								placeholder="انتخاب کنید"
+							>
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['user_type_id']" [controlName]="'نام دسته بندی'"></app-validator>
+							</span>
+							<span class="hint">برای ساخت دسته بندی والد باید این دسته را بر روی دسته بندی والد قرار دهید . </span>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<!-- درصد افزایش نسبت به سال قبل -->
+						<div class="form-input mb-3">
+							<label>عنوان نقش</label>
+							<ion-input  type="text" autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['name']" [controlName]="'نام نقش'"></app-validator>
+							</span>
+							<span class="hint">مثلا مدیر میانی</span>
+						</div>
+
+					</div>
+
+					<div class="col-12" *ngIf="this.dataList.permissions">
+						<div class="title-1">
+							<h2 class="title">لیست دسترسی ها</h2>
+						</div>
+						<hr>
+						<div class="permsion-cat" *ngFor="let cat of permision" >
+							<h4>{{ cat.name }}</h4>
+							<div class="row">
+								<div class="col-lg-4 col-md-6" *ngFor="let item of cat.permissions" >
+									<ion-item lines="none">
+										<ion-label>{{item.name}}</ion-label>
+										<ion-toggle slot="start" (ionChange)="setCheck(item)" [checked]="checkPermision(item)" [value]="item.id"></ion-toggle>
+									</ion-item>
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-3">
+								<ion-button type="submit"  expand="block" color="success" fill="solid" shape="round">
+									ویرایش {{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

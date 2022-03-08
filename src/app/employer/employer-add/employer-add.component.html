@@ -24,13 +24,14 @@
 					<div class="col-12">
 						<div class="title-1 my-4">
 							<h2 class="title">اطلاعات کارفرما</h2>
+							<p>لطفا اطلاعات اولیه کارفرما را تکمیل کنید</p>
 						</div>
 					</div>
 					<!-- سال -->
 					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>نام</label>
-							<ion-input type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
+							<ion-input type="text" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="first_name"></ion-input>
 							<span class="error">
 								<app-validator [control]="addFrom.controls['first_name']" [controlName]="'نام'">
 								</app-validator>
@@ -42,7 +43,7 @@
 					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>نام خانوادگی</label>
-							<ion-input type="text" autocomplete="new-pass" formControlName="last_name">
+							<ion-input type="text" (keypress)="global.justWord($event)" autocomplete="new-pass-2" formControlName="last_name">
 							</ion-input>
 							<span class="error">
 								<app-validator [control]="addFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
@@ -54,7 +55,7 @@
 					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>شماره شناسنامه</label>
-							<ion-input type="phone" autocomplete="new-pass" formControlName="birth_certificate_code">
+							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="birth_certificate_code">
 							</ion-input>
 							<span class="error">
 								<app-validator [control]="addFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
@@ -67,7 +68,7 @@
 					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>کد ملی</label>
-							<ion-input type="phone" autocomplete="new-pass" formControlName="national_code">
+							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="national_code">
 							</ion-input>
 							<span class="error">
 								<app-validator [control]="addFrom.controls['national_code']" [controlName]="'کد ملی'">
@@ -80,7 +81,7 @@
 					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>شماره همراه</label>
-							<ion-input type="phone" autocomplete="new-pass" formControlName="mobile">
+							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="mobile">
 							</ion-input>
 							<span class="error">
 								<app-validator [control]="addFrom.controls['mobile']"
@@ -161,10 +162,10 @@
 					<!-- آپلود تصویر -->
 					<div class="col-lg-6">
 						<div class="form-input mb-3">
-							<label>شماره تماس</label>
+							<label>انتخاب تصویر</label>
 							<ion-input type="file" accept="image/*" (change)="uploadFile($event)" autocomplete="new-pass" formControlName="image"></ion-input>
 							<span class="error">
-								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+								<app-validator [control]="addFrom.controls['image']" [controlName]="'تصویر'"></app-validator>
 							</span>
 							<span class="hint">حداکثر 1024 در 768 پیکسل</span>
 						</div>
@@ -175,6 +176,8 @@
 					<div class="col-12">
 						<div class="title-1 my-4">
 							<h2 class="title">آدرس های کارفرما</h2>
+							<p> اطلاعات آدرس و پستی کارفرما را تکمیل کنید . </p>
+
 						</div>
 						<!--  -->
 						<div formArrayName="addresses" >
@@ -193,7 +196,7 @@
 									>
 									</ng-select>
 									<span class="error">
-										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+										<app-validator [control]="item['controls']['city_id']" [controlName]="'شهر'"></app-validator>
 									</span>
 									<span class="hint"> مثلا شیراز </span>
 								</div>
@@ -204,7 +207,7 @@
 									<label>آدرس محل کار</label>
 									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
 									<span class="error">
-										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+										<app-validator [control]="item['controls']['address']" [controlName]="'آدرس محل کار'"></app-validator>
 									</span>
 									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
 								</div>
@@ -213,9 +216,9 @@
 							<div class="col-lg-6">
 								<div class="form-input mb-3">
 									<label>کد پستی</label>
-									<ion-input autocomplete="new-pass" formControlName="postal_code"></ion-input>
+									<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="postal_code"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+										<app-validator [control]="item['controls']['postal_code']" [controlName]="'کد پستی'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 71335984668</span>
 								</div>
@@ -223,10 +226,10 @@
 							<!-- شماره تماس منزل -->
 							<div class="col-lg-6">
 								<div class="form-input mb-3">
-									<label>انتخاب تصویر</label>
+									<label>شماره تلفن</label>
 									<ion-input type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+										<app-validator [control]="item['controls']['phone']" [controlName]="'شماره تلفن'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 071*******</span>
 								</div>

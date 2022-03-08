@@ -15,6 +15,7 @@ export class Employer implements Deserializable {
 	birth_certificate_issuance_place !: string;
 	gender !: string;
 	email !: string;
+	image !: string;
 	addresses !: Address[];
 
 	media !: Media[];

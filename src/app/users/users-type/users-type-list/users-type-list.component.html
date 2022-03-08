@@ -1,0 +1,104 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">لیست {{ pageTitle }}</h1>
+					<p class="dsec">در این صفحه لیست {{ pageTitle }} را مشاهده میکنید یا {{ pageTitle }} جدید اضاف کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<!-- <ion-button shape="round" color="warning" class="ml-3">
+					<ion-icon slot="start" name="push"></ion-icon>
+					افزودن کارمند با اکسل
+				</ion-button> -->
+				<ion-button shape="round" color="success" [routerLink]="['add']">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					افزودن {{ pageTitle }}
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container">
+			<!-- search and title -->
+			<div class="row mt-4">
+				<div class="col-md-12 mb-3">
+					<div class="title-1">
+						<h2 class="title">لیست {{ pageTitle }}</h2>
+						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
+							گرافیک است</p>
+					</div>
+				</div>
+			</div>
+			<div class="table-responsive-md" >
+				<!-- table -->
+				<table class="width-100 theme-table mt-3">
+					<thead class="thead-dark">
+						<tr class="ion-text-center">
+							<th class="ion-text-center">#</th>
+							<th scope="col">عنوان</th>
+							<th scope="col">تاریخ ایجاد</th>
+							<th scope="col">تاریخ آخرین ویرایش</th>
+							<th class="ion-text-left" scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							*ngFor="let item of dataList  | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+							<td>{{ item.name }}</td>
+							<td>{{ item.createdAt }}</td>
+							<td>{{ item.updatedAt }}</td>
+							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
+							<td class="ion-text-left">
+								<ion-buttons class="justify-content-end">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"
+										tooltip="حذف">
+										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+										</ion-icon>
+									</ion-button>
+									<ion-button fill="clear" [routerLink]="['edit', item.id]"
+										class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+										<ion-icon size="small" color="medium" slot="icon-only" name="create">
+										</ion-icon>
+									</ion-button>
+								</ion-buttons>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot *ngIf="limit < total && dataList && dataList.length">
+						<tr>
+							<td colspan="5">
+								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+									[autoHide]="true">
+								</pagination-controls>
+							</td>
+						</tr>
+
+					</tfoot>
+				</table>
+			</div>
+			<!-- if there is no table -->
+			<div *ngIf="dataList && dataList.length === 0 && this.dataInSearch" class="alert alert-warning my-3"
+				role="alert">
+				<h4 class="title"> {{ pageTitle }} برای نمایش یافت نشد .</h4>
+			</div>
+			<!-- if search return empty cell -->
+			<div *ngIf="dataList && dataList.length === 0 && !this.dataInSearch" class="alert alert-warning my-3"
+				role="alert">
+				<h4 class="title"> برای نمایش یافت نشد {{ pageTitle }} .</h4>
+				<p class="dsec">{{ pageTitle }} با عبارت جستجو شده یافت نشد</p>
+			</div>
+		</div>
+	</main>
+</ion-content>

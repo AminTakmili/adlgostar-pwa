@@ -41,6 +41,7 @@ export class GlobalService {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
+				devicePixelRatio : '1024'
 				// 'atriashop-user-id': this.getUserInfo().id.toString()
 			})
 		};

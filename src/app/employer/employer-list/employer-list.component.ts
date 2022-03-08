@@ -55,7 +55,7 @@ export class EmployerListComponent implements OnInit {
 			this.dataList = res.list.map((item: any) => {
 				return new Employer().deserialize(item);
 			});
-			// console.log(this.dataList);
+			console.log(this.dataList);
 			// console.log(res:any);
 		}, async (error:any) => {
 			await this.global.dismisLoading();
