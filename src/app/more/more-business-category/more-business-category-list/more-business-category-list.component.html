@@ -18,7 +18,7 @@
 					<ion-icon slot="start" name="push"></ion-icon>
 					افزودن کارمند با اکسل
 				</ion-button> -->
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['more_business_category_add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن دسته بندی کسب و کار
 				</ion-button>
@@ -61,22 +61,22 @@
 							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
 							<td class="ion-text-left">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['more_business_category_delete']"
 										tooltip="حذف">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" [routerLink]="['edit', item.id]"
+									<ion-button fill="clear" [routerLink]="['edit', item.id]" *ngIf="global.userPermision['more_business_category_edit']"
 										class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
 										<ion-icon size="small" color="medium" slot="icon-only" name="create">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" (click)="showSubCategory(item)" *ngIf="item.subCategory.length"
+									<ion-button fill="clear" (click)="showSubCategory(item)" *ngIf="item.subCategory && item.subCategory.length"
 										class="px-0 mx-0 tooltip-show" tooltip="نمایش زیر دسته ها">
 										<ion-icon size="small" color="medium" slot="icon-only" name="list">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" [routerLink]="['add',item.id]" *ngIf="!item.subCategory.length"
+									<ion-button fill="clear" [routerLink]="['add',item.id]" *ngIf="(!item.subCategory || !item.subCategory.length) && global.userPermision['more_business_category_add']"
 										class="px-0 mx-0 tooltip-show" tooltip="افزودن زیر دسته">
 										<ion-icon size="small" color="medium" slot="icon-only" name="add">
 										</ion-icon>

@@ -11,7 +11,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class MoreExtraSalaryItemAddComponent implements OnInit {
 
-	pageTitle: string = "افزودن موارد اضاف حقوق";
+	pageTitle: string = "افزودن موارد اضافه حقوق";
 	addFrom : FormGroup ;
 	constructor(
 		public global: GlobalService,
@@ -50,7 +50,7 @@ export class MoreExtraSalaryItemAddComponent implements OnInit {
 				await this.global.dismisLoading();
 				// console.log(res:any);
 				this.navCtrl.navigateForward('/more/extra-salary-item');
-				this.global.showToast('اضاف حقوق با نام '+ this.addFrom.value.name +' ثبت شد .');
+				this.global.showToast('اضافه حقوق با نام '+ this.addFrom.value.name +' ثبت شد .');
 				this.addFrom.reset();
 			}, async (error:any) => {
 				await this.global.dismisLoading();

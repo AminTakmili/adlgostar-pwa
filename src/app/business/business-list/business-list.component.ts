@@ -36,7 +36,7 @@ export class BusinessListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
+		this.setTitle()
 	}
 
 	async ionViewWillEnter() {
@@ -76,10 +76,50 @@ export class BusinessListComponent implements OnInit {
 
 	}
 
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
+	}
 	pageChange($event: any) {
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;
 		this.getData();
+	}
+
+	async removeItem(item : BusinessList){
+		this.global.showAlert('حذف کسب و کار', 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('business/delete', {
+						id: item.id,
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+						this.pageChange(1);
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 
 }

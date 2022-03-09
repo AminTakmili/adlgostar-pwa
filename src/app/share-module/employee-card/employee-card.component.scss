@@ -22,7 +22,7 @@ ion-card{
 						margin-inline-start: 3px;
 
 					}
-					&:first-child{
+					&:last-child{
 						&:after{
 							display: none;
 						}

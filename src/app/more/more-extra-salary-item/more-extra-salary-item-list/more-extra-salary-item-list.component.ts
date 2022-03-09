@@ -14,7 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class MoreExtraSalaryItemListComponent implements OnInit {
 
-	pageTitle: string = "موارد اضاف حقوق";
+	pageTitle: string = "موارد اضافه حقوق";
 	limit: number = 10;
 	offset: number = 0;
 	total: number = 0;

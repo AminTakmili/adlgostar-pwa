@@ -7,6 +7,7 @@ import { ContractConditionsListComponent } from './contract-conditions-list/cont
 import { ContractDetailComponent } from './contract-detail/contract-detail.component';
 import { ContractEditComponent } from './contract-edit/contract-edit.component';
 import { ContractListComponent } from './contract-list/contract-list.component';
+import { ContractPrintComponent } from './contract-print/contract-print.component';
 import { ContractTemplateAddComponent } from './contract-template-add/contract-template-add.component';
 import { ContractTemplateEditComponent } from './contract-template-edit/contract-template-edit.component';
 import { ContractTemplateListComponent } from './contract-template-list/contract-template-list.component';
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'detail/:id',
     component: ContractDetailComponent
+  },
+  {
+    path: 'print/:id',
+    component: ContractPrintComponent
   },
   {
     path: 'edit/:id',

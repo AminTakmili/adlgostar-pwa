@@ -35,6 +35,11 @@ const routes: Routes = [
 		path: 'more',
 		loadChildren: () => import('./more/more.module').then(m => m.MorePageModule)
 	},
+	{
+		path: 'users',
+		loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule)
+	},
+
 	// {
 	// 	path: 'profile',
 	// 	loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),

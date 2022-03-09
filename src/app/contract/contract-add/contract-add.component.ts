@@ -4,7 +4,7 @@ import { IonDatetime, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { CKEditorComponent } from 'ng2-ckeditor';
-import { format} from 'date-fns-jalali'
+import { format } from 'date-fns-jalali'
 import { BusinessList } from 'src/app/core/models/business.model';
 import { Employee } from 'src/app/core/models/employee.model';
 import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
@@ -28,7 +28,7 @@ export class ContractAddComponent implements OnInit {
 
 	editors = ['Classic', 'Inline'];
 
-	@ViewChild("popoverDatetime2",{ static: true }) datetime: IonDatetime;
+	@ViewChild("popoverDatetime2", { static: true }) datetime: IonDatetime;
 
 	dateValue: string = '';
 	dateValue2 = '';
@@ -37,13 +37,13 @@ export class ContractAddComponent implements OnInit {
 		drops: 'up',
 		format: 'YY/M/D'
 	}
-
+	submitet: boolean = false;
 	businessList: BusinessList[] = [];
 	employeeList: Employee[] = [];
-	contractTemplatelist : contractTemplate[] ;
-	contractConditionlist : contractConditions[] =  [];
-	contractExtraFieldList : contractExtraField[];
-	severanceBaseCalculationList : severanceBaseCalculation[];
+	contractTemplatelist: contractTemplate[];
+	contractConditionlist: contractConditions[] = [];
+	contractExtraFieldList: contractExtraField[];
+	severanceBaseCalculationList: severanceBaseCalculation[];
 
 	provisosList: FormArray;
 	extraFieldsList: FormArray;
@@ -85,8 +85,8 @@ export class ContractAddComponent implements OnInit {
 			is_hourly_contract: [false, Validators.compose([Validators.required])],
 			is_manual: [false, Validators.compose([Validators.required])],
 
-			provisos:  this.fb.array([]),
-			extra_fields:  this.fb.array([]) ,
+			provisos: this.fb.array([]),
+			extra_fields: this.fb.array([]),
 
 		});
 
@@ -96,7 +96,7 @@ export class ContractAddComponent implements OnInit {
 
 	}
 
-	provisos(id : number  , text = ''): FormGroup {
+	provisos(id: number, text = ''): FormGroup {
 		return this.fb.group({
 			contract_proviso_template_id: [id, Validators.compose([Validators.required])],
 			proviso_text: [text, Validators.compose([Validators.required])],
@@ -107,10 +107,10 @@ export class ContractAddComponent implements OnInit {
 		return <FormArray>this.contractsForm.get('provisos');
 	}
 
-	extraFields(id : number ): FormGroup {
+	extraFields(id: number): FormGroup {
 		return this.fb.group({
 			contract_extra_field_id: [id, Validators.compose([Validators.required])],
-			price: [ 0 , Validators.compose([Validators.required])],
+			price: [0, Validators.compose([Validators.required])],
 		})
 	}
 
@@ -119,18 +119,18 @@ export class ContractAddComponent implements OnInit {
 	}
 
 
-	addCondition(){
+	addCondition() {
 
 		console.log(this.contractsForm.value.contract_condition_id)
-		if(this.contractsForm.value.contract_condition_id.length){
-			this.contractsForm.value.contract_condition_id.map((item : number)=>{
-				const condition = _.find(this.contractConditionlist, {id:item});
-				const index =_.findIndex(this.provisosFormGroup.controls,(element:any)=>{
-					return element.value.contract_proviso_template_id == item ;
-				},-1);
+		if (this.contractsForm.value.contract_condition_id.length) {
+			this.contractsForm.value.contract_condition_id.map((item: number) => {
+				const condition = _.find(this.contractConditionlist, { id: item });
+				const index = _.findIndex(this.provisosFormGroup.controls, (element: any) => {
+					return element.value.contract_proviso_template_id == item;
+				}, -1);
 
-				if(index === -1){
-					this.provisosList.push(this.provisos(condition.id,condition.template));
+				if (index === -1) {
+					this.provisosList.push(this.provisos(condition.id, condition.template));
 				}
 				// }
 			})
@@ -138,7 +138,7 @@ export class ContractAddComponent implements OnInit {
 
 	}
 
-	RemoveCondition(event : any){
+	RemoveCondition(event: any) {
 
 		this.provisosFormGroup.controls.splice(event.index, 1);
 	}
@@ -189,8 +189,8 @@ export class ContractAddComponent implements OnInit {
 			{ limit: 1000, offset: 0 }
 		);
 
-		this.global.parallelRequest([business, contractTheme, contractCondition , contractExtra , severanceBaseCalculation])
-			.subscribe(([businessRes, contractThemeRes ='', contractConditionRes  ='' , contractExtraRes = '' ,  severanceBaseCRes = '']) => {
+		this.global.parallelRequest([business, contractTheme, contractCondition, contractExtra, severanceBaseCalculation])
+			.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
 				this.CreateBusiness(businessRes);
 				this.CreatecontractTheme(contractThemeRes);
 				this.CreatecontractCondition(contractConditionRes);
@@ -206,14 +206,14 @@ export class ContractAddComponent implements OnInit {
 				limit: 1000,
 				offset: 0,
 				business_id: this.contractsForm.value.business_id,
-			}).subscribe(async (res:any) => {
+			}).subscribe(async (res: any) => {
 				await this.global.dismisLoading();
 				this.employeeList = res.list.map((item: any) => {
 					return new Employee().deserialize(item);
 				});
 				console.log(this.employeeList);
 
-			}, async (error:any) => {
+			}, async (error: any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);
 			});
@@ -260,15 +260,15 @@ export class ContractAddComponent implements OnInit {
 		this.severanceBaseCalculationList = this.severanceBaseCalculationList.reverse();
 	}
 
-	returnNameExtraField(id : number){
-		return this.contractExtraFieldList.find(x=> x.id === id).name;
+	returnNameExtraField(id: number) {
+		return this.contractExtraFieldList.find(x => x.id === id).name;
 	}
 
-	setContractTheme(){
+	setContractTheme() {
 		const id = this.contractsForm.value.contract_template_id;
-		this.contractTemplatelist.map((item)=>{
-			if(item.id === id){
-				this.contractsForm.get('main_text').setValue(item.template) ;
+		this.contractTemplatelist.map((item) => {
+			if (item.id === id) {
+				this.contractsForm.get('main_text').setValue(item.template);
 			}
 		});
 		console.log(this.contractsForm.value.main_text);
@@ -279,33 +279,36 @@ export class ContractAddComponent implements OnInit {
 		return format(new Date(value), 'yyyy-MM-dd');
 	}
 
-	async CalculationField(){
+	async CalculationField() {
 
-		if(this.contractsForm.value.contract_year === ''){
-			this.global.showToast('سال عقد قرار داد را انتخاب کنید')
-			return;
-		}
-		if(!this.contractsForm.value.is_manual){
-			console.log(this.contractsForm.value.extra_fields)
-			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('contract/calculatePrices', this.contractsForm.value  ).
-			subscribe(async (res:any) => {
-				await this.global.dismisLoading();
+		if (!this.submitet) {
 
-				this.contractsForm.get('bonus').setValue(res.bonus) ;
-				this.contractsForm.get('children_allowance').setValue(res.children_allowance) ;
-				this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance) ;
-				this.contractsForm.get('housing_allowance').setValue(res.housing_allowance) ;
-				this.contractsForm.get('new_year_gift').setValue(res.new_year_gift) ;
-				this.contractsForm.get('severance_pay').setValue(res.severance_pay) ;
-				this.contractsForm.get('wage').setValue(res.wage) ;
+			if (this.contractsForm.value.contract_year === '') {
+				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				return;
+			}
+			if (!this.contractsForm.value.is_manual) {
+				console.log(this.contractsForm.value.extra_fields)
+				await this.global.showLoading('لطفا منتظر بمانید...');
+				this.global.httpPost('contract/calculatePrices', this.contractsForm.value).
+					subscribe(async (res: any) => {
+						await this.global.dismisLoading();
 
-				console.log(res);
+						this.contractsForm.get('bonus').setValue(res.bonus);
+						this.contractsForm.get('children_allowance').setValue(res.children_allowance);
+						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
+						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
+						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);
+						this.contractsForm.get('severance_pay').setValue(res.severance_pay);
+						this.contractsForm.get('wage').setValue(res.wage);
 
-			}, async (error:any) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-			});
+						console.log(res);
+
+					}, async (error: any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+			}
 		}
 		// {
 		// 	contract_year : this.contractsForm.value.contract_year ,
@@ -324,22 +327,23 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
+		this.submitet = true;
 		if (this.contractsForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('contract/add', this.contractsForm.value)
-				.subscribe(async (res:any) => {
+			.subscribe(async (res: any) => {
 
-					await this.global.dismisLoading();
-					this.navCtrl.navigateForward('/contracts/list');
-					this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
-					this.contractsForm.reset();
+				await this.global.dismisLoading();
+				this.navCtrl.navigateForward('/contracts/list');
+				this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
+				this.contractsForm.reset();
 
-				}, async (error:any) => {
-					await this.global.dismisLoading();
-					this.global.showError(error);
-				});
+			}, async (error: any) => {
+				await this.global.dismisLoading();
+				this.global.showError(error);
+				this.submitet = false;
+			});
 		}
 	}
-
 
 }

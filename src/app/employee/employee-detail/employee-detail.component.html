@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" [routerLink]="['/employees/edit/'+Employee?.id]" color="secondary">
+				<ion-button shape="round" *ngIf="global.userPermision['employees_edit']" [routerLink]="['/employees/edit/'+Employee?.id]" color="secondary">
 					<ion-icon slot="start" name="create"></ion-icon>
 					ویرایش اطلاعات
 				</ion-button>

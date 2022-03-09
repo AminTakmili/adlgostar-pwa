@@ -1,0 +1,36 @@
+<ion-content>
+	<section>
+		<div class="container py-4">
+			<div class="row ">
+				<div class="col-12 position-sticky">
+					<div class="row align-items-center justify-content-between 	">
+						<div class="col-auto">پرینت قرار داد {{ dataList?.title }}</div>
+						<div class="col-auto d-flex flex-row">
+							<ion-back-button [defaultHref]="'/contracts/detail/'+dataList?.id" text="بازگشت"
+								icon="arrow-back"></ion-back-button>
+							<ion-button shape="round" color="success" (click)="printContract('contract')">
+								<ion-icon slot="start" name="print"></ion-icon>
+								پرینت کن
+							</ion-button>
+						</div>
+					</div>
+				</div>
+				<!-- قرار داد -->
+				<div class="col">
+					<ion-card class="my-4 mx-0" color="white">
+						<ion-card-content>
+							<div id="contract">
+								<div class="container-print">
+									<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
+									<div *ngFor="let item of dataList?.provisos" class="inner-html-dev"
+										[innerHTML]="item.proviso_text"></div>
+									<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+			</div>
+		</div>
+	</section>
+</ion-content>

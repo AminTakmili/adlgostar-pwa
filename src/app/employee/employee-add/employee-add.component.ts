@@ -56,8 +56,8 @@ export class EmployeeAddComponent implements OnInit {
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
 			father_name: ['', Validators.compose([Validators.required])],
-			national_code: ['', Validators.compose([Validators.required])],
-			mobile: ['', Validators.compose([Validators.required])],
+			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			mobile: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
 			gender: ['', Validators.compose([Validators.required])],
 			marital_status: ['', Validators.compose([Validators.required])],
 			birth_date: ['', Validators.compose([Validators.required])],
@@ -65,8 +65,8 @@ export class EmployeeAddComponent implements OnInit {
 			birth_certificate_number: ['', Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
 			degree_id: ['', Validators.compose([Validators.required])],
-			field_of_study: ['', Validators.compose([Validators.required])],
-			insurance_more_than_720: ['', Validators.compose([Validators.required])],
+			field_of_study: [''],
+			insurance_more_than_720: [false, Validators.compose([Validators.required])],
 			addresses: this.fb.array([this.addresses()]),
 			family_information: this.fb.array([this.family_information()]),
 			military_information: this.fb.array([this.military_information()]),
@@ -78,7 +78,7 @@ export class EmployeeAddComponent implements OnInit {
 		this.familyInformation = this.employeeForm.get('family_information') as FormArray;
 		this.militaryInformation = this.employeeForm.get('military_information') as FormArray;
 		this.bankInformation = this.employeeForm.get('bank_information') as FormArray;
-		this.employeeImage = this.employeeForm.get('bank_information') as FormArray;
+		// this.employeeImage = this.employeeForm.get('bank_information') as FormArray;
 	}
 
 	async ngOnInit() {
@@ -88,6 +88,7 @@ export class EmployeeAddComponent implements OnInit {
 		await this.global.baseData.subscribe(value => {
 			if (value) {
 				this.StaticData = value;
+				console.log(this.StaticData);
 			}
 		});
 	}
@@ -105,8 +106,8 @@ export class EmployeeAddComponent implements OnInit {
 		return this.fb.group({
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
-			postal_code: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			phone: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
+			postal_code: ['' ,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)] )],
+			phone: ['' ,Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
 		})
 	}
 	get addressFormGroup(): FormArray {
@@ -115,9 +116,9 @@ export class EmployeeAddComponent implements OnInit {
 
 	family_information(): FormGroup {
 		return this.fb.group({
-			count_child_under_18_years: ['', Validators.compose([Validators.required])],
-			count_student_child_over_18_years_old: ['', Validators.compose([Validators.required])],
-			total_child: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
+			count_child_under_18_years: [0],
+			count_student_child_over_18_years_old: [0],
+			total_child: [0],
 		})
 	}
 
@@ -128,7 +129,7 @@ export class EmployeeAddComponent implements OnInit {
 	military_information(): FormGroup {
 		return this.fb.group({
 			military_state: ['', Validators.compose([Validators.required])],
-			military_exempt_reason: ['', Validators.compose([Validators.required])],
+			military_exempt_reason: [''],
 		})
 	}
 
@@ -140,10 +141,10 @@ export class EmployeeAddComponent implements OnInit {
 		return this.fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			branch_name: ['', Validators.compose([Validators.required])],
-			account_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			card_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			iban_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			payment_with_check: [false, Validators.compose([Validators.pattern("^[0-9]*$")])],
+			account_number: ['', ],
+			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
+			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
+			payment_with_check: [false],
 		})
 	}
 
@@ -240,6 +241,8 @@ export class EmployeeAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
+		console.log(this.employeeForm);
+		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('employee/add', this.employeeForm.value)

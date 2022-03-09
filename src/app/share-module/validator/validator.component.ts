@@ -33,31 +33,31 @@ export class ValidatorComponent implements OnInit {
 	}
 
 	chkError(errors: ValidationErrors) {
-		// if (this.control.touched || this.control.dirty) {
-		// 	if (errors !== null) {
-		// 		// tslint:disable-next-line: forin
-		// 		for (const error in errors) {
-		// 			switch (error:any) {
-		// 				case 'minlength':
-		// 					this.param = this.control.errors['minlength'].requiredLength.toString();
-		// 					break;
-		// 				case 'maxlength':
-		// 					this.param = this.control.errors['maxlength'].requiredLength.toString();
-		// 					break;
-		// 				default:
-		// 					this.param = '';
-		// 					break;
-		// 			}
-		// 			if (this.config[error] !== undefined) {
-		// 				return this.config[error].replace('%p', this.param);
-		// 			} else {
-		// 				return '';
-		// 			}
-		// 		}
-		// 	} else {
-		// 		return '';
-		// 	}
-		// }
+		if (this.control.touched || this.control.dirty) {
+			if (errors !== null) {
+				// tslint:disable-next-line: forin
+				for (const error in errors) {
+					switch (error) {
+						case 'minlength':
+							this.param = this.control.errors['minlength'].requiredLength.toString();
+							break;
+						case 'maxlength':
+							this.param = this.control.errors['maxlength'].requiredLength.toString();
+							break;
+						default:
+							this.param = '';
+							break;
+					}
+					if (this.config[error] !== undefined) {
+						return this.config[error].replace('%p', this.param);
+					} else {
+						return '';
+					}
+				}
+			} else {
+				return '';
+			}
+		}
 	}
 
 

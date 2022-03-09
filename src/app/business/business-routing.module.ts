@@ -4,6 +4,7 @@ import { LoginGuard } from '../core/guards/login.guard';
 import { BusinessAddComponent } from './business-add/business-add.component';
 import { BusinessDetailComponent } from './business-detail/business-detail.component';
 import { BusinessEditComponent } from './business-edit/business-edit.component';
+import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-employee-add.component';
 
 import { BusinessListComponent } from './business-list/business-list.component';
 
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path: 'detail/:businessId',
     component: BusinessDetailComponent,
+	canActivate: [LoginGuard]
+  },
+  {
+    path: 'add-employee/:id',
+    component: BussinesEmployeeAddComponent,
 	canActivate: [LoginGuard]
   },
 

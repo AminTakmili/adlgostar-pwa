@@ -32,8 +32,8 @@ export class EmployerAddComponent implements OnInit {
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
 			birth_certificate_code: ['', Validators.compose([Validators.required])],
-			national_code: ['', Validators.compose([Validators.required])],
-			mobile: ['', Validators.compose([Validators.required])],
+			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			mobile: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
 			birth_place: ['', Validators.compose([Validators.required])],
 			born_at: ['', Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
@@ -49,8 +49,8 @@ export class EmployerAddComponent implements OnInit {
 		return this.fb.group({
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
-			postal_code: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			phone: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
+			postal_code: ['', Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
+			phone: ['', Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
 		})
 	}
 	get addressFormGroup(): FormArray {
@@ -75,25 +75,11 @@ export class EmployerAddComponent implements OnInit {
 		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
 		this.global.parallelRequest([countries])
 			.subscribe(([countriesData]) => {
-
-				this.setCountry(countriesData);
-				// this.setBussinessCategory(businessCategory);
+				this.province = this.global.createCountry(countriesData);
 			});
 	}
 
-	setCountry(data: any) {
-		data[0].provinces.map((province: any) => {
-			province.cities.map((city: any) => {
-				const cities: citiesClass = new citiesClass();
-				cities.id = city.id
-				cities.name = city.name;
-				cities.provinceId = province.id;
-				cities.province = province.name;
-				this.province.push(cities);
-			});
-		});
 
-	}
 
 	async onSubmit() {
 

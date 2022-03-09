@@ -106,7 +106,7 @@ export class LoginPage implements OnInit {
 					this.storage.set('user',this.global.user);
 
 					this.global.changeLogin(true);
-					this.global.showToast('کاربر گرامی , ' + this.global.user.firstName + ' خوش آمدید .');
+					this.global.showToast('کاربر گرامی , ' + this.global.user.first_name + ' خوش آمدید .');
 					this.navCtrl.navigateRoot(['/']);
 
 					await this.global.dismisLoading();

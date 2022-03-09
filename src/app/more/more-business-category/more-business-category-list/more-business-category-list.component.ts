@@ -29,8 +29,6 @@ export class MoreBusinessCategoryListComponent implements OnInit {
 	filtered_national_code: string;
 	filtered_phone: string;
 
-
-
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -84,7 +82,35 @@ export class MoreBusinessCategoryListComponent implements OnInit {
 	}
 
 	async removeItem(item : BusinessCategory){
+		this.global.showAlert('حذف کاربر', 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('businessCategory/delete', {
+						id: item.id,
+					}).subscribe(async (res:any) => {
 
+						await this.global.dismisLoading();
+						this.pageChange(1);
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 
 }

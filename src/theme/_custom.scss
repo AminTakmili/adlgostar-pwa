@@ -635,8 +635,18 @@ ckeditor {
 	}
 }
 .inner-html-dev{
+	.show_date{
+		unicode-bidi: plaintext;
+	}
 	p{
 
 		line-height:30px ;
 	}
+}
+
+.user-edit-img{
+	display: inline-block;
+	width: 150px;
+	height: auto;
+	border-radius: 2px;
 }

@@ -1,0 +1,8 @@
+.position-sticky{
+	position: sticky;
+	top:0;
+	z-index: 2;
+	background-color: var(--ion-background-color);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

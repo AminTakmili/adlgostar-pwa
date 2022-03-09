@@ -21,6 +21,7 @@ import { ContractConditionsListComponent } from './contract-conditions-list/cont
 import { ContractConditionsAddComponent } from './contract-conditions-add/contract-conditions-add.component';
 import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { ContractPrintComponent } from './contract-print/contract-print.component';
 
 
 
@@ -51,7 +52,8 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 		ContractTemplateEditComponent,
 		ContractConditionsListComponent,
 		ContractConditionsAddComponent,
-		ContractConditionsEditComponent
+		ContractConditionsEditComponent,
+		ContractPrintComponent
 	]
 })
 export class ContractPageModule { }

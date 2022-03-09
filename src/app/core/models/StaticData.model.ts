@@ -52,6 +52,7 @@ export class StaticData implements Deserializable {
 export class DataSets implements Deserializable {
 	name!: string;
 	value!: string;
+	id!: number;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

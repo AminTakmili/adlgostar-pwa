@@ -15,9 +15,7 @@ import { NavController } from '@ionic/angular';
 export class BusinessAddComponent implements OnInit {
 
 	disable = true;
-	employerList = [
-		{ id: this.global.user.id, name: this.global.user.firstName + ' ' + this.global.user.lastName, selected: true },
-	];
+	employerList : any ;
 	employer = this.global.user.id;
 	businessAddress: any = [1]
 
@@ -66,6 +64,9 @@ export class BusinessAddComponent implements OnInit {
 	}
 	ngOnInit() {
 
+		this.employerList = [
+			{ id: this.global.user.id, name: this.global.user.firstName + ' ' + this.global.user.lastName, selected: true },
+		];
 		this.getData();
 		this.setTitle();
 	}

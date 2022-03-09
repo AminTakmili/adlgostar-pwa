@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ValidatorComponent } from './validator/validator.component';
 import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { EmployerCardComponent } from './employer-card/employer-card.component';
+import { ImagePipe } from '../core/pipes/image.pipe';
 
 
 
@@ -27,7 +28,8 @@ import { EmployerCardComponent } from './employer-card/employer-card.component';
 		FooterComponent,
 		ValidatorComponent,
 		EmployeeCardComponent,
-		EmployerCardComponent
+		EmployerCardComponent,
+		ImagePipe
 	],
 	exports : [
 		SidebarComponent,
@@ -35,7 +37,8 @@ import { EmployerCardComponent } from './employer-card/employer-card.component';
 		FooterComponent,
 		ValidatorComponent,
 		EmployeeCardComponent,
-		EmployerCardComponent
+		EmployerCardComponent,
+		ImagePipe
 	]
 
 })

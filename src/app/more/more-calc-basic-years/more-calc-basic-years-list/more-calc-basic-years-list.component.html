@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['more_calc_basic_years_add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					ثبت {{ pageTitle }} جدید
 				</ion-button>
@@ -81,11 +81,11 @@
 							<td>{{ item.createdAt }}</td>
 							<td>
 								<ion-buttons class="justify-content-end">
-									<ion-button  fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" tooltip="حذف">
+									<ion-button  fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" tooltip="حذف" *ngIf="global.userPermision['more_calc_basic_years_delete']">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
-									<ion-button  fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['edit',item.id]" tooltip="ویرایش">
+									<ion-button  fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['edit',item.id]" tooltip="ویرایش" *ngIf="global.userPermision['more_calc_basic_years_edit']">
 										<ion-icon size="small" color="medium" slot="icon-only" name="create">
 										</ion-icon>
 									</ion-button>
