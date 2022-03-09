@@ -6,9 +6,9 @@ import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
-  selector: 'app-users-all-list',
-  templateUrl: './users-all-list.component.html',
-  styleUrls: ['./users-all-list.component.scss'],
+	selector: 'app-users-all-list',
+	templateUrl: './users-all-list.component.html',
+	styleUrls: ['./users-all-list.component.scss'],
 })
 export class UsersAllListComponent implements OnInit {
 
@@ -27,8 +27,6 @@ export class UsersAllListComponent implements OnInit {
 	filtered_national_code: string;
 	filtered_phone: string;
 
-
-
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -38,20 +36,21 @@ export class UsersAllListComponent implements OnInit {
 
 	}
 
-	ngOnInit() {
+	ngOnInit() { }
 
-	}
 	async ionViewWillEnter() {
 		this.getData();
+		this.setTitle()
 	}
 	async getData(name: string = '') {
 
 		this.dataInSearch = name ? true : false;
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('user/user/list', {
+		this.global.httpPost('user/list', {
 			limit: this.limit,
 			offset: this.offset,
-		}).subscribe(async (res:any) => {
+			type : 'user',
+		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
@@ -59,7 +58,7 @@ export class UsersAllListComponent implements OnInit {
 			});
 			console.log(this.dataList);
 			// console.log(res:any);
-		}, async (error:any) => {
+		}, async (error: any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
@@ -72,8 +71,8 @@ export class UsersAllListComponent implements OnInit {
 		this.getData();
 	}
 
-	async removeItem(item : UserType){
-		this.global.showAlert('حذف کاربر', 'آیا برای حذف اطمینان دارید؟', [
+	async removeItem(item: User) {
+		this.global.showAlert('حذف دسته بندی', 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
 				role: 'yes'
@@ -82,20 +81,20 @@ export class UsersAllListComponent implements OnInit {
 				text: 'خیر',
 				role: 'cancel'
 			}
-		]).then((alert : any) => {
+		]).then((alert: any) => {
 			alert.present();
-			alert.onDidDismiss().then(async ( e : any) => {
+			alert.onDidDismiss().then(async (e: any) => {
 				if (e.role === 'yes') {
 					await this.global.showLoading('لطفا منتظر بمانید...');
 					this.global.httpDelete('user/role/delete', {
 						id: item.id,
-					}).subscribe(async (res:any) => {
+					}).subscribe(async (res: any) => {
 
 						await this.global.dismisLoading();
 						this.pageChange(1);
 						this.global.showToast(res.msg);
 
-					}, async (error:any) => {
+					}, async (error: any) => {
 						await this.global.dismisLoading();
 						this.global.showError(error);
 					});
@@ -104,5 +103,13 @@ export class UsersAllListComponent implements OnInit {
 		});
 	}
 
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
+	}
 
 }

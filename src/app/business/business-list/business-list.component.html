@@ -14,11 +14,11 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" color="warning" [routerLink]="['add']" class="ml-3">
+				<ion-button *ngIf="global.userPermision['business_add']" shape="round" color="warning" [routerLink]="['add']" class="ml-3">
 					<ion-icon slot="start" name="push"></ion-icon>
 					افزودن کسب کار با اکسل
 				</ion-button>
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button *ngIf="global.userPermision['business_add']" shape="round" color="success" [routerLink]="['add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن کسب و کار جدید
 				</ion-button>
@@ -62,16 +62,20 @@
 						<tr
 							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
-							<td><a [routerLink]="['/businesses/detail/',item.id]">{{ item.name }}</a></td>
+							<td>{{ item.name }}</td>
 							<td>{{ item.category }}</td>
 							<td>{{ item.createdAt }}</td>
 							<td scope="col-1">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/businesses/edit/',item.id]" tooltip="ویرایش">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="جذف" *ngIf="global.userPermision['business_delete']" >
+										<ion-icon size="small" color="medium" slot="icon-only" name="delete">
+										</ion-icon>
+									</ion-button>
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/businesses/edit/',item.id]" tooltip="ویرایش" *ngIf="global.userPermision['business_edit']">
 										<ion-icon size="small" color="medium" slot="icon-only" name="create">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/businesses/detail/',item.id]" tooltip="جزییات">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/businesses/detail/',item.id]" tooltip="جزییات" *ngIf="global.userPermision['business_detail']">
 										<ion-icon size="small" color="medium" slot="icon-only" name="search">
 										</ion-icon>
 									</ion-button>

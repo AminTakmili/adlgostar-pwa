@@ -60,9 +60,9 @@ export class UsersRoleAddComponent implements OnInit {
 
 	getExtra() {
 
-		const userType = this.global.httpPost('user/userType/list', { limit: 100 , offset: 0 });
+		const userType = this.global.httpPost('user/userType/list', { limit: 100 , offset: 0 , type : "user" });
 
-		const permission = this.global.httpPost('user/permission/list',{ limit: 300 , offset: 0 });
+		const permission = this.global.httpPost('user/permission/list',{ limit: 300 , offset: 0 ,   });
 
 		this.global.parallelRequest([userType, permission])
 			.subscribe(([userTypeRes, permissionRes  ='']) => {

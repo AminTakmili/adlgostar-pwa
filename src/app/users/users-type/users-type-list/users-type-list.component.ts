@@ -40,7 +40,7 @@ export class UsersTypeListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
+		this.setTitle();
 	}
 	async ionViewWillEnter() {
 		this.getData();
@@ -102,6 +102,15 @@ export class UsersTypeListComponent implements OnInit {
 					});
 				}
 			});
+		});
+	}
+
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
 		});
 	}
 

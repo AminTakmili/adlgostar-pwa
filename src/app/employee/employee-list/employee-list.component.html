@@ -14,11 +14,11 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" color="warning" class="ml-3">
+				<ion-button shape="round" color="warning" class="ml-3" *ngIf="global.userPermision['employees_add']">
 					<ion-icon slot="start" name="push"></ion-icon>
 					افزودن کارمند با اکسل
 				</ion-button>
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['employees_add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن کارمند جدید
 				</ion-button>
@@ -41,33 +41,49 @@
 				<!-- انتخاب کسب کار -->
 				<div class="col-md-6 mb-3">
 					<div class="form-input ">
-						<ng-select [(ngModel)]="business_id" [clearable]="false" placeholder="انتخاب کارفرما">
+						<ng-select
+						[(ngModel)]="business_id"
+						[items]="businessList"
+						[clearable]="true"
+						placeholder="انتخاب کارفرما"
+						bindLabel="name"
+						bindValue="id"
+						(change)="changeSearch()"
+						>
 						</ng-select>
 					</div>
 				</div>
 				<!-- انتخاب کسب کار -->
 				<div class="col-md-6  mb-3">
 					<div class="form-input">
-						<ng-select [(ngModel)]="business_id" [clearable]="false" placeholder="انتخاب کسب و کار">
+						<ng-select
+						[(ngModel)]="employer_id"
+						[items]="employersList"
+						[clearable]="true"
+						placeholder="انتخاب کسب و کار"
+						bindLabel="full_name"
+						bindValue="id"
+						(change)="changeSearch()"
+						>
 						</ng-select>
 					</div>
 				</div>
 				<!-- جستجو بر اساس نام  -->
 				<div class="col-md-4">
 					<div class="search-input-2">
-						<ion-searchbar enterkeyhint="" type="text" #Search placeholder="نام کارمند"></ion-searchbar>
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="changeSearch()" [(ngModel)]="filtered_name"  placeholder="نام کارمند"></ion-searchbar>
 					</div>
 				</div>
 				<!-- جست جو بر اساس کد ملی -->
 				<div class="col-md-4">
 					<div class="search-input-2">
-						<ion-searchbar enterkeyhint="" type="text" #Search placeholder="کد ملی"></ion-searchbar>
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="changeSearch()" [(ngModel)]="filtered_national_code"  placeholder="کد ملی"></ion-searchbar>
 					</div>
 				</div>
 				<!-- جست جو بر اساس شماره همراه -->
 				<div class="col-md-4">
 					<div class="search-input-2">
-						<ion-searchbar enterkeyhint="" type="text" #Search placeholder="موبایل"></ion-searchbar>
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="changeSearch()" [(ngModel)]="filtered_phone" type="phone"  placeholder="موبایل"></ion-searchbar>
 					</div>
 				</div>
 			</div>
@@ -78,7 +94,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">نام و نام خانوادگی</th>
-							<th scope="col">مشغول در </th>
+							<!-- <th scope="col">مشغول در </th> -->
 							<th class="ion-text-left" scope="col"></th>
 						</tr>
 					</thead>
@@ -95,23 +111,27 @@
 									</ion-avatar>
 									<ion-label>
 										<h2 class="title">{{ item.first_name }} {{ item.last_name }}</h2>
+										<!-- <p>
+											<span>کد ملی : <strong>{{ item.national_code }}</strong></span>
+											<span>شماره همراه : <strong>{{ item.mobile }}</strong></span>
+										</p> -->
 									</ion-label>
 								</ion-item>
 							</td>
-							<td>فناری اطلاعات و ارتباطاات</td>
+							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
 							<td class="ion-text-left">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['employees_delete']"
 										tooltip="حذف">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" [routerLink]="['edit', item.id]"
+									<ion-button fill="clear" [routerLink]="['edit', item.id]" *ngIf="global.userPermision['employees_edit']"
 										class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
 										<ion-icon size="small" color="medium" slot="icon-only" name="create">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" [routerLink]="['detail', item.id]"
+									<ion-button fill="clear" [routerLink]="['detail', item.id]" *ngIf="global.userPermision['employees_detail']"
 										class="px-0 mx-0 tooltip-show" tooltip="جزییات">
 										<ion-icon size="small" color="medium" slot="icon-only" name="search">
 										</ion-icon>

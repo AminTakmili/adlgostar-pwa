@@ -14,11 +14,11 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" [routerLink]="['/contracts/print/'+dataList.id]" color="success">
+				<ion-button shape="round" [routerLink]="['/contracts/print/'+dataList.id]" color="success" *ngIf="global.userPermision['contract_print']">
 					<ion-icon slot="start" name="print"></ion-icon>
 					پرینت
 				</ion-button>
-				<ion-button shape="round" [routerLink]="['/contracts/edit/'+dataList.id]" color="secondary">
+				<ion-button shape="round" [routerLink]="['/contracts/edit/'+dataList.id]" color="secondary" *ngIf="global.userPermision['contract_edit']">
 					<ion-icon slot="start" name="create"></ion-icon>
 					ویرایش قرار داد
 				</ion-button>

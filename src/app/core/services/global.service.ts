@@ -3,8 +3,12 @@ import { Injectable, NgZone } from "@angular/core";
 import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
 import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 import { environment } from 'src/environments/environment'
+import { citiesClass } from "../classes/cities.class";
+import { BusinessList } from "../models/business.model";
+import { Employee } from "../models/employee.model";
+import { Employer } from "../models/employer.model";
 import { StaticData } from "../models/StaticData.model";
-import { User } from "../models/user.model";
+import { permissionsDetail, User, UserRole } from "../models/user.model";
 import { StorageService } from "./storage.service";
 
 @Injectable({
@@ -17,8 +21,9 @@ export class GlobalService {
 	public _login = new BehaviorSubject<boolean>(this.login);
 	public baseData = new BehaviorSubject<StaticData>(null);
 	public user: User;
+	public _user =  new BehaviorSubject<User>(null);
 	public sitename: string = environment.sitename;
-
+	public userPermision  : LooseObject = {};
 	constructor(
 		private http: HttpClient,
 		private storage: StorageService,
@@ -28,6 +33,9 @@ export class GlobalService {
 		public navCtrl: NavController,
 		private toastController: ToastController,
 	) {
+
+		this.setUserInfo();
+
 
 	}
 
@@ -41,7 +49,7 @@ export class GlobalService {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
-				devicePixelRatio : '1024'
+				devicePixelRatio: '1024'
 				// 'atriashop-user-id': this.getUserInfo().id.toString()
 			})
 		};
@@ -126,6 +134,10 @@ export class GlobalService {
 		await this.loading.dismiss();
 	}
 
+	async getUserInfo() {
+		return await this.user;
+	}
+
 	async showError(err: HttpErrorResponse) {
 		if (err.status === 403) {
 			const alert = await this.alertController.create({
@@ -166,7 +178,7 @@ export class GlobalService {
 		}
 	}
 
-	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button? : any) {
+	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button?: any) {
 
 		const toast = await this.toastController.create({
 			message: message,
@@ -174,9 +186,9 @@ export class GlobalService {
 			position: position,
 			buttons: button,
 			animated: true,
-			mode : 'ios',
-			keyboardClose : true ,
-			color : 'dark'
+			mode: 'ios',
+			keyboardClose: true,
+			color: 'dark'
 		});
 		toast.present();
 	}
@@ -188,11 +200,24 @@ export class GlobalService {
 
 	setUserInfo() {
 		this.storage.get('user').then((val) => {
-			if (val !== null && val !== undefined && val.id !== undefined) {
+			if (Object.keys(val).length) {
 				this.changeLogin(true);
 				this.user = new User().deserialize(val);
+				this._user.next(this.user);
+				this.setPermision(this.user.permissionsList)
+				console.log(this.user);
 			}
 		});
+	}
+
+	setPermision(persmion : permissionsDetail[]){
+		// console.log(persmion);
+
+		persmion.map((item)=>{
+			this.userPermision[item.en_name] =  item.access;
+
+		});
+		console.log(this.userPermision);
 	}
 
 	showAlert(
@@ -211,28 +236,81 @@ export class GlobalService {
 		return forkJoin(requests);
 	}
 
-	filterItems(data : any, searchTerm : string) {
-        return data.filter((item : any) => {
-            return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-        });
-    }
+	filterItems(data: any, searchTerm: string) {
+		return data.filter((item: any) => {
+			return item.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+		});
+	}
 
 	justNumber(event: any) {
-        const pattern = /[0-9.,]/;
-        let inputChar = String.fromCharCode(event.charCode);
+		const pattern = /[0-9.,]/;
+		let inputChar = String.fromCharCode(event.charCode);
 
-        if (!pattern.test(inputChar)) {
-            // invalid character, prevent input
-            event.preventDefault();
-        }
-    }
+		if (!pattern.test(inputChar)) {
+			// invalid character, prevent input
+			event.preventDefault();
+		}
+	}
 	justWord(event: any) {
-        const pattern = /[0-9.,]/;
-        let inputChar = String.fromCharCode(event.charCode);
+		const pattern = /[0-9.,]/;
+		let inputChar = String.fromCharCode(event.charCode);
 
-        if (pattern.test(inputChar)) {
-            // invalid character, prevent input
-            event.preventDefault();
-        }
-    }
+		if (pattern.test(inputChar)) {
+			// invalid character, prevent input
+			event.preventDefault();
+		}
+	}
+
+	createEmployer(data: any) {
+		return data.list.map((item: any) => {
+			return new Employer().deserialize(item);
+		});
+	}
+	createEmployee(data: any) {
+		return data.list.map((item: any) => {
+			return new Employee().deserialize(item);
+		});
+	}
+	createBusiness(data: any) {
+		return data.list.map((item: any) => {
+			return new BusinessList().deserialize(item);
+		});
+	}
+	createCountry(data: any) {
+		let provinceList: citiesClass[] = [];
+		data[0].provinces.map((province: any) => {
+			province.cities.map((city: any) => {
+				const cities: citiesClass = new citiesClass();
+				cities.id = city.id
+				cities.name = city.name;
+				cities.provinceId = province.id;
+				cities.province = province.name;
+				provinceList.push(cities);
+			});
+		});
+		return provinceList;
+	}
+
+	createUserRole(data: any) {
+		return data.list.map((item: any) => {
+			return new UserRole().deserialize(item);
+		});
+	}
+
+	async checkPersmionByEnName(name: string) {
+		return true;
+		// const permison = this.user.permissionsList.find(x => x.en_name === name);
+		// const access = permison !== undefined ? permison.access : true;
+		// // console.log(name,access)
+		// return access;
+	}
+	async checkPersmionByRoute(route: string) {
+		const permison = this.user.permissionsList.find(x => x.app_route === route);
+		const access = permison !== undefined ? permison.access : true;
+		return access;
+	}
+
+}
+interface LooseObject {
+    [key: string]: any
 }

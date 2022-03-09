@@ -27,6 +27,7 @@ export class MoreBusinessSubcategoryListComponent implements OnInit {
 		this.modalController.dismiss();
 	}
 	removeItem(item :SubBusinessCategory ){
+		console.log(1234);
 		this.global.showAlert('', 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
@@ -47,6 +48,8 @@ export class MoreBusinessSubcategoryListComponent implements OnInit {
 
 						await this.global.dismisLoading();
 						this.global.showToast(res.msg);
+						const index = this.subCategory.findIndex(x=> x.id=== item.id);
+						this.subCategory.splice(index,1);
 
 					}, async (error:any) => {
 						await this.global.dismisLoading();

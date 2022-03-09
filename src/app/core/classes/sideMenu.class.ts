@@ -8,5 +8,6 @@ export class sideMenu  {
 	open ? : boolean = false;
 	function ? : string = undefined;
 	submenu ? : sideMenu[];
+	access ? : boolean;
 
 }

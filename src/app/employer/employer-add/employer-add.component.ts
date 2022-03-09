@@ -75,25 +75,11 @@ export class EmployerAddComponent implements OnInit {
 		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
 		this.global.parallelRequest([countries])
 			.subscribe(([countriesData]) => {
-
-				this.setCountry(countriesData);
-				// this.setBussinessCategory(businessCategory);
+				this.province = this.global.createCountry(countriesData);
 			});
 	}
 
-	setCountry(data: any) {
-		data[0].provinces.map((province: any) => {
-			province.cities.map((city: any) => {
-				const cities: citiesClass = new citiesClass();
-				cities.id = city.id
-				cities.name = city.name;
-				cities.provinceId = province.id;
-				cities.province = province.name;
-				this.province.push(cities);
-			});
-		});
 
-	}
 
 	async onSubmit() {
 

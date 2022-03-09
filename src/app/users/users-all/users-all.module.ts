@@ -11,23 +11,25 @@ import { UsersAllEditComponent } from './users-all-edit/users-all-edit.component
 import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    UsersAllPageRoutingModule,
-	ShareModulePageModule,
-	ReactiveFormsModule,
-	NgxPaginationModule,
-	NgSelectModule,
-  ],
-  declarations: [
-	UsersAllListComponent,
-	UsersAllAddComponent,
-	UsersAllEditComponent,
-  ]
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		UsersAllPageRoutingModule,
+		ShareModulePageModule,
+		ReactiveFormsModule,
+		NgSelectModule,
+		NgxPaginationModule,
+		NgPersianDatepickerModule,
+	],
+	declarations: [
+		UsersAllListComponent,
+		UsersAllAddComponent,
+		UsersAllEditComponent,
+	]
 })
-export class UsersAllPageModule {}
+export class UsersAllPageModule { }

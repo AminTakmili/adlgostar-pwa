@@ -32,6 +32,7 @@ export class EmployerEditComponent implements OnInit {
 		private cd: ChangeDetectorRef
 	) {
 		this.editFrom = this.fb.group({
+			id: ['', Validators.compose([Validators.required])],
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
 			birth_certificate_code: ['', Validators.compose([Validators.required])],
@@ -108,6 +109,7 @@ export class EmployerEditComponent implements OnInit {
 			});
 
 			this.editFrom = this.fb.group({
+				id: [this.dataList.id, Validators.compose([Validators.required])],
 				first_name: [this.dataList.first_name, Validators.compose([Validators.required])],
 				last_name: [this.dataList.last_name, Validators.compose([Validators.required])],
 				birth_certificate_code: [this.dataList.birth_certificate_code, Validators.compose([Validators.required])],
@@ -118,7 +120,7 @@ export class EmployerEditComponent implements OnInit {
 				birth_certificate_issuance_place: [this.dataList.birth_certificate_issuance_place, Validators.compose([Validators.required])],
 				gender: [this.dataList.gender, Validators.compose([Validators.required])],
 				email: [this.dataList.email, Validators.compose([Validators.required, Validators.email])],
-				 image: [],
+				image: [],
 				addresses: this.fb.array(address),
 			});
 

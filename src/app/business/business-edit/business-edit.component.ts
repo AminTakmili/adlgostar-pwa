@@ -19,7 +19,7 @@ export class BusinessEditComponent implements OnInit {
 
 	disable = true;
 	employerList = [
-		{ id: this.global.user.id, name: this.global.user.firstName + ' ' + this.global.user.lastName, selected: true },
+		{ id: this.global.user.id, name: this.global.user.first_name + ' ' + this.global.user.last_name, selected: true },
 	];
 	employer = this.global.user.id;
 

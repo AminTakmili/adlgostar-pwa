@@ -113,8 +113,8 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 
 						await this.global.dismisLoading();
 
-						this.offset = 0;
-						this.ChangeYear();
+
+						this.pageChange(1);
 
 						this.global.showToast(res.msg);
 

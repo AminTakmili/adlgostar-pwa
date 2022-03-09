@@ -1,9 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { async } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { sideMenu } from 'src/app/core/classes/sideMenu.class';
+import { globalData } from 'src/app/core/data/global.data';
 import { User } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -30,213 +29,40 @@ import { StorageService } from 'src/app/core/services/storage.service';
 })
 export class SidebarComponent implements OnInit {
 
-	Sidemenu: sideMenu[] = [
-		{
-			name: 'داشبورد',
-			url: '/',
-			icon: 'speedometer',
-			submenu: [],
-			open: false,
-			state: "close",
-			function: 'showDetail'
-		},
-		{
-			name: 'کسب و کار ها',
-			url: '/businesses',
-			icon: 'business',
-			submenu: [],
-			open: false,
-			state: "close",
-			function: 'showDetail'
-		},
-		{
-			name: 'کارفرمایان',
-			url: '/employers',
-			icon: 'person-circle',
-			submenu: [],
-			open: false,
-			state: "close",
-			function: 'showDetail'
-		},
-		{
-			name: 'کارمندان',
-			url: '/employees',
-			icon: 'people',
-			submenu: [],
-			open: false,
-			state: "close",
-			function: 'showDetail'
-		},
-		{
-			name: 'قرارداد ها',
-			icon: 'document-text',
-			open: false,
-			state: "close",
-			function: 'showDetail',
-			submenu: [
-				{
-					name: 'لیست قرار داد ها',
-					url: '/contracts/list',
-					icon: 'document-text',
-					function: 'showDetail'
-				},
-				{
-					name: 'قالب قرارداد',
-					url: '/contracts/template',
-					icon: 'document-attach',
-					function: 'showDetail'
+	Sidemenu: sideMenu[] = [];
 
-				},
-				{
-					name: 'شروط ضمن قرار داد',
-					url: '/contracts/conditions',
-					icon: 'document-lock',
-					function: 'showDetail'
-
-				},
-			]
-		},
-		{
-			name: 'بیشتر',
-			icon: 'ellipsis-vertical',
-			open: false,
-			state: "close",
-			function: 'showDetail',
-			submenu: [
-				{
-					name: 'پایه سنوات',
-					url: '/more/basic-years',
-					icon: 'trending-up',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'حداقل مزد روزانه',
-					url: '/more/minimum-daily-wage',
-					icon: 'golf',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'محاسبه پایه سنوات',
-					url: '/more/calc-basic-years',
-					icon: 'options',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'موارد اضافه حقوق',
-					url: '/more/extra-salary-item',
-					icon: 'options',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'ثابت های حقوق',
-					url: '/more/salary-constants',
-					icon: 'layers',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'دسته بندی کسب کار',
-					url: '/more/business-category',
-					icon: 'git-network',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'سمت های کارمندان',
-					url: '/more/employee-posts',
-					icon: 'git-compare',
-					function: 'showDetail'
-
-				},
-			],
-		},
-		{
-			name: 'کاربران',
-			icon: 'people-circle',
-			open: false,
-			state: "close",
-			function: 'showDetail',
-			submenu: [
-				{
-					name: 'انواع کاربران',
-					url: '/users/type',
-					icon: 'color-palette',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'نقش ها',
-					url: '/users/role',
-					icon: 'construct',
-					function: 'showDetail'
-				},
-				{
-					name: 'کاربران',
-					url: '/users/list',
-					icon: 'person-add',
-					function: 'showDetail'
-				},
-			],
-
-		},
-		{
-			name: 'پروفایل من',
-			icon: 'person-circle',
-			open: false,
-			state: "close",
-			function: 'showDetail',
-			submenu: [
-				{
-					name: 'ویرایش اطلاعات',
-					url: '/business',
-					icon: 'create',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'اطلاعات تماس',
-					url: '/business',
-					icon: 'call',
-					function: 'showDetail'
-				},
-				{
-					name: 'پشتیبانی',
-					url: '/business',
-					icon: 'chatbubbles',
-					function: 'showDetail'
-				},
-				{
-					name: 'تغییر شماره همراه',
-					url: '/business',
-					icon: 'call',
-					function: 'showDetail'
-				},
-				{
-					name: 'خروج از حساب کاربری',
-					url: '/profile/logout',
-					icon: 'log-out-outline',
-					function: 'logout'
-
-				},
-			],
-
-		}
-	];
-
-	userInfo : User;
+	userInfo: User;
+	check = false;
 	constructor(
 		public global: GlobalService,
 		private storage: StorageService,
 		public navCtrl: NavController,
 	) { }
 
-	ngOnInit() {
-		this.userInfo = this.global.user;
-	 }
+	async ngOnInit() {
+		this.userInfo = await this.global.getUserInfo();
+
+
+		this.global._user.subscribe((val) => {
+			if (val) {
+				this.Sidemenu = globalData.menu;
+				console.log(this.userInfo);
+				this.Sidemenu.map(async (item)=>{
+					item.access = await this.global.checkPersmionByRoute(item.url);
+					if(item.submenu && item.submenu.length){
+						let count : number = 1;
+						item.submenu.map(async (sub)=>{
+							sub.access = await this.global.checkPersmionByRoute(sub.url);
+							if(!sub.access) {count++;}
+							if(count > 1 && count === item.submenu.length ){item.access = false;}
+						})
+					}
+				});
+				this.check = true;
+			}
+		});
+
+	}
 
 
 	showDetail(item: any) {
@@ -281,9 +107,9 @@ export class SidebarComponent implements OnInit {
 	async onRouterLinkActive(evenet: any, index: number) {
 		// console.log(evenet,index);
 
-		await this.Sidemenu.map( async (item)=>{item.state = "close";});
+		await this.Sidemenu.map(async (item) => { item.state = "close"; });
 
-		if(evenet){this.Sidemenu[index].state = evenet ? "open" : "close";}
+		if (evenet) { this.Sidemenu[index].state = evenet ? "open" : "close"; }
 
 	}
 }

@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button shape="round" color="success" [routerLink]="['add']">
+				<ion-button shape="round" *ngIf="global.userPermision['contract_conditions_add']" color="success" [routerLink]="['add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن شروط ضمن قرار داد جدید
 				</ion-button>
@@ -63,12 +63,12 @@
 
 							<td class="ion-text-left">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['contract_conditions_delete']"
 										tooltip="حذف">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show"
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" *ngIf="global.userPermision['contract_conditions_edit']"
 										[routerLink]="['edit' , item.id ]" tooltip="ویرایش">
 										<ion-icon size="small" color="medium" slot="icon-only" name="create">
 										</ion-icon>

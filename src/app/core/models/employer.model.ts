@@ -4,6 +4,7 @@ import { Media } from "./media.model";
 
 export class Employer implements Deserializable {
 	id !: number;
+	role_id !: string;
 	first_name !: string;
 	last_name !: string;
 	full_name !: string;

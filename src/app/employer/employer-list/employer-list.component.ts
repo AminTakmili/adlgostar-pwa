@@ -70,7 +70,35 @@ export class EmployerListComponent implements OnInit {
 		this.getData();
 	}
 	removeItem(item : Employer){
+		this.global.showAlert('حذف کارمند بندی', 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('employer/delete', {
+						id: item.id,
+					}).subscribe(async (res:any) => {
 
+						await this.global.dismisLoading();
+						this.pageChange(1);
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 
 }
