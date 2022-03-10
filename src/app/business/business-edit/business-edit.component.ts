@@ -7,7 +7,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { Business } from 'src/app/core/models/business.model';
+import { Business, BusinessList } from 'src/app/core/models/business.model';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class BusinessEditComponent implements OnInit {
 		{ id: this.global.user.id, name: this.global.user.first_name + ' ' + this.global.user.last_name, selected: true },
 	];
 	employer = this.global.user.id;
-
+	pageTitle = "ویرایش کسب و کار";
 	addresses: FormArray;
 	////////////////////
 	personType = globalData.personType;
@@ -31,7 +31,7 @@ export class BusinessEditComponent implements OnInit {
 	businessForm: FormGroup;
 	businessId: string;
 	bussiness: Business;
-
+	dataList : Business;
 	categoryLimit = 1000;
 	categoryoffSet = 0;
 
@@ -41,6 +41,7 @@ export class BusinessEditComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
+
 	) {
 
 		this.businessForm = this.fb.group({
@@ -63,7 +64,7 @@ export class BusinessEditComponent implements OnInit {
 
 
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.businessForm.get('addresses');
+		return this.businessForm.get('addresses') as FormArray;
 	}
 
 	newAddresses(): FormGroup {
@@ -76,21 +77,73 @@ export class BusinessEditComponent implements OnInit {
 	}
 	async ngOnInit() {
 
-		await this.getData();
-		await this.setTitle();
+
 	}
 
+	async ionViewWillEnter(){
+		await this.getDetail(this.route.snapshot.paramMap.get('id'))
+		await this.getData();
+		await this.setTitle();
 
-	async getData() {
-		const countries = await this.global.httpGet('more/countries');
-		const businessCategory = await this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
-		const businessDetail = await this.global.httpPost('business/detail', { business_id: this.businessId });
+	}
 
-		await this.global.parallelRequest([countries, businessCategory, businessDetail])
-			.subscribe(([countriesData, businessCategory  ='', businessDetailData  ='']) => {
-				this.setCountry(countriesData);
+	async getDetail(id: string) {
+		await this.global.showLoading('لطفا منتظر بمانید...');
+		this.global.httpPost('business/detail', {
+			business_id: id,
+		}).subscribe(async (res: any) => {
+			await this.global.dismisLoading();
+
+			this.dataList = new Business().deserialize(res);
+			console.log(this.dataList);
+
+			const address : FormGroup[] = this.dataList.addresses.map((item) => {
+
+				const formAddress = this.fb.group({
+					city_id: [item.city.id, Validators.compose([Validators.required])],
+					address: [item.address, Validators.compose([Validators.required])],
+					postal_code: [item.postal_code,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
+					phone: [item.phone,  Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
+				});
+				return formAddress
+			});
+
+
+
+			this.businessForm = this.fb.group({
+				business_id: [this.dataList.id, Validators.compose([Validators.required])],
+				employer_id: [this.dataList.employer.id, Validators.compose([Validators.required])],
+				name: [this.dataList.name, Validators.compose([Validators.required])],
+				employer_type: [this.dataList.employer_type, Validators.compose([Validators.required])],
+				registration_number: [this.dataList.registration_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
+				business_license_number: [this.dataList.business_license_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
+				national_id: [this.dataList.national_id, Validators.compose([Validators.pattern("^[0-9]*$")])],
+				business_category_id: [this.dataList.business_category.id, Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
+				addresses: this.fb.array(address),
+			});
+
+			this.addresses = this.businessForm.get('addresses') as FormArray;
+			// console.log(this.dataList);
+			// console.log(res:any);
+		}, async (error: any) => {
+			await this.global.dismisLoading();
+			this.global.showError(error);
+		});
+
+	}
+
+	getData() {
+		const countries = this.global.httpGet('more/countries');
+		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
+		const employerList = this.global.httpPost('employer/list', { limit: 1000, offset: this.categoryoffSet });
+
+
+		this.global.parallelRequest([countries, businessCategory , employerList])
+			.subscribe(([countriesData, businessCategory  ='', employerRes = '']) => {
+
+				this.province = this.global.createCountry(countriesData);
 				this.setBussinessCategory(businessCategory);
-				this.setbusiness(businessDetailData);
+				this.employerList =  this.global.createEmployer(employerRes)
 			});
 	}
 	setTitle() {
@@ -102,35 +155,7 @@ export class BusinessEditComponent implements OnInit {
 		});
 	}
 
-	setbusiness(data : any) {
 
-		this.bussiness = new Business().deserialize(data);
-		const address: FormGroup[] = this.bussiness.addresses.map((item) => {
-
-			const formAddress = this.fb.group({
-				city_id: [item.city_id, Validators.compose([Validators.required])],
-				address: [item.address, Validators.compose([Validators.required])],
-				postal_code: [item.postal_code, Validators.compose([Validators.pattern("^[0-9]*$")])],
-				phone: [item.phone, Validators.compose([Validators.pattern("^[0-9]*$")])],
-			})
-			return formAddress
-		});
-
-		this.businessForm = this.fb.group({
-			business_id: [this.bussiness.id, Validators.compose([Validators.required])],
-			employer_id: [this.bussiness.employer.id, Validators.compose([Validators.required])],
-			name: [this.bussiness.name, Validators.compose([Validators.required])],
-			employer_type: [this.bussiness.employer_type, Validators.compose([Validators.required])],
-			registration_number: [this.bussiness.registration_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
-			business_license_number: [this.bussiness.business_license_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
-			national_id: [this.bussiness.national_id, Validators.compose([Validators.pattern("^[0-9]*$")])],
-			business_category_id: [this.bussiness.business_category.id, Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
-			addresses: this.fb.array(address),
-		});
-
-		this.addresses = this.businessForm.get('addresses') as FormArray;
-
-	}
 
 	setCountry(data : any) {
 		data[0].provinces.map((province: any) => {
@@ -164,7 +189,7 @@ export class BusinessEditComponent implements OnInit {
 
 	addAnotherAdress() {
 		this.addresses.push(this.newAddresses());
-		// console.log(this.addressFormGroup);
+		console.log(this.addressFormGroup);
 	}
 
 	removeAddress(index: number) {
@@ -193,7 +218,7 @@ export class BusinessEditComponent implements OnInit {
 
 		if (this.businessForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('business/edit', this.businessForm.value)
+			this.global.httpPatch('business/edit', this.businessForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();

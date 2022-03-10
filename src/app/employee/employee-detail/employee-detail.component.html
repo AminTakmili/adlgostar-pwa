@@ -16,6 +16,11 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
+					<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'"></ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
 				<ion-button shape="round" *ngIf="global.userPermision['employees_edit']" [routerLink]="['/employees/edit/'+Employee?.id]" color="secondary">
 					<ion-icon slot="start" name="create"></ion-icon>
 					ویرایش اطلاعات
@@ -40,7 +45,7 @@
 					<div *ngFor="let item of Employee.businesses">
 						<h5 class="mt-4 mb-2">قراردها با {{ item.business_name}}</h5>
 						<!-- table -->
-						<table class="width-100 theme-table mt-3">
+						<table class="width-100 theme-table mt-3" *ngIf="item.contracts && item.contracts.length">
 							<thead class="thead-dark">
 								<tr class="ion-text-center">
 									<th class="ion-text-center">#</th>
@@ -85,6 +90,11 @@
 								</tr>
 							</tbody>
 						</table>
+						<div >
+							<div class="alert alert-warning my-3" *ngIf="!item.contracts.length" role="alert">
+								<h6 class="title"> قرار دادی برای نمایش یافت نشد </h6>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

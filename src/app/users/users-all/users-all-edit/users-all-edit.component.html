@@ -41,7 +41,7 @@
 							>
 							</ng-select>
 							<span class="error">
-								<!-- <app-validator [control]="item['controls']['city_id']" [controlName]="'شهر'"></app-validator> -->
+								<!-- <app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator> -->
 							</span>
 							<span class="hint"> مثلا شیراز </span>
 						</div>
@@ -217,7 +217,7 @@
 									>
 									</ng-select>
 									<span class="error">
-										<app-validator [control]="item['controls']['city_id']" [controlName]="'شهر'"></app-validator>
+										<app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator>
 									</span>
 									<span class="hint"> مثلا شیراز </span>
 								</div>
@@ -228,7 +228,7 @@
 									<label>آدرس محل کار</label>
 									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
 									<span class="error">
-										<app-validator [control]="item['controls']['address']" [controlName]="'آدرس محل کار'"></app-validator>
+										<app-validator [control]="item.get('address')" [controlName]="'آدرس محل کار'"></app-validator>
 									</span>
 									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
 								</div>
@@ -239,7 +239,7 @@
 									<label>کد پستی</label>
 									<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="postal_code"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['postal_code']" [controlName]="'کد پستی'"></app-validator>
+										<app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 71335984668</span>
 								</div>
@@ -250,7 +250,7 @@
 									<label>شماره تلفن</label>
 									<ion-input type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['phone']" [controlName]="'شماره تلفن'"></app-validator>
+										<app-validator [control]="item.get('phone')" [controlName]="'شماره تلفن'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 071*******</span>
 								</div>

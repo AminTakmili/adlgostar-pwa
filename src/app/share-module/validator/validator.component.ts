@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ValidationErrors, FormControl } from '@angular/forms';
+import { ValidationErrors, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-validator',
@@ -10,7 +10,8 @@ export class ValidatorComponent implements OnInit {
 
 	@Input() controlName: string;
 
-	@Input() control: FormControl;
+	@Input() control !: any;
+	// @Input() control !: AbstractControl;
 
 	config : any = {};
 

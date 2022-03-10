@@ -22,6 +22,35 @@ export const globalData = {
 			function: 'showDetail'
 		},
 		{
+			name: 'کاربران',
+			icon: 'people-circle',
+			open: false,
+			state: "close",
+			function: 'showDetail',
+			submenu: [
+				{
+					name: 'انواع کاربران',
+					url: '/users/type',
+					icon: 'color-palette',
+					function: 'showDetail'
+
+				},
+				{
+					name: 'نقش ها',
+					url: '/users/role',
+					icon: 'construct',
+					function: 'showDetail'
+				},
+				{
+					name: 'کاربران',
+					url: '/users/list',
+					icon: 'person-add',
+					function: 'showDetail'
+				},
+			],
+
+		},
+		{
 			name: 'کسب و کار ها',
 			url: '/businesses',
 			icon: 'business',
@@ -136,60 +165,31 @@ export const globalData = {
 			],
 		},
 		{
-			name: 'کاربران',
-			icon: 'people-circle',
-			open: false,
-			state: "close",
-			function: 'showDetail',
-			submenu: [
-				{
-					name: 'انواع کاربران',
-					url: '/users/type',
-					icon: 'color-palette',
-					function: 'showDetail'
-
-				},
-				{
-					name: 'نقش ها',
-					url: '/users/role',
-					icon: 'construct',
-					function: 'showDetail'
-				},
-				{
-					name: 'کاربران',
-					url: '/users/list',
-					icon: 'person-add',
-					function: 'showDetail'
-				},
-			],
-
-		},
-		{
 			name: 'پروفایل من',
 			icon: 'person-circle',
 			open: false,
 			state: "close",
 			function: 'showDetail',
 			submenu: [
-				{
-					name: 'ویرایش اطلاعات',
-					url: '/business',
-					icon: 'create',
-					function: 'showDetail'
+				// {
+				// 	name: 'ویرایش اطلاعات',
+				// 	url: '/business',
+				// 	icon: 'create',
+				// 	function: 'showDetail'
 
-				},
-				{
-					name: 'اطلاعات تماس',
-					url: '/business',
-					icon: 'call',
-					function: 'showDetail'
-				},
-				{
-					name: 'پشتیبانی',
-					url: '/business',
-					icon: 'chatbubbles',
-					function: 'showDetail'
-				},
+				// },
+				// {
+				// 	name: 'اطلاعات تماس',
+				// 	url: '/business',
+				// 	icon: 'call',
+				// 	function: 'showDetail'
+				// },
+				// {
+				// 	name: 'پشتیبانی',
+				// 	url: '/business',
+				// 	icon: 'chatbubbles',
+				// 	function: 'showDetail'
+				// },
 				{
 					name: 'تغییر شماره همراه',
 					url: '/business',
@@ -198,7 +198,7 @@ export const globalData = {
 				},
 				{
 					name: 'خروج از حساب کاربری',
-					url: '/profile/logout',
+
 					icon: 'log-out-outline',
 					function: 'logout'
 

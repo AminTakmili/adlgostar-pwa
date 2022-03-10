@@ -104,7 +104,7 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	get provisosFormGroup(): FormArray {
-		return <FormArray>this.contractsForm.get('provisos');
+		return this.contractsForm.get('provisos') as FormArray;
 	}
 
 	extraFields(id: number): FormGroup {
@@ -115,7 +115,7 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	get extraFieldsFormGroup(): FormArray {
-		return <FormArray>this.contractsForm.get('extra_fields');
+		return this.contractsForm.get('extra_fields') as FormArray;
 	}
 
 

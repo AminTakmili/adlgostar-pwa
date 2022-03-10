@@ -110,4 +110,11 @@ export class MoreExtraSalaryItemListComponent implements OnInit {
 		});
 	}
 
+	pageChange($event : any) {
+		// console.log($event)
+		this.CurrentPage = $event;
+		this.offset = (this.limit * this.CurrentPage) - this.limit;
+		this.getData();
+	}
+
 }

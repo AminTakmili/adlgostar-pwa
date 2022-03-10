@@ -46,7 +46,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 	}
 
 	get postsFormGroup(): FormArray {
-		return <FormArray>this.addFrom.get('posts');
+		return this.addFrom.get('posts') as FormArray;
 	}
 
 	newPosts(isTrue : boolean): FormGroup {
@@ -75,7 +75,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 
 	getData(){
 
-		const employees = this.global.httpPost('employee/filteredList', { limit: 1000, offset: 0 });
+		const employees = this.global.httpPost('employee/filteredList', { for_combo:true , limit: 1000, offset: 0 });
 		const posts = this.global.httpPost('post/list', { limit: 1000, offset: 0 });
 		this.global.parallelRequest([employees , posts])
 			.subscribe(([employeesRes , postsRes = '' ]) => {
@@ -103,7 +103,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/businesses/detail/'+this.businessId);
-					this.global.showToast('کارمند با موفقیت اضاف شد');
+					this.global.showToast('کارمند با موفقیت اضافه شد');
 					this.addFrom.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

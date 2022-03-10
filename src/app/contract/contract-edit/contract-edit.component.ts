@@ -109,7 +109,7 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	get provisosFormGroup(): FormArray {
-		return <FormArray>this.contractsForm.get('provisos');
+		return this.contractsForm.get('provisos') as FormArray;
 	}
 
 	extraFields(id: number): FormGroup {
@@ -120,7 +120,7 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	get extraFieldsFormGroup(): FormArray {
-		return <FormArray>this.contractsForm.get('extra_fields');
+		return this.contractsForm.get('extra_fields') as FormArray;
 	}
 
 
@@ -178,7 +178,7 @@ export class ContractEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/detail', {
 			id: id,
-			with_replace: 1,
+			with_replace: 0,
 		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
 

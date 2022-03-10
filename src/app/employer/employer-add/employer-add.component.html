@@ -48,7 +48,7 @@
 							<span class="error">
 								<app-validator [control]="addFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا رضایی</span>
 						</div>
 					</div>
 					<!-- -->
@@ -61,7 +61,7 @@
 								<app-validator [control]="addFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">شماره شناسنامه عدد است</span>
 						</div>
 					</div>
 					<!-- -->
@@ -74,7 +74,7 @@
 								<app-validator [control]="addFrom.controls['national_code']" [controlName]="'کد ملی'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">کد ملی 10 رقمی است</span>
 						</div>
 					</div>
 					<!-- -->
@@ -99,7 +99,7 @@
 								<app-validator [control]="addFrom.controls['birth_place']" [controlName]="'محل تولد'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا شیراز</span>
 						</div>
 					</div>
 					<!-- -->
@@ -144,7 +144,7 @@
 								<app-validator [control]="addFrom.controls['gender']" [controlName]="'جنسیت'">
 								</app-validator>
 							</span>
-							<span class="hint">مثلا اصفهان</span>
+							<span class="hint">مثلا آقا</span>
 						</div>
 					</div>
 					<!-- -->
@@ -196,7 +196,7 @@
 									>
 									</ng-select>
 									<span class="error">
-										<app-validator [control]="item['controls']['city_id']" [controlName]="'شهر'"></app-validator>
+										<app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator>
 									</span>
 									<span class="hint"> مثلا شیراز </span>
 								</div>
@@ -207,7 +207,7 @@
 									<label>آدرس محل کار</label>
 									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
 									<span class="error">
-										<app-validator [control]="item['controls']['address']" [controlName]="'آدرس محل کار'"></app-validator>
+										<app-validator [control]="item.get('address')" [controlName]="'آدرس محل کار'"></app-validator>
 									</span>
 									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
 								</div>
@@ -218,7 +218,7 @@
 									<label>کد پستی</label>
 									<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="postal_code"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['postal_code']" [controlName]="'کد پستی'"></app-validator>
+										<app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 71335984668</span>
 								</div>
@@ -229,7 +229,7 @@
 									<label>شماره تلفن</label>
 									<ion-input type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['phone']" [controlName]="'شماره تلفن'"></app-validator>
+										<app-validator [control]="item.get('phone')" [controlName]="'شماره تلفن'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 071*******</span>
 								</div>

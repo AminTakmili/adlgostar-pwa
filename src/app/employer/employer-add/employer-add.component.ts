@@ -13,7 +13,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class EmployerAddComponent implements OnInit {
 
-	pageTitle: string = "کارمند جدید";
+	pageTitle: string = "کارفرما جدید";
 	addFrom: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;
@@ -54,7 +54,7 @@ export class EmployerAddComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.addFrom.get('addresses');
+		return this.addFrom.get('addresses') as FormArray;
 	}
 
 	ngOnInit() {

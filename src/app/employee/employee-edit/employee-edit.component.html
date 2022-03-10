@@ -9,19 +9,569 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title">افزودن قرار داد جدید</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضاف کنید
+					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضافه کنید
 					</p>
 				</div>
 			</div>
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="medium" fill="outline">
-					<ion-back-button defaultHref="contracts" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
-					</ion-back-button>
+					<ion-back-button defaultHref="employees" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'"></ion-back-button>
 					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت -->
 				</ion-button>
 			</div>
 		</div>
 	</div>
+	<main>
+		<div class="container">
+			<div class="stepper py-4">
+				<div class="line"></div>
+				<div class="item" [class.active]="step===1">
+					<span class="no">1</span>
+					<span class="title">اطلاعات اولیه</span>
+				</div>
+				<div class="item" [class.active]="step===2">
+					<span class="no">2</span>
+					<span class="title">آدرس</span>
+				</div>
+				<div class="item" [class.active]="step===3">
+					<span class="no">3</span>
+					<span class="title">سمت</span>
+				</div>
+				<div class="item" [class.active]="step===4">
+					<span class="no">4</span>
+					<span class="title">اطلاعات بانکی</span>
+				</div>
+				<div class="item" [class.active]="step===5">
+					<span class="no">5</span>
+					<span class="title">اطلاعات خانوادگی</span>
+				</div>
+				<div class="item" [class.active]="step===6">
+					<span class="no">6</span>
+					<span class="title">چند رسانه ایی</span>
+				</div>
+			</div>
+		</div>
 
+		<form class="d-block py-4" autocomplete="disabled" [formGroup]="employeeForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+			<div class="container">
+				<!-- step - 1 -->
+				<div [class.show]="step === 1" class="form-item">
+					<div class="row">
+						<div class="col-12">
+							<div class="my-4">
+								<div class="title-1">
+									<h2 class="title">اطلاعات عمومی</h2>
+									<p class="dsec">
+										در این بخش اطلاعات عمومی کارمند را وارد کنید
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- نام -->
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>نام</label>
+								<ion-input (keypress)="global.justWord($event)" autocomplete="off" formControlName="first_name"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['first_name']" [controlName]="'نام '"></app-validator>
+								</span>
+								<span class="hint"></span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>نام خانوادگی</label>
+								<ion-input (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="last_name"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
+								</span>
+								<span class="hint">مثلا : دهقان</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>شماره شناسنامه</label>
+								<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="birth_certificate_number"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['birth_certificate_number']" [controlName]="'شماره شناسنامه'"></app-validator>
+								</span>
+								<span class="hint">مثلا : 321321</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>کد ملی</label>
+								<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="national_code"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['national_code']" [controlName]="'کد ملی'"></app-validator>
+								</span>
+								<span class="hint">کد ملی باید 10 رقمی باشد</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>موبایل</label>
+								<ion-input  (keypress)="global.justNumber($event)" type="phone"  autocomplete="new-pass" formControlName="mobile"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['mobile']" [controlName]="'موبایل'"></app-validator>
+								</span>
+								<span class="hint">شماره همراه 11 رقمی است و با 0 شروع می شود</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+						<!-- formControlName="birth_date" -->
+						<div class="form-input mb-3">
+							<label>تاریخ تولد</label>
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="birth_date" />
+							 </ng-persian-datepicker>
+							<span class="error">
+								<app-validator [control]="employeeForm.controls['birth_date']" [controlName]="'تاریخ تولد'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>محل تولد</label>
+								<ion-input autocomplete="new-pass" formControlName="birth_place"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['birth_place']" [controlName]="'محل تولد'"></app-validator>
+								</span>
+								<span class="hint">مثلا : شیراز</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>محل صدور شناسنامه</label>
+								<ion-input autocomplete="new-pass" formControlName="birth_certificate_issuance_place">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'"></app-validator>
+								</span>
+								<span class="hint">مثلا : شیراز</span>
+							</div>
+						</div>
+						<div class="col-lg-6" *ngIf="StaticData">
+							<div class="form-input mb-3">
+								<label>جنسیت</label>
+								<ng-select
+									[items]="StaticData.gender"
+									placeholder="انتخاب کنید"
+									bindLabel="name"
+									bindValue="value"
+									formControlName="gender"
+								>
+								</ng-select>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['gender']" [controlName]="'جنسیت'"></app-validator>
+								</span>
+								<span class="hint">مرد یا زن</span>
+							</div>
+						</div>
+						<div class="col-lg-6 " *ngIf="StaticData">
+							<div class="form-input mb-3">
+								<label>وضعیت تاهل</label>
+								<ng-select
+										[items]="StaticData.maritalStatus"
+										placeholder="انتخاب کنید"
+										bindLabel="name"
+										bindValue="value"
+										formControlName="marital_status"
+									>
+									</ng-select>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['marital_status']" [controlName]="'وضعیعت تاهل'"></app-validator>
+								</span>
+								<span class="hint">مجرد یا متاهل</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>نام پدر</label>
+								<ion-input (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="father_name"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['father_name']" controlName="'نام پدر'"></app-validator>
+								</span>
+								<span class="hint">مثلا : حبیب</span>
+							</div>
+						</div>
+						<div class="col-lg-6 " *ngIf="StaticData">
+
+							<div class="form-input mb-3">
+								<label>آخرین مدرک تحصیلی</label>
+								<ng-select
+									[items]="StaticData.degree"
+									placeholder="انتخاب کنید"
+									bindLabel="name"
+									bindValue="id"
+									formControlName="degree_id"
+								>
+								</ng-select>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['degree_id']" controlName="آخرین مدرک تحصیلی"></app-validator>
+								</span>
+								<span class="hint">مثلا : 071*******</span>
+							</div>
+						</div>
+						<!--  -->
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>رشته ی تحصیلی</label>
+								<ion-input autocomplete="new-pass" formControlName="field_of_study"></ion-input>
+								<span class="error">
+									<app-validator [control]="employeeForm.controls['field_of_study']" controlName="'رشته ی تحصیلی'"></app-validator>
+								</span>
+								<span class="hint">مثلا : حسابداری</span>
+							</div>
+						</div>
+						<!--  -->
+						<div class="col-lg-6 "></div>
+						<div class="col-lg-6 ">
+							<ion-item lines="none">
+								<ion-label> دارای 720 روز بیمه  </ion-label>
+								<ion-checkbox type="string" slot="start" formControlName="insurance_more_than_720">
+								</ion-checkbox>
+							</ion-item>
+						</div>
+					</div>
+				</div>
+				<!-- step - 2 -->
+				<div [class.show]="step === 2" class="form-item" >
+
+					<div formArrayName="addresses">
+						<div *ngFor="let item of addressFormGroup.controls ; let i = index" class="row" [formGroupName]="i">
+							<div class="col-12 my-4">
+								<div class="title-1">
+									<h2 class="title">آدرس</h2>
+									<p class="dsec">
+										در این بخش اطلاعات آدرس و محل زندگی کارمند را وارد کنید
+									</p>
+								</div>
+							</div>
+							<!-- آدرس منزل -->
+							<div class="col-lg-12">
+								<div class="form-input mb-3" *ngIf="province && province.length">
+									<label>انتخاب شهر</label>
+									<ng-select
+										[items]="province"
+										placeholder="یک شهر انتخاب کنید"
+										bindLabel="name"
+										bindValue="id"
+										groupBy="province"
+										formControlName="city_id"
+									>
+									</ng-select>
+									<span class="error">
+										<app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator>
+									</span>
+									<span class="hint"> مثلا شیراز </span>
+								</div>
+							</div>
+							<!-- آدرس منزل -->
+							<div class="col-lg-12">
+								<div class="form-input mb-3">
+									<label>آدرس منزل</label>
+									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
+									<span class="error">
+										<app-validator [control]="item.get('address')" [controlName]="' آدرس منزل '"></app-validator>
+									</span>
+									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
+								</div>
+							</div>
+							<!-- کد پستی منزل -->
+							<div class="col-lg-6">
+								<div class="form-input mb-3">
+									<label>کد پستی منزل</label>
+									<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="postal_code"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی منزل '"></app-validator>
+									</span>
+									<span class="hint">مثلا : 71335984668</span>
+								</div>
+							</div>
+							<!-- شماره تماس منزل -->
+							<div class="col-lg-6">
+								<div class="form-input mb-3">
+									<label>شماره تماس منزل</label>
+									<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('phone')" [controlName]="'شماره تماس منزل'"></app-validator>
+									</span>
+									<span class="hint">مثلا : 071*******</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step - 3 -->
+				<div [class.show]="step=== 3 " class="form-item">
+					<div formArrayName="military_information">
+						<div class="row" *ngFor="let item of militaryInformationGroup.controls ; let i = index" [formGroupName]="i">
+							<div class="col-12">
+								<div class="my-4">
+									<div class="title-1">
+										<h2 class="title">وضعیت سربازی</h2>
+										<p class="dsec">
+											وضعیت نظام وضیفه خود را در این قسمت مشخص کنید .
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12 " *ngIf="StaticData">
+								<div class="form-input mb-3">
+									<label>وضعیت نظام وظیفه </label>
+									<ng-select
+										[items]="StaticData.military_status"
+										placeholder="انتخاب کنید"
+										bindLabel="name"
+										bindValue="value"
+										formControlName="military_state"
+										(change)="checkItem(item)"
+									>
+									</ng-select>
+									<span class="error">
+										<app-validator [control]="item.get('military_state')" [controlName]="'وضعیت نظام وظیفه'"></app-validator>
+									</span>
+									<span class="hint">مثلا : معاف</span>
+								</div>
+							</div>
+
+							<div class="col-lg-12" *ngIf="item['value']['military_state'] === 'exempt' ">
+								<div class="form-input mb-3">
+									<label>علت معافی</label>
+									<ion-input formControlName="military_exempt_reason"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('military_exempt_reason')" [controlName]="'علت معافی'"></app-validator>
+									</span>
+									<span class="hint">مثلا کفالت</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step - 4 -->
+				<div [class.show]="step=== 4 " class="form-item">
+					<div formArrayName="bank_information" >
+						<div class="row" *ngFor="let item of bankInformationGroup.controls ; let i = index"   [formGroupName]="i">
+							<!--  -->
+							<div class="col-12">
+								<div class="my-4">
+									<div class="title-1">
+										<h2 class="title">اطلاعات بانکی</h2>
+										<p class="dsec">
+											در این بخش اطلاعات بانکی و نحوه ی واریز حقوق برای کارمند را وارد کنید
+										</p>
+									</div>
+								</div>
+							</div>
+							<!--  -->
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>نام بانک</label>
+									<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('name')"  [controlName]="'نام بانک'"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+							</div>
+							<!--  -->
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>نام شعبه</label>
+									<ion-input autocomplete="new-pass" formControlName="branch_name"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('branch_name')" [controlName]="'نام شعبه'"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>شماره حساب</label>
+									<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="account_number"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('account_number')" [controlName]="'شماره حساب'"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>شماره کارت</label>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="card_number"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('card_number')" [controlName]="'شماره کارت'"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+							</div>
+							<div class="col-lg-12 ">
+								<div class="form-input mb-3">
+									<label>شماره شبا</label>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="iban_number"></ion-input>
+									<span class="error">
+										<app-validator [control]="item.get('iban_number')" [controlName]="'شماره شبا'"></app-validator>
+									</span>
+									<span class="hint">شماره شبا بدون IR </span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<ion-item lines="none">
+									<ion-label> پرداخت با چک </ion-label>
+									<ion-checkbox type="string" slot="start" formControlName="payment_with_check">
+									</ion-checkbox>
+								</ion-item>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step - 5 -->
+				<div [class.show]="step=== 5 " class="form-item">
+					<div formArrayName="family_information">
+						<div class="row" *ngFor="let item of familyInformationGroup.controls ; let i = index"  [formGroupName]="i">
+							<div class="col-12">
+								<div class="my-4">
+									<div class="title-1">
+										<h2 class="title">اطلاعات خانوادگی</h2>
+										<p class="dsec">
+											در این بخش اطلاعات خانوادگی و تعداد اولاد کارمند را وارد کنید
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-12 ">
+								<div class="form-input mb-3">
+									<label>تعداد کل فرزندان</label>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="total_child"></ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="item.get('iban_number')" [controlName]="'تعداد کل فرزندان'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>تعداد فرزندان بالا 18 سال و غیر محصل</label>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass"
+										formControlName="count_student_child_over_18_years_old"></ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="item.get('count_student_child_over_18_years_old')" [controlName]="'تعداد فرزندان بالای 18 سال'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>تعداد فرزندان زیر 18 سال و فرزندان بالا 18 سال محصل</label>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="count_child_under_18_years">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="item.get('count_child_under_18_years')" [controlName]="'تعداد فرزندان زیر 18 سال'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step - 6 -->
+				<div [class.show]="step=== 6 " class="form-item">
+					<!-- step - 6 -->
+					<div formArrayName="image">
+						<div class="row align-items-end" *ngFor="let item of imageGroup.controls ; let i = index"  [formGroupName]="i">
+							<div class="col-12">
+								<div class="my-4">
+									<div class="title-1">
+										<h2 class="title">چند رسانه ای</h2>
+										<p class="dsec">
+											در این بخش اطلاعات تصاویر پرسنلی و دیگر تصاویر کارمند را وارد کنید
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div  *ngIf="dataList?.media?.birth_certificate_image">
+									<div  class="my-2">تصویر شناسنامه</div>
+									<ion-img class="user-edit-img"  [src]="dataList?.media?.birth_certificate_image.path | image"  attr.alt="تصویر شناسنامه"></ion-img>
+								</div>
+								<div class="form-input mb-3">
+									<label>انتخاب تصویر شناسنامه</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="birth_certificate_image_uploadFile($event , i )" formControlName="birth_certificate_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div  *ngIf="dataList?.media?.national_card_image">
+									<div  class="my-2">تصویر کارت ملی</div>
+									<ion-img  class="user-edit-img "  [src]="dataList?.media.national_card_image.path | image"  alt="تصویر کارت ملی"></ion-img>
+								</div>
+								<div class="form-input mb-3">
+									<label>انتخاب تصویر کارت ملی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="national_card_image_uploadFile($event , i )" formControlName="national_card_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div *ngIf="dataList?.media?.military_card_image">
+									<div  class="my-2">کارت پایان خدمت / معافی</div>
+									<ion-img   class="user-edit-img "  [src]="dataList?.media?.military_card_image.path | image"  alt="کارت پایان خدمت / معافی"></ion-img>
+								</div>
+								<div class="form-input mb-3">
+									<label>انتخاب کارت سربازی / معافیت سربازی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="military_card_image_uploadFile($event , i )" formControlName="military_card_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div *ngIf="dataList?.media?.employee_image">
+									<div  class="my-2">تصویر پرسونلی</div>
+									<ion-img class="user-edit-img "  [src]="dataList?.media?.employee_image.path | image"  alt="تصویر پرسونلی"></ion-img>
+								</div>
+								<div class="form-input mb-3">
+									<label>انتخاب تصویر پرسنلی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="employee_image_uploadFile($event , i )" formControlName="employee_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-12"><hr></div>
+					<div class="col-lg-5"></div>
+					<div class="col-lg-3">
+						<ion-button *ngIf="step === 1" type="button" expand="block" color="medium" fill="outline" shape="round">پاک کردن فرم</ion-button>
+						<ion-button *ngIf="step !== 1" type="button" (click)="PrevStep()" expand="block" color="medium" fill="outline" shape="round">بازگشت به مرحله قبل</ion-button>
+					</div>
+					<div class="col-lg-4">
+						<ion-button  *ngIf="step !== 6" type="button" (click)="NextStep()" expand="block" color="success" fill="solid" shape="round">ثبت و ادامه</ion-button>
+						<ion-button  *ngIf="step === 6" type="submit" expand="block" color="success" fill="solid" shape="round">ثبت کارمند</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
 </ion-content>

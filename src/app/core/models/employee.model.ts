@@ -1,4 +1,5 @@
 import { StringLiteralLike } from "typescript";
+import { Address } from "./address.model";
 import { contract } from "./contractConstant.model";
 import { Deserializable } from "./deserializable.model";
 import { Media } from "./media.model";
@@ -10,13 +11,29 @@ export class Employee implements Deserializable {
 	full_name !: String ;
 	first_name !: string;
 	last_name !: string;
-	mobile !: string;
-	national_code !: string;
-	business_employee_info !: businessEmployeeInfo[];
 	business_employee_id !: number;
+	father_name !: string;
+	national_code !: string;
+	mobile !: string;
+	gender !: string;
+	marital_status !: string;
+	birth_date !: string;
+	birth_place !: string;
+	birth_certificate_number !: string;
+	birth_certificate_issuance_place !: string;
+	degree_id !: string;
+	field_of_study !: string;
+	insurance_more_than_720 !: boolean;
+	media !: employeeImage;
+	email !: string;
+	business_employee_info !: businessEmployeeInfo[];
 	businesses !: businessEmployeeDetail[];
+	addresses !: Address[];
 	posts !: Post[];
-	media !: Media[];
+	// media !: Media[];
+	familyInformation !: family_information;
+	militaryInformation !: military_information;
+	bankInformation !: bank_information;
 	deserialize(input: any): this {
 
 		if (input.posts && input.posts.length) {
@@ -24,11 +41,8 @@ export class Employee implements Deserializable {
 				return new Post().deserialize(item);
 			});
 		}
-		if (input?.media && input?.media.length) {
-			this.media = input.media.map((item: Media) => {
-				return new Media().deserialize(item);
-			});
-		}
+
+
 		if (input.business_employee_info && input.business_employee_info.length) {
 			this.business_employee_id =  input.business_employee_info[0].id;
 			this.business_employee_info = input.business_employee_info.map((item: businessEmployeeInfo) => {
@@ -105,6 +119,54 @@ export class businessEmployeeDetail implements Deserializable {
 				return new contract().deserialize(item);
 			});
 		}
+		return this;
+	}
+}
+export class employeeImage implements Deserializable {
+
+	id !:number;
+	birth_certificate_image !: Media ;
+	national_card_image !: Media ;
+	military_card_image !: Media ;
+	employee_image !: Media;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class family_information implements Deserializable {
+
+	id !:number;
+	count_child_under_18_years !: string ;
+	count_student_child_over_18_years_old !: string ;
+	total_child !: string ;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class military_information implements Deserializable {
+
+	id !:number;
+	military_state !: string ;
+	military_exempt_reason !: string ;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class bank_information implements Deserializable {
+
+	id !:number;
+	name!: string ;
+	branch_name!: string ;
+	account_number!: string ;
+	card_number!: string ;
+	iban_number!: string ;
+	payment_with_check!: string ;
+
+	deserialize(input: any): this {
+		Object.assign(this, input);
 		return this;
 	}
 }

@@ -3,7 +3,7 @@ import { GlobalService } from 'src/app/core/services/global.service';
 import { globalData } from 'src/app/core/data/global.data'
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { businessClass } from 'src/app/core/classes/business.class';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
 
@@ -51,22 +51,21 @@ export class BusinessAddComponent implements OnInit {
 	}
 
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.businessForm.get('addresses');
+		return this.businessForm.get('addresses') as FormArray;
 	}
 
 	newAddresses(): FormGroup {
 		return this.fb.group({
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
-			postal_code: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-			phone: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
-		})
+			postal_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			phone: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
+		}) ;
 	}
+
 	ngOnInit() {
 
-		this.employerList = [
-			{ id: this.global.user.id, name: this.global.user.firstName + ' ' + this.global.user.lastName, selected: true },
-		];
+
 		this.getData();
 		this.setTitle();
 	}
@@ -75,13 +74,15 @@ export class BusinessAddComponent implements OnInit {
 	getData() {
 		const countries = this.global.httpGet('more/countries');
 		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
+		const employerList = this.global.httpPost('employer/list', { limit: 1000, offset: this.categoryoffSet });
 
 
-		this.global.parallelRequest([countries, businessCategory])
-			.subscribe(([countriesData, businessCategory  ='']) => {
+		this.global.parallelRequest([countries, businessCategory , employerList])
+			.subscribe(([countriesData, businessCategory  ='', employerRes = '']) => {
 
-				this.setCountry(countriesData);
+				this.province = this.global.createCountry(countriesData);
 				this.setBussinessCategory(businessCategory);
+				this.employerList =  this.global.createEmployer(employerRes)
 			});
 	}
 	setTitle() {
@@ -97,19 +98,7 @@ export class BusinessAddComponent implements OnInit {
 
 	}
 
-	setCountry(data: any) {
-		data[0].provinces.map((province: any) => {
-			province.cities.map((city: any) => {
-				const cities: citiesClass = new citiesClass();
-				cities.id = city.id
-				cities.name = city.name;
-				cities.provinceId = province.id;
-				cities.province = province.name;
-				this.province.push(cities);
-			});
-		});
 
-	}
 	setBussinessCategory(data: any) {
 		data.list.map((category: any) => {
 			category.child.map((business: any) => {
@@ -174,5 +163,8 @@ export class BusinessAddComponent implements OnInit {
 	}
 
 
+	checkControll(item : any){
+		console.log(item.controls.address);
+	}
 
 }

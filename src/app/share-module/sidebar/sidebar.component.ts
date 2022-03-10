@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 import { sideMenu } from 'src/app/core/classes/sideMenu.class';
 import { globalData } from 'src/app/core/data/global.data';
 import { User } from 'src/app/core/models/user.model';
@@ -37,6 +37,7 @@ export class SidebarComponent implements OnInit {
 		public global: GlobalService,
 		private storage: StorageService,
 		public navCtrl: NavController,
+		private menu: MenuController
 	) { }
 
 	async ngOnInit() {
@@ -65,10 +66,18 @@ export class SidebarComponent implements OnInit {
 	}
 
 
+	routerClickFun(item:any){
+		if(item.function === "showDetail"){
+			this.showDetail(item)
+		}else if(item.function === "logout"){
+			this.logout(item);
+		}
+	}
 	showDetail(item: any) {
 		if (item.type) { }
 		if (item.url) {
-			this.navCtrl.navigateForward([item.url])
+			this.navCtrl.navigateForward([item.url]);
+			this.closeMenu();
 		} else {
 			item.open = !item.open;
 			item.state = item.state === "close" ? "open" : "close";
@@ -112,6 +121,10 @@ export class SidebarComponent implements OnInit {
 		if (evenet) { this.Sidemenu[index].state = evenet ? "open" : "close"; }
 
 	}
+
+    async closeMenu() {
+        await this.menu.close('mainContent');
+    }
 }
 
 
