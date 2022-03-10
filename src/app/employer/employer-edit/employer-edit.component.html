@@ -25,7 +25,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>نام</label>
-								<ion-input type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
+								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['first_name']" [controlName]="'نام'">
 									</app-validator>
@@ -37,7 +37,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>نام خانوادگی</label>
-								<ion-input type="text" autocomplete="new-pass" formControlName="last_name">
+								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="last_name">
 								</ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
@@ -49,7 +49,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>شماره شناسنامه</label>
-								<ion-input type="phone" autocomplete="new-pass" formControlName="birth_certificate_code">
+								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="birth_certificate_code">
 								</ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
@@ -62,7 +62,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>کد ملی</label>
-								<ion-input type="phone" autocomplete="new-pass" formControlName="national_code">
+								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="national_code">
 								</ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['national_code']" [controlName]="'کد ملی'">
@@ -75,7 +75,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>شماره همراه</label>
-								<ion-input type="phone" autocomplete="new-pass" formControlName="mobile">
+								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="mobile">
 								</ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['mobile']"
@@ -114,7 +114,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>محل صدور شناسنامه</label>
-								<ion-input type="text" autocomplete="new-pass" formControlName="birth_certificate_issuance_place"></ion-input>
+								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="birth_certificate_issuance_place"></ion-input>
 								<span class="error">
 									<app-validator [control]="editFrom.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
 									</app-validator>
@@ -212,7 +212,7 @@
 								<div class="col-lg-6">
 									<div class="form-input mb-3">
 										<label>کد پستی</label>
-										<ion-input autocomplete="new-pass" formControlName="postal_code"></ion-input>
+										<ion-input autocomplete="new-pass" (keypress)="global.justNumber($event)"  formControlName="postal_code"></ion-input>
 										<span class="error">
 											<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 										</span>
@@ -223,7 +223,7 @@
 								<div class="col-lg-6">
 									<div class="form-input mb-3">
 										<label>شماره تماس</label>
-										<ion-input type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
+										<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="phone"></ion-input>
 										<span class="error">
 											<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 										</span>
@@ -237,16 +237,18 @@
 
 					<div class="col-12"><hr></div>
 
-					<div class="row ion-justify-content-between ion-align-items-center">
-						<div class="col-5">
-							<ion-button expand="block" color="medium" fill="outline" shape="round">
-								پاک کردن فرم
-							</ion-button>
-						</div>
-						<div class="col-7">
-							<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
-								{{ pageTitle }}
-							</ion-button>
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									{{ pageTitle }}
+								</ion-button>
+							</div>
 						</div>
 					</div>
 				</div>

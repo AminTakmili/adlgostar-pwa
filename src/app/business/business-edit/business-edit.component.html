@@ -1,5 +1,5 @@
 <ion-header>
-	<app-header [title]="'افزودن بیزینس جدید'"></app-header>
+	<app-header [title]="pageTitle"></app-header>
 </ion-header>
 <ion-content>
 	<!-- top bar content -->
@@ -7,8 +7,8 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">ویرایش کسب کار : {{ bussiness?.name }}</h1>
-					<p class="dsec"> شما در این قسمت میتوانید کسب کار خود را ویرایش کنید </p>
+					<h1 class="title">ویرایش {{ dataList?.name }}</h1>
+					<!-- <p class="dsec"> شما در این قسمت میتوانید کسب کار خود را ویرایش کنید </p> -->
 				</div>
 			</div>
 			<div class="col-lg-auto">
@@ -24,109 +24,132 @@
 	<!-- main -->
 	<main>
 		<div class="container">
-			<div class="row">
-				<!-- form -->
-				<div class="col-md-6 my-4">
-					<!-- title -->
-					<div class="title-1 mb-4">
-						<h2 class="title">اطلاعات اولیه</h2>
-						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-							گرافیک است</p>
-					</div>
-					<!-- form -->
-					<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
-						<!--  -->
-						<ion-input type="hidden" formControlName="business_id" [value]="businessId" ></ion-input>
-						<!-- کارفرما -->
+			<!-- title -->
+			<div class="title-1 mb-4 mt-4">
+				<!-- <h2 class="title">اطلاعات اولیه</h2>
+				<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
+					گرافیک است</p> -->
+			</div>
+			<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+				<div class="row">
+					<!-- کارفرما -->
+					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>انتخاب کارفرما</label>
-							<ng-select
-								[items]="employerList"
-								formControlName="employer_id"
-								bindLabel="full_name"
-								bindValue="id"
-								[clearable]="false"
-							>
+							<ng-select [items]="employerList" formControlName="employer_id" bindLabel="full_name"
+								bindValue="id" [clearable]="false">
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="businessForm.controls['employer_id']" [controlName]="'انتخاب کارفرما'"></app-validator>
+								<app-validator [control]="businessForm.controls['employer_id']"
+									[controlName]="'انتخاب کارفرما'"></app-validator>
 							</span>
-							<span class="hint">مثلا : 09173052222</span>
+							<span class="hint"></span>
 						</div>
+					</div>
+					<div class="col-lg-12">
 						<!-- عنوان کسب و کار -->
 						<div class="form-input mb-3">
 							<label>عنوان کسب و کار</label>
 							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator></span>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'">
+								</app-validator>
+							</span>
 							<span class="hint">نام شرکت یا کسب و کار خود را وارد کنید</span>
 						</div>
-						<!-- کارفرما -->
+					</div>
+					<!-- کارفرما -->
+					<div class="col-12">
 						<div class="form-input mb-3">
 							<label>نوع شخصیت</label>
-							<ng-select
-								formControlName="employer_type"
-								placeholder="نوع شخصیت حقیقی یا حقوقی را انتخاب کنید"
-								[items]="personType"
-								[bindLabel]="'name'"
-								[bindValue]="'id'"
-							></ng-select>
-							<span class="error"><app-validator [control]="businessForm.controls['name']" [controlName]="'نوع شخصیت'"></app-validator></span>
-							<span class="hint">مثلا : 09173052222</span>
+							<ng-select formControlName="employer_type"
+								placeholder="نوع شخصیت حقیقی یا حقوقی را انتخاب کنید" [items]="personType"
+								[bindLabel]="'name'" [bindValue]="'id'"></ng-select>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['name']" [controlName]="'نوع شخصیت'">
+								</app-validator>
+							</span>
+							<span class="hint"> حقیقی یا حقوقی </span>
 						</div>
-						<!-- زمانیکه نوع کارفرما حقوقی باشد فیلدهای شماره ثبت و شناسه ملی دارد و زمانیکه حقیقی باشد شماره پروانه کسب دارد -->
+					</div>
+					<!-- زمانیکه نوع کارفرما حقوقی باشد فیلدهای شماره ثبت و شناسه ملی دارد و زمانیکه حقیقی باشد شماره پروانه کسب دارد -->
 
+					<div class="col-12">
 						<!-- شماره پروانه کسب -->
 						<div *ngIf="this.businessForm.value['employer_type'] === 'real' " class="form-input mb-3">
 							<label>شماره پروانه کسب</label>
-							<ion-input autocomplete="new-pass" type="number" formControlName="business_license_number"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['business_license_number']" [controlName]="'شماره پروانه کسب'"></app-validator></span>
+							<ion-input autocomplete="new-pass" type="number" formControlName="business_license_number">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['business_license_number']"
+									[controlName]="'شماره پروانه کسب'"></app-validator>
+							</span>
 							<span class="hint"></span>
 						</div>
+					</div>
 
-						<!-- شماره ثبت -->
+					<!-- شماره ثبت -->
+					<div class="col-12">
 						<div class="form-input mb-3" *ngIf="this.businessForm.value['employer_type'] === 'legal' ">
 							<label>شماره ثبت</label>
-							<ion-input autocomplete="new-pass" type="number" formControlName="registration_number"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['registration_number']" [controlName]="'شماره ثبت'"></app-validator></span>
+							<ion-input autocomplete="new-pass" type="number" formControlName="registration_number">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['registration_number']"
+									[controlName]="'شماره ثبت'"></app-validator>
+							</span>
 							<span class="hint"></span>
 						</div>
+					</div>
 
+					<div class="col-12">
 						<!-- شناسه ملی -->
 						<div class="form-input mb-3" *ngIf="this.businessForm.value['employer_type'] === 'legal' ">
 							<label>شناسه ملی</label>
 							<ion-input autocomplete="new-pass" type="number" formControlName="national_id"></ion-input>
-							<span class="error"><app-validator [control]="businessForm.controls['national_id']" [controlName]="'شناسه ملی'"></app-validator></span>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['national_id']"
+									[controlName]="'شناسه ملی'">
+								</app-validator>
+							</span>
 							<span class="hint"></span>
 						</div>
+					</div>
 
 
+					<div class="col-12">
 						<!-- کارفرما -->
 						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
 							<label>دسته بندی کسب و کار</label>
-							<ng-select
-								placeholder="دسته بندی کسب و کار را انتخاب کنید"
-								[items]="businessCatgeories"
-								bindLabel="name"
-								bindValue="id"
-								groupBy="parentName"
-								formControlName="business_category_id"
-								>
+							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید" [items]="businessCatgeories"
+								bindLabel="name" bindValue="id" groupBy="parentName"
+								formControlName="business_category_id">
 								<ng-template ng-optgroup-tmp let-item="item">
 									{{item.parentName || 'Unnamed group'}}
 								</ng-template>
 							</ng-select>
-							<span class="error"><app-validator [control]="businessForm.controls['business_category_id']" [controlName]="'انتخاب دسته بندی'"></app-validator></span>
+							<span class="error">
+								<app-validator [control]="businessForm.controls['business_category_id']"
+									[controlName]="'انتخاب دسته بندی'"></app-validator>
+							</span>
 						</div>
+					</div>
 
-						<!-- title -->
+					<!-- title -->
+					<div class="col-12">
 						<div class="title-1 mt-5 mb-4">
 							<h2 class="title">اطلاعات تماس و آدرس ها</h2>
 						</div>
-						<!-- بلاک آدرس -->
+					</div>
+					<!-- بلاک آدرس -->
+					<div class="col-12">
 						<div *ngIf="addressFormGroup" formArrayName="addresses">
-							<div class="business-address" *ngFor="let item of addressFormGroup.controls ; let i = index"  [formGroupName]="i">
-								<div class="row mb-3 justify-content-between align-items-center" >
-									<div class="col-12"><hr></div>
+							<div class="business-address" *ngFor="let item of addressFormGroup.controls ; let i = index"
+								[formGroupName]="i">
+								<div class="row mb-3 justify-content-between align-items-center">
+									<div class="col-12">
+										<hr>
+									</div>
 									<div class="col-9">
 										<div class="title-1">
 											<h2 class="title"> آدرس شماره {{ i + 1 }}</h2>
@@ -134,54 +157,67 @@
 									</div>
 									<div class="col-auto">
 										<ion-buttons>
-											<ion-button (click)="removeAddress(i)"  color="danger">
+											<ion-button (click)="removeAddress(i)" color="danger">
 												<ion-icon slot="icon-only" name="trash"></ion-icon>
 											</ion-button>
 										</ion-buttons>
 									</div>
 								</div>
 
-								<div class="form-input mb-3" *ngIf="province && province.length" >
+								<div class="form-input mb-3" *ngIf="province && province.length">
 									<label>انتخاب شهر و استان</label>
-									<ng-select
-									[items]="province"
-									placeholder="یک شهر انتخاب کنید"
-									bindLabel="name"
-									bindValue="id"
-									groupBy="province"
-									formControlName="city_id"
-									>
+									<ng-select [items]="province" placeholder="یک شهر انتخاب کنید" bindLabel="name"
+										bindValue="id" groupBy="province" formControlName="city_id">
 									</ng-select>
-									<span class="error"><app-validator [control]="item.get('city_id')" [controlName]="'انتخاب شهر'"></app-validator></span>
+									<span class="error">
+										<app-validator [control]="item.get('city_id')" [controlName]="'انتخاب شهر'">
+										</app-validator>
+									</span>
 								</div>
 								<!-- جزییات آدرس -->
 								<div class="form-input mb-3">
 									<label>آدرس</label>
-									<ion-textarea rows="3" formControlName="address" autocomplete="new-pass"></ion-textarea>
-									<span class="error"><app-validator [control]="item.get('address')" [controlName]="'آدرس'"></app-validator></span>
+									<ion-textarea rows="3" formControlName="address" autocomplete="new-pass">
+									</ion-textarea>
+									<span class="error">
+										<app-validator [control]="item.get('address')" [controlName]="'آدرس'">
+										</app-validator>
+									</span>
 								</div>
 								<div class="row">
 									<div class="col-6">
 										<!-- شماره تماس -->
 										<div class="form-input mb-3">
 											<label>شماره تماس</label>
-											<ion-input formControlName="phone" type="number" autocomplete="new-pass"></ion-input>
-											<span class="error"><app-validator [control]="item.get('phone')" [controlName]="'شماره تماس'"></app-validator></span>
+											<ion-input formControlName="phone" type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('phone')"
+													[controlName]="'شماره تماس'">
+												</app-validator>
+											</span>
 										</div>
 									</div>
 									<div class="col-6">
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>کد پستی</label>
-											<ion-input formControlName="postal_code" type="number" autocomplete="new-pass"></ion-input>
-											<span class="error"><app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی'"></app-validator></span>
+											<ion-input formControlName="postal_code" type="phone" (keypress)="global.justNumber($event)"
+												autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('postal_code')"
+													[controlName]="'کد پستی'"></app-validator>
+											</span>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<!-- end address -->
-						<!-- add another address -->
+					</div>
+					<!-- end address -->
+					<!-- add another address -->
+					<div class="col-12">
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-auto">
 								<p> آیا کسب و کار شما آدرس دیگری دارد</p>
@@ -193,42 +229,32 @@
 								</ion-button>
 							</div>
 						</div>
+					</div>
+					<div class="col-12">
 						<hr>
-						<div class="row ion-justify-content-between ion-align-items-center">
-							<div class="col-5">
+					</div>
+					<div class="col-12 mb-4">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
 								<ion-button expand="block" color="medium" fill="outline" shape="round">
 									پاک کردن فرم
 								</ion-button>
 							</div>
-							<div class="col-7">
+							<div class="col-lg-3">
 								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
 									ثبت کسب و کار
 								</ion-button>
 							</div>
 						</div>
+					</div>
 
-						<!-- add another address -->
-					</form>
-				</div>
-				<!-- desc -->
-				<div class="col-md-6 my-4">
-					<ion-card mode="ios" color="white">
-						<ion-card-header>
-							<ion-card-title class="font-size-20">توضیحات نحوه ی ثبت کسب و کار جدید</ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+					<!-- add another address -->
 
-						</ion-card-content>
-					</ion-card>
+
+					<!-- desc -->
 
 				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </ion-content>

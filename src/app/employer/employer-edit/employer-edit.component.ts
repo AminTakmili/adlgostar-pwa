@@ -16,7 +16,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class EmployerEditComponent implements OnInit {
 
-	pageTitle: string = "ویرایش کارمند";
+	pageTitle: string = "ویرایش کارفرما";
 	editFrom: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;
@@ -29,7 +29,7 @@ export class EmployerEditComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
-		private cd: ChangeDetectorRef
+		private cd: ChangeDetectorRef,
 	) {
 		this.editFrom = this.fb.group({
 			id: ['', Validators.compose([Validators.required])],

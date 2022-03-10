@@ -23,7 +23,8 @@ export class BusinessListComponent implements OnInit {
 	end = false;
 	Searching = 0;
 	dataList: BusinessList[];
-	dataInSearch: boolean = false
+	dataInSearch: boolean = false;
+	filtered_name:string;
 
 	@ViewChild('Search') Search: IonInput;
 
@@ -41,26 +42,16 @@ export class BusinessListComponent implements OnInit {
 
 	async ionViewWillEnter() {
 		this.getData();
-		setTimeout(async () => {
-			// console.log(this.Search)
-			fromEvent(await this.Search.getInputElement(), "input").pipe(
-				debounceTime(1000),
-				map(event => {
-					this.getData(this.Search.value.toString());
-				}),
-			).subscribe();
-		}, 100);
 	}
 
+	async getData() {
 
-	async getData(name: string = '') {
 
-		this.dataInSearch = name ? true : false;
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('business/filteredList', {
 			limit: this.limit,
 			offset: this.offset,
-			filtered_name: name,
+			filtered_name: this.filtered_name,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;

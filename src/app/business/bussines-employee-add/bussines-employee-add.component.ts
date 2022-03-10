@@ -103,7 +103,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/businesses/detail/'+this.businessId);
-					this.global.showToast('کارمند با موفقیت اضاف شد');
+					this.global.showToast('کارمند با موفقیت اضافه شد');
 					this.addFrom.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

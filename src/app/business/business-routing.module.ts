@@ -20,7 +20,7 @@ const routes: Routes = [
 	canActivate: [LoginGuard]
   },
   {
-    path: 'edit/:businessId',
+    path: 'edit/:id',
     component: BusinessEditComponent,
 	canActivate: [LoginGuard]
   },

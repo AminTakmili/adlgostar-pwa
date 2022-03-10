@@ -1,7 +1,7 @@
 <ion-card  color="white"  class="ion-no-padding ion-no-margin">
 	<ion-item button [routerLink]="['/employees/detail',employee?.id]" color="white" lines="none" detail>
 		<ion-thumbnail  slot="start">
-			<ion-img [src]=" employee?.media.employee_image.options.subSizes['1x'] ? employee?.media.employee_image.options.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
+			<ion-img [src]=" employee?.media?.employee_image?.options.subSizes['1x'] ? employee?.media?.employee_image?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
 		</ion-thumbnail>
 		<ion-label>
 			<h2 class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>

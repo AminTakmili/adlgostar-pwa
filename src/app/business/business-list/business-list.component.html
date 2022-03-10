@@ -9,7 +9,7 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title">کسب و کار ها</h1>
-					<p class="dsec">در این صفحه لیست کسب و کارها را میتوانید مشاهده کنید یا یک کسب و کار جدید اضاف کنید
+					<p class="dsec">در این صفحه لیست کسب و کارها را میتوانید مشاهده کنید یا یک کسب و کار جدید اضافه کنید
 					</p>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 				<div class="col-md-4">
 					<!-- search -->
 					<div class="search-input-2">
-						<ion-searchbar enterkeyhint="" type="text" #Search placeholder="جستجو در کسب و کارها"></ion-searchbar>
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="getData()" placeholder="جستجو در کسب و کارها"></ion-searchbar>
 					</div>
 				</div>
 			</div>
@@ -67,7 +67,7 @@
 							<td>{{ item.createdAt }}</td>
 							<td scope="col-1">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="جذف" *ngIf="global.userPermision['business_delete']" >
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"  tooltip="حذف" *ngIf="global.userPermision['business_delete']" >
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
@@ -99,7 +99,7 @@
 			<!-- if there is no table -->
 			<div *ngIf="dataList && dataList.length === 0 && this.dataInSearch" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">کسب کاری برای نمایش یافت نشد .</h4>
-				<p class="dsec">شما تا کنون کسب و کاری ثبت نکرده اید . برای اضاف کردن کسب کار بر روی افزودن کسب و کار
+				<p class="dsec">شما تا کنون کسب و کاری ثبت نکرده اید . برای اضافه کردن کسب کار بر روی افزودن کسب و کار
 					کلیک کنید</p>
 			</div>
 			<!-- if search return empty cell -->

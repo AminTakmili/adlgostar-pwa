@@ -8,7 +8,7 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title">افزودن کسب کار</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک کسب کار جدید اضاف کنید
+					<p class="dsec">در این قسمت شما میتوانید یک کسب کار جدید اضافه کنید
 					</p>
 				</div>
 			</div>
@@ -167,7 +167,7 @@
 										<!-- شماره تماس -->
 										<div class="form-input mb-3">
 											<label>شماره تماس</label>
-											<ion-input formControlName="phone" type="number" autocomplete="new-pass"></ion-input>
+											<ion-input formControlName="phone" type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass"></ion-input>
 											<span class="error"><app-validator [control]="item.get('phone')" [controlName]="'شماره تماس'"></app-validator></span>
 										</div>
 									</div>
@@ -175,7 +175,7 @@
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>کد پستی</label>
-											<ion-input formControlName="postal_code" type="number" autocomplete="new-pass"></ion-input>
+											<ion-input formControlName="postal_code" type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass"></ion-input>
 											<span class="error"><app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی'"></app-validator></span>
 										</div>
 									</div>

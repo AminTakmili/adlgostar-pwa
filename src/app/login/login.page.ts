@@ -104,6 +104,7 @@ export class LoginPage implements OnInit {
 
 					this.global.user = new User().deserialize(res);
 					this.storage.set('user',this.global.user);
+					this.global._user.next(this.global.user);
 					this.global.setPermision(this.global.user.permissionsList);
 					this.global.changeLogin(true);
 					this.global.showToast('کاربر گرامی , ' + this.global.user.first_name + ' خوش آمدید .');

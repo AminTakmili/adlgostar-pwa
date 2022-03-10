@@ -178,7 +178,7 @@ export class ContractEditComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/detail', {
 			id: id,
-			with_replace: 1,
+			with_replace: 0,
 		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
 

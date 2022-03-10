@@ -67,9 +67,9 @@ export class SidebarComponent implements OnInit {
 
 
 	routerClickFun(item:any){
-		if(item.function === "logout"){
+		if(item.function === "showDetail"){
 			this.showDetail(item)
-		}else if(item.function === "showDetail"){
+		}else if(item.function === "logout"){
 			this.logout(item);
 		}
 	}
