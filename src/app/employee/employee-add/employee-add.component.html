@@ -265,7 +265,7 @@
 									>
 									</ng-select>
 									<span class="error">
-										<app-validator [control]="item['controls']['city_id']" [controlName]="'شهر'"></app-validator>
+										<app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator>
 									</span>
 									<span class="hint"> مثلا شیراز </span>
 								</div>
@@ -276,7 +276,7 @@
 									<label>آدرس منزل</label>
 									<ion-textarea autocomplete="new-pass" formControlName="address"></ion-textarea>
 									<span class="error">
-										<app-validator [control]="item['controls']['address']" [controlName]="' آدرس منزل '"></app-validator>
+										<app-validator [control]="item.get('address')" [controlName]="' آدرس منزل '"></app-validator>
 									</span>
 									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
 								</div>
@@ -287,7 +287,7 @@
 									<label>کد پستی منزل</label>
 									<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="postal_code"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['postal_code']" [controlName]="'کد پستی منزل '"></app-validator>
+										<app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی منزل '"></app-validator>
 									</span>
 									<span class="hint">مثلا : 71335984668</span>
 								</div>
@@ -298,7 +298,7 @@
 									<label>شماره تماس منزل</label>
 									<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="phone"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['phone']" [controlName]="'شماره تماس منزل'"></app-validator>
+										<app-validator [control]="item.get('phone')" [controlName]="'شماره تماس منزل'"></app-validator>
 									</span>
 									<span class="hint">مثلا : 071*******</span>
 								</div>
@@ -329,20 +329,22 @@
 										bindLabel="name"
 										bindValue="value"
 										formControlName="military_state"
+										(change)="checkItem(item)"
 									>
 									</ng-select>
 									<span class="error">
-										<!-- <app-validator [control]="item['controls']['military_state']" [controlName]="'وضعیت نظام وظیفه'"></app-validator> -->
+										<app-validator [control]="item.get('military_state')" [controlName]="'وضعیت نظام وظیفه'"></app-validator>
 									</span>
 									<span class="hint">مثلا : معاف</span>
 								</div>
 							</div>
-							<div class="col-lg-12">
+
+							<div class="col-lg-12" *ngIf="item['value']['military_state'] === 'exempt' ">
 								<div class="form-input mb-3">
 									<label>علت معافی</label>
 									<ion-input formControlName="military_exempt_reason"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item['controls']['military_exempt_reason']" [controlName]="'علت معافی'"></app-validator> -->
+										<app-validator [control]="item.get('military_exempt_reason')" [controlName]="'علت معافی'"></app-validator>
 									</span>
 									<span class="hint">مثلا کفالت</span>
 								</div>
@@ -371,7 +373,7 @@
 									<label>نام بانک</label>
 									<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['name']"  [controlName]="'نام بانک'"></app-validator>
+										<app-validator [control]="item.get('name')"  [controlName]="'نام بانک'"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>
@@ -382,7 +384,7 @@
 									<label>نام شعبه</label>
 									<ion-input autocomplete="new-pass" formControlName="branch_name"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['branch_name']" [controlName]="'نام شعبه'"></app-validator>
+										<app-validator [control]="item.get('branch_name')" [controlName]="'نام شعبه'"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>
@@ -390,9 +392,9 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>شماره حساب</label>
-									<ion-input type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="account_number"></ion-input>
+									<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="account_number"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['account_number']" [controlName]="'شماره حساب'"></app-validator>
+										<app-validator [control]="item.get('account_number')" [controlName]="'شماره حساب'"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>
@@ -400,9 +402,9 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>شماره کارت</label>
-									<ion-input  type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="card_number"></ion-input>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="card_number"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['card_number']" [controlName]="'شماره کارت'"></app-validator>
+										<app-validator [control]="item.get('card_number')" [controlName]="'شماره کارت'"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>
@@ -410,9 +412,9 @@
 							<div class="col-lg-12 ">
 								<div class="form-input mb-3">
 									<label>شماره شبا</label>
-									<ion-input  type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="iban_number"></ion-input>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="iban_number"></ion-input>
 									<span class="error">
-										<app-validator [control]="item['controls']['iban_number']" [controlName]="'شماره شبا'"></app-validator>
+										<app-validator [control]="item.get('iban_number')" [controlName]="'شماره شبا'"></app-validator>
 									</span>
 									<span class="hint">شماره شبا بدون IR </span>
 								</div>
@@ -445,9 +447,9 @@
 							<div class="col-lg-12 ">
 								<div class="form-input mb-3">
 									<label>تعداد کل فرزندان</label>
-									<ion-input  type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="total_child"></ion-input>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="total_child"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item['controls']['iban_number']" [controlName]="'تعداد کل فرزندان'"></app-validator> -->
+										<!-- <app-validator [control]="item.get('iban_number')" [controlName]="'تعداد کل فرزندان'"></app-validator> -->
 									</span>
 									<span class="hint">مثلا 2</span>
 								</div>
@@ -455,10 +457,10 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>تعداد فرزندان بالا 18 سال و غیر محصل</label>
-									<ion-input  type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass"
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass"
 										formControlName="count_student_child_over_18_years_old"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item['controls']['count_student_child_over_18_years_old']" [controlName]="'تعداد فرزندان بالای 18 سال'"></app-validator> -->
+										<!-- <app-validator [control]="item.get('count_student_child_over_18_years_old')" [controlName]="'تعداد فرزندان بالای 18 سال'"></app-validator> -->
 									</span>
 									<span class="hint">مثلا 2</span>
 								</div>
@@ -466,10 +468,10 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>تعداد فرزندان زیر 18 سال و فرزندان بالا 18 سال محصل</label>
-									<ion-input  type="phone" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="count_child_under_18_years">
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="count_child_under_18_years">
 									</ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item['controls']['count_child_under_18_years']" [controlName]="'تعداد فرزندان زیر 18 سال'"></app-validator> -->
+										<!-- <app-validator [control]="item.get('count_child_under_18_years')" [controlName]="'تعداد فرزندان زیر 18 سال'"></app-validator> -->
 									</span>
 									<span class="hint">مثلا 2</span>
 								</div>
@@ -492,7 +494,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4 ">
+							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>تصویر شناسنامه</label>
 									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="birth_certificate_image_uploadFile($event , i )" formControlName="birth_certificate_image">
@@ -503,7 +505,7 @@
 									<span class="hint">مثلا 2</span>
 								</div>
 							</div>
-							<div class="col-lg-4 ">
+							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>تصویر کارت ملی</label>
 									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="national_card_image_uploadFile($event , i )" formControlName="national_card_image">
@@ -514,10 +516,21 @@
 									<span class="hint">مثلا 2</span>
 								</div>
 							</div>
-							<div class="col-lg-4 ">
+							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>کارت سربازی / معافیت سربازی</label>
 									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="military_card_image_uploadFile($event , i )" formControlName="military_card_image">
+									</ion-input>
+									<span class="error">
+										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+									</span>
+									<span class="hint">مثلا 2</span>
+								</div>
+							</div>
+							<div class="col-lg-6 ">
+								<div class="form-input mb-3">
+									<label>عکس پرسنلی</label>
+									<ion-input type="file" accept="image/*" autocomplete="new-pass" (change)="employee_image_uploadFile($event , i )" formControlName="employee_image">
 									</ion-input>
 									<span class="error">
 										<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->

@@ -1,5 +1,5 @@
 @import 'extends';
-@import 'mixins';
+
 
 * {
 	box-sizing: border-box !important;
@@ -38,6 +38,7 @@
 	ng-persian-datepicker {
 		display: block;
 		width: 100%;
+
 		input {
 			border: 1px solid var(--ion-color-step-100);
 			width: 100%;
@@ -54,6 +55,14 @@
 		font-size: 14px;
 		font-weight: 500;
 		margin-bottom: 5px;
+		display: block;
+	}
+
+	ion-label {
+		font-size: 14px;
+		font-weight: 500;
+		margin-bottom: 5px;
+		display: block;
 	}
 
 	&>ion-input,
@@ -125,16 +134,7 @@ p {
 // h5{font-size: 17px;font-weight: 700;}
 // h6{font-size: 16px;font-weight: 700;}
 
-ion-menu[content-id=main-content] {
-	--max-width: 300px;
-	width: 300px;
-	background-color: var(--ion-color-tertiary);
 
-	app-sidebar {
-		background-color: var(--ion-color-tertiary);
-		height: 100vh;
-	}
-}
 
 .content-header {
 	background-color: var(--ion-color-white);
@@ -587,66 +587,77 @@ ckeditor {
 		}
 	}
 }
+
 // list-var
-.list-var{
+.list-var {
 	@extend %flex-row-start-center;
 	margin-bottom: 6px;
-	.name{
+
+	.name {
 		@extend %flex-row-start-center;
-		.icon{
-			ion-icon{
+
+		.icon {
+			ion-icon {
 				margin-inline-end: 5px;
 				cursor: pointer;
 
 			}
 		}
 
-		.variable{
-			background-color: var(--ion-color-step-50) ;
+		.variable {
+			background-color: var(--ion-color-step-50);
 			padding: 2px 4px;
 			font-size: 13px;
-			color:var(--ion-color-tertiary-shade);
+			color: var(--ion-color-tertiary-shade);
 		}
 	}
-	.value{
+
+	.value {
 		padding-right: 10px;
 		font-size: 13px;
-		color:var(--ion-color-step-850);
+		color: var(--ion-color-step-850);
 	}
 }
 
-.overflow-visible{
+.overflow-visible {
 	overflow: visible;
 }
 
-.item-transparent{
-	--background:transparent !important;
-	background:transparent !important;
-	background-color:transparent !important;
+.item-transparent {
+	--background: transparent !important;
+	background: transparent !important;
+	background-color: transparent !important;
 	-ion-color-base: transparent !important;
 }
 
-.datepicker-content{
+.datepicker-content {
 	position: relative;
-	.datepicker-outer-container{
+
+	.datepicker-outer-container {
 		position: absolute;
 		z-index: 100;
 		width: 100%;
 	}
 }
-.inner-html-dev{
-	.show_date{
+
+.inner-html-dev {
+	.show_date {
 		unicode-bidi: plaintext;
 	}
-	p{
 
-		line-height:30px ;
+	p {
+
+		line-height: 30px;
 	}
 }
 
-.user-edit-img{
+.user-edit-img {
 	display: inline-block;
-	width: 150px;
-	height: auto;
+	width: 250px;
+	height: 250px;
+	object-fit: contain;
+	object-position: center;
 	border-radius: 2px;
+
+
 }

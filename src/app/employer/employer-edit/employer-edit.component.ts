@@ -58,7 +58,7 @@ export class EmployerEditComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.editFrom.get('addresses');
+		return this.editFrom.get('addresses') as FormArray;
 	}
 
 	ngOnInit() {
@@ -102,8 +102,8 @@ export class EmployerEditComponent implements OnInit {
 				const formAddress = this.fb.group({
 					city_id: [item.city_id, Validators.compose([Validators.required])],
 					address: [item.address, Validators.compose([Validators.required])],
-					postal_code: [item.postal_code, Validators.compose([Validators.pattern("^[0-9]*$")])],
-					phone: [item.phone, Validators.compose([Validators.pattern("^[0-9]*$")])],
+					postal_code: [item.postal_code,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
+					phone: [item.phone,  Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
 				});
 				return formAddress
 			});
@@ -113,8 +113,8 @@ export class EmployerEditComponent implements OnInit {
 				first_name: [this.dataList.first_name, Validators.compose([Validators.required])],
 				last_name: [this.dataList.last_name, Validators.compose([Validators.required])],
 				birth_certificate_code: [this.dataList.birth_certificate_code, Validators.compose([Validators.required])],
-				national_code: [this.dataList.national_code, Validators.compose([Validators.required])],
-				mobile: [this.dataList.mobile, Validators.compose([Validators.required])],
+				national_code: [this.dataList.national_code, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+				mobile: [this.dataList.mobile, Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
 				birth_place: [this.dataList.birth_place, Validators.compose([Validators.required])],
 				born_at: [this.dataList.born_at, Validators.compose([Validators.required])],
 				birth_certificate_issuance_place: [this.dataList.birth_certificate_issuance_place, Validators.compose([Validators.required])],

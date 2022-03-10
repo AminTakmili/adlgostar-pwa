@@ -59,7 +59,7 @@ export class UsersAllEditComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.editForm.get('addresses');
+		return this.editForm.get('addresses') as FormArray
 	}
 
 	ngOnInit() {

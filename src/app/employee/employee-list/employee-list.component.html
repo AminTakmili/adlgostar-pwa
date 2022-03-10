@@ -106,7 +106,7 @@
 								<ion-item lines="none" class="item-transparent">
 									<ion-avatar slot="start">
 										<ion-img
-											[src]=" item?.media[0]?.path ? item?.media[0]?.path :  './assets/img/employee-img.png' ">
+											[src]=" item?.media?.employee_image?.options.subSizes['1x'] ? ( item?.media?.employee_image?.options.subSizes['1x'] | image ) : './assets/img/employee-img.png' ">
 										</ion-img>
 									</ion-avatar>
 									<ion-label>

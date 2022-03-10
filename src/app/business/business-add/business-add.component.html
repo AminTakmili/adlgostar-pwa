@@ -44,7 +44,7 @@
 							<ng-select
 								[items]="employerList"
 								formControlName="employer_id"
-								bindLabel="name"
+								bindLabel="full_name"
 								bindValue="id"
 								[clearable]="false"
 							>
@@ -125,7 +125,7 @@
 						</div>
 						<!-- بلاک آدرس -->
 						<div formArrayName="addresses">
-							<div class="business-address" *ngFor="let item of addressFormGroup.controls ; let i = index"  [formGroupName]="i">
+							<div class="business-address" *ngFor="let item of  addressFormGroup.controls ; let i = index"  [formGroupName]="i">
 								<div class="row mb-3 justify-content-between align-items-center" *ngIf="i > 0">
 									<div class="col-12"><hr></div>
 									<div class="col-9">
@@ -153,13 +153,14 @@
 									formControlName="city_id"
 									>
 									</ng-select>
-									<span class="error"><app-validator [control]="item['controls']['city_id']" [controlName]="'انتخاب شهر'"></app-validator></span>
+
+									<span class="error"><app-validator [control]="item.get('city_id')" [controlName]="'انتخاب شهر'"></app-validator></span>
 								</div>
 								<!-- جزییات آدرس -->
 								<div class="form-input mb-3">
 									<label>آدرس</label>
 									<ion-textarea rows="3" formControlName="address" autocomplete="new-pass"></ion-textarea>
-									<span class="error"><app-validator [control]="item['controls']['address']" [controlName]="'آدرس'"></app-validator></span>
+									<span class="error"><app-validator [control]="item.get('address')" [controlName]="'آدرس'"></app-validator></span>
 								</div>
 								<div class="row">
 									<div class="col-6">
@@ -167,7 +168,7 @@
 										<div class="form-input mb-3">
 											<label>شماره تماس</label>
 											<ion-input formControlName="phone" type="number" autocomplete="new-pass"></ion-input>
-											<span class="error"><app-validator [control]="item['controls']['phone']" [controlName]="'شماره تماس'"></app-validator></span>
+											<span class="error"><app-validator [control]="item.get('phone')" [controlName]="'شماره تماس'"></app-validator></span>
 										</div>
 									</div>
 									<div class="col-6">
@@ -175,7 +176,7 @@
 										<div class="form-input mb-3">
 											<label>کد پستی</label>
 											<ion-input formControlName="postal_code" type="number" autocomplete="new-pass"></ion-input>
-											<span class="error"><app-validator [control]="item['controls']['postal_code']" [controlName]="'کد پستی'"></app-validator></span>
+											<span class="error"><app-validator [control]="item.get('postal_code')" [controlName]="'کد پستی'"></app-validator></span>
 										</div>
 									</div>
 								</div>

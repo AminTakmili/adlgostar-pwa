@@ -15,9 +15,10 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round ml-3" [routerLink]="['/businesses']" color="light">
-					<ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-					بازگشت
+				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
+					<ion-back-button defaultHref="/businesses" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'"></ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
 				</ion-button>
 				<ion-button shape="round" [routerLink]="['/businesses/edit/'+businessId]" color="secondary">
 					<ion-icon slot="start" name="create"></ion-icon>

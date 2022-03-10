@@ -19,7 +19,7 @@ export class ContractListComponent implements OnInit {
 
 	pageTitle: string = "قرار داد ها";
 
-	limit: number = 10;
+	limit: number = 3;
 	offset: number = 0;
 	total: number = 0;
 	CurrentPage: number = 1;

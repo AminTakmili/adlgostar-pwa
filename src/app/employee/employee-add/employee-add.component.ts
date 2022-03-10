@@ -111,7 +111,7 @@ export class EmployeeAddComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.employeeForm.get('addresses');
+		return this.employeeForm.get('addresses') as FormArray;
 	}
 
 	family_information(): FormGroup {
@@ -123,7 +123,7 @@ export class EmployeeAddComponent implements OnInit {
 	}
 
 	get familyInformationGroup(): FormArray {
-		return <FormArray>this.employeeForm.get('family_information');
+		return this.employeeForm.get('family_information') as FormArray;
 	}
 
 	military_information(): FormGroup {
@@ -134,7 +134,7 @@ export class EmployeeAddComponent implements OnInit {
 	}
 
 	get militaryInformationGroup(): FormArray {
-		return <FormArray>this.employeeForm.get('family_information');
+		return this.employeeForm.get('military_information') as FormArray;
 	}
 
 	bank_information(): FormGroup {
@@ -149,26 +149,31 @@ export class EmployeeAddComponent implements OnInit {
 	}
 
 	get bankInformationGroup(): FormArray {
-		return <FormArray>this.employeeForm.get('bank_information');
+		return this.employeeForm.get('bank_information') as FormArray;
 	}
 
 	image(): FormGroup {
 		return this.fb.group({
 			birth_certificate_image: [''],
 			national_card_image: [''],
-			military_card_image: ['']
+			military_card_image: [''],
+			employee_image: [''],
+
 
 		})
 	}
 
 	get imageGroup(): FormArray {
-		return <FormArray>this.employeeForm.get('image');
+		return this.employeeForm.get('image') as FormArray;
 	}
 
 	NextStep(){
 		this.step = this.step + 1;
+		this.employeeForm.markAllAsTouched();
+
 	}
 	PrevStep(){
+		this.employeeForm.markAllAsTouched();
 		this.step = this.step - 1;
 	}
 
@@ -239,6 +244,20 @@ export class EmployeeAddComponent implements OnInit {
 			};
 		}
 	}
+	employee_image_uploadFile(event: any, index : number) {
+		const reader = new FileReader();
+		if (event.target.files && event.target.files.length) {
+			const [file] = event.target.files;
+			reader.readAsDataURL(file);
+
+			reader.onload = () => {
+				this.imageGroup.controls[index].patchValue({
+					employee_image: reader.result
+				});
+				this.cd.markForCheck();
+			};
+		}
+	}
 
 	async onSubmit() {
 		console.log(this.employeeForm);
@@ -257,6 +276,12 @@ export class EmployeeAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
+		}else{
+			this.global.showToast('یک یا چند فیلد معتبر نیست . لطفا تمام پیغام های فیلد ها را چک کنید');
 		}
+	}
+
+	checkItem(item:any){
+		console.log(item.value);
 	}
 }

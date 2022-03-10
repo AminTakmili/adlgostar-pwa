@@ -57,7 +57,7 @@ export class UsersAllAddComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.addFrom.get('addresses');
+		return this.addFrom.get('addresses') as FormArray;
 	}
 
 	ngOnInit() {

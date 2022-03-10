@@ -1,0 +1,14 @@
+@import '/src/theme/extends';
+
+ion-menu[contentId=mainContent] {
+	@media only screen and (min-width: 768px) {
+		--max-width: 330px;
+		width: 330px;
+	}
+
+	background-color: transparent !important;
+	app-sidebar {
+		background-color: var(--ion-color-tertiary);
+		height: 100vh;
+	}
+}

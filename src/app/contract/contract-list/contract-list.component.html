@@ -129,7 +129,7 @@
 				</tbody>
 				<tfoot *ngIf="limit < total && dataList && dataList.length">
 					<tr>
-						<td colspan="5">
+						<td colspan="8">
 							<pagination-controls *ngIf="limit < total && dataList && dataList.length"
 								[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
 								[autoHide]="true">

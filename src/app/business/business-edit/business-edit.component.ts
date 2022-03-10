@@ -63,7 +63,7 @@ export class BusinessEditComponent implements OnInit {
 
 
 	get addressFormGroup(): FormArray {
-		return <FormArray>this.businessForm.get('addresses');
+		return this.businessForm.get('addresses') as FormArray;
 	}
 
 	newAddresses(): FormGroup {
@@ -81,16 +81,18 @@ export class BusinessEditComponent implements OnInit {
 	}
 
 
-	async getData() {
-		const countries = await this.global.httpGet('more/countries');
-		const businessCategory = await this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
-		const businessDetail = await this.global.httpPost('business/detail', { business_id: this.businessId });
+	getData() {
+		const countries = this.global.httpGet('more/countries');
+		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
+		const employerList = this.global.httpPost('employer/list', { limit: 1000, offset: this.categoryoffSet });
 
-		await this.global.parallelRequest([countries, businessCategory, businessDetail])
-			.subscribe(([countriesData, businessCategory  ='', businessDetailData  ='']) => {
-				this.setCountry(countriesData);
+
+		this.global.parallelRequest([countries, businessCategory , employerList])
+			.subscribe(([countriesData, businessCategory  ='', employerRes = '']) => {
+
+				this.province = this.global.createCountry(countriesData);
 				this.setBussinessCategory(businessCategory);
-				this.setbusiness(businessDetailData);
+				this.employerList =  this.global.createEmployer(employerRes)
 			});
 	}
 	setTitle() {
@@ -193,7 +195,7 @@ export class BusinessEditComponent implements OnInit {
 
 		if (this.businessForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('business/edit', this.businessForm.value)
+			this.global.httpPatch('business/edit', this.businessForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();

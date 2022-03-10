@@ -5,6 +5,7 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 import { environment } from 'src/environments/environment'
 import { citiesClass } from "../classes/cities.class";
 import { BusinessList } from "../models/business.model";
+import { contract } from "../models/contractConstant.model";
 import { Employee } from "../models/employee.model";
 import { Employer } from "../models/employer.model";
 import { StaticData } from "../models/StaticData.model";
@@ -84,6 +85,7 @@ export class GlobalService {
 
 		return this.http.delete<any>(this.getAppUrl(url), httpOptions);
 	}
+
 	httpPatch(url: string, params: object): Observable<any> {
 		const token = (this.login ? this.user.access_token : environment.token)
 
@@ -204,7 +206,7 @@ export class GlobalService {
 				this.changeLogin(true);
 				this.user = new User().deserialize(val);
 				this._user.next(this.user);
-				this.setPermision(this.user.permissionsList)
+				this.setPermision(this.user.permissionsList);
 				console.log(this.user);
 			}
 		});
@@ -274,6 +276,11 @@ export class GlobalService {
 	createBusiness(data: any) {
 		return data.list.map((item: any) => {
 			return new BusinessList().deserialize(item);
+		});
+	}
+	createContract(data: any) {
+		return data.list.map((item: any) => {
+			return new contract().deserialize(item);
 		});
 	}
 	createCountry(data: any) {

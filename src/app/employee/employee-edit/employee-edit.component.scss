@@ -1,0 +1,6 @@
+.form-item{
+	display: none;
+	&.show{
+		display: block !important;
+	}
+}

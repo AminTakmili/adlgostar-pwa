@@ -188,7 +188,9 @@ export class ContractTemplateEditComponent implements OnInit {
 
 	copyText(item : any){
 		this.clipboardApi.copyFromContent(item.variable);
-		this.global.showToast('مقدار  '+item.variable+' با موفقیت کپی شد');
+		this.global.showToast('مقدار  '+item.variable+' با موفقیت کپی شد' ,
+		1000
+		);
 	}
 
 	ChangeSearch(event: any){

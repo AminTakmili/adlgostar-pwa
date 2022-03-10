@@ -170,7 +170,7 @@
 									<label> شروط ضمن عقد قرار داد {{ i }}</label>
 									<ckeditor name="myckeditor"  formControlName="proviso_text" [config]="ckeConfig"></ckeditor>
 									<span class="error">
-										<app-validator [control]="item['controls']['proviso_text']" [controlName]="'شروط ضمن عقد قرار داد '"></app-validator>
+										<app-validator [control]="item.get('proviso_text')" [controlName]="'شروط ضمن عقد قرار داد '"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>

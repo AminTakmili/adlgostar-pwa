@@ -171,25 +171,25 @@ export const globalData = {
 			state: "close",
 			function: 'showDetail',
 			submenu: [
-				{
-					name: 'ویرایش اطلاعات',
-					url: '/business',
-					icon: 'create',
-					function: 'showDetail'
+				// {
+				// 	name: 'ویرایش اطلاعات',
+				// 	url: '/business',
+				// 	icon: 'create',
+				// 	function: 'showDetail'
 
-				},
-				{
-					name: 'اطلاعات تماس',
-					url: '/business',
-					icon: 'call',
-					function: 'showDetail'
-				},
-				{
-					name: 'پشتیبانی',
-					url: '/business',
-					icon: 'chatbubbles',
-					function: 'showDetail'
-				},
+				// },
+				// {
+				// 	name: 'اطلاعات تماس',
+				// 	url: '/business',
+				// 	icon: 'call',
+				// 	function: 'showDetail'
+				// },
+				// {
+				// 	name: 'پشتیبانی',
+				// 	url: '/business',
+				// 	icon: 'chatbubbles',
+				// 	function: 'showDetail'
+				// },
 				{
 					name: 'تغییر شماره همراه',
 					url: '/business',
@@ -198,7 +198,7 @@ export const globalData = {
 				},
 				{
 					name: 'خروج از حساب کاربری',
-					url: '/profile/logout',
+
 					icon: 'log-out-outline',
 					function: 'logout'
 
