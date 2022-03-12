@@ -1,7 +1,7 @@
 <ion-header>
 	<app-header [title]="pageTitle"></app-header>
 </ion-header>
-<ion-content *ngIf="dataList">
+<ion-content >
 	<!-- top bar content -->
 	<div class="content-header">
 		<div class="row justify-content-between ion-align-items-center">
@@ -41,7 +41,7 @@
 			<!--  -->
 			<div class="container mt-4">
 				<!-- step 0  -->
-				<div class="row mb-4" *ngIf=" step === 1 ">
+				<div class="row mb-4"  *ngIf="dataList">
 					<div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">تکمیل اطلاعات اولیه قرار داد</h2>
@@ -208,8 +208,8 @@
 						<!-- زمان شروع به کار -->
 						<div class="form-input mb-3">
 							<label>زمان شروع به کار</label>
-							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-								<input type="text" formControlName="employee_start_date" />
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateInitValue]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="employee_start_date"  />
 							 </ng-persian-datepicker>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
@@ -217,7 +217,7 @@
 							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
 						</div>
 						<!-- زمان شروع به کار -->
-						<div class="form-input mb-3">
+						<div  class="form-input mb-3" >
 							<label>زمان شروع قرارداد</label>
 							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="start_date" />
@@ -228,7 +228,7 @@
 							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
 						</div>
 						<!-- زمان شروع قرار داد -->
-						<div class="form-input mb-3">
+						<div  class="form-input mb-3">
 							<label>زمان پایان قرارداد</label>
 							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="end_date" />

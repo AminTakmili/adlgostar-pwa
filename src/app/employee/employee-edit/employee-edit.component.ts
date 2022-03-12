@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
-import { IonDatetime } from '@ionic/angular';
 // import { format, parseISO } from 'date-fns';
 import { compareAsc, format, newDate } from 'date-fns-jalali'
 import { citiesClass } from 'src/app/core/classes/cities.class';
@@ -30,7 +29,7 @@ export class EmployeeEditComponent implements OnInit {
 	StaticData : StaticData;
 	pageTitle : string = "ویرایش کارمند";
 
-	@ViewChild("popoverDatetime2") datetime: IonDatetime;
+
 
 	dateValue : string = '';
 	dateValue2 = '';

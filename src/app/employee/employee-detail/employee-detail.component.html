@@ -22,7 +22,7 @@
 					بازگشت -->
 				</ion-button>
 				<ion-button shape="round" *ngIf="global.userPermision['employees_edit']" [routerLink]="['/employees/edit/'+Employee?.id]" color="secondary">
-					<ion-icon slot="start" name="create"></ion-icon>
+					<ion-icon slot="start" name="build"></ion-icon>
 					ویرایش اطلاعات
 				</ion-button>
 			</div>
@@ -76,7 +76,7 @@
 											<ion-button fill="clear" [routerLink]="['edit', contract.id]"
 												class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
 												<ion-icon size="small" color="medium" slot="icon-only"
-													name="create">
+													name="build">
 												</ion-icon>
 											</ion-button>
 											<ion-button fill="clear" [routerLink]="['detail', contract.id]"
