@@ -51,12 +51,12 @@ export class LoginPage implements OnInit {
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/login', {
-				mobile: this.loginForm.controls['mobile'].value,
+				mobile: this.loginForm.value.mobile,
 			}).subscribe(async (res:any) => {
 
 
 				// console.log(res:any);
-				this.mobile = this.loginForm.controls['mobile'].value;
+				this.mobile = this.loginForm.value.mobile;
 				await this.global.dismisLoading();
 				this.regStatus = 1;
 				clearInterval(this.interval);
@@ -96,7 +96,7 @@ export class LoginPage implements OnInit {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/confirmLoginCode', {
 				mobile: this.mobile,
-				verifyCode: this.verifyForm.controls['verifycode'].value,
+				verifyCode: this.verifyForm.value.verifyCode,
 			}).subscribe(async (res : any) => {
 				await this.global.dismisLoading();
 				// console.log(res.firstName,res.lastName)
@@ -143,6 +143,9 @@ export class LoginPage implements OnInit {
 		this.regStatus = 0;
 		this.loginForm.reset();
 		this.verifyForm.reset();
+		clearInterval(this.interval);
+	}
+	cleareTimmer(){
 		clearInterval(this.interval);
 	}
 

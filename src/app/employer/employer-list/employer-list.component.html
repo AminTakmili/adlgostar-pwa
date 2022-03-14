@@ -16,11 +16,11 @@
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="warning" class="ml-3">
 					<ion-icon slot="start" name="push" *ngIf="global.userPermision['employers_add']"></ion-icon>
-					افزودن کارمند با اکسل
+					افزودن {{ pageTitle }} با اکسل
 				</ion-button>
 				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['employers_add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
-					افزودن کارمند جدید
+					افزودن {{ pageTitle }} جدید
 				</ion-button>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 									</ion-button>
 									<ion-button fill="clear" [routerLink]="['edit', item.id]" *ngIf="global.userPermision['employers_edit']"
 										class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
-										<ion-icon size="small" color="medium" slot="icon-only" name="create">
+										<ion-icon size="small" color="medium" slot="icon-only" name="build">
 										</ion-icon>
 									</ion-button>
 									<ion-button fill="clear" [routerLink]="['detail', item.id]" *ngIf="global.userPermision['employers_detail']"

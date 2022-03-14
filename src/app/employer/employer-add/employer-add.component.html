@@ -10,15 +10,10 @@
 					<h1 class="title"> {{ pageTitle }}</h1>
 				</div>
 			</div>
-			<div class="col-lg-auto">
-
-				<ion-back-button defaultHref="more/salary-constants" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
-				</ion-back-button>
-			</div>
 		</div>
 	</div>
 	<main>
-		<div class="container">
+		<div class="container ">
 			<form [formGroup]="addFrom" (submit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
 				<div class="row my-4">
 					<div class="col-12">
@@ -134,9 +129,9 @@
 							<label>جنسیت</label>
 							<ng-select
 								bindLabel="name"
-								bindValue="id"
+								bindValue="value"
 								placeholder="انتخاب کنید"
-								[items]="gender"
+								[items]="StaticData?.gender"
 								formControlName="gender"
 								>
 							</ng-select>
@@ -161,6 +156,7 @@
 					</div>
 					<!-- آپلود تصویر -->
 					<div class="col-lg-6">
+						<ion-img class="user-edit-img" *ngIf="addFrom.value.image" [src]="addFrom.value.image" ></ion-img>
 						<div class="form-input mb-3">
 							<label>انتخاب تصویر</label>
 							<ion-input type="file" accept="image/*" (change)="uploadFile($event)" autocomplete="new-pass" formControlName="image"></ion-input>
@@ -238,21 +234,28 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="col-12"><hr></div>
-
-					<div class="row ion-justify-content-between ion-align-items-center">
-						<div class="col-5">
-							<ion-button expand="block" color="medium" fill="outline" shape="round">
-								پاک کردن فرم
-							</ion-button>
-						</div>
-						<div class="col-7">
-							<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
-								ثبت {{ pageTitle }}
-							</ion-button>
+					<!-- btn frm -->
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-2">
+								<ion-button expand="block" color="warning" fill="solid" shape="round" (click)="showPrew()">
+									پیش نمایش
+								</ion-button>
+							</div>
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ثبت {{ pageTitle }}
+								</ion-button>
+							</div>
 						</div>
 					</div>
+
 				</div>
 
 

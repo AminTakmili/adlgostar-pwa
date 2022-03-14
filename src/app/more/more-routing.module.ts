@@ -32,7 +32,12 @@ const routes: Routes = [
 	{
 		path: 'employee-posts',
 		loadChildren: () => import('./more-employee-posts/more-employee-posts.module').then(m => m.MoreEmployeePostsPageModule)
+	},
+	{
+		path: 'bank',
+		loadChildren: () => import('./more-bank/more-bank.module').then(m => m.MoreBankPageModule)
 	}
+
 
 ];
 

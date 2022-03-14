@@ -13,6 +13,7 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { EmployerPrevComponent } from './employer-prev/employer-prev.component';
 
 
 @NgModule({
@@ -31,7 +32,14 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 	EmployerListComponent,
 	EmployerAddComponent,
 	EmployerEditComponent,
-	EmployerDetailComponent
+	EmployerDetailComponent,
+	EmployerPrevComponent
+  ],
+  entryComponents : [
+	EmployerPrevComponent
+  ],
+  exports : [
+	EmployerPrevComponent
   ]
 })
 export class EmployerPageModule {}

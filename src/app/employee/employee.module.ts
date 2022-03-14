@@ -13,25 +13,33 @@ import { ShareModulePageModule } from '../share-module/share-module.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { EmployeePrevComponent } from './employee-prev/employee-prev.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    EmployeePageRoutingModule,
-    ShareModulePageModule,
-    ReactiveFormsModule,
-	NgSelectModule,
-	NgxPaginationModule,
-	NgPersianDatepickerModule,
-  ],
-  declarations: [
-    EmployeeListComponent,
-    EmployeeAddComponent,
-    EmployeeEditComponent,
-    EmployeeDetailComponent,
-  ]
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		EmployeePageRoutingModule,
+		ShareModulePageModule,
+		ReactiveFormsModule,
+		NgSelectModule,
+		NgxPaginationModule,
+		NgPersianDatepickerModule,
+	],
+	declarations: [
+		EmployeeListComponent,
+		EmployeeAddComponent,
+		EmployeeEditComponent,
+		EmployeeDetailComponent,
+		EmployeePrevComponent
+	],
+	entryComponents: [
+		EmployeePrevComponent
+	],
+	exports: [
+		EmployeePrevComponent
+	]
 })
 export class EmployeePageModule { }

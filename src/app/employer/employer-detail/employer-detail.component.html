@@ -23,7 +23,7 @@
 				</ion-button>
 				<ion-button shape="round" *ngIf="global.userPermision['employers_edit']"
 					[routerLink]="['/employers/edit/'+employer?.id]" color="secondary">
-					<ion-icon slot="start" name="create"></ion-icon>
+					<ion-icon slot="start" name="build"></ion-icon>
 					ویرایش اطلاعات
 				</ion-button>
 			</div>
@@ -97,7 +97,7 @@
 										<ion-button fill="clear" class="px-0 mx-0 tooltip-show"
 											[routerLink]="['/businesses/edit/',item.id]" tooltip="ویرایش"
 											*ngIf="global.userPermision['business_edit']">
-											<ion-icon size="small" color="medium" slot="icon-only" name="create">
+											<ion-icon size="small" color="medium" slot="icon-only" name="build">
 											</ion-icon>
 										</ion-button> -->
 										<ion-button fill="clear" class="px-0 mx-0 tooltip-show"
@@ -166,7 +166,7 @@
 											</ion-button>
 											<ion-button fill="clear" [routerLink]="['/contracts/edit', contract.id]"
 												class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
-												<ion-icon size="small" color="medium" slot="icon-only" name="create">
+												<ion-icon size="small" color="medium" slot="icon-only" name="build">
 												</ion-icon>
 											</ion-button> -->
 											<ion-button fill="clear" [routerLink]="['/contracts/detail', contract.id]"

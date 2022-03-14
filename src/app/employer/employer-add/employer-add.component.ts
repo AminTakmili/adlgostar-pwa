@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { globalData } from 'src/app/core/data/global.data';
+import { StaticData } from 'src/app/core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { EmployerPrevComponent } from '../employer-prev/employer-prev.component';
 
 @Component({
 	selector: 'app-employer-add',
@@ -18,14 +20,15 @@ export class EmployerAddComponent implements OnInit {
 	address: FormArray;
 	gender: any = globalData.gender;
 	province: citiesClass[] = [];
-
+	StaticData : StaticData;
 	employerImage: File | null;
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private cd: ChangeDetectorRef
+		private cd: ChangeDetectorRef,
+		public modalController: ModalController
 	) {
 		this.employerImage = null;
 		this.addFrom = this.fb.group({
@@ -57,9 +60,15 @@ export class EmployerAddComponent implements OnInit {
 		return this.addFrom.get('addresses') as FormArray;
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.setTitle();
 		this.getData();
+
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				this.StaticData = value;
+			}
+		});
 	}
 
 	setTitle() {
@@ -114,6 +123,21 @@ export class EmployerAddComponent implements OnInit {
 				this.cd.markForCheck();
 			};
 		}
+	}
+
+	async showPrew(){
+
+		const modal = await this.modalController.create({
+			component: EmployerPrevComponent,
+			cssClass: 'my-custom-class',
+			componentProps: {
+				data: this.addFrom.value,
+				gender : this.StaticData.gender,
+				province : this.province
+
+			  }
+		  });
+		  return await modal.present();
 	}
 
 }

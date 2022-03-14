@@ -47,7 +47,7 @@
 							<span class="hint"> <span *ngIf="timer != '00:00' " class="time" color="primary"> {{timer}} تا ارسال مجدد </span></span>
 						</div>
 						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid"> بررسی و ورود </ion-button>
-						<ion-button class="my-3" type="button" expand="block" size="large" shape="round" fill="outline" color="medium"> تغییر شماره همراه </ion-button>
+						<ion-button class="my-3" type="button" expand="block" size="large" shape="round" fill="outline" color="medium"  (click)="changeNumber()"> تغییر شماره همراه </ion-button>
 						<!-- end custom input -->
 
 					</form>

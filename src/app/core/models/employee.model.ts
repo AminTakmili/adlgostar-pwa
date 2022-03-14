@@ -137,8 +137,8 @@ export class employeeImage implements Deserializable {
 export class family_information implements Deserializable {
 
 	id !:number;
-	count_child_under_18_years !: string ;
-	count_student_child_over_18_years_old !: string ;
+	count_student_child !: string ;
+	count_non_student_child_over_18 !: string ;
 	total_child !: string ;
 	deserialize(input: any): this {
 		Object.assign(this, input);
@@ -163,7 +163,7 @@ export class bank_information implements Deserializable {
 	account_number!: string ;
 	card_number!: string ;
 	iban_number!: string ;
-	payment_with_check!: string ;
+
 
 	deserialize(input: any): this {
 		Object.assign(this, input);

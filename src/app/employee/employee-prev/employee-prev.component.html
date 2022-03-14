@@ -1,0 +1,260 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-button (click)="dismiss();">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>پیش نمایش داده ها</ion-title>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<ion-list class="py-0">
+		<ion-list-header>اطلاعات کارمند</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.first_name }}</h2>
+				<p class="font-size-12">نام</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.last_name }}</h2>
+				<p class="font-size-12">نام خانوادگی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_certificate_number }}</h2>
+				<p class="font-size-12">شماره شناسنامه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.national_code }}</h2>
+				<p class="font-size-12">کد ملی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.mobile }}</h2>
+				<p class="font-size-12">شماره همراه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_place }}</h2>
+				<p class="font-size-12">محل تولد</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_date }}</h2>
+				<p class="font-size-12">تاریخ تولد</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_certificate_issuance_place }}</h2>
+				<p class="font-size-12">محل صدور شناسنامه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnGenderName(data?.gender) }}</h2>
+				<p class="font-size-12">جنسیت</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnMaritalStatus(data?.marital_status) }}</h2>
+				<p class="font-size-12">وضعیت تاهل</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.father_name }}</h2>
+				<p class="font-size-12">نام پدر</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnDegree(data?.degree_id) }}</h2>
+				<p class="font-size-12">آخرین مدرک تحصیلی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full" *ngIf="data?.degree_id > 3">
+			<ion-label>
+				<h2>{{ data?.field_of_study }}</h2>
+				<p class="font-size-12">رشته ی تحصیلی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.insurance_more_than_720 ? 'دارد' : 'ندارد' }}</h2>
+				<p class="font-size-12">720 روز بیمه </p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	<!-- آدرس های کارفرما -->
+	<ion-list *ngFor="let item of data?.addresses" class="py-0">
+		<ion-list-header>آدرس کارفرما</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnprovinceName(item?.city_id) }}</h2>
+				<p class="font-size-12">استان و شهر</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.address }}</h2>
+				<p class="font-size-12">آدرس محل کار</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.postal_code }}</h2>
+				<p class="font-size-12">کد پستی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.phone }}</h2>
+				<p class="font-size-12">تلفن ثابت</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	<!-- وضعیت سربازی -->
+	<ion-list *ngFor="let item of data?.military_information" class="py-0">
+		<ion-list-header>وضعیت سربازی</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnMilitaryInformation(item?.military_state) }}</h2>
+				<p class="font-size-12">وضعیت نظام وظیفه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" *ngIf="item?.military_state === 'exempt'" lines="full">
+			<ion-label>
+				<h2>{{ item?.military_exempt_reason }}</h2>
+				<p class="font-size-12">علت معافی</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	<!-- اطلاعات بانکی -->
+	<ion-list  *ngFor="let item of data?.bank_information" class="py-0">
+		<ion-list-header>اطلاعات بانکی</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnBankName(item?.id) }}</h2>
+				<p class="font-size-12">نام بانک</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.branch_name }}</h2>
+				<p class="font-size-12">نام شعبه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.account_number }}</h2>
+				<p class="font-size-12">شماره حساب</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.card_number }}</h2>
+				<p class="font-size-12">شماره کارت</p>
+			</ion-label>
+		</ion-item>
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.iban_number }}</h2>
+				<p class="font-size-12">شماره شبا
+				</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<!-- آدرس های کارفرما -->
+	<ion-list *ngFor="let item of data?.family_information" class="py-0">
+		<ion-list-header>آدرس کارفرما</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item.total_child }}</h2>
+				<p class="font-size-12">مجموع کل فرزندان</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.count_non_student_child_over_18 }}</h2>
+				<p class="font-size-12">فزندان بالای 18 سال</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.count_student_child }}</h2>
+				<p class="font-size-12">فرزندان زیر 18 سال و بالا 18 سال که محصل هستند</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	<!-- تصاویر -->
+	<div class="px-3" *ngFor="let item of data?.image">
+		<!-- تصویر شناسنامه -->
+		<div >
+			<p>تصویر شناسنامه</p>
+			<ion-img  class="user-edit-img " *ngIf="item?.birth_certificate_image" [src]="item?.birth_certificate_image"></ion-img>
+			<ion-img  class="user-edit-img " *ngIf="!item?.birth_certificate_image && item?.birth_certificate_image_old" [src]="item?.birth_certificate_image_old | image"></ion-img>
+		</div>
+		<!-- تصاویر -->
+		<div>
+			<p>تصویر کارت ملی</p>
+			<ion-img  class="user-edit-img " *ngIf="item?.national_card_image" [src]="item?.national_card_image"></ion-img>
+			<ion-img  class="user-edit-img " *ngIf="!item?.national_card_image && item?.national_card_image_old" [src]="item?.national_card_image_old | image"></ion-img>
+		</div>
+		<!-- تصاویر -->
+		<div>
+			<p>کارت سربازی / معافیت سربازی</p>
+			<ion-img  class="user-edit-img " *ngIf="item?.military_card_image" [src]="item?.military_card_image"></ion-img>
+			<ion-img   class="user-edit-img "*ngIf="!item?.military_card_image && item?.military_card_image_old" [src]="item?.military_card_image_old | image"></ion-img>
+		</div>
+		<!-- تصاویر -->
+		<div>
+			<p>تصویر پرسونلی</p>
+			<ion-img  class="user-edit-img " *ngIf="item?.employee_image" [src]="item?.employee_image"></ion-img>
+			<ion-img   class="user-edit-img "*ngIf="!item?.employee_image && item?.employee_image_old" [src]="item?.employee_image_old | image"></ion-img>
+		</div>
+	</div>
+</ion-content>
+<ion-footer>
+	<div class="d-flex flex-row ion-justify-content-end ion-align-items-center px-15 py-10">
+		<ion-button shape="round" fill="outline" (click)="dismiss();" color="primary" expand="block">بستن</ion-button>
+	</div>
+</ion-footer>

@@ -1,0 +1,60 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید موارد پایه سنوات برای یک سال را ایجاد کنید</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/bank" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="addFrom" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-md-12">
+
+						<!-- درصد افزایش نسبت به سال قبل -->
+						<div class="form-input mb-3">
+							<label>عنوان بانک</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<app-validator [control]="addFrom.controls['name']" [controlName]="'عنوان'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا ملت</span>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<hr>
+					</div>
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addFrom)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									{{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

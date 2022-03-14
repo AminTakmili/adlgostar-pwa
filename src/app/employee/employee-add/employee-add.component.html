@@ -217,7 +217,7 @@
 							</div>
 						</div>
 						<!--  -->
-						<div class="col-lg-6">
+						<div class="col-lg-6" *ngIf="employeeForm.get('degree_id').value > 3">
 							<div class="form-input mb-3">
 								<label>رشته ی تحصیلی</label>
 								<ion-input autocomplete="new-pass" formControlName="field_of_study"></ion-input>
@@ -228,7 +228,7 @@
 							</div>
 						</div>
 						<!--  -->
-						<div class="col-lg-6 "></div>
+						<div class="col-lg-12 "></div>
 						<div class="col-lg-6 ">
 							<ion-item lines="none">
 								<ion-label> دارای 720 روز بیمه  </ion-label>
@@ -369,13 +369,28 @@
 							</div>
 							<!--  -->
 							<div class="col-lg-6 ">
-								<div class="form-input mb-3">
+								<!-- <div class="form-input mb-3">
 									<label>نام بانک</label>
 									<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
 									<span class="error">
 										<app-validator [control]="item.get('name')"  [controlName]="'نام بانک'"></app-validator>
 									</span>
 									<span class="hint"></span>
+								</div> -->
+								<div class="form-input mb-3" *ngIf="province && province.length">
+									<label>انتخاب بانک</label>
+									<ng-select
+										[items]="bankList"
+										placeholder="یک بانک انتخاب کنید"
+										bindLabel="name"
+										bindValue="id"
+										formControlName="id"
+									>
+									</ng-select>
+									<span class="error">
+										<app-validator [control]="item.get('name')" [controlName]="'بانک'"></app-validator>
+									</span>
+									<span class="hint"> مثلا ملت </span>
 								</div>
 							</div>
 							<!--  -->
@@ -419,13 +434,7 @@
 									<span class="hint">شماره شبا بدون IR </span>
 								</div>
 							</div>
-							<div class="col-lg-6 ">
-								<ion-item lines="none">
-									<ion-label> پرداخت با چک </ion-label>
-									<ion-checkbox type="string" slot="start" formControlName="payment_with_check">
-									</ion-checkbox>
-								</ion-item>
-							</div>
+
 						</div>
 					</div>
 				</div>
@@ -458,9 +467,9 @@
 								<div class="form-input mb-3">
 									<label>تعداد فرزندان بالا 18 سال و غیر محصل</label>
 									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass"
-										formControlName="count_student_child_over_18_years_old"></ion-input>
+										formControlName="count_non_student_child_over_18"></ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item.get('count_student_child_over_18_years_old')" [controlName]="'تعداد فرزندان بالای 18 سال'"></app-validator> -->
+										<!-- <app-validator [control]="item.get('count_non_student_child_over_18')" [controlName]="'تعداد فرزندان بالای 18 سال'"></app-validator> -->
 									</span>
 									<span class="hint">مثلا 2</span>
 								</div>
@@ -468,10 +477,10 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>تعداد فرزندان زیر 18 سال و فرزندان بالا 18 سال محصل</label>
-									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="count_child_under_18_years">
+									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="count_student_child">
 									</ion-input>
 									<span class="error">
-										<!-- <app-validator [control]="item.get('count_child_under_18_years')" [controlName]="'تعداد فرزندان زیر 18 سال'"></app-validator> -->
+										<!-- <app-validator [control]="item.get('count_student_child')" [controlName]="'تعداد فرزندان زیر 18 سال'"></app-validator> -->
 									</span>
 									<span class="hint">مثلا 2</span>
 								</div>
@@ -543,14 +552,19 @@
 				</div>
 			</div>
 			<div class="container">
-				<div class="row">
+				<div class="row justify-content-end">
 					<div class="col-12"><hr></div>
-					<div class="col-lg-5"></div>
-					<div class="col-lg-3">
-						<ion-button *ngIf="step === 1" type="button" expand="block" color="medium" fill="outline" shape="round">پاک کردن فرم</ion-button>
+
+					<div class="col-lg-2">
+						<ion-button *ngIf="step === 1" type="button" expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(employeeForm)">پاک کردن فرم</ion-button>
 						<ion-button *ngIf="step !== 1" type="button" (click)="PrevStep()" expand="block" color="medium" fill="outline" shape="round">بازگشت به مرحله قبل</ion-button>
 					</div>
-					<div class="col-lg-4">
+					<div *ngIf="step !== 1" class="col-lg-2">
+						<ion-button expand="block" color="warning" fill="solid" shape="round" (click)="showPrew()">
+							پیش نمایش
+						</ion-button>
+					</div>
+					<div class="col-lg-3">
 						<ion-button  *ngIf="step !== 6" type="button" (click)="NextStep()" expand="block" color="success" fill="solid" shape="round">ثبت و ادامه</ion-button>
 						<ion-button  *ngIf="step === 6" type="submit" expand="block" color="success" fill="solid" shape="round">ثبت کارمند</ion-button>
 					</div>
