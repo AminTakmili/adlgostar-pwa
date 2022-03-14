@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { IonDatetime } from '@ionic/angular';
@@ -8,6 +8,8 @@ import { IonDatetime } from '@ionic/angular';
 import { compareAsc, format, newDate } from 'date-fns-jalali'
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { StaticData } from 'src/app/core/models/StaticData.model';
+import { Bank } from 'src/app/core/models/bank.model';
+import { EmployeePrevComponent } from '../employee-prev/employee-prev.component';
 
 @Component({
 	selector: 'app-employee-add',
@@ -30,6 +32,7 @@ export class EmployeeAddComponent implements OnInit {
 	StaticData : StaticData;
 	pageTitle : string = "افزودن کارمند جدید";
 
+	bankList:Bank[];
 	@ViewChild("popoverDatetime2") datetime: IonDatetime;
 
 	dateValue : string = '';
@@ -46,7 +49,8 @@ export class EmployeeAddComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private cd: ChangeDetectorRef
+		private cd: ChangeDetectorRef,
+		public modalController: ModalController
 
 	) {
 
@@ -83,7 +87,7 @@ export class EmployeeAddComponent implements OnInit {
 
 	async ngOnInit() {
 		this.setTitle();
-		this.getData();
+		this.getExtra();
 
 		await this.global.baseData.subscribe(value => {
 			if (value) {
@@ -116,8 +120,8 @@ export class EmployeeAddComponent implements OnInit {
 
 	family_information(): FormGroup {
 		return this.fb.group({
-			count_child_under_18_years: [0],
-			count_student_child_over_18_years_old: [0],
+			count_student_child: [0],
+			count_non_student_child_over_18: [0],
 			total_child: [0],
 		})
 	}
@@ -139,12 +143,12 @@ export class EmployeeAddComponent implements OnInit {
 
 	bank_information(): FormGroup {
 		return this.fb.group({
-			name: ['', Validators.compose([Validators.required])],
+			id: ['', Validators.compose([Validators.required])],
 			branch_name: ['', Validators.compose([Validators.required])],
 			account_number: ['', ],
 			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
-			payment_with_check: [false],
+
 		})
 	}
 
@@ -177,30 +181,19 @@ export class EmployeeAddComponent implements OnInit {
 		this.step = this.step - 1;
 	}
 
-	getData() {
+	getExtra() {
 		const countries = this.global.httpGet('more/countries');
+		const bank = this.global.httpPost('bank/list',{limit:200,offset:0});
 		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
-		this.global.parallelRequest([countries])
-			.subscribe(([countriesData]) => {
+		this.global.parallelRequest([countries,bank])
+			.subscribe(([countriesData, bankData = '' ]) => {
 
-				this.setCountry(countriesData);
+				this.province = this.global.createCountry(countriesData);
+				this.bankList = this.global.createBank(bankData);
 				// this.setBussinessCategory(businessCategory);
 			});
 	}
 
-	setCountry(data : any) {
-		data[0].provinces.map((province: any) => {
-			province.cities.map((city: any) => {
-				const cities: citiesClass = new citiesClass();
-				cities.id = city.id
-				cities.name = city.name;
-				cities.provinceId = province.id;
-				cities.province = province.name;
-				this.province.push(cities);
-			});
-		});
-
-	}
 
 	birth_certificate_image_uploadFile(event: any, index : number) {
 		const reader = new FileReader();
@@ -283,5 +276,21 @@ export class EmployeeAddComponent implements OnInit {
 
 	checkItem(item:any){
 		console.log(item.value);
+	}
+
+	async showPrew(){
+
+		const modal = await this.modalController.create({
+			component: EmployeePrevComponent,
+			cssClass: 'my-custom-class',
+			componentProps: {
+				data: this.employeeForm.value,
+				StaticData : this.StaticData,
+				province : this.province,
+				bank : this.bankList,
+
+			  }
+		  });
+		  return await modal.present();
 	}
 }

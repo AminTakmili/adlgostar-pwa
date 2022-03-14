@@ -373,8 +373,8 @@ export class ContractEditComponent implements OnInit {
 				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
 				return;
 			}
-			if (!this.contractsForm.value.is_manual) {
-				console.log(this.contractsForm.value.extra_fields)
+			if (!this.contractsForm.get('is_manual').value) {
+
 				await this.global.showLoading('لطفا منتظر بمانید...');
 				this.global.httpPost('contract/calculatePrices', this.contractsForm.value).
 					subscribe(async (res: any) => {

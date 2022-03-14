@@ -1,0 +1,81 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p>شما در این قسمت میتوانید شماره همراه خود را تغییر دهید .</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="login">
+		<div class="container my-4">
+			<!-- login -->
+			<div *ngIf="regStatus === 0" class="row justify-content-center">
+				<div class="col-lg-4 col-md-6">
+					<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
+
+						<!-- <ion-img class="logo" [src]="'../assets/img/logo.png'"></ion-img> -->
+						<h1 class="title">تغییر شماره همراه</h1>
+						<p class="desc">برای تغییر شماره همراه, شماره همراه جدید خود را وارد کنید</p>
+						<!-- custom input -->
+						<div class="form-input ">
+							<label>شماره همراه</label>
+							<ion-input (keypress)="global.justNumber($event)" formControlName="mobile" autofocus="true"
+								autocomplete="new-pass"></ion-input>
+							<span class="error">
+								<app-validator [control]="loginForm.controls['mobile']" [controlName]="'شماره همراه'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا : 09173052222</span>
+						</div>
+						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid">
+							احراز هویت شماره جدید</ion-button>
+						<!-- end custom input -->
+
+					</form>
+					<!-- verify -->
+				</div>
+			</div>
+
+			<!-- register -->
+			<div *ngIf="regStatus === 1" class="row justify-content-center">
+				<div class="col-lg-4 col-md-6">
+					<form class="login-form" [formGroup]="verifyForm" (ngSubmit)="onVerify()" autocomplete="off">
+
+						<!-- <ion-img class="logo" [src]="'../assets/img/logo.png'"></ion-img> -->
+						<h1 class="title">احراز هویت شماره همراه</h1>
+						<p class="desc">یک کد 5 رقمی به شماره همراه {{ mobile }} ارسال شده . این کد را در باکس زیر وارد
+							کنید و بر روی ادامه بزنید .</p>
+						<!-- custom input -->
+						<div class="form-input ">
+							<label>کد پنج رقمی</label>
+							<ion-input (keypress)="global.justNumber($event)" formControlName="verifycode"
+								autofocus="true" autocomplete="new-pass"></ion-input>
+							<span class="error">
+								<app-validator [control]="verifyForm.controls['verifycode']"
+									[controlName]="'کد 5 رقمی'"></app-validator>
+							</span>
+							<span class="hint"> <span *ngIf="timer != '00:00' " class="time" color="primary"> {{timer}}
+									تا ارسال مجدد </span></span>
+						</div>
+						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid">
+							احراز هویت و تغییر شماره </ion-button>
+						<ion-button class="my-3" type="button" (click)="changeNumber()" expand="block" size="large" shape="round" fill="outline"
+							color="medium"> تغییر شماره همراه </ion-button>
+						<!-- end custom input -->
+
+					</form>
+					<!-- verify -->
+				</div>
+			</div>
+
+		</div>
+	</div>
+</ion-content>

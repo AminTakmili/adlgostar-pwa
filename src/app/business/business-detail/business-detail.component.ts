@@ -25,8 +25,11 @@ export class BusinessDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getData();
 
+
+	}
+	async ionViewWillEnter(){
+		this.getData();
 	}
 
 	async getData() {

@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { User } from '../core/models/user.model';
-import { GlobalService } from '../core/services/global.service';
-import { SeoService } from '../core/services/seo.service';
-import { StorageService } from '../core/services/storage.service';
+import { User } from 'src/app/core/models/user.model';
+import { GlobalService } from 'src/app/core/services/global.service';
+import { SeoService } from 'src/app/core/services/seo.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+
 
 @Component({
-	selector: 'app-login',
-	templateUrl: './login.page.html',
-	styleUrls: ['./login.page.scss'],
+  selector: 'app-profile-change-number',
+  templateUrl: './profile-change-number.component.html',
+  styleUrls: ['./profile-change-number.component.scss'],
 })
-export class LoginPage implements OnInit {
+export class ProfileChangeNumberComponent implements OnInit {
 
+	pageTitle :string = 'تغییر شماره همراه';
 	loginForm: FormGroup;
 	verifyForm: FormGroup;
 	mobile: string;
@@ -40,9 +42,9 @@ export class LoginPage implements OnInit {
 	ngOnInit() {
 		// seo
 		this.seo.generateTags({
-			title:   'ورود کاربران',
-			description: 'ورود با شماره همراه ',
-			keywords: "ورود",
+			title:   this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle ,
 			isNoIndex: false,
 		});
 	}
@@ -50,8 +52,8 @@ export class LoginPage implements OnInit {
 		if (this.loginForm.valid) {
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('user/login', {
-				mobile: this.loginForm.value.mobile,
+			this.global.httpPost('user/changeMobile', {
+				newMobile: this.loginForm.value.mobile,
 			}).subscribe(async (res:any) => {
 
 
@@ -95,27 +97,25 @@ export class LoginPage implements OnInit {
 		if (this.verifyForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/confirmLoginCode', {
-				mobile: this.mobile,
-				verifyCode: this.verifyForm.value.verifyCode,
+				mobile: this.global.user.mobile ,
+				verifyCode: this.verifyForm.value.verifycode,
+				newMobile: this.mobile,
 			}).subscribe(async (res : any) => {
 				await this.global.dismisLoading();
 				// console.log(res.firstName,res.lastName)
 
 
-					this.global.user = new User().deserialize(res);
+					this.global.user.mobile = this.mobile;
+					this.global._user.next(this.global.user) ;
 					this.storage.set('user',this.global.user);
-					this.global._user.next(this.global.user);
-					this.global.setPermision(this.global.user.permissionsList);
-					this.global.changeLogin(true);
-					this.global.showToast('کاربر گرامی , ' + this.global.user.first_name + ' خوش آمدید .');
-					this.navCtrl.navigateRoot(['/']);
 
+					this.global.showToast('کاربر گرامی , ' + this.global.user.first_name + ' شماره همراه شما با موفقیت تغییر پیدا کرد');
+					this.navCtrl.navigateRoot('profile/change-number');
 					await this.global.dismisLoading();
-
 					clearInterval(this.interval);
 					this.regStatus = 0;
 					this.verifyForm.reset();
-
+					this.loginForm.reset();
 
 			}, async (error:any) => {
 				await this.global.dismisLoading();
@@ -127,8 +127,8 @@ export class LoginPage implements OnInit {
 
 	reSend() {
 		this.global.showLoading('در حال ارسال مجدد پیامک');
-		this.global.httpPost('user/login', {
-			mobile: this.mobile
+		this.global.httpPost('user/changeMobile', {
+			newMobile: this.mobile
 		}).subscribe(() => {
 			this.global.dismisLoading();
 			this.timer = '02:00';
@@ -145,8 +145,10 @@ export class LoginPage implements OnInit {
 		this.verifyForm.reset();
 		clearInterval(this.interval);
 	}
+
 	cleareTimmer(){
 		clearInterval(this.interval);
 	}
+
 
 }

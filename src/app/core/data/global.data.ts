@@ -162,6 +162,13 @@ export const globalData = {
 					function: 'showDetail'
 
 				},
+				{
+					name: 'بانک ها',
+					url: '/more/bank',
+					icon: 'cash',
+					function: 'showDetail'
+
+				},
 			],
 		},
 		{
@@ -192,8 +199,8 @@ export const globalData = {
 				// },
 				{
 					name: 'تغییر شماره همراه',
-					url: '/business',
-					icon: 'call',
+					url: '/profile/change-number',
+					icon: 'id-card',
 					function: 'showDetail'
 				},
 				{

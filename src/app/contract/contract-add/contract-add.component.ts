@@ -83,7 +83,7 @@ export class ContractAddComponent implements OnInit {
 			calc_new_year_gift_monthly: [true, Validators.compose([Validators.required])],
 			is_contract_for_future: [false, Validators.compose([Validators.required])],
 			is_hourly_contract: [false, Validators.compose([Validators.required])],
-			is_manual: [false, Validators.compose([Validators.required])],
+			is_manual: [false],
 
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
@@ -287,8 +287,9 @@ export class ContractAddComponent implements OnInit {
 				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
 				return;
 			}
-			if (!this.contractsForm.value.is_manual) {
-				console.log(this.contractsForm.value.extra_fields)
+
+			if (!this.contractsForm.get('is_manual').value) {
+
 				await this.global.showLoading('لطفا منتظر بمانید...');
 				this.global.httpPost('contract/calculatePrices', this.contractsForm.value).
 					subscribe(async (res: any) => {
@@ -310,20 +311,6 @@ export class ContractAddComponent implements OnInit {
 					});
 			}
 		}
-		// {
-		// 	contract_year : this.contractsForm.value.contract_year ,
-		// 	start_date : this.contractsForm.value.start_date ,
-		// 	end_date : this.contractsForm.value.end_date ,
-		// 	employee_start_date :  this.contractsForm.value.employee_start_date ,
-		// 	extra_fields : this.contractsForm.value.extra_fields ,
-		// 	is_contract_for_future :this.contractsForm.value.is_contract_for_future ,
-		// 	is_hourly_contract :this.contractsForm.value.is_hourly_contract ,
-		// 	calc_severance_base : this.contractsForm.value.calc_severance_base ,
-		// 	calc_severance_pay_monthly : this.contractsForm.value.calc_severance_pay_monthly ,
-		// 	calc_bonus_monthly : this.contractsForm.value.calc_bonus_monthly ,
-		// 	calc_new_year_gift_monthly : this.contractsForm.value.calc_new_year_gift_monthly ,
-
-		// }
 	}
 
 	async onSubmit() {
@@ -345,5 +332,7 @@ export class ContractAddComponent implements OnInit {
 			});
 		}
 	}
+
+
 
 }

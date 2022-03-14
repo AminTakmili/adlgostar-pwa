@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ProfileChangeNumberComponent } from './profile-change-number/profile-change-number.component';
 
 
 
 const routes: Routes = [
 
-//   {
-//     path: 'logout',
-// 	component : ProfileLogoutComponent
-//   }
+  {
+    path: 'change-number',
+	component : ProfileChangeNumberComponent
+  }
 ];
 
 @NgModule({

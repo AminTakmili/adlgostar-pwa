@@ -4,10 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { globalData } from 'src/app/core/data/global.data';
-import { Employee } from 'src/app/core/models/employee.model';
 import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { ModalController } from '@ionic/angular';
+import { EmployerPrevComponent } from '../employer-prev/employer-prev.component';
+import { StaticData } from 'src/app/core/models/StaticData.model';
 
 @Component({
 	selector: 'app-employer-edit',
@@ -22,6 +24,7 @@ export class EmployerEditComponent implements OnInit {
 	gender: any = globalData.gender;
 	province: citiesClass[] = [];
 	dataList: Employer;
+	StaticData : StaticData;
 
 	constructor(
 		public global: GlobalService,
@@ -30,6 +33,7 @@ export class EmployerEditComponent implements OnInit {
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
 		private cd: ChangeDetectorRef,
+		public modalController: ModalController
 	) {
 		this.editFrom = this.fb.group({
 			id: ['', Validators.compose([Validators.required])],
@@ -44,6 +48,7 @@ export class EmployerEditComponent implements OnInit {
 			gender: ['', Validators.compose([Validators.required])],
 			email: ['', Validators.compose([Validators.required, Validators.email])],
 			image: [''],
+			image_old: [''],
 			addresses: this.fb.array([this.addresses()]),
 		});
 
@@ -61,9 +66,14 @@ export class EmployerEditComponent implements OnInit {
 		return this.editFrom.get('addresses') as FormArray;
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.setTitle();
 		this.getData();
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				this.StaticData = value;
+			}
+		});
 	}
 	async ionViewWillEnter() {
 		this.getDetail(this.route.snapshot.paramMap.get('id'));
@@ -119,6 +129,7 @@ export class EmployerEditComponent implements OnInit {
 				born_at: [this.dataList.born_at, Validators.compose([Validators.required])],
 				birth_certificate_issuance_place: [this.dataList.birth_certificate_issuance_place, Validators.compose([Validators.required])],
 				gender: [this.dataList.gender, Validators.compose([Validators.required])],
+				image_old: [this.dataList?.media[0]?.path ? this.dataList.media[0].path : ''],
 				email: [this.dataList.email, Validators.compose([Validators.required, Validators.email])],
 				image: [],
 				addresses: this.fb.array(address),
@@ -180,6 +191,25 @@ export class EmployerEditComponent implements OnInit {
 				this.cd.markForCheck();
 			};
 		}
+	}
+
+	async showPrew(){
+
+		const modal = await this.modalController.create({
+			component: EmployerPrevComponent,
+			cssClass: 'my-custom-class',
+			componentProps: {
+				data: this.editFrom.value,
+				gender : this.StaticData.gender,
+				province : this.province
+
+			  }
+		  });
+		  return await modal.present();
+	}
+
+	setExtraField(event:any){
+		console.log(event);
 	}
 
 }

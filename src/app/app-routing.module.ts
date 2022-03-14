@@ -21,30 +21,35 @@ const routes: Routes = [
 	},
 	{
 		path: 'contracts',
-		loadChildren: () => import('./contract/contract.module').then(m => m.ContractPageModule)
+		loadChildren: () => import('./contract/contract.module').then(m => m.ContractPageModule),
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'employers',
-		loadChildren: () => import('./employer/employer.module').then(m => m.EmployerPageModule)
+		loadChildren: () => import('./employer/employer.module').then(m => m.EmployerPageModule),
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'employees',
-		loadChildren: () => import('./employee/employee.module').then(m => m.EmployeePageModule)
+		loadChildren: () => import('./employee/employee.module').then(m => m.EmployeePageModule),
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'more',
-		loadChildren: () => import('./more/more.module').then(m => m.MorePageModule)
+		loadChildren: () => import('./more/more.module').then(m => m.MorePageModule),
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'users',
-		loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule)
+		loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule),
+		canActivate: [LoginGuard]
 	},
 
-	// {
-	// 	path: 'profile',
-	// 	loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
-	// 	canActivate: [LoginGuard]
-	// },
+	{
+		path: 'profile',
+		loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
+		canActivate: [LoginGuard]
+	},
 	// {
 	// 	path: '',
 	// 	redirectTo: 'home',

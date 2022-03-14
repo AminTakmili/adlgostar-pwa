@@ -1,0 +1,133 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-button (click)="dismiss();">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>پیش نمایش داده ها</ion-title>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<ion-list class="py-0" >
+		<ion-list-header>اطلاعات کارفرما</ion-list-header>
+		<ion-item color="white" lines="full">
+			<ion-thumbnail slot="start">
+				<ion-img *ngIf="!data.image && data.image_old" [src]="data.image_old | image"></ion-img>
+				<ion-img *ngIf="data.image" [src]="data.image"></ion-img>
+			</ion-thumbnail>
+			<ion-label>
+				<h2>{{ data?.first_name }} {{ data?.last_name }}</h2>
+				<p>نام کامل</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.first_name }}</h2>
+				<p class="font-size-12">نام</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.last_name }}</h2>
+				<p class="font-size-12">نام خانوادگی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_certificate_code }}</h2>
+				<p class="font-size-12">شماره شناسنامه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.national_code }}</h2>
+				<p class="font-size-12">کد ملی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.mobile }}</h2>
+				<p class="font-size-12">شماره همراه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_place }}</h2>
+				<p class="font-size-12">محل تولد</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.born_at }}</h2>
+				<p class="font-size-12">تاریخ تولد</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.birth_certificate_issuance_place }}</h2>
+				<p class="font-size-12">محل صدور شناسنامه</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnGenderName(data?.gender) }}</h2>
+				<p class="font-size-12">جنسیت</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ data?.email }}</h2>
+				<p class="font-size-12">پست الکترونیک</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	<ion-list *ngFor="let item of data?.addresses" class="py-0" >
+		<ion-list-header>آدرس کارفرما</ion-list-header>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ returnprovinceName(item?.city_id) }}</h2>
+				<p class="font-size-12">استان و شهر</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.address }}</h2>
+				<p class="font-size-12">آدرس محل کار</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.postal_code }}</h2>
+				<p class="font-size-12">کد پستی</p>
+			</ion-label>
+		</ion-item>
+		<!--  -->
+		<ion-item color="white" lines="full">
+			<ion-label>
+				<h2>{{ item?.phone }}</h2>
+				<p class="font-size-12">تلفن ثابت</p>
+			</ion-label>
+		</ion-item>
+
+
+	</ion-list>
+</ion-content>
+<ion-footer>
+	<div class="d-flex flex-row ion-justify-content-end ion-align-items-center px-15 py-10">
+		<ion-button shape="round" fill="outline" (click)="dismiss();" color="primary" expand="block">بستن</ion-button>
+	</div>
+</ion-footer>

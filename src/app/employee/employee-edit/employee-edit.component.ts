@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 // import { format, parseISO } from 'date-fns';
@@ -9,6 +9,8 @@ import { citiesClass } from 'src/app/core/classes/cities.class';
 import { StaticData } from 'src/app/core/models/StaticData.model';
 import { ActivatedRoute } from '@angular/router';
 import { Employee } from 'src/app/core/models/employee.model';
+import { Bank } from 'src/app/core/models/bank.model';
+import { EmployeePrevComponent } from '../employee-prev/employee-prev.component';
 @Component({
 	selector: 'app-employee-edit',
 	templateUrl: './employee-edit.component.html',
@@ -29,8 +31,7 @@ export class EmployeeEditComponent implements OnInit {
 	StaticData : StaticData;
 	pageTitle : string = "ویرایش کارمند";
 
-
-
+	bankList:Bank[];
 	dateValue : string = '';
 	dateValue2 = '';
 
@@ -49,6 +50,7 @@ export class EmployeeEditComponent implements OnInit {
 		private navCtrl: NavController,
 		private cd: ChangeDetectorRef,
 		private route: ActivatedRoute,
+		public modalController: ModalController
 	) {
 
 		// this.datetime.dayValues.toLocaleString()
@@ -123,8 +125,8 @@ export class EmployeeEditComponent implements OnInit {
 			});
 
 			const familyInformation: FormGroup[] = [this.fb.group({
-				count_child_under_18_years: [this.dataList.familyInformation.count_child_under_18_years],
-				count_student_child_over_18_years_old: [this.dataList.familyInformation.count_student_child_over_18_years_old],
+				count_student_child: [this.dataList.familyInformation.count_student_child],
+				count_non_student_child_over_18: [this.dataList.familyInformation.count_non_student_child_over_18],
 				total_child: [this.dataList.familyInformation.total_child],
 			})];
 
@@ -143,16 +145,20 @@ export class EmployeeEditComponent implements OnInit {
 					account_number: [this.dataList.bankInformation.account_number],
 					card_number: [this.dataList.bankInformation.card_number,Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 					iban_number: [this.dataList.bankInformation.iban_number,Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
-					payment_with_check: [this.dataList.bankInformation.payment_with_check,],
+
 
 				})
 			];
 
 			const image: FormGroup[] = [this.fb.group({
 				birth_certificate_image: [],
+				birth_certificate_image_old: [this.dataList?.media?.birth_certificate_image?.path],
 				national_card_image: [],
+				national_card_image_old: [this.dataList?.media?.national_card_image?.path],
 				military_card_image: [],
-				employee_image: []
+				military_card_image_old: [this.dataList?.media?.military_card_image?.path],
+				employee_image: [],
+				employee_image_old: [this.dataList?.media?.employee_image?.path],
 			})]
 
 			this.employeeForm = this.fb.group({
@@ -210,8 +216,8 @@ export class EmployeeEditComponent implements OnInit {
 
 	family_information(): FormGroup {
 		return this.fb.group({
-			count_child_under_18_years: [0],
-			count_student_child_over_18_years_old: [0],
+			count_student_child: [0],
+			count_non_student_child_over_18: [0],
 			total_child: [0],
 		})
 	}
@@ -238,7 +244,7 @@ export class EmployeeEditComponent implements OnInit {
 			account_number: ['', ],
 			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
-			payment_with_check: [false],
+
 		})
 	}
 
@@ -272,10 +278,13 @@ export class EmployeeEditComponent implements OnInit {
 
 	getExtra() {
 		const countries = this.global.httpGet('more/countries');
+		const bank = this.global.httpPost('bank/list',{limit:200,offset:0});
 		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
-		this.global.parallelRequest([countries])
-			.subscribe(([countriesData]) => {
+		this.global.parallelRequest([countries,bank])
+			.subscribe(([countriesData, bankData = '' ]) => {
+
 				this.province = this.global.createCountry(countriesData);
+				this.bankList = this.global.createBank(bankData);
 				// this.setBussinessCategory(businessCategory);
 			});
 	}
@@ -360,5 +369,21 @@ export class EmployeeEditComponent implements OnInit {
 
 	checkItem(item:any){
 		console.log(item.value);
+	}
+
+	async showPrew(){
+
+		const modal = await this.modalController.create({
+			component: EmployeePrevComponent,
+			cssClass: 'my-custom-class',
+			componentProps: {
+				data: this.employeeForm.value,
+				StaticData : this.StaticData,
+				province : this.province,
+				bank : this.bankList,
+
+			  }
+		  });
+		  return await modal.present();
 	}
 }

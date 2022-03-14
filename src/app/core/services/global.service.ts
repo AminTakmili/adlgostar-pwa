@@ -1,9 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
 import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 import { environment } from 'src/environments/environment'
 import { citiesClass } from "../classes/cities.class";
+import { Bank } from "../models/bank.model";
 import { BusinessList } from "../models/business.model";
 import { contract } from "../models/contractConstant.model";
 import { Employee } from "../models/employee.model";
@@ -283,6 +285,11 @@ export class GlobalService {
 			return new contract().deserialize(item);
 		});
 	}
+	createBank(data: any) {
+		return data.list.map((item: any) => {
+			return new Bank().deserialize(item);
+		});
+	}
 	createCountry(data: any) {
 		let provinceList: citiesClass[] = [];
 		data[0].provinces.map((province: any) => {
@@ -315,6 +322,28 @@ export class GlobalService {
 		const permison = this.user.permissionsList.find(x => x.app_route === route);
 		const access = permison !== undefined ? permison.access : true;
 		return access;
+	}
+
+	emptyFrom(form:FormGroup){
+		this.showAlert(
+			'پاک کردن فرم',
+			 'آیا برای پاک کردن فرم اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert: any) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					form.reset()
+				}
+			});
+		});
 	}
 
 }
