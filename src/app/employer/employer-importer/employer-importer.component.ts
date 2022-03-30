@@ -61,14 +61,14 @@ export class EmployerImporterComponent implements OnInit {
    			formData.append("file", this.addForm.get('file').value);
 
 			   await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('business/import', formData)
+			this.global.httpPost('employer/import', formData)
 				.subscribe(async (res: any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/businesses');
+					this.navCtrl.navigateForward('/employer');
 					this.addForm.reset();
-					this.global.showToast('کسب و کار ها با موفقیت ثبت شدند .');
+					this.global.showToast(' کارفرماها با موفقیت ثبت شدند .');
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
