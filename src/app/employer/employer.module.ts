@@ -14,6 +14,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { EmployerPrevComponent } from './employer-prev/employer-prev.component';
+import { EmployerImporterComponent } from './employer-importer/employer-importer.component';
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import { EmployerPrevComponent } from './employer-prev/employer-prev.component';
 	EmployerAddComponent,
 	EmployerEditComponent,
 	EmployerDetailComponent,
-	EmployerPrevComponent
+	EmployerPrevComponent,
+	EmployerImporterComponent
+
   ],
   entryComponents : [
 	EmployerPrevComponent

@@ -12,14 +12,14 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreExtraSalaryItemAddComponent implements OnInit {
 
 	pageTitle: string = "افزودن موارد اضافه حقوق";
-	addFrom : FormGroup ;
+	addForm : FormGroup ;
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl : NavController
 	) {
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			add_to_bonus: [ false ],
 		});
@@ -42,16 +42,16 @@ export class MoreExtraSalaryItemAddComponent implements OnInit {
 
 		// console.log(this.extraSalary.value);
 		// return ;
-		if(this.addFrom.valid){
+		if(this.addForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('salaryBaseInfo/contractExtraField', this.addFrom.value )
+			this.global.httpPost('salaryBaseInfo/contractExtraField', this.addForm.value )
 			.subscribe(async (res:any) => {
 
 				await this.global.dismisLoading();
 				// console.log(res:any);
 				this.navCtrl.navigateForward('/more/extra-salary-item');
-				this.global.showToast('اضافه حقوق با نام '+ this.addFrom.value.name +' ثبت شد .');
-				this.addFrom.reset();
+				this.global.showToast('اضافه حقوق با نام '+ this.addForm.value.name +' ثبت شد .');
+				this.addForm.reset();
 			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);

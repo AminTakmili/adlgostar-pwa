@@ -44,18 +44,18 @@
 						<!-- -->
 						<div class="form-input mb-3">
 							<label>حق مسکن (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
+							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
 							<span class="error">
-								<app-validator [control]="editForm.controls['children_allowance']" [controlName]="'حق مسکن'"></app-validator>
+								<app-validator [control]="editForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
 						<!-- -->
 						<div class="form-input mb-3">
 							<label>حق اولاد (برای یک فرزند) (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
+							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
 							<span class="error">
-								<app-validator [control]="editForm.controls['housing_allowance']" [controlName]="'حق اولاد'"></app-validator>
+								<app-validator [control]="editForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -81,7 +81,7 @@
 						<hr>
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

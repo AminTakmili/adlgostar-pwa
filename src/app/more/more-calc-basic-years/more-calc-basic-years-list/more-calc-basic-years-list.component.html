@@ -42,15 +42,19 @@
 				</div>
 			</div>
 			<!-- search -->
-			<div class="row mt-4">
+			<div class="row mt-4" *ngIf="StaticData && StaticData.years.length">
 				<div class="col-md-6">
 					<div class="form-input mb-3">
 						<label>سال عقد قرار داد</label>
-						<ng-select (change)="ChangeYear()" [(ngModel)]="contract_year" [clearable]="true"
-							placeholder="انتخاب کنید">
-							<ng-option *ngFor="let car of [].constructor(35); let i = index" [value]="1400 - i">
-								{{1400 - i}}
-							</ng-option>
+						<ng-select
+						 (change)="ChangeYear()"
+						 [(ngModel)]="contract_year"
+						 [clearable]="true"
+						 placeholder="انتخاب کنید"
+						 [items]="StaticData.years.reverse()"
+						 bindLabel="year"
+						 bindValue="year"
+						 >
 						</ng-select>
 					</div>
 				</div>

@@ -13,6 +13,8 @@ import { BusinessAddComponent } from './business-add/business-add.component';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { BusinessDetailComponent } from './business-detail/business-detail.component';
 import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-employee-add.component';
+import { BusinessImporterComponent } from './business-importer/business-importer.component';
+
 
 @NgModule({
 	imports: [
@@ -30,7 +32,8 @@ import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-e
 		BusinessAddComponent,
 		BusinessEditComponent,
 		BusinessDetailComponent,
-		BussinesEmployeeAddComponent
+		BussinesEmployeeAddComponent,
+		BusinessImporterComponent
 
 	]
 })

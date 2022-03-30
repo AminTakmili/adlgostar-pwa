@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="warning" class="ml-3">
-					<ion-icon slot="start" name="push" *ngIf="global.userPermision['employers_add']"></ion-icon>
+					<ion-icon slot="start" name="push" [routerLink]="['importer']" *ngIf="global.userPermision['employers_add']"></ion-icon>
 					افزودن {{ pageTitle }} با اکسل
 				</ion-button>
 				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['employers_add']">

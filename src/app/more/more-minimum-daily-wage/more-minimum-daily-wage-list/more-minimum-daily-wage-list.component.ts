@@ -7,6 +7,7 @@ import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import * as moment from 'jalali-moment';
 import { minimumDailyWage } from 'src/app/core/models/minimumdailywage.model';
+import { StaticData } from 'src/app/core/models/StaticData.model';
 
 @Component({
   selector: 'app-more-minimum-daily-wage-list',
@@ -25,7 +26,7 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 	dataList: minimumDailyWage[];
 	dataInSearch: boolean = false;
 	currentYear : number;
-
+	StaticData : StaticData;
 	year : number ;
 
 	@ViewChildren('searchInp') Search: IonInput;
@@ -36,17 +37,22 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 		private seo: SeoService
 	) { }
 
-	ngOnInit() {
+	async ngOnInit() {
 		// set jalali curent year
 		this.currentYear = parseInt(moment().locale('fa').format('YYYY'));
-
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				this.StaticData = value;
+				console.log(this.StaticData);
+			}
+		});
 	}
 	async ionViewWillEnter() {
 		this.getData();
 	}
 
 	ChangeSearch(event:any){
-		// this.getData(event.detail.value.toString());
+
 	}
 
 	async getData() {
@@ -81,6 +87,39 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 	ChangeYear(){
 		this.CurrentPage = 1;
 		this.getData();
+	}
+
+	removeItem(item : minimumDailyWage){
+		this.global.showAlert('حذف '+ this.pageTitle , 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('salaryBaseInfo/minimumWage', {
+						id: item.id,
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+
+						this.ChangeYear();
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 
 }

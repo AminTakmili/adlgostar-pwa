@@ -8,10 +8,16 @@ export class StaticData implements Deserializable {
 	gender!: DataSets[];
 	maritalStatus!: DataSets[];
 	military_status!: DataSets[];
+	years!: DataSets[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		if(input.contract_template_type && input.contract_template_type.length){
 			this.contract_template_type = input.contract_template_type.map((item : any)=>{
+				return new  DataSets().deserialize(item);
+			})
+		}
+		if(input.years && input.years.length){
+			this.years = input.years.map((item : any)=>{
 				return new  DataSets().deserialize(item);
 			})
 		}
@@ -53,6 +59,7 @@ export class DataSets implements Deserializable {
 	name!: string;
 	value!: string;
 	id!: number;
+	year !:number;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

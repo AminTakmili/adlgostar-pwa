@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BusinessCategory } from 'src/app/core/models/business.model';
-import { permision, permissionsDetail, UserRole, userType } from 'src/app/core/models/user.model';
+import { permision, permissionsDetail, UserRole, UserType } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -17,7 +17,7 @@ export class UsersRoleEditComponent implements OnInit {
 	pageTitle: string = " نقش جدید ";
 	editForm: FormGroup;
 
-	userType:userType[];
+	userType:UserType[];
 	permision : permision[];
 
 	dataList: UserRole = new UserRole();
@@ -105,7 +105,7 @@ export class UsersRoleEditComponent implements OnInit {
 	}
 	setUserType(data:any){
 		this.userType = data.list.map((item:any)=>{
-			return new userType().deserialize(item);
+			return new UserType().deserialize(item);
 		});
 
 	}

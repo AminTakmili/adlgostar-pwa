@@ -16,7 +16,7 @@ import { EmployerPrevComponent } from '../employer-prev/employer-prev.component'
 export class EmployerAddComponent implements OnInit {
 
 	pageTitle: string = "کارفرما جدید";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;
 	province: citiesClass[] = [];
@@ -31,7 +31,7 @@ export class EmployerAddComponent implements OnInit {
 		public modalController: ModalController
 	) {
 		this.employerImage = null;
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
 			birth_certificate_code: ['', Validators.compose([Validators.required])],
@@ -46,7 +46,7 @@ export class EmployerAddComponent implements OnInit {
 			image: ['']
 		});
 
-		this.address = this.addFrom.get('addresses') as FormArray;
+		this.address = this.addForm.get('addresses') as FormArray;
 	}
 	addresses(): FormGroup {
 		return this.fb.group({
@@ -57,7 +57,7 @@ export class EmployerAddComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return this.addFrom.get('addresses') as FormArray;
+		return this.addForm.get('addresses') as FormArray;
 	}
 
 	async ngOnInit() {
@@ -92,16 +92,16 @@ export class EmployerAddComponent implements OnInit {
 
 	async onSubmit() {
 
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('employer/add', this.addFrom.value)
+			this.global.httpPost('employer/add', this.addForm.value)
 				.subscribe(async (res: any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/employers');
-					this.global.showToast('کارفرما با نام ' + this.addFrom.value.first_name + ' ' + this.addFrom.value.last_name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('کارفرما با نام ' + this.addForm.value.first_name + ' ' + this.addForm.value.last_name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
@@ -116,7 +116,7 @@ export class EmployerAddComponent implements OnInit {
 			reader.readAsDataURL(file);
 
 			reader.onload = () => {
-				this.addFrom.patchValue({
+				this.addForm.patchValue({
 					image: reader.result
 				});
 
@@ -131,7 +131,7 @@ export class EmployerAddComponent implements OnInit {
 			component: EmployerPrevComponent,
 			cssClass: 'my-custom-class',
 			componentProps: {
-				data: this.addFrom.value,
+				data: this.addForm.value,
 				gender : this.StaticData.gender,
 				province : this.province
 

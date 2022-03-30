@@ -64,7 +64,7 @@ export class UserType implements Deserializable {
 
 export class UserRole implements Deserializable {
 	id ! : number;
-	user_type : userType;
+	user_type : UserType;
 	user_type_id ! : string;
 	user_type_name ! : string;
 	is_default_employer_role ! : number;
@@ -82,14 +82,7 @@ export class UserRole implements Deserializable {
 	}
 }
 
-export class userType implements Deserializable {
-	id ! : number;
-	name ! : string;
-	deserialize(input: any): this {
-		Object.assign(this, input);
-		return this;
-	}
-}
+
 export class permision implements Deserializable {
 	id ! : number;
 	name ! : string;

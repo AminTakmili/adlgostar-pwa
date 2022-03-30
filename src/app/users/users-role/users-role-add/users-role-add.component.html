@@ -20,7 +20,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="addFrom" (submit)="onSubmit()">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
 					<div class="col-md-12">
 						<div class="form-input mb-3" *ngIf="this.userType && this.userType.length">
@@ -35,7 +35,7 @@
 							>
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['user_type_id']" [controlName]="'نام دسته بندی'"></app-validator>
+								<app-validator [control]="addForm.controls['user_type_id']" [controlName]="'نام دسته بندی'"></app-validator>
 							</span>
 							<span class="hint">برای ساخت دسته بندی والد باید این دسته را بر روی دسته بندی والد قرار دهید . </span>
 						</div>
@@ -46,7 +46,7 @@
 							<label>عنوان نقش</label>
 							<ion-input  type="text" autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['name']" [controlName]="'نام نقش'"></app-validator>
+								<app-validator [control]="addForm.controls['name']" [controlName]="'نام نقش'"></app-validator>
 							</span>
 							<span class="hint">مثلا مدیر میانی</span>
 						</div>
@@ -75,7 +75,7 @@
 					<div class="col-md-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-2">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

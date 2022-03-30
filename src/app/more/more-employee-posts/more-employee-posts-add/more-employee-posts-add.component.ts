@@ -14,7 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreEmployeePostsAddComponent implements OnInit {
 
 	pageTitle: string = "افزودن پست جدید برای کارمندان";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 
 	categoryId: number;
 	constructor(
@@ -27,7 +27,7 @@ export class MoreEmployeePostsAddComponent implements OnInit {
 		if(this.route.snapshot.paramMap.get('id')){
 			this.categoryId = parseInt(this.route.snapshot.paramMap.get('id'));
 		}
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			name: ['', Validators.compose( [Validators.required ] ) ],
 		});
 
@@ -52,16 +52,16 @@ export class MoreEmployeePostsAddComponent implements OnInit {
 
 
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('post/add', this.addFrom.value)
+			this.global.httpPost('post/add', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/employee-posts');
-					this.global.showToast('پست با نام ' + this.addFrom.value.name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('پست با نام ' + this.addForm.value.name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

@@ -14,7 +14,12 @@
 					</p>
 				</div>
 			</div>
-			<div class="col-lg-auto"></div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['more_employee_posts_add']">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					افزودن {{ pageTitle }}
+				</ion-button>
+			</div>
 		</div>
 	</div>
 	<!-- top bar content -->
@@ -37,15 +42,19 @@
 				</div>
 			</div>
 			<!-- search -->
-			<div class="row mt-4">
+			<div class="row mt-4" *ngIf="StaticData && StaticData.years.length">
 				<div class="col-md-6">
 					<div class="form-input mb-3">
 						<label>سال عقد قرار داد</label>
-						<ng-select (change)="ChangeYear()" [(ngModel)]="year" [clearable]="true"
-							placeholder="انتخاب کنید">
-							<ng-option *ngFor="let car of [].constructor(35); let i = index" [value]="1400 - i">
-								{{1400 - i}}
-							</ng-option>
+						<ng-select
+						 (change)="ChangeYear()"
+						 [(ngModel)]="year"
+						 [clearable]="true"
+						 placeholder="انتخاب کنید"
+						 [items]="StaticData.years.reverse()"
+						 bindLabel="year"
+						 bindValue="year"
+						 >
 						</ng-select>
 					</div>
 				</div>
@@ -60,6 +69,7 @@
 							<th scope="col">سال </th>
 							<th scope="col">حداقل دستمزد روزانه</th>
 							<th scope="col">تاریخ ثبت</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -69,6 +79,18 @@
 							<td>سال {{ item.year }}</td>
 							<td>{{ item.minimum_wage | number }} ریال</td>
 							<td>{{ item.createdAt }}</td>
+							<td>
+								<ion-buttons class="justify-content-end">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" tooltip="حذف" >
+										<ion-icon  size="small" color="medium" slot="icon-only" name="trash">
+										</ion-icon>
+									</ion-button>
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['edit' , item.id ]" tooltip="ویرایش" *ngIf="global.userPermision['more_extra_salary_item_edit']">
+										<ion-icon  size="small" color="medium" slot="icon-only" name="build">
+										</ion-icon>
+									</ion-button>
+								</ion-buttons>
+							</td>
 						</tr>
 					</tbody>
 					<tfoot *ngIf="limit < total && dataList && dataList.length">

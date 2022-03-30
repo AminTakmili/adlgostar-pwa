@@ -21,13 +21,13 @@
 		<div class="container">
 			<div class="row my-4">
 				<div class="col-md-6">
-					<form [formGroup]="addFrom" (submit)="onSubmit()" autocomplete="off">
+					<form [formGroup]="addForm" (submit)="onSubmit()" autocomplete="off">
 						<!-- سال -->
 						<div class="form-input mb-3">
 							<label>سال عقد قرار داد</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="year"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['year']" [controlName]="'سال عقد قرار داد'"></app-validator>
+								<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرار داد'"></app-validator>
 							</span>
 							<span class="hint">مثلا سال 1404</span>
 						</div>
@@ -36,25 +36,25 @@
 							<label>حق بن (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="grocery_allowance"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['grocery_allowance']" [controlName]="'حق بن'"></app-validator>
+								<app-validator [control]="addForm.controls['grocery_allowance']" [controlName]="'حق بن'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
 						<!-- -->
 						<div class="form-input mb-3">
 							<label>حق مسکن (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
+							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['children_allowance']" [controlName]="'حق مسکن'"></app-validator>
+								<app-validator [control]="addForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
 						<!-- -->
 						<div class="form-input mb-3">
 							<label>حق اولاد (برای یک فرزند) (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
+							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['housing_allowance']" [controlName]="'حق اولاد'"></app-validator>
+								<app-validator [control]="addForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -63,7 +63,7 @@
 							<label>حداکثر عیدی (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="max_new_year_gift"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['max_new_year_gift']" [controlName]="'حداکثر عیدی'"></app-validator>
+								<app-validator [control]="addForm.controls['max_new_year_gift']" [controlName]="'حداکثر عیدی'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -72,7 +72,7 @@
 							<label>حداکثر  پاداش (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['max_bonus']" [controlName]="'حداکثر پاداش'"></app-validator>
+								<app-validator [control]="addForm.controls['max_bonus']" [controlName]="'حداکثر پاداش'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -80,7 +80,7 @@
 						<hr>
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

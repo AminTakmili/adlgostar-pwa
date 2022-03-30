@@ -21,13 +21,13 @@
 		<div class="container">
 			<div class="row my-4">
 				<div class="col-md-6">
-					<form [formGroup]="addFrom" (submit)="onSubmit()">
+					<form [formGroup]="addForm" (submit)="onSubmit()">
 						<!-- عنوان کسب و کار -->
 						<div class="form-input mb-3">
 							<label>عنوان اضافه حقوق</label>
 							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['name']" [controlName]="'عنوان'"></app-validator>
+								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
@@ -40,7 +40,7 @@
 						<hr>
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

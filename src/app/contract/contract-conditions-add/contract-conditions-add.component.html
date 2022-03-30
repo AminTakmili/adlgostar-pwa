@@ -19,7 +19,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="addFrom" (submit)="onSubmit()">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
 					<div class="col-12 my-4">
 						<div class="title-1">
@@ -34,7 +34,7 @@
 							<label>عنوان </label>
 							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['name']" [controlName]="'عنوان'">
+								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'">
 								</app-validator>
 							</span>
 							<span class="hint"></span>
@@ -52,14 +52,14 @@
 							 >
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['type']" [controlName]="'نوع قالب'">
+								<app-validator [control]="addForm.controls['type']" [controlName]="'نوع قالب'">
 								</app-validator>
 							</span>
 							<span class="hint">عمومی یا خصوصی</span>
 						</div>
 					</div>
 					<!-- دسته بندی کسب و کار -->
-					<div class="col-12 mb-3" *ngIf="this.addFrom.value['type'] === 'private' ">
+					<div class="col-12 mb-3" *ngIf="this.addForm.value['type'] === 'private' ">
 						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
 							<label>دسته بندی کسب و کار</label>
 							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید" [items]="businessCatgeories"
@@ -70,13 +70,13 @@
 								</ng-template>
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['business_categories']"
+								<app-validator [control]="addForm.controls['business_categories']"
 									[controlName]="'انتخاب دسته بندی'"></app-validator>
 							</span>
 						</div>
 					</div>
 					<!-- انتخاب کسب و کار -->
-					<div class="col-12 mb-3" *ngIf="this.addFrom.value['type'] === 'private' ">
+					<div class="col-12 mb-3" *ngIf="this.addForm.value['type'] === 'private' ">
 						<div class="form-input mb-3" *ngIf="business && business.length">
 							<label>انتخاب کسب و کار</label>
 							<ng-select
@@ -90,7 +90,7 @@
 
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['businesses']"
+								<app-validator [control]="addForm.controls['businesses']"
 									[controlName]="'انتخاب دسته بندی'"></app-validator>
 							</span>
 						</div>
@@ -101,7 +101,7 @@
 							<label>شروط ضمن عقد</label>
 							<ckeditor name="myckeditor" formControlName="template" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['template']" [controlName]="'قالب قرار داد'">
+								<app-validator [control]="addForm.controls['template']" [controlName]="'قالب قرار داد'">
 								</app-validator>
 							</span>
 							<span class="hint"></span>
@@ -114,7 +114,7 @@
 					<div class="col-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-3">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>
