@@ -177,6 +177,7 @@ export const globalData = {
 			open: false,
 			state: "close",
 			function: 'showDetail',
+			access : true,
 			submenu: [
 				// {
 				// 	name: 'ویرایش اطلاعات',
@@ -201,11 +202,12 @@ export const globalData = {
 					name: 'تغییر شماره همراه',
 					url: '/profile/change-number',
 					icon: 'id-card',
-					function: 'showDetail'
+					function: 'showDetail',
+					access : true,
 				},
 				{
 					name: 'خروج از حساب کاربری',
-
+					access : true,
 					icon: 'log-out-outline',
 					function: 'logout'
 

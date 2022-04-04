@@ -318,7 +318,11 @@ export class GlobalService {
 		// // console.log(name,access)
 		// return access;
 	}
-	async checkPersmionByRoute(route: string) {
+	async checkPersmionByRoute(route: string,accessDefault : boolean = false) {
+		console.log(accessDefault)
+		if(accessDefault){
+			return true;
+		}
 		const permison = this.user.permissionsList.find(x => x.app_route === route);
 		const access = permison !== undefined ? permison.access : false;
 		return access;
