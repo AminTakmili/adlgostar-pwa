@@ -44,11 +44,11 @@ export class UsersAllEditComponent implements OnInit {
 			birth_place: ['', Validators.compose([Validators.required])],
 			birth_certificate_code: ['', Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
-			addresses: this.fb.array([this.addresses()]),
+			addresses: this.fb.array([]),
 			image: ['']
 		});
 
-		this.address = this.editForm.get('addresses') as FormArray;
+		// this.address = this.editForm.get('addresses') as FormArray;
 	}
 	addresses(): FormGroup {
 		return this.fb.group({
@@ -101,6 +101,9 @@ export class UsersAllEditComponent implements OnInit {
 				return formAddress
 			});
 
+			console.log(address.length);
+			if(address.length){}
+
 			this.editForm = this.fb.group({
 				id: [id, Validators.compose([Validators.required])],
 				role_id: [this.dataList.role.id, Validators.compose([Validators.required])],
@@ -115,7 +118,7 @@ export class UsersAllEditComponent implements OnInit {
 				gender: [this.dataList.gender, Validators.compose([Validators.required])],
 				email: [this.dataList.email, Validators.compose([Validators.required, Validators.email])],
 				 image: [],
-				addresses: this.fb.array(address),
+				addresses: this.fb.array( address.length ? address :[ this.addresses()] ),
 			});
 
 			// console.log(this.dataList);
@@ -141,7 +144,7 @@ export class UsersAllEditComponent implements OnInit {
 
 
 	async onSubmit() {
-
+		this.editForm.markAllAsTouched();
 		console.log(this.editForm);
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');

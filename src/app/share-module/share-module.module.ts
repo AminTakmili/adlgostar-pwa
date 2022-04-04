@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { ImagePipe } from '../core/pipes/image.pipe';
+
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
@@ -10,7 +12,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ValidatorComponent } from './validator/validator.component';
 import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { EmployerCardComponent } from './employer-card/employer-card.component';
-import { ImagePipe } from '../core/pipes/image.pipe';
+import { ImporterListComponent } from './importer-list/importer-list.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -20,7 +23,8 @@ import { ImagePipe } from '../core/pipes/image.pipe';
 		FormsModule,
 		IonicModule,
 		RouterModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		NgxPaginationModule
 	],
 	declarations: [
 		SidebarComponent,
@@ -29,7 +33,8 @@ import { ImagePipe } from '../core/pipes/image.pipe';
 		ValidatorComponent,
 		EmployeeCardComponent,
 		EmployerCardComponent,
-		ImagePipe
+		ImagePipe,
+		ImporterListComponent
 	],
 	exports : [
 		SidebarComponent,
@@ -38,7 +43,8 @@ import { ImagePipe } from '../core/pipes/image.pipe';
 		ValidatorComponent,
 		EmployeeCardComponent,
 		EmployerCardComponent,
-		ImagePipe
+		ImagePipe,
+		ImporterListComponent
 	]
 
 })

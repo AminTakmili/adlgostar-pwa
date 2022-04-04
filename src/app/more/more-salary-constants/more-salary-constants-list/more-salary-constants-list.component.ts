@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import * as moment from 'jalali-moment';
+
 import { contractConstant } from 'src/app/core/models/contractConstant.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
@@ -37,7 +37,7 @@ export class MoreSalaryConstantsListComponent implements OnInit {
 
 	ngOnInit() {
 		// set jalali curent year
-		this.currentYear = parseInt(moment().locale('fa').format('YYYY'));
+
 		// this.contract_year = this.currentYear;
 	}
 	async ionViewWillEnter() {

@@ -180,8 +180,8 @@
 					</div>
 					<!-- آپلود تصویر -->
 					<div class="col-lg-6">
-						<div class="my-2">تصویر</div>
-							<ion-img class="user-edit-img"  [src]="dataList?.media[0]?.path | image"  [attr.alt]="dataList?.full_name"></ion-img>
+						<div class="my-2" *ngIf="dataList?.media && dataList?.media.length">تصویر</div>
+						<ion-img class="user-edit-img" *ngIf="dataList?.media && dataList?.media.length"  [src]="dataList?.media[0]?.path | image"  [attr.alt]="dataList?.full_name"></ion-img>
 						<div class="form-input mb-3">
 							<label>انتخاب تصویر</label>
 							<ion-input type="file" accept="image/*" (change)="uploadFile($event)" autocomplete="new-pass" formControlName="image"></ion-input>

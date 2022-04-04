@@ -320,7 +320,7 @@ export class GlobalService {
 	}
 	async checkPersmionByRoute(route: string) {
 		const permison = this.user.permissionsList.find(x => x.app_route === route);
-		const access = permison !== undefined ? permison.access : true;
+		const access = permison !== undefined ? permison.access : false;
 		return access;
 	}
 

@@ -47,19 +47,25 @@ export class SidebarComponent implements OnInit {
 		this.global._user.subscribe((val) => {
 			if (val) {
 				this.Sidemenu = globalData.menu;
-				console.log(this.userInfo);
+
 				this.Sidemenu.map(async (item)=>{
-					item.access = await this.global.checkPersmionByRoute(item.url);
+					if(item.url){
+						item.access = await this.global.checkPersmionByRoute(item.url);
+					}
 					if(item.submenu && item.submenu.length){
-						let count : number = 1;
+						item.access = false;
+						let count : number = 0;
 						item.submenu.map(async (sub)=>{
 							sub.access = await this.global.checkPersmionByRoute(sub.url);
-							if(!sub.access) {count++;}
-							if(count > 1 && count === item.submenu.length ){item.access = false;}
+							console.log(item.name,sub.access)
+							if(sub.access) {item.access = true;}
+
+							// if(count > 0 && count === item.submenu.length ){item.access = false;}
 						})
 					}
 				});
 				this.check = true;
+				console.log(this.Sidemenu);
 			}
 		});
 

@@ -34,7 +34,16 @@ export class MoreEmployeePostsListComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.setTitle();
+	}
 
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
 	}
 	async ionViewWillEnter() {
 		this.getData();

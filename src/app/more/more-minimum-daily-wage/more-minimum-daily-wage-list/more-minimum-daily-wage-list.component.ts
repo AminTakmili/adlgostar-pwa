@@ -49,6 +49,16 @@ export class MoreMinimumDailyWageListComponent implements OnInit {
 	}
 	async ionViewWillEnter() {
 		this.getData();
+		this.setTitle();
+	}
+
+	setTitle() {
+		this.seo.generateTags({
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
+			isNoIndex: false,
+		});
 	}
 
 	ChangeSearch(event:any){

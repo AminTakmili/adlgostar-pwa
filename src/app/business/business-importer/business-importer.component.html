@@ -41,7 +41,7 @@
 					</div>
 					<!-- desc -->
 					<div class="col-md-6 my-4">
-						<ion-card mode="ios" color="white">
+						<ion-card mode="ios" class="mb-0" color="white">
 							<ion-card-header>
 								<ion-card-title class="font-size-20">فایل نمونه </ion-card-title>
 							</ion-card-header>
@@ -56,9 +56,9 @@
 					</div>
 				</div>
 				<div class="row ion-justify-content-end ion-align-items-center">
-					<div class="col-12">
+					<!-- <div class="col-12">
 						<hr>
-					</div>
+					</div> -->
 					<div class="col-md-2">
 						<ion-button expand="block" color="medium" fill="outline" shape="round"
 							(click)="global.emptyFrom(addForm)">
@@ -73,6 +73,11 @@
 				</div>
 			</div>
 		</form>
+		<!-- importer list -->
+		<div class="container">
+			<hr>
+			<app-importer-list [type]="'business'"></app-importer-list>
+		</div>
 	</main>
 
 </ion-content>
