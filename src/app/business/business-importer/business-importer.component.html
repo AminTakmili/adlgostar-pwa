@@ -30,7 +30,7 @@
 						<!-- عنوان کسب و کار -->
 						<div class="form-input mb-3">
 							<label>فایل اکسل</label>
-							<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file">
+							<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file" (change)="uploadFile($event)">
 							</ion-input>
 							<span class="error">
 								<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'">

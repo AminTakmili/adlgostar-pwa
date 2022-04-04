@@ -59,6 +59,21 @@ export class GlobalService {
 		return this.http.post<any>(this.getAppUrl(url), JSON.stringify(params), httpOptions);
 	}
 
+	httpPostFormData(url: string, params: object): Observable<any> {
+
+		const token = (this.login ? this.user.access_token : environment.token)
+		let httpOptions;
+
+		httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: `Bearer ${token}`,
+				devicePixelRatio: '1024'
+				// 'atriashop-user-id': this.getUserInfo().id.toString()
+			})
+		};
+		return this.http.post<any>(this.getAppUrl(url), params , httpOptions);
+	}
+
 	httpGet(url: string): Observable<any> {
 
 		const token = (this.login ? this.user.access_token : environment.token)
@@ -319,7 +334,6 @@ export class GlobalService {
 		// return access;
 	}
 	async checkPersmionByRoute(route: string,accessDefault : boolean = false) {
-		console.log(accessDefault)
 		if(accessDefault){
 			return true;
 		}

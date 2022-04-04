@@ -61,7 +61,7 @@ export class EmployerImporterComponent implements OnInit {
    			formData.append("file", this.addForm.get('file').value);
 
 			   await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('employer/import', formData)
+			this.global.httpPostFormData('employer/import', formData)
 				.subscribe(async (res: any) => {
 
 					await this.global.dismisLoading();
@@ -77,19 +77,13 @@ export class EmployerImporterComponent implements OnInit {
 	}
 
 	uploadFile(event: any) {
-		const reader = new FileReader();
-		if (event.target.files && event.target.files.length) {
-			const [file] = event.target.files;
-			reader.readAsDataURL(file);
 
-			reader.onload = () => {
-				this.addForm.patchValue({
-					file: reader.result
-				});
+		const file = (event.target as HTMLInputElement).files[0];
+		this.addForm.patchValue({
+			file: file,
+		});
+		this.addForm.get('file').updateValueAndValidity();
 
-				this.cd.markForCheck();
-			};
-		}
 	}
 
 }

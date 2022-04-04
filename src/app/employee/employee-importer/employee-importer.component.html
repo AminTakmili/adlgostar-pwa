@@ -33,7 +33,7 @@
 							<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'">
+								<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'" (change)="uploadFile($event)">
 								</app-validator>
 							</span>
 							<span class="hint">فایل اکسل را انتخاب کنید .</span>
@@ -67,7 +67,7 @@
 					</div>
 					<div class="col-md-3">
 						<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
-							ثبت کسب و کار
+							ثبت کارمندان
 						</ion-button>
 					</div>
 				</div>
