@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ValidationErrors, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -9,14 +9,24 @@ import { ValidationErrors, FormControl, AbstractControl } from '@angular/forms';
 export class ValidatorComponent implements OnInit {
 
 	@Input() controlName: string;
-
 	@Input() control !: any;
+
+	@ViewChild('text' , { static: false })  text : ElementRef;
+	@Output() validationTxt = new EventEmitter<string>();
 	// @Input() control !: AbstractControl;
 
 	config : any = {};
 
 	get errorText() {
-		return this.chkError(this.control.errors);
+
+		if(this.control?.errors){
+			 const error = this.chkError(this.control?.errors);
+			 this.validationTxt.emit(error);
+			 return error;
+		}else{
+			return '';
+		}
+
 	}
 
 	param = '';
@@ -58,6 +68,8 @@ export class ValidatorComponent implements OnInit {
 			} else {
 				return '';
 			}
+		}else{
+			return '';
 		}
 	}
 

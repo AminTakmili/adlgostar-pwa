@@ -145,6 +145,7 @@ export class BusinessAddComponent implements OnInit {
 
 	async onSubmit() {
 
+		this.businessForm.markAllAsTouched();
 		if (this.businessForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('business/add', this.businessForm.value)

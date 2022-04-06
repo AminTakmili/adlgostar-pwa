@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -19,6 +19,7 @@ import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalcu
 })
 export class ContractAddComponent implements OnInit {
 
+	@ViewChildren( 'validation' ) validation : QueryList<any>;
 	pageTitle: string = "افزودن قرار داد";
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
@@ -55,7 +56,7 @@ export class ContractAddComponent implements OnInit {
 		private navCtrl: NavController
 	) {
 		this.dateValue = format(new Date(), 'yyyy-MM-dd');
-		console.log(this.dateValue);
+
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			business_id: ['', Validators.compose([Validators.required])],
@@ -77,12 +78,12 @@ export class ContractAddComponent implements OnInit {
 			bonus: [0, Validators.compose([Validators.required])],
 			food_cost: [0, Validators.compose([Validators.required])],
 			pension_cost: [0, Validators.compose([Validators.required])],
-			calc_severance_base: [true, Validators.compose([Validators.required])],
-			calc_severance_pay_monthly: [true, Validators.compose([Validators.required])],
-			calc_bonus_monthly: [true, Validators.compose([Validators.required])],
-			calc_new_year_gift_monthly: [true, Validators.compose([Validators.required])],
-			is_contract_for_future: [false, Validators.compose([Validators.required])],
-			is_hourly_contract: [false, Validators.compose([Validators.required])],
+			calc_severance_base: [true],
+			calc_severance_pay_monthly: [true],
+			calc_bonus_monthly: [true],
+			calc_new_year_gift_monthly: [true],
+			is_contract_for_future: [false],
+			is_hourly_contract: [false],
 			is_manual: [false],
 
 			provisos: this.fb.array([]),
@@ -289,10 +290,11 @@ export class ContractAddComponent implements OnInit {
 			}
 
 			if (!this.contractsForm.get('is_manual').value) {
-
+				this.submitet = true;
 				await this.global.showLoading('لطفا منتظر بمانید...');
 				this.global.httpPost('contract/calculatePrices', this.contractsForm.value).
 					subscribe(async (res: any) => {
+						this.submitet = false;
 						await this.global.dismisLoading();
 
 						this.contractsForm.get('bonus').setValue(res.bonus);
@@ -306,6 +308,7 @@ export class ContractAddComponent implements OnInit {
 						console.log(res);
 
 					}, async (error: any) => {
+						this.submitet = false;
 						await this.global.dismisLoading();
 						this.global.showError(error);
 					});
@@ -314,8 +317,11 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		this.submitet = true;
+		console.log('submit form');
+		this.contractsForm.markAllAsTouched();
+		console.log(this.contractsForm)
 		if (this.contractsForm.valid) {
+			this.submitet = true;
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('contract/add', this.contractsForm.value)
 			.subscribe(async (res: any) => {
@@ -330,6 +336,28 @@ export class ContractAddComponent implements OnInit {
 				this.global.showError(error);
 				this.submitet = false;
 			});
+		}else{
+
+			let errors : string[] = [];
+			setTimeout(() => {
+				this.validation.forEach((elem : any)=>{
+					if(elem.text){
+						errors.push('<li class="font-size-14 color-danger">'+elem.text.el.innerText+'</li>');
+					}
+				});
+				this.global.showAlert(
+					'خطا',
+					'<ul class="px-4 my-0">'+errors.join('')+'</ul>' ,
+					[{
+						text: 'متوجه شدم',
+						role: 'yes'
+					}],
+					'ابتدا موارد زیر را بررسی و سپس فرم را ثبت کنید'
+					).then((alert : any) => {
+					alert.present();
+				});
+			}, 100);
+
 		}
 	}
 

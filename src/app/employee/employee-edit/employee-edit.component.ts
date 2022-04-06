@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -18,6 +18,7 @@ import { EmployeePrevComponent } from '../employee-prev/employee-prev.component'
 })
 export class EmployeeEditComponent implements OnInit {
 
+	@ViewChildren( 'validation' ) validation : QueryList<any>;
 
 	step: number = 1;
 	employeeForm: FormGroup;
@@ -348,7 +349,7 @@ export class EmployeeEditComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		console.log(this.employeeForm);
+
 		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -364,6 +365,31 @@ export class EmployeeEditComponent implements OnInit {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
+		}else{
+
+			let errors : string[] = [];
+			setTimeout(() => {
+				this.validation.forEach((elem : any)=>{
+					if(elem.text){
+						errors.push('<li class="font-size-14 color-danger">'+elem.text.el.innerText+'</li>');
+					}
+				});
+
+				this.global.showAlert(
+					'خطا',
+					'<ul class="px-4 my-0">'+errors.join('')+'</ul>' ,
+					[{
+						text: 'متوجه شدم',
+						role: 'yes'
+					}],
+					'ابتدا موارد زیر را بررسی و سپس فرم را ثبت کنید'
+
+					).then((alert : any) => {
+					alert.present();
+
+				});
+
+			}, 100);
 		}
 	}
 

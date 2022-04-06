@@ -242,12 +242,14 @@ export class GlobalService {
 	showAlert(
 		header: string,
 		message: string,
-		buttons: AlertButton[]
+		buttons: AlertButton[],
+		subHeader : string = '',
 	): Promise<any> {
 		return this.alertController.create({
 			header: header,
 			message: message,
 			buttons: buttons,
+			subHeader: subHeader,
 		});
 	}
 
