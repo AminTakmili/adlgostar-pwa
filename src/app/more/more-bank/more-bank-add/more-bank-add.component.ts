@@ -14,7 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreBankAddComponent implements OnInit {
 
 	pageTitle: string = "بانک جدید";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 
 	categoryId: number;
 	constructor(
@@ -25,7 +25,7 @@ export class MoreBankAddComponent implements OnInit {
 
 	) {
 
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			name: ['', Validators.compose( [Validators.required ] ) ],
 		});
 
@@ -49,16 +49,16 @@ export class MoreBankAddComponent implements OnInit {
 
 
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('bank/add', this.addFrom.value)
+			this.global.httpPost('bank/add', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/bank');
-					this.global.showToast('بانک با نام ' + this.addFrom.value.name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('بانک با نام ' + this.addForm.value.name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

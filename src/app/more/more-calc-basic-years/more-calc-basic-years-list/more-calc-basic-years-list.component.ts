@@ -4,6 +4,7 @@ import { IonInput } from '@ionic/angular';
 import * as moment from 'jalali-moment';
 import { basicYears } from 'src/app/core/models/basicYears.model';
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
+import { StaticData } from 'src/app/core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -24,6 +25,7 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 	dataList: severanceBaseCalculation[];
 	dataInSearch: boolean = false;
 	currentYear : number;
+	StaticData : StaticData;
 
 	start_year : number ;
 	contract_year : number ;
@@ -36,9 +38,15 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 		private seo: SeoService
 	) { }
 
-	ngOnInit() {
+	async ngOnInit() {
 		// set jalali curent year
 		this.currentYear = parseInt(moment().locale('fa').format('YYYY'));
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				this.StaticData = value;
+				console.log(this.StaticData);
+			}
+		});
 		// this.contract_year = this.currentYear;
 	}
 	async ionViewWillEnter() {

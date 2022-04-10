@@ -21,7 +21,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="editFrom" (submit)="onSubmit()" autocomplete="off">
+			<form [formGroup]="editForm" (submit)="onSubmit()" autocomplete="off">
 				<div class="row my-4">
 						<!-- سال -->
 						<div class="col-md-6">
@@ -29,7 +29,7 @@
 								<label>نام</label>
 								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['first_name']" [controlName]="'نام'">
+									<app-validator [control]="editForm.controls['first_name']" [controlName]="'نام'">
 									</app-validator>
 								</span>
 								<span class="hint">مثلا رضا</span>
@@ -42,7 +42,7 @@
 								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="last_name">
 								</ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
+									<app-validator [control]="editForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 								</span>
 								<span class="hint">مثلا رضایی</span>
 							</div>
@@ -54,7 +54,7 @@
 								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="birth_certificate_code">
 								</ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
+									<app-validator [control]="editForm.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 									</app-validator>
 								</span>
 								<span class="hint">مثلا : 2434</span>
@@ -67,7 +67,7 @@
 								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="national_code">
 								</ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['national_code']" [controlName]="'کد ملی'">
+									<app-validator [control]="editForm.controls['national_code']" [controlName]="'کد ملی'">
 									</app-validator>
 								</span>
 								<span class="hint">کد ملی باید 10 رقمی باشد</span>
@@ -80,7 +80,7 @@
 								<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="mobile">
 								</ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['mobile']"
+									<app-validator [control]="editForm.controls['mobile']"
 										[controlName]="'شماره همراه'"></app-validator>
 								</span>
 								<span class="hint">شماره موبایل 11 رقمی است و با 09 شروع میشود</span>
@@ -92,7 +92,7 @@
 								<label>محل تولد</label>
 								<ion-input type="text" autocomplete="new-pass" formControlName="birth_place"></ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['birth_place']" [controlName]="'محل تولد'">
+									<app-validator [control]="editForm.controls['birth_place']" [controlName]="'محل تولد'">
 									</app-validator>
 								</span>
 								<span class="hint">مثلا تهران</span>
@@ -106,7 +106,7 @@
 									<input type="text" formControlName="born_at" />
 								</ng-persian-datepicker>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['born_at']" [controlName]="'تاریخ تولد'">
+									<app-validator [control]="editForm.controls['born_at']" [controlName]="'تاریخ تولد'">
 									</app-validator>
 								</span>
 								<span class="hint"></span>
@@ -118,7 +118,7 @@
 								<label>محل صدور شناسنامه</label>
 								<ion-input (keypress)="global.justWord($event)" type="text" autocomplete="new-pass" formControlName="birth_certificate_issuance_place"></ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
+									<app-validator [control]="editForm.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
 									</app-validator>
 								</span>
 								<span class="hint">مثلا اصفهان</span>
@@ -137,7 +137,7 @@
 									>
 								</ng-select>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['gender']" [controlName]="'جنسیت'">
+									<app-validator [control]="editForm.controls['gender']" [controlName]="'جنسیت'">
 									</app-validator>
 								</span>
 								<span class="hint">مثلا آقا</span>
@@ -150,7 +150,7 @@
 								<label>پست الکترونیک</label>
 								<ion-input type="email" autocomplete="new-pass" formControlName="email"></ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['email']" [controlName]="'پست الکترونیک'">
+									<app-validator [control]="editForm.controls['email']" [controlName]="'پست الکترونیک'">
 									</app-validator>
 								</span>
 								<span class="hint">info@example.com</span>
@@ -159,13 +159,13 @@
 						<div class="col-lg-12" *ngIf="dataList?.media && dataList?.media.length">
 
 							<div class="my-2">تصویر</div>
-							<ion-img class="user-edit-img" *ngIf="!editFrom.value.image" [src]="dataList?.media[0]?.path | image"  [attr.alt]="dataList?.full_name"></ion-img>
-							<ion-img class="user-edit-img" *ngIf="editFrom.value.image" [src]="editFrom.value.image"  [attr.alt]="dataList?.full_name"></ion-img>
+							<ion-img class="user-edit-img" *ngIf="!editForm.value.image" [src]="dataList?.media[0]?.path | image"  [attr.alt]="dataList?.full_name"></ion-img>
+							<ion-img class="user-edit-img" *ngIf="editForm.value.image" [src]="editForm.value.image"  [attr.alt]="dataList?.full_name"></ion-img>
 							<div class="form-input mb-3">
 								<label>انتخاب تصویر جدید</label>
 								<ion-input type="file" accept="image/*" (change)="uploadFile($event)" autocomplete="new-pass" formControlName="image"></ion-input>
 								<span class="error">
-									<app-validator [control]="editFrom.controls['image']" [controlName]="'تصویر'"></app-validator>
+									<app-validator [control]="editForm.controls['image']" [controlName]="'تصویر'"></app-validator>
 								</span>
 								<span class="hint">حداکثر 1024 در 768 پیکسل</span>
 							</div>
@@ -244,7 +244,7 @@
 					<div class="col-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-2">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

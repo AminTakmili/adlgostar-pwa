@@ -20,7 +20,7 @@ export class ContractTemplateAddComponent implements OnInit {
 
 	pageTitle: string = "افزودن قالب قرار داد جدید";
 
-	addFrom: FormGroup;
+	addForm: FormGroup;
 
 	businessCatgeories: businessClass[] = [];
 
@@ -43,7 +43,7 @@ export class ContractTemplateAddComponent implements OnInit {
 		private clipboardApi: ClipboardService
 	) {
 		//
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			template: ['', Validators.compose([Validators.required])],
 			type: ['', Validators.compose([Validators.required])],
@@ -109,16 +109,16 @@ export class ContractTemplateAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('contractTemplate/add', this.addFrom.value)
+			this.global.httpPost('contractTemplate/add', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/template');
-					this.global.showToast('قالب قرار داد با نام  ' + this.addFrom.value.name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('قالب قرار داد با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
@@ -127,7 +127,7 @@ export class ContractTemplateAddComponent implements OnInit {
 	}
 
 	async ChangeBusinessCat(){
-		const business_category_ids = this.addFrom.value.business_categories;
+		const business_category_ids = this.addForm.value.business_categories;
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('businessCategory/business/list', {
 			business_category_ids

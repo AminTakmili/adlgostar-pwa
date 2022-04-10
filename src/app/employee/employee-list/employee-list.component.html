@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" color="warning" class="ml-3" *ngIf="global.userPermision['employees_add']">
+				<ion-button shape="round" color="warning" class="ml-3" [routerLink]="['importer']" *ngIf="global.userPermision['employee_import']">
 					<ion-icon slot="start" name="push"></ion-icon>
 					افزودن کارمند با اکسل
 				</ion-button>

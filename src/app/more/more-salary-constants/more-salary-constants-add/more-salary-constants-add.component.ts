@@ -12,14 +12,14 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreSalaryConstantsAddComponent implements OnInit {
 
 	pageTitle: string = "افزودن ثابت های حقوق";
-	addFrom : FormGroup ;
+	addForm : FormGroup ;
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl : NavController
 	) {
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			year: ['', Validators.compose([Validators.required])],
 			grocery_allowance: ['', Validators.compose([Validators.required])],
 			children_allowance: ['', Validators.compose([Validators.required])],
@@ -47,16 +47,16 @@ export class MoreSalaryConstantsAddComponent implements OnInit {
 
 		// console.log(this.extraSalary.value);
 		// return ;
-		if(this.addFrom.valid){
+		if(this.addForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('salaryBaseInfo/contractConstantField', this.addFrom.value )
+			this.global.httpPost('salaryBaseInfo/contractConstantField', this.addForm.value )
 			.subscribe(async (res:any) => {
 
 				await this.global.dismisLoading();
 				// console.log(res:any);
 				this.navCtrl.navigateForward('/more/salary-constants');
-				this.global.showToast('ثابت های حقوق مربوط به سال '+ this.addFrom.value.year +' ثبت شد .');
-				this.addFrom.reset();
+				this.global.showToast('ثابت های حقوق مربوط به سال '+ this.addForm.value.year +' ثبت شد .');
+				this.addForm.reset();
 			}, async (error:any) => {
 				await this.global.dismisLoading();
 				this.global.showError(error);

@@ -175,6 +175,7 @@ export class ContractEditComponent implements OnInit {
 		});
 	}
 	async getContract(id: string) {
+		this.submitet = true;
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/detail', {
 			id: id,
@@ -233,6 +234,7 @@ export class ContractEditComponent implements OnInit {
 			this.setTitle();
 
 
+
 			console.log(this.dataList);
 			//EMPLOYEE IN CONTACR
 			this.employeeList = this.dataList.employee_info.map((item: any) => {
@@ -249,6 +251,11 @@ export class ContractEditComponent implements OnInit {
 			this.dataList.provisos.map((item: any) => {
 				this.provisosList.push(this.provisos(item.contract_proviso_template_id, item.proviso_text));
 			});
+
+			setTimeout(() => {
+				this.submitet = false;
+			}, 1000);
+
 			// console.log(res:any);
 		}, async (error: any) => {
 			await this.global.dismisLoading();

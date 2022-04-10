@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BusinessCategory } from 'src/app/core/models/business.model';
-import { UserRole, UserType } from 'src/app/core/models/user.model';
+import { UserRole,  UserType } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -49,14 +49,15 @@ export class UsersTypeListComponent implements OnInit {
 
 		this.dataInSearch = name ? true : false;
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('user/role/list', {
+		this.global.httpPost('user/userType/list', {
+			type : "all",
 			limit: this.limit,
 			offset: this.offset,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
-				return new UserRole().deserialize(item);
+				return new UserType().deserialize(item);
 			});
 			console.log(this.dataList);
 			// console.log(res:any);

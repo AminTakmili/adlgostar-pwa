@@ -1,0 +1,83 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت شما میتوانید با استفاده از فایل نمونه کارفرما متعدد با اکسل ایجاد کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="employers" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+			<div class="container">
+				<div class="row">
+					<!-- form -->
+					<div class="col-md-6 my-4">
+						<!-- عنوان کسب و کار -->
+						<div class="form-input mb-3">
+							<label>فایل اکسل</label>
+							<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'" (change)="uploadFile($event)">
+								</app-validator>
+							</span>
+							<span class="hint">فایل اکسل را انتخاب کنید .</span>
+						</div>
+					</div>
+					<!-- desc -->
+					<div class="col-md-6 my-4">
+						<ion-card mode="ios" color="white">
+							<ion-card-header>
+								<ion-card-title class="font-size-20">فایل نمونه </ion-card-title>
+							</ion-card-header>
+							<ion-card-content>
+								<p class="font-size-14 line-height-30">مشابه فایل نمونه ابتدا فیلد ها را پر کنید . </p>
+								<p class="font-size-14 line-height-30"><a href="./assets/excell/employer.xlsx">دانلود
+										فایل نمونه</a></p>
+
+							</ion-card-content>
+						</ion-card>
+
+					</div>
+				</div>
+				<div class="row ion-justify-content-end ion-align-items-center">
+					<div class="col-12">
+						<hr>
+					</div>
+					<div class="col-md-2">
+						<ion-button expand="block" color="medium" fill="outline" shape="round"
+							(click)="global.emptyFrom(addForm)">
+							پاک کردن فرم
+						</ion-button>
+					</div>
+					<div class="col-md-3">
+						<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+							ثبت کارفرمایان
+						</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- importer list -->
+		<div class="container">
+			<hr>
+			<app-importer-list [type]="'employer'"></app-importer-list>
+		</div>
+	</main>
+
+</ion-content>

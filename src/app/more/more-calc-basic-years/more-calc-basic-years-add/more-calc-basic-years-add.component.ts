@@ -13,7 +13,7 @@ export class MoreCalcBasicYearsAddComponent implements OnInit {
 
 
 	pageTitle: string = "ثبت محاسبه پایه سنوات جدید";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -21,7 +21,7 @@ export class MoreCalcBasicYearsAddComponent implements OnInit {
 		private navCtrl: NavController,
 
 	) {
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			contract_year: ['', Validators.compose([Validators.required , Validators.pattern("^[0-9]*$"), , Validators.minLength(4), Validators.maxLength(4)])],
 			incremental_percent: ['', Validators.compose([Validators.required , Validators.minLength(1), Validators.maxLength(2)])],
 			incremental_price: ['', Validators.compose([Validators.required])],
@@ -43,16 +43,16 @@ export class MoreCalcBasicYearsAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('salaryBaseInfo/severanceBaseCalculationField', this.addFrom.value)
+			this.global.httpPost('salaryBaseInfo/severanceBaseCalculationField', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/calc-basic-years');
-					this.global.showToast('محاسبه پایه سنوات مربوط به سال ' + this.addFrom.value.contract_year + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('محاسبه پایه سنوات مربوط به سال ' + this.addForm.value.contract_year + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

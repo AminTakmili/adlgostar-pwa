@@ -21,7 +21,7 @@
 		<div class="container">
 			<div class="row my-4">
 				<div class="col-md-6">
-					<form [formGroup]="editFrom" (submit)="onSubmit()">
+					<form [formGroup]="editForm" (submit)="onSubmit()">
 						<!-- مربوط به سال -->
 						<div class="form-input mb-3" *ngIf="this.businessCatgeories && this.businessCatgeories.length">
 							<label>انتخاب دسته بندی والد</label>
@@ -42,7 +42,7 @@
 							<label>نام دسته بندی</label>
 							<ion-input  type="text" autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="editFrom.controls['name']" [controlName]="'نام دسته بندی'"></app-validator>
+								<app-validator [control]="editForm.controls['name']" [controlName]="'نام دسته بندی'"></app-validator>
 							</span>
 							<span class="hint">مثلا فست فود</span>
 						</div>
@@ -51,7 +51,7 @@
 						<hr>
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

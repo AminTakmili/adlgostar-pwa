@@ -14,7 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreBusinessCategoryAddComponent implements OnInit {
 
 	pageTitle: string = "افزودن دسته بندی کسب کار جدید";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 
 	businessCatgeories : BusinessCategory[];
 	categoryId: number;
@@ -28,7 +28,7 @@ export class MoreBusinessCategoryAddComponent implements OnInit {
 		if(this.route.snapshot.paramMap.get('id')){
 			this.categoryId = parseInt(this.route.snapshot.paramMap.get('id'));
 		}
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			parent_id: [this.categoryId],
 			name: ['', Validators.compose( [Validators.required ] ) ],
 		});
@@ -72,24 +72,24 @@ export class MoreBusinessCategoryAddComponent implements OnInit {
 
 		this.businessCatgeories.unshift.apply(this.businessCatgeories, [New]);
 		if(!this.categoryId){
-			this.addFrom.get('parent_id').setValue(0)
+			this.addForm.get('parent_id').setValue(0)
 		}else{
-			this.addFrom.get('parent_id').setValue(this.categoryId);
+			this.addForm.get('parent_id').setValue(this.categoryId);
 			console.log(this.categoryId);
 		}
 	}
 
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('businessCategory/add', this.addFrom.value)
+			this.global.httpPost('businessCategory/add', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/business-category');
-					this.global.showToast('دسته بندی با نام ' + this.addFrom.value.name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('دسته بندی با نام ' + this.addForm.value.name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

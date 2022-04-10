@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BusinessCategory } from 'src/app/core/models/business.model';
-import { permision, permissionsDetail, userType } from 'src/app/core/models/user.model';
+import { permision, permissionsDetail, UserType } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -15,9 +15,9 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class UsersRoleAddComponent implements OnInit {
 
 	pageTitle: string = " نقش جدید ";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 
-	userType:userType[];
+	userType:UserType[];
 	permision : permision[];
 
 	businessCatgeories : BusinessCategory[];
@@ -32,7 +32,7 @@ export class UsersRoleAddComponent implements OnInit {
 		// if(this.route.snapshot.paramMap.get('id')){
 		// 	this.categoryId = parseInt(this.route.snapshot.paramMap.get('id'));
 		// }
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			user_type_id: ['', Validators.compose( [Validators.required ] ) ],
 			is_default_employer_role: [ false , Validators.compose( [Validators.required ] ) ],
 			name: ['', Validators.compose( [Validators.required ] ) ],
@@ -79,12 +79,12 @@ export class UsersRoleAddComponent implements OnInit {
 	}
 	setUserType(data:any){
 		this.userType = data.list.map((item:any)=>{
-			return new userType().deserialize(item);
+			return new UserType().deserialize(item);
 		});
 
 	}
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 
 			let permission : any[]= [];
 			this.permision.map((cat)=>{
@@ -96,12 +96,12 @@ export class UsersRoleAddComponent implements OnInit {
 			});
 
 
-			 console.log(this.addFrom.value);
+			 console.log(this.addForm.value);
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/role/add', {
-				user_type_id : this.addFrom.value.user_type_id ,
-				is_default_employer_role : this.addFrom.value.is_default_employer_role ,
-				name :  this.addFrom.value.name,
+				user_type_id : this.addForm.value.user_type_id ,
+				is_default_employer_role : this.addForm.value.is_default_employer_role ,
+				name :  this.addForm.value.name,
 				permission_ids : permission ,
 			})
 				.subscribe(async (res:any) => {
@@ -109,8 +109,8 @@ export class UsersRoleAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/users/role');
-					this.global.showToast('نقش جدید با نام  ' + this.addFrom.value.name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('نقش جدید با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

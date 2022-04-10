@@ -15,7 +15,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class UsersAllAddComponent implements OnInit {
 
 	pageTitle: string = "کاربر جدید";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;
 	province: citiesClass[] = [];
@@ -30,7 +30,7 @@ export class UsersAllAddComponent implements OnInit {
 		private cd: ChangeDetectorRef
 	) {
 		this.employerImage = null;
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			role_id : ['',Validators.compose([Validators.required])],
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
@@ -46,7 +46,7 @@ export class UsersAllAddComponent implements OnInit {
 			image: ['']
 		});
 
-		this.address = this.addFrom.get('addresses') as FormArray;
+		this.address = this.addForm.get('addresses') as FormArray;
 	}
 	addresses(): FormGroup {
 		return this.fb.group({
@@ -57,7 +57,7 @@ export class UsersAllAddComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return this.addFrom.get('addresses') as FormArray;
+		return this.addForm.get('addresses') as FormArray;
 	}
 
 	ngOnInit() {
@@ -90,17 +90,17 @@ export class UsersAllAddComponent implements OnInit {
 
 	async onSubmit() {
 
-		console.log(this.addFrom);
-		if (this.addFrom.valid) {
+		console.log(this.addForm);
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('user/add', this.addFrom.value)
+			this.global.httpPost('user/add', this.addForm.value)
 				.subscribe(async (res: any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/users/list');
-					this.global.showToast('کاربر با نام ' + this.addFrom.value.first_name + ' ' + this.addFrom.value.last_name + ' ثبت شد .');
-					this.addFrom.reset();
+					this.global.showToast('کاربر با نام ' + this.addForm.value.first_name + ' ' + this.addForm.value.last_name + ' ثبت شد .');
+					this.addForm.reset();
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
@@ -115,7 +115,7 @@ export class UsersAllAddComponent implements OnInit {
 			reader.readAsDataURL(file);
 
 			reader.onload = () => {
-				this.addFrom.patchValue({
+				this.addForm.patchValue({
 					image: reader.result
 				});
 

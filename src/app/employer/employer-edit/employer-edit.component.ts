@@ -19,7 +19,7 @@ import { StaticData } from 'src/app/core/models/StaticData.model';
 export class EmployerEditComponent implements OnInit {
 
 	pageTitle: string = "ویرایش کارفرما";
-	editFrom: FormGroup;
+	editForm: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;
 	province: citiesClass[] = [];
@@ -35,7 +35,7 @@ export class EmployerEditComponent implements OnInit {
 		private cd: ChangeDetectorRef,
 		public modalController: ModalController
 	) {
-		this.editFrom = this.fb.group({
+		this.editForm = this.fb.group({
 			id: ['', Validators.compose([Validators.required])],
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
@@ -52,7 +52,7 @@ export class EmployerEditComponent implements OnInit {
 			addresses: this.fb.array([this.addresses()]),
 		});
 
-		this.address = this.editFrom.get('addresses') as FormArray;
+		this.address = this.editForm.get('addresses') as FormArray;
 	}
 	addresses(): FormGroup {
 		return this.fb.group({
@@ -63,7 +63,7 @@ export class EmployerEditComponent implements OnInit {
 		})
 	}
 	get addressFormGroup(): FormArray {
-		return this.editFrom.get('addresses') as FormArray;
+		return this.editForm.get('addresses') as FormArray;
 	}
 
 	async ngOnInit() {
@@ -118,7 +118,7 @@ export class EmployerEditComponent implements OnInit {
 				return formAddress
 			});
 
-			this.editFrom = this.fb.group({
+			this.editForm = this.fb.group({
 				id: [this.dataList.id, Validators.compose([Validators.required])],
 				first_name: [this.dataList.first_name, Validators.compose([Validators.required])],
 				last_name: [this.dataList.last_name, Validators.compose([Validators.required])],
@@ -160,16 +160,16 @@ export class EmployerEditComponent implements OnInit {
 
 	async onSubmit() {
 
-		if (this.editFrom.valid) {
+		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPatch('employer/edit', this.editFrom.value)
+			this.global.httpPatch('employer/edit', this.editForm.value)
 				.subscribe(async (res: any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/employers');
-					this.global.showToast('کارفرما با نام ' + this.editFrom.value.first_name + ' ' + this.editFrom.value.last_name + ' ویرایش شد .');
-					this.editFrom.reset();
+					this.global.showToast('کارفرما با نام ' + this.editForm.value.first_name + ' ' + this.editForm.value.last_name + ' ویرایش شد .');
+					this.editForm.reset();
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
@@ -184,7 +184,7 @@ export class EmployerEditComponent implements OnInit {
 			reader.readAsDataURL(file);
 
 			reader.onload = () => {
-				this.editFrom.patchValue({
+				this.editForm.patchValue({
 					image: reader.result
 				});
 
@@ -199,7 +199,7 @@ export class EmployerEditComponent implements OnInit {
 			component: EmployerPrevComponent,
 			cssClass: 'my-custom-class',
 			componentProps: {
-				data: this.editFrom.value,
+				data: this.editForm.value,
 				gender : this.StaticData.gender,
 				province : this.province
 

@@ -1,0 +1,60 @@
+<!-- search and title -->
+<div class="row mt-4">
+	<div class="col-md-8">
+		<div class="title-1">
+			<h2 class="title">لیست فایل های بارگذاری شده قبلی</h2>
+			<p class="dsec">در زیر لیست فایل های بارگذاری شده قبلی به همراه وضعیت آن ها را مشاهده میکنید .</p>
+		</div>
+	</div>
+	<!-- search -->
+	<!-- <div class="col-md-4">
+		<div class="search-input-2">
+			<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="getData()" placeholder="جستجو در کسب و کارها"></ion-searchbar>
+		</div>
+	</div> -->
+</div>
+<!-- table -->
+<div class="table-responsive-md" *ngIf="dataList && dataList.length  ">
+	<table class="width-100 theme-table mt-4">
+		<thead class="thead-dark">
+			<tr class="ion-text-center">
+				<th class="ion-text-center">#</th>
+				<th scope="col">نام کاربر</th>
+				<th scope="col">بخش</th>
+				<th scope="col">رنج ای دی </th>
+				<th scope="col">تعداد</th>
+				<th scope="col">وضعیت</th>
+				<th scope="col">تاریخ ثبت</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+				*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+				<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+				<td>{{ item.user_info.first_name }} {{  item.user_info.last_name }}</td>
+				<td>{{ item.type }}</td>
+				<td>{{ item.id_range }}</td>
+				<td>{{ item.count }} عدد</td>
+				<td>{{ item.status }}</td>
+				<td>{{ item.createdAt }}</td>
+			</tr>
+		</tbody>
+		<tfoot *ngIf="limit < total && dataList && dataList.length">
+			<tr>
+				<td colspan="6">
+					<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+						[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+						[autoHide]="true">
+					</pagination-controls>
+				</td>
+			</tr>
+
+		</tfoot>
+	</table>
+</div>
+<!-- if there is no table -->
+<!-- if search return empty cell -->
+<div *ngIf="dataList && dataList.length === 0 " class="alert alert-warning my-3" role="alert">
+	<h4 class="title">شما در این قسمت فایلی اپلود نکرده اید</h4>
+</div>

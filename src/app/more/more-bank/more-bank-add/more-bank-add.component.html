@@ -20,7 +20,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="addFrom" (submit)="onSubmit()">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
 					<div class="col-md-12">
 
@@ -29,7 +29,7 @@
 							<label>عنوان بانک</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['name']" [controlName]="'عنوان'">
+								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا ملت</span>
@@ -42,7 +42,7 @@
 					<div class="col-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-2">
-								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addFrom)">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

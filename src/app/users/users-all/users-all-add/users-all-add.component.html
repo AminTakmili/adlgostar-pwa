@@ -19,7 +19,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="addFrom" (submit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
+			<form [formGroup]="addForm" (submit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
 				<div class="row my-4">
 					<div class="col-12">
 						<div class="title-1 my-4">
@@ -52,7 +52,7 @@
 							<label>نام</label>
 							<ion-input type="text" (keypress)="global.justWord($event)" autocomplete="new-pass" formControlName="first_name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['first_name']" [controlName]="'نام'">
+								<app-validator [control]="addForm.controls['first_name']" [controlName]="'نام'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا رضا</span>
@@ -65,7 +65,7 @@
 							<ion-input type="text" (keypress)="global.justWord($event)" autocomplete="new-pass-2" formControlName="last_name">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
+								<app-validator [control]="addForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -77,7 +77,7 @@
 							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="birth_certificate_code">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
+								<app-validator [control]="addForm.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 								</app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
@@ -90,7 +90,7 @@
 							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="national_code">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['national_code']" [controlName]="'کد ملی'">
+								<app-validator [control]="addForm.controls['national_code']" [controlName]="'کد ملی'">
 								</app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
@@ -103,7 +103,7 @@
 							<ion-input type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="mobile">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['mobile']"
+								<app-validator [control]="addForm.controls['mobile']"
 									[controlName]="'شماره همراه'"></app-validator>
 							</span>
 							<span class="hint">شماره موبایل 11 رقمی است و با 09 شروع میشود</span>
@@ -115,7 +115,7 @@
 							<label>محل تولد</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="birth_place"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['birth_place']" [controlName]="'محل تولد'">
+								<app-validator [control]="addForm.controls['birth_place']" [controlName]="'محل تولد'">
 								</app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
@@ -129,7 +129,7 @@
 								<input type="text" formControlName="born_at" />
 							 </ng-persian-datepicker>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['born_at']" [controlName]="'تاریخ تولد'">
+								<app-validator [control]="addForm.controls['born_at']" [controlName]="'تاریخ تولد'">
 								</app-validator>
 							</span>
 							<span class="hint"></span>
@@ -141,7 +141,7 @@
 							<label>محل صدور شناسنامه</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="birth_certificate_issuance_place"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
+								<app-validator [control]="addForm.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا اصفهان</span>
@@ -160,7 +160,7 @@
 								>
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['gender']" [controlName]="'جنسیت'">
+								<app-validator [control]="addForm.controls['gender']" [controlName]="'جنسیت'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا اصفهان</span>
@@ -172,7 +172,7 @@
 							<label>پست الکترونیک</label>
 							<ion-input type="email" autocomplete="new-pass" formControlName="email"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['email']" [controlName]="'پست الکترونیک'">
+								<app-validator [control]="addForm.controls['email']" [controlName]="'پست الکترونیک'">
 								</app-validator>
 							</span>
 							<span class="hint">info@example.com</span>
@@ -184,7 +184,7 @@
 							<label>انتخاب تصویر</label>
 							<ion-input type="file" accept="image/*" (change)="uploadFile($event)" autocomplete="new-pass" formControlName="image"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['image']" [controlName]="'تصویر'"></app-validator>
+								<app-validator [control]="addForm.controls['image']" [controlName]="'تصویر'"></app-validator>
 							</span>
 							<span class="hint">حداکثر 1024 در 768 پیکسل</span>
 						</div>
@@ -262,7 +262,7 @@
 					<div class="col-12">
 						<div class="row align-items-center justify-content-end">
 							<div class="col-lg-2">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

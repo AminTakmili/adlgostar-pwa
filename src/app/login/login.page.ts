@@ -96,7 +96,7 @@ export class LoginPage implements OnInit {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/confirmLoginCode', {
 				mobile: this.mobile,
-				verifyCode: this.verifyForm.value.verifyCode,
+				verifyCode: this.verifyForm.value.verifycode,
 			}).subscribe(async (res : any) => {
 				await this.global.dismisLoading();
 				// console.log(res.firstName,res.lastName)

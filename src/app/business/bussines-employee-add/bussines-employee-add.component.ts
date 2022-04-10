@@ -15,7 +15,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class BussinesEmployeeAddComponent implements OnInit {
 
 	pageTitle: string = "ثبت کارمند جدید به کسب کار";
-	addFrom: FormGroup;
+	addForm: FormGroup;
 	employeelist: Employee[];
 	postList: Post[];
 	businessId : string;
@@ -30,7 +30,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		private route: ActivatedRoute,
 
 	) {
-		this.addFrom = this.fb.group({
+		this.addForm = this.fb.group({
 			business_id: [this.route.snapshot.paramMap.get('id'), Validators.compose([Validators.required ])],
 			employee_id: ['', Validators.compose([Validators.required ])],
 			specialty: ['', Validators.compose([Validators.required ])],
@@ -41,12 +41,12 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			posts: this.fb.array([this.newPosts(true)]),
 		});
 
-		this.posts = this.addFrom.get('posts') as FormArray;
+		this.posts = this.addForm.get('posts') as FormArray;
 		this.businessId = this.route.snapshot.paramMap.get('id');
 	}
 
 	get postsFormGroup(): FormArray {
-		return this.addFrom.get('posts') as FormArray;
+		return this.addForm.get('posts') as FormArray;
 	}
 
 	newPosts(isTrue : boolean): FormGroup {
@@ -95,16 +95,16 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		});
 	}
 	async onSubmit() {
-		if (this.addFrom.valid) {
+		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('business/employee/add', this.addFrom.value)
+			this.global.httpPost('business/employee/add', this.addForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/businesses/detail/'+this.businessId);
 					this.global.showToast('کارمند با موفقیت اضافه شد');
-					this.addFrom.reset();
+					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

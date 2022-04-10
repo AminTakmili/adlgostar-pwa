@@ -1,0 +1,69 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید حداقل دستمزد روزانه برای یک سال را ویرایش کنید</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/minimum-daily-wage" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="editForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<!-- سال عقد قرار داد -->
+					<div class="col-md-12">
+						<div class="form-input mb-3">
+							<label>سال عقد قرار داد</label>
+							<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="year"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['year']" [controlName]="'سال عقد قرار داد'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا 1403</span>
+						</div>
+
+					</div>
+					<div class="col-md-12">
+						<div class="form-input mb-3">
+							<label>مبلغ (ریال)</label>
+							<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="minimum_wage"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['minimum_wage']" [controlName]="'مبلغ'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا 140,000</span>
+						</div>
+					</div>
+					<div class="col-md-12"><hr></div>
+					<div class="col-md-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-md-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-md-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									{{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

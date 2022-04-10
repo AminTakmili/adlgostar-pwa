@@ -22,13 +22,13 @@
 		<div class="container">
 			<div class="row my-4">
 				<div class="col-md-6">
-					<form [formGroup]="addFrom" (submit)="onSubmit()">
+					<form [formGroup]="addForm" (submit)="onSubmit()">
 						<!-- مربوط به سال -->
 						<div class="form-input mb-3">
 							<label>مربوط به سال</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="contract_year"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['contract_year']" [controlName]="'سال'"></app-validator>
+								<app-validator [control]="addForm.controls['contract_year']" [controlName]="'سال'"></app-validator>
 							</span>
 							<span class="hint">مثلا سال 1403</span>
 						</div>
@@ -38,7 +38,7 @@
 							<label>درصد افزایش نسبت به سال قبل</label>
 							<ion-input  type="number" autocomplete="new-pass" formControlName="incremental_percent"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['incremental_percent']" [controlName]="'درصد افزایش نسبت به سال قبل'"></app-validator>
+								<app-validator [control]="addForm.controls['incremental_percent']" [controlName]="'درصد افزایش نسبت به سال قبل'"></app-validator>
 							</span>
 							<span class="hint">مثلا 12</span>
 						</div>
@@ -48,7 +48,7 @@
 							<label>مبلغ پایه (ریال)</label>
 							<ion-input type="number"  autocomplete="new-pass" formControlName="incremental_price"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['incremental_price']" [controlName]="'مبلغ پایه'"></app-validator>
+								<app-validator [control]="addForm.controls['incremental_price']" [controlName]="'مبلغ پایه'"></app-validator>
 							</span>
 							<span class="hint">مثلا : 234,4350 ریال</span>
 						</div>
@@ -58,7 +58,7 @@
 							<label>مقدار ثابت اضافه شونده (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="base_price"></ion-input>
 							<span class="error">
-								<app-validator [control]="addFrom.controls['base_price']" [controlName]="'مقدار ثابت اضافه شونده'"></app-validator>
+								<app-validator [control]="addForm.controls['base_price']" [controlName]="'مقدار ثابت اضافه شونده'"></app-validator>
 							</span>
 							<span class="hint">مثلا : 234,4350 ریال</span>
 						</div>
@@ -66,7 +66,7 @@
 						<hr>
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

@@ -14,7 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class MoreBusinessCategoryEditComponent implements OnInit {
 
 	pageTitle: string = " دسته بندی کسب کار ";
-	editFrom: FormGroup;
+	editForm: FormGroup;
 
 	businessCatgeories : BusinessCategory[];
 
@@ -29,7 +29,7 @@ export class MoreBusinessCategoryEditComponent implements OnInit {
 		private route: ActivatedRoute,
 	) {
 
-		this.editFrom = this.fb.group({
+		this.editForm = this.fb.group({
 			id : [],
 			parent_id: [],
 			name: ['', Validators.compose( [Validators.required ] ) ],
@@ -62,9 +62,9 @@ export class MoreBusinessCategoryEditComponent implements OnInit {
 			await this.global.dismisLoading();
 
 			this.dataList = new BusinessCategory().deserialize(res);
-			this.editFrom.get('name').setValue(this.dataList.name);
-			this.editFrom.get('parent_id').setValue(this.dataList.parent_id);
-			this.editFrom.get('id').setValue(this.dataList.id);
+			this.editForm.get('name').setValue(this.dataList.name);
+			this.editForm.get('parent_id').setValue(this.dataList.parent_id);
+			this.editForm.get('id').setValue(this.dataList.id);
 
 			 console.log(this.dataList);
 			// console.log(res:any);
@@ -97,16 +97,16 @@ export class MoreBusinessCategoryEditComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		if (this.editFrom.valid) {
+		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPatch('businessCategory/edit', this.editFrom.value)
+			this.global.httpPatch('businessCategory/edit', this.editForm.value)
 				.subscribe(async (res:any) => {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/more/business-category');
-					this.global.showToast('دسته بندی با نام ' + this.editFrom.value.name + ' ویرایش شد .');
-					this.editFrom.reset();
+					this.global.showToast('دسته بندی با نام ' + this.editForm.value.name + ' ویرایش شد .');
+					this.editForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
