@@ -6,6 +6,7 @@ import { Employer } from "./employer.model";
 
 export class contractConstant implements Deserializable {
 	id !: number;
+	title !: number;
 	year !: number;
 	grocery_allowance !: number;
 	children_allowance !: number;
@@ -70,6 +71,7 @@ export class contract implements Deserializable {
 	grocery_allowance !: number;
 	housing_allowance !: number;
 	children_allowance !: number;
+	children_allowances !: childrenAllowances[];
 	food_cost !: number;
 	pension_cost !: number;
 	monthly_severance_pay !: number;
@@ -109,6 +111,11 @@ export class contract implements Deserializable {
 				return new Employee().deserialize(column);
 			});
 		}
+		if(input.children_allowances && input.children_allowances.length){
+			this.children_allowances = input.children_allowances.map((column: any) => {
+				return new childrenAllowances().deserialize(column);
+			});
+		}
 
 		this.employer_info = new Employer().deserialize(input.employer_info);
 		this.business_info =  new BusinessList().deserialize(input.business_info);
@@ -145,6 +152,19 @@ export class contractTemplateVariable implements Deserializable {
 	id !: number;
 	variable !: string;
 	description !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+
+
+export class childrenAllowances implements Deserializable {
+
+	business_employee_id !: number;
+	children_allowance !: number;
+	employee_id !: number;
+	employee_name !: string;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

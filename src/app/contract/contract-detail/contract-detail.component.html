@@ -14,10 +14,10 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-				<ion-button shape="round" [routerLink]="['/contracts/print/'+dataList.id]" color="success" *ngIf="global.userPermision['contract_print']">
+				<!-- <ion-button shape="round" [routerLink]="['/contracts/print/'+dataList.id]" color="success" *ngIf="global.userPermision['contract_print']">
 					<ion-icon slot="start" name="print"></ion-icon>
 					پرینت
-				</ion-button>
+				</ion-button> -->
 				<ion-button shape="round" [routerLink]="['/contracts/edit/'+dataList.id]" color="secondary" *ngIf="global.userPermision['contract_edit']">
 					<ion-icon slot="start" name="build"></ion-icon>
 					ویرایش قرار داد
@@ -63,7 +63,7 @@
 				<!-- list of employee -->
 				<div class="row my-3" *ngIf="dataList?.employee_info">
 					<div class="col-lg-6 mb-4" *ngFor="let item of dataList?.employee_info">
-						<app-employee-card [employee]="item"></app-employee-card>
+						<app-employee-card [employee]="item" [contractid]="dataList?.id"></app-employee-card>
 					</div>
 				</div>
 
@@ -162,6 +162,16 @@
 								<ion-label>
 									<h2 class="value">{{ dataList?.month_count }} ماه</h2>
 									<p class="title">ماه های موجود در قرار داد</p>
+								</ion-label>
+							</ion-item>
+						</ion-list>
+						<!-- حق اولاد -->
+						<ion-list class="full-info">
+							<ion-list-header>حق اولاد</ion-list-header>
+							<ion-item lines="full" color="white" *ngFor="let item of dataList.children_allowances">
+								<ion-label>
+									<h2 class="value">{{ item.children_allowance | number }} ریال</h2>
+									<p class="title">{{ item.employee_name }}</p>
 								</ion-label>
 							</ion-item>
 						</ion-list>

@@ -18,3 +18,11 @@ export class importer implements Deserializable {
 		return this;
 	}
 }
+export class error implements Deserializable {
+	row!: number;
+	msg!: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}

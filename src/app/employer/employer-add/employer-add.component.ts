@@ -32,7 +32,7 @@ export class EmployerAddComponent implements OnInit {
 	) {
 		this.employerImage = null;
 		this.addForm = this.fb.group({
-			first_name: ['', Validators.compose([Validators.required])],
+			first_name: ['', Validators.compose([Validators.required]), , 'نام'],
 			last_name: ['', Validators.compose([Validators.required])],
 			birth_certificate_code: ['', Validators.compose([Validators.required])],
 			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
@@ -92,6 +92,8 @@ export class EmployerAddComponent implements OnInit {
 
 	async onSubmit() {
 
+		this.addForm.markAllAsTouched();
+		console.log(this.addForm)
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('employer/add', this.addForm.value)

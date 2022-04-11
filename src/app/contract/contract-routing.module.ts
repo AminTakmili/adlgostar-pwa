@@ -27,7 +27,7 @@ const routes: Routes = [
     component: ContractDetailComponent
   },
   {
-    path: 'print/:id',
+    path: 'print/:contract_id/:employee_id',
     component: ContractPrintComponent
   },
   {

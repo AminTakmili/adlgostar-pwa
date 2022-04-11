@@ -6,6 +6,8 @@ import { businessClass } from 'src/app/core/classes/business.class';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
+import { error } from 'src/app/core/models/other.models';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-business-importer',
@@ -25,6 +27,7 @@ export class BusinessImporterComponent implements OnInit {
 	province: citiesClass[] = [];
 	businessCatgeories: businessClass[] = [];
 	addForm: FormGroup;
+	errors : error[] = [];
 
 	categoryLimit = 1000;
 	categoryoffSet = 0;
@@ -55,7 +58,7 @@ export class BusinessImporterComponent implements OnInit {
 	}
 
 	async onSubmit() {
-
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			var formData: any = new FormData();
 			formData.append("file", this.addForm.get('file').value);
@@ -69,21 +72,24 @@ export class BusinessImporterComponent implements OnInit {
 					this.navCtrl.navigateForward('/businesses');
 					this.addForm.reset();
 					this.global.showToast('کسب و کار ها با موفقیت ثبت شدند .');
-				}, async (error: any) => {
+				}, async (err: any) => {
 					await this.global.dismisLoading();
-					this.global.showError(error);
+					this.errors = err.error.data.map((item:any)=>{
+						return new error().deserialize(item);
+					});
+					this.errors = _.sortBy(this.errors, ['row']);
+					console.log(this.errors);
+					this.global.showError(err);
 				});
 		}
 	}
 
 	uploadFile(event: any) {
-
 		const file = (event.target as HTMLInputElement).files[0];
 		this.addForm.patchValue({
 			file: file,
 		});
 		this.addForm.get('file').updateValueAndValidity();
-
 	}
 
 

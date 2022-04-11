@@ -41,62 +41,66 @@
 					</div>
 				</div>
 				<!-- list of employee -->
-				<div class="table-responsive-md my-3" *ngIf="Employee.businesses && Employee.businesses.length  ">
-					<div *ngFor="let item of Employee.businesses">
-						<h5 class="mt-4 mb-2">قراردها با {{ item.business_name}}</h5>
-						<!-- table -->
-						<table class="width-100 theme-table mt-3" *ngIf="item.contracts && item.contracts.length">
-							<thead class="thead-dark">
-								<tr class="ion-text-center">
-									<th class="ion-text-center">#</th>
-									<th scope="col">عنوان قرار داد</th>
-									<th scope="col">شروع و پایان</th>
-									<th scope="col">مدت قرار داد</th>
-									<th class="ion-text-left" scope="col"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let contract of item.contracts  ; let i = index;">
-									<th class="ion-text-center" scope="row">{{ i + 1 }}</th>
-									<td>{{ contract.title }}</td>
-									<td>
-										<p class="my-1 font-size-12"> شروع : <span>{{ contract.start_date }}</span></p>
-										<p class="my-1 font-size-12"> پایان : <span>{{ contract.end_date }}</span></p>
-									</td>
-									<td>
-										<span class="my-1 font-size-12"><span>{{ contract.month_count }} ماه</span></span> ,
-										<span class="my-1 font-size-12"><span>{{ contract.day_count }} روز</span></span>
-									</td>
-									<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
-									<td class="ion-text-left">
-										<ion-buttons class="justify-content-end">
-											<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="حذف">
-												<ion-icon size="small" color="medium" slot="icon-only" name="trash"></ion-icon>
-											</ion-button>
-											<ion-button fill="clear" [routerLink]="['edit', contract.id]"
-												class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
-												<ion-icon size="small" color="medium" slot="icon-only"
-													name="build">
-												</ion-icon>
-											</ion-button>
-											<ion-button fill="clear" [routerLink]="['detail', contract.id]"
-												class="px-0 mx-0 tooltip-show" tooltip="جزییات">
-												<ion-icon size="small" color="medium" slot="icon-only"
-													name="search">
-												</ion-icon>
-											</ion-button>
-										</ion-buttons>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+				<ng-template  ngFor let-businessemployee [ngForOf]="Employee.business_employee_info" >
+
+					<div class="table-responsive-md my-3" >
 						<div >
-							<div class="alert alert-warning my-3" *ngIf="!item.contracts.length" role="alert">
-								<h6 class="title"> قرار دادی برای نمایش یافت نشد </h6>
+							<h5 class="mt-4 mb-2">قراردها با {{ businessemployee.business.name}}</h5>
+							<!-- table -->
+							<table class="width-100 theme-table mt-3" *ngIf="businessemployee.business.contracts && businessemployee.business.contracts.length">
+								<thead class="thead-dark">
+									<tr class="ion-text-center">
+										<th class="ion-text-center">#</th>
+										<th scope="col">عنوان قرار داد</th>
+										<th scope="col">شروع و پایان</th>
+										<th scope="col">مدت قرار داد</th>
+										<th class="ion-text-left" scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let contract of businessemployee.business.contracts  ; let i = index;">
+										<th class="ion-text-center" scope="row">{{ i + 1 }}</th>
+										<td>{{ contract.title }}</td>
+										<td>
+											<p class="my-1 font-size-12"> شروع : <span>{{ contract.start_date }}</span></p>
+											<p class="my-1 font-size-12"> پایان : <span>{{ contract.end_date }}</span></p>
+										</td>
+										<td>
+											<span class="my-1 font-size-12"><span>{{ contract.month_count }} ماه</span></span> ,
+											<span class="my-1 font-size-12"><span>{{ contract.day_count }} روز</span></span>
+										</td>
+										<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
+										<td class="ion-text-left">
+											<ion-buttons class="justify-content-end">
+												<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="حذف">
+													<ion-icon size="small" color="medium" slot="icon-only" name="trash"></ion-icon>
+												</ion-button>
+												<ion-button fill="clear" [routerLink]="['edit', contract.id]"
+													class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+													<ion-icon size="small" color="medium" slot="icon-only"
+														name="build">
+													</ion-icon>
+												</ion-button>
+												<ion-button fill="clear" [routerLink]="['detail', contract.id]"
+													class="px-0 mx-0 tooltip-show" tooltip="جزییات">
+													<ion-icon size="small" color="medium" slot="icon-only"
+														name="search">
+													</ion-icon>
+												</ion-button>
+											</ion-buttons>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<hr>
+							<div >
+								<div class="alert alert-warning my-3" *ngIf="!businessemployee.business.contracts.length" role="alert">
+									<h6 class="title"> قرار دادی برای نمایش یافت نشد </h6>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</ng-template>
 			</div>
 		</section>
 	</main>

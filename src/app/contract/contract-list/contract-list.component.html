@@ -72,7 +72,7 @@
 						<th class="ion-text-center">#</th>
 						<th scope="col">عنوان</th>
 						<th scope="col">کسب و کار</th>
-						<th scope="col">کارگران</th>
+						<th scope="col">کارمندان در قرار داد</th>
 						<th scope="col">شروع و پایان</th>
 						<th scope="col">مدت قرار داد</th>
 						<th scope="col">تاریخ ثبت</th>
@@ -83,17 +83,22 @@
 					<tr
 						*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 						<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
-						<td><a [routerLink]="['detail',item.id]">{{ item.title }}</a></td>
 						<td>
+							<a [routerLink]="['detail',item.id]">{{ item.title }}</a>
+							<ion-chip mod="ios" color="success" *ngIf="!item.business_employee_id">
+								<ion-label class="font-size-10">گروهی</ion-label>
+							  </ion-chip>
+						</td>
+						<td class="py-1">
 							<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.business_info.name }}</a></p>
 							<p class="my-1 font-size-12" ><a [routerLink]="['/employers/detail/',item.employer_info.id ] "><ion-icon name="person-circle"></ion-icon> {{ item.employer_info.first_name }} {{ item.employer_info.last_name }}</a></p>
 						</td>
 						<td>
-							<!-- <span *ngFor="let emp of item.employee_info">{{ emp.first_name }} {{ emp.last_name }}</span> -->
+							<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>
 						</td>
 						<td>
-							<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span></p>
-							<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span></p>
+							<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span> </p>
+							<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span> </p>
 						</td>
 						<td>
 							<span class="my-1 font-size-12"><span>{{ item.month_count }} ماه</span></span> ,

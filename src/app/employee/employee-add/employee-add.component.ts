@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { asNativeElements, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { IonDatetime } from '@ionic/angular';
 // import { format, parseISO } from 'date-fns';
-import { compareAsc, format, newDate } from 'date-fns-jalali'
+
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { StaticData } from 'src/app/core/models/StaticData.model';
 import { Bank } from 'src/app/core/models/bank.model';
@@ -19,6 +19,7 @@ import { EmployeePrevComponent } from '../employee-prev/employee-prev.component'
 })
 export class EmployeeAddComponent implements OnInit {
 
+	@ViewChildren( 'validation' ) validation : QueryList<any>;
 
 	step: number = 1;
 	employeeForm: FormGroup;
@@ -34,10 +35,6 @@ export class EmployeeAddComponent implements OnInit {
 
 	bankList:Bank[];
 	@ViewChild("popoverDatetime2") datetime: IonDatetime;
-
-	dateValue : string = '';
-	dateValue2 = '';
-
 
 	datePickerConfig = {
 		drops: 'up',
@@ -55,19 +52,19 @@ export class EmployeeAddComponent implements OnInit {
 	) {
 
 		// this.datetime.dayValues.toLocaleString()
-		this.dateValue = format(new Date(), 'yyyy-MM-dd');
-		this.employeeForm = this.fb.group({
-			first_name: ['', Validators.compose([Validators.required])],
-			last_name: ['', Validators.compose([Validators.required])],
-			father_name: ['', Validators.compose([Validators.required])],
-			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
-			mobile: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
-			gender: ['', Validators.compose([Validators.required])],
-			marital_status: ['', Validators.compose([Validators.required])],
-			birth_date: ['', Validators.compose([Validators.required])],
-			birth_place: ['', Validators.compose([Validators.required])],
-			birth_certificate_number: ['', Validators.compose([Validators.required])],
-			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
+		// this.dateValue = format(new Date(), 'yyyy-MM-dd');
+		this.employeeForm =  this.fb.group({
+			first_name: [ '' , Validators.compose([Validators.required])],
+			last_name: [ '', Validators.compose([Validators.required])],
+			father_name: [ '', Validators.compose([Validators.required])],
+			national_code: [ '' , Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			mobile: [ '' , Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
+			gender: [ '' , Validators.compose([Validators.required])],
+			marital_status: [ '' , Validators.compose([Validators.required])],
+			birth_date: [ '' , Validators.compose([Validators.required])],
+			birth_place: [ '' , Validators.compose([Validators.required])],
+			birth_certificate_number: ['' , Validators.compose([Validators.required])],
+			birth_certificate_issuance_place: ['' , Validators.compose([Validators.required])],
 			degree_id: ['', Validators.compose([Validators.required])],
 			field_of_study: [''],
 			insurance_more_than_720: [false, Validators.compose([Validators.required])],
@@ -171,10 +168,13 @@ export class EmployeeAddComponent implements OnInit {
 		return this.employeeForm.get('image') as FormArray;
 	}
 
+	// ------------------------------=======================-------------------------
+	// ------------------------------=======================-------------------------
+	// ------------------------------=======================-------------------------
+	// ------------------------------=======================-------------------------
 	NextStep(){
 		this.step = this.step + 1;
 		this.employeeForm.markAllAsTouched();
-
 	}
 	PrevStep(){
 		this.employeeForm.markAllAsTouched();
@@ -253,7 +253,7 @@ export class EmployeeAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		console.log(this.employeeForm);
+
 		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -270,7 +270,30 @@ export class EmployeeAddComponent implements OnInit {
 					this.global.showError(error);
 				});
 		}else{
-			this.global.showToast('یک یا چند فیلد معتبر نیست . لطفا تمام پیغام های فیلد ها را چک کنید');
+
+			let errors : string[] = [];
+			setTimeout(() => {
+				this.validation.forEach((elem : any)=>{
+					if(elem.text){
+						errors.push('<li class="font-size-14 color-danger">'+elem.text.el.innerText+'</li>');
+					}
+				});
+
+				this.global.showAlert(
+					'خطا',
+					'<ul class="px-4 my-0">'+errors.join('')+'</ul>' ,
+					[{
+						text: 'متوجه شدم',
+						role: 'yes'
+					}],
+					'ابتدا موارد زیر را بررسی و سپس فرم را ثبت کنید'
+
+					).then((alert : any) => {
+					alert.present();
+
+				});
+
+			}, 100);
 		}
 	}
 

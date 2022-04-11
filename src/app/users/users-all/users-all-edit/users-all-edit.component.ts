@@ -110,7 +110,7 @@ export class UsersAllEditComponent implements OnInit {
 				first_name: [this.dataList.first_name, Validators.compose([Validators.required])],
 				last_name: [this.dataList.last_name, Validators.compose([Validators.required])],
 				birth_certificate_code: [this.dataList.birth_certificate_code, Validators.compose([Validators.required])],
-				national_code: [this.dataList.national_code, Validators.compose([Validators.required])],
+				national_code: [this.dataList.national_code, Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
 				mobile: [this.dataList.mobile, Validators.compose([Validators.required])],
 				birth_place: [this.dataList.birth_place, Validators.compose([Validators.required])],
 				born_at: [this.dataList.born_at, Validators.compose([Validators.required])],

@@ -65,17 +65,17 @@ export class Employee implements Deserializable {
 export class businessEmployeeInfo implements Deserializable {
 
 	id !: number;
-	business !: businessEmployee[];
-	createdAt !: string;
-	createdAtEn !: string;
 	employee_status !: string;
-	has_insurance !: boolean;
-	net_income !: number;
 	specialty !: string;
-	updatedAt !: string;
-	updatedAtEn !: string;
+	net_income !: number;
 	work_hours !: number;
 	work_place !: string;
+	has_insurance !: boolean;
+	business !: businessEmployee;
+	createdAt !: string;
+	createdAtEn !: string;
+	updatedAt !: string;
+	updatedAtEn !: string;
 
 	deserialize(input: any): this {
 
@@ -93,14 +93,20 @@ export class businessEmployeeInfo implements Deserializable {
 export class businessEmployee implements Deserializable {
 
 	id !: number ;
-	employee_status !: string ;
 	name!: string;
+	employee_status !: string ;
 	posts !: Post[];
+	contracts !: contract[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
-		if (input.posts && input.posts.length) {
+
 			this.posts = input.posts.map((item: Post) => {
 				return new Post().deserialize(item);
+			});
+
+		if (input.contracts && input.contracts.length) {
+			this.contracts = input.contracts.map((item: Post) => {
+				return new contract().deserialize(item);
 			});
 		}
 		return this;
