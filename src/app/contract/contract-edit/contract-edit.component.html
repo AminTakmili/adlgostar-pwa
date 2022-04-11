@@ -7,8 +7,8 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">افزودن قرار داد جدید</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضافه کنید
+					<h1 class="title"> ویرایش قرار داد </h1>
+					<p class="dsec">در این قسمت شما میتوانید قرار داد را ویرایش کنید
 					</p>
 				</div>
 			</div>
@@ -61,15 +61,19 @@
 							<div class="form-input mb-3">
 								<label>انتخاب کارمندان</label>
 								<ng-select
-								bindLabel="full_name"
-								bindValue="business_employee_id"
 								[clearable]="false"
-								[items]="employeeList"
 								placeholder="انتخاب کنید"
 								[multiple]="true"
-								(change)="checkGroupEditing()"
-								formControlName="business_employee_ids"
+								(add)="AddAlowences($event)"
+								(remove)="removeAlowences($event)"
+								(change)="calcChildrenAllowance();"
+								formControlName="employee_ids"
 								>
+								<ng-option *ngFor="let item of employeeList" [value]="item.id">
+									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
+									<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}</span>
+									</ng-option>
 								</ng-select>
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['business_employee_ids']" [controlName]="'انتخاب کارمندان '"></app-validator>
@@ -233,7 +237,7 @@
 								[items]="severanceBaseCalculationList"
 								formControlName="contract_year"
 								[clearable]="false"
-								(change)="CalculationField()"
+								(change)="CalculationField();calcChildrenAllowance();"
 								>
 							</ng-select>
 							<span class="error">
@@ -278,14 +282,14 @@
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
 						<!-- حق اولاد (برای یک فرزند) -->
-						<div class="form-input mb-3">
+						<!-- <div class="form-input mb-3">
 							<label>حق اولاد (برای یک فرزند) <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
 							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
-						</div>
+						</div> -->
 						<!-- عیدی -->
 						<div class="form-input mb-3">
 							<label>عیدی</label>
@@ -321,6 +325,25 @@
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<hr>
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">حق اولاد ها</h2>
+						</div>
+						<!-- all children allowunce -->
+						<div formArrayName="children_allowances">
+							<div *ngFor="let item of childrenAllowanceFormGroup.controls ; let i = index" [formGroupName]="i"  class="form-input mb-3">
+								<label >
+									حق اولاد <span [innerText]="returnchildrenAllowanceName(item['value']['employee_id'])"></span>
+									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
+								</label>
+								<ion-input type="number" readonly=""autocomplete="new-pass" formControlName="children_allowance"></ion-input>
+								<span class="error">
+									<!-- <app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
 						</div>
 						<hr>
 						<!-- title -->
@@ -386,7 +409,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه قرار داد به صورت ساعتی</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="is_hourly_contract" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();calcChildrenAllowance();" formControlName="is_hourly_contract" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->

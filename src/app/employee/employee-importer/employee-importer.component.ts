@@ -6,6 +6,8 @@ import { businessClass } from 'src/app/core/classes/business.class';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
+import { error } from 'src/app/core/models/other.models';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-employee-importer',
@@ -25,6 +27,7 @@ export class EmployeeImporterComponent implements OnInit {
 	province: citiesClass[] = [];
 	businessCatgeories: businessClass[] = [];
 	addForm: FormGroup;
+	errors : error[] = [];
 
 	categoryLimit = 1000;
 	categoryoffSet = 0;
@@ -56,6 +59,7 @@ export class EmployeeImporterComponent implements OnInit {
 
 	async onSubmit() {
 
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			var formData: any = new FormData();
    			formData.append("file", this.addForm.get('file').value);
@@ -69,9 +73,14 @@ export class EmployeeImporterComponent implements OnInit {
 					this.navCtrl.navigateForward('/employee');
 					this.addForm.reset();
 					this.global.showToast(' کارمندان با موفقیت ثبت شدند .');
-				}, async (error: any) => {
+				}, async (err: any) => {
 					await this.global.dismisLoading();
-					this.global.showError(error);
+					this.errors = err.error.data.map((item:any)=>{
+						return new error().deserialize(item);
+					});
+					this.errors = _.sortBy(this.errors, ['row']);
+					console.log(this.errors);
+					this.global.showError(err);
 				});
 		}
 	}

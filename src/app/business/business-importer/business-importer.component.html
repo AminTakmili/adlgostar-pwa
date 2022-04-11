@@ -38,6 +38,13 @@
 							</span>
 							<span class="hint">فایل اکسل را انتخاب کنید .</span>
 						</div>
+						<!-- errors -->
+						<div class="errors" *ngIf="errors && errors.length">
+							<p>خطاها : </p>
+							<ul>
+								<li class="font-size-12" *ngFor="let item of errors"><ion-text color="danger">سطر {{ item.row  }} - {{ item.msg  }}</ion-text></li>
+							</ul>
+						</div>
 					</div>
 					<!-- desc -->
 					<div class="col-md-6 my-4">

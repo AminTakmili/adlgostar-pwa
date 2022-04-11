@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
 import { ActivatedRoute } from '@angular/router';
-import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+
 @Component({
 	selector: 'app-contract-edit',
 	templateUrl: './contract-edit.component.html',
@@ -48,8 +48,12 @@ export class ContractEditComponent implements OnInit {
 	severanceBaseCalculationList: severanceBaseCalculation[];
 
 	dataList: contract;
+
 	provisosList: FormArray;
 	extraFieldsList: FormArray;
+	childrenAllowancesList: FormArray;
+
+	businessEmpId : number[] = [];
 
 	constructor(
 		public global: GlobalService,
@@ -66,6 +70,7 @@ export class ContractEditComponent implements OnInit {
 			title: ['', Validators.compose([Validators.required])],
 			business_id: ['', Validators.compose([Validators.required])],
 			contract_condition_id: [''],
+			employee_ids: [[], Validators.compose([Validators.required])],
 			business_employee_ids: [[], Validators.compose([Validators.required])],
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
@@ -78,7 +83,6 @@ export class ContractEditComponent implements OnInit {
 			severance_pay: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
-			children_allowance: [0, Validators.compose([Validators.required])],
 			new_year_gift: [0, Validators.compose([Validators.required])],
 			bonus: [0, Validators.compose([Validators.required])],
 			food_cost: [0, Validators.compose([Validators.required])],
@@ -91,6 +95,7 @@ export class ContractEditComponent implements OnInit {
 			is_hourly_contract: [false],
 			is_manual: [false],
 
+			children_allowances: this.fb.array([]),
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
 
@@ -98,54 +103,9 @@ export class ContractEditComponent implements OnInit {
 
 		this.provisosList = this.contractsForm.get('provisos') as FormArray;
 		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
+		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
 
 
-	}
-
-	provisos(id: number, text = ''): FormGroup {
-		return this.fb.group({
-			contract_proviso_template_id: [id, Validators.compose([Validators.required])],
-			proviso_text: [text, Validators.compose([Validators.required])],
-		})
-	}
-
-	get provisosFormGroup(): FormArray {
-		return this.contractsForm.get('provisos') as FormArray;
-	}
-
-	extraFields(id: number): FormGroup {
-		return this.fb.group({
-			contract_extra_field_id: [id, Validators.compose([Validators.required])],
-			price: [0, Validators.compose([Validators.required])],
-		})
-	}
-
-	get extraFieldsFormGroup(): FormArray {
-		return this.contractsForm.get('extra_fields') as FormArray;
-	}
-
-
-	addCondition() {
-
-
-		if (this.contractsForm.value.contract_condition_id.length) {
-			this.contractsForm.value.contract_condition_id.map((item: number) => {
-				const condition = _.find(this.contractConditionlist, { id: item });
-				const index = _.findIndex(this.provisosFormGroup.controls, (element: any) => {
-					return element.value.contract_proviso_template_id == item;
-				}, -1);
-
-				if (index === -1) {
-					this.provisosList.push(this.provisos(condition.id, condition.template));
-				}
-				// }
-			})
-		}
-
-	}
-
-	RemoveCondition(event: any) {
-		this.provisosFormGroup.controls.splice(event.index, 1);
 	}
 
 	ngOnInit() {
@@ -175,6 +135,69 @@ export class ContractEditComponent implements OnInit {
 			isNoIndex: false,
 		});
 	}
+
+	/* ============================== All form arrays ===========================================*/
+
+	provisos(id: number, text = ''): FormGroup {
+		return this.fb.group({
+			contract_proviso_template_id: [id, Validators.compose([Validators.required])],
+			proviso_text: [text, Validators.compose([Validators.required])],
+		})
+	}
+
+	get provisosFormGroup(): FormArray {
+		return this.contractsForm.get('provisos') as FormArray;
+	}
+
+	extraFields(id: number): FormGroup {
+		return this.fb.group({
+			contract_extra_field_id: [id, Validators.compose([Validators.required])],
+			price: [0, Validators.compose([Validators.required])],
+		})
+	}
+
+	get extraFieldsFormGroup(): FormArray {
+		return this.contractsForm.get('extra_fields') as FormArray;
+	}
+
+	childrenAllowance(business_employee_id: number , employee_id : number , children_allowance : number = 0 ): FormGroup {
+		return this.fb.group({
+			business_employee_id: [business_employee_id, Validators.compose([Validators.required])],
+			employee_id: [employee_id, Validators.compose([Validators.required])],
+			children_allowance: [children_allowance, Validators.compose([Validators.required])],
+		})
+	}
+
+	get childrenAllowanceFormGroup(): FormArray {
+		return this.contractsForm.get('children_allowances') as FormArray;
+	}
+
+	/* ============================== end All form arrays ===========================================*/
+
+	addCondition() {
+
+
+		if (this.contractsForm.value.contract_condition_id.length) {
+			this.contractsForm.value.contract_condition_id.map((item: number) => {
+				const condition = _.find(this.contractConditionlist, { id: item });
+				const index = _.findIndex(this.provisosFormGroup.controls, (element: any) => {
+					return element.value.contract_proviso_template_id == item;
+				}, -1);
+
+				if (index === -1) {
+					this.provisosList.push(this.provisos(condition.id, condition.template));
+				}
+				// }
+			})
+		}
+
+	}
+
+	RemoveCondition(event: any) {
+		this.provisosFormGroup.controls.splice(event.index, 1);
+	}
+
+
 	async getContract(id: string) {
 		this.submitet = true;
 		await this.global.showLoading('لطفا منتظر بمانید...');
@@ -217,7 +240,7 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('severance_pay').setValue(this.dataList.severance_pay ?? 0);
 			this.contractsForm.get('grocery_allowance').setValue(this.dataList.grocery_allowance ?? 0);
 			this.contractsForm.get('housing_allowance').setValue(this.dataList.housing_allowance ?? 0);
-			this.contractsForm.get('children_allowance').setValue(this.dataList.children_allowance ?? 0);
+
 			this.contractsForm.get('new_year_gift').setValue(this.dataList.new_year_gift ?? 0);
 			this.contractsForm.get('bonus').setValue(this.dataList.bonus ?? 0);
 			this.contractsForm.get('food_cost').setValue(this.dataList.food_cost ?? 0);
@@ -229,18 +252,24 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('is_contract_for_future').setValue(this.dataList.is_contract_for_future ? true : false);
 			this.contractsForm.get('is_hourly_contract').setValue(this.dataList.is_hourly_contract ? true : false);
 			this.contractsForm.get('is_manual').setValue(this.dataList.is_manual ? true : false);
+			this.dataList.children_allowances.map((item:any)=>{
+				this.childrenAllowancesList.push(this.childrenAllowance(item.business_employee_id , item.employee_id , item.children_allowance ));
+			});
+			console.log(this.childrenAllowancesList);
 
-			// this.GetEmployee();
+			const employeeList = this.dataList.employee_info.map((item: any) => {return new Employee().deserialize(item);});
+			const employee_id : number[] = employeeList.map((item:any)=>{return item.id;});
+			console.log('employee_id',employee_id);
+			this.contractsForm.get('employee_ids').setValue(employee_id)
+			this.GetEmployee();
 
 			this.setTitle();
 
 
-
 			console.log(this.dataList);
 			//EMPLOYEE IN CONTACR
-			this.employeeList = this.dataList.employee_info.map((item: any) => {
-				return new Employee().deserialize(item);
-			});
+
+
 			// SET EXTRA FILED
 			this.extraFieldsList.controls.map((item: FormGroup) => {
 				const id = item.value.contract_extra_field_id;
@@ -360,6 +389,14 @@ export class ContractEditComponent implements OnInit {
 		return this.contractExtraFieldList.find(x => x.id === id).name;
 	}
 
+	returnchildrenAllowanceName(id: number) {
+		const data: Employee = this.employeeList.find(x => x.id === id);
+		if (data) {
+			return data.first_name + ' ' + data.last_name;
+		}
+	}
+
+
 	setContractTheme() {
 		const id = this.contractsForm.value.contract_template_id;
 		this.contractTemplatelist.map((item) => {
@@ -406,6 +443,46 @@ export class ContractEditComponent implements OnInit {
 			}
 		}
 	}
+
+	AddAlowences(event: any) {
+		const data = this.employeeList.find(x=> x.id === event);
+		this.businessEmpId.push(data.business_employee_info[0].id);
+		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
+		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
+		console.log(this.contractsForm.value.business_employee_ids);
+		console.log(this.childrenAllowancesList);
+	}
+
+	removeAlowences(event: any) {
+		// console.log("removeAlowences",event);
+		this.businessEmpId.splice(event.index, 1);
+		this.childrenAllowancesList.controls.splice(event.index, 1);
+		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
+		console.log(this.contractsForm.value.business_employee_ids);
+	}
+
+	calcChildrenAllowance() {
+		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
+			console.log('calcChildrenAllowance');
+			this.global.httpPost('contract/calculateChildrenAllowance', {
+				contract_year : this.contractsForm.value.contract_year,
+				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
+				employee_ids : this.contractsForm.value.business_employee_ids
+			}).subscribe(async (res: any) => {
+
+				this.childrenAllowanceFormGroup.controls.map((item:any)=>{
+					const  allowance = res.find((x:any) => x.employee_id === item.value.business_employee_id).children_allowance ;
+					item.get('children_allowance').setValue(allowance);
+				});
+
+				}, async (error: any) => {
+					this.global.showError(error);
+				});
+		} else {
+			// console.log('no-calcChildrenAllowance')
+		}
+	}
+
 
 	async onSubmit() {
 		if (this.contractsForm.valid) {

@@ -1,11 +1,15 @@
 <ion-card  color="white"  class="ion-no-padding ion-no-margin">
-	<ion-item button [routerLink]="['/employees/detail',employee?.id]" color="white" lines="none" detail>
-		<ion-thumbnail  slot="start">
+	<ion-item button  color="white" lines="none" [attr.detail]="!contractid">
+		<ion-thumbnail [routerLink]="['/employees/detail',employee?.id]" slot="start">
 			<ion-img [src]=" employee?.media?.employee_image?.options.subSizes['1x'] ? employee?.media?.employee_image?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
 		</ion-thumbnail>
-		<ion-label>
+		<ion-label [routerLink]="['/employees/detail',employee?.id]">
 			<h2 class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
 			<p class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span></p>
 		</ion-label>
+		<ion-chip *ngIf="contractid" slot="end" color="primary" [routerLink]="['/contracts/print',contractid,employee?.id]">
+			<ion-icon  name="print"></ion-icon>
+			<ion-label color="dark"> پرینت قرار داد</ion-label>
+		  </ion-chip>
 	</ion-item>
 </ion-card>

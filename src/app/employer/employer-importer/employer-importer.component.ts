@@ -6,6 +6,8 @@ import { businessClass } from 'src/app/core/classes/business.class';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
+import { error } from 'src/app/core/models/other.models';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-employer-importer',
@@ -28,6 +30,7 @@ export class EmployerImporterComponent implements OnInit {
 
 	categoryLimit = 1000;
 	categoryoffSet = 0;
+	errors : error[] = [];
 
 	constructor(
 		public global: GlobalService,
@@ -69,9 +72,14 @@ export class EmployerImporterComponent implements OnInit {
 					this.navCtrl.navigateForward('/employer');
 					this.addForm.reset();
 					this.global.showToast(' کارفرماها با موفقیت ثبت شدند .');
-				}, async (error: any) => {
+				},  async (err: any) => {
 					await this.global.dismisLoading();
-					this.global.showError(error);
+					this.errors = err.error.data.map((item:any)=>{
+						return new error().deserialize(item);
+					});
+					this.errors = _.sortBy(this.errors, ['row']);
+					console.log(this.errors);
+					this.global.showError(err);
 				});
 		}
 	}

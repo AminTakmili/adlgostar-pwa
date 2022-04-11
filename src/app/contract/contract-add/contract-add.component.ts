@@ -19,7 +19,7 @@ import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalcu
 })
 export class ContractAddComponent implements OnInit {
 
-	@ViewChildren( 'validation' ) validation : QueryList<any>;
+	@ViewChildren('validation') validation: QueryList<any>;
 	pageTitle: string = "افزودن قرار داد";
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
@@ -48,6 +48,9 @@ export class ContractAddComponent implements OnInit {
 
 	provisosList: FormArray;
 	extraFieldsList: FormArray;
+	childrenAllowancesList: FormArray;
+
+	businessEmpId : number[] = [];
 
 	constructor(
 		public global: GlobalService,
@@ -61,6 +64,7 @@ export class ContractAddComponent implements OnInit {
 			title: ['', Validators.compose([Validators.required])],
 			business_id: ['', Validators.compose([Validators.required])],
 			contract_condition_id: [''],
+			employee_ids: [[], Validators.compose([Validators.required])],
 			business_employee_ids: [[], Validators.compose([Validators.required])],
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
@@ -73,7 +77,6 @@ export class ContractAddComponent implements OnInit {
 			severance_pay: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
-			children_allowance: [0, Validators.compose([Validators.required])],
 			new_year_gift: [0, Validators.compose([Validators.required])],
 			bonus: [0, Validators.compose([Validators.required])],
 			food_cost: [0, Validators.compose([Validators.required])],
@@ -86,6 +89,7 @@ export class ContractAddComponent implements OnInit {
 			is_hourly_contract: [false],
 			is_manual: [false],
 
+			children_allowances: this.fb.array([]),
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
 
@@ -93,9 +97,37 @@ export class ContractAddComponent implements OnInit {
 
 		this.provisosList = this.contractsForm.get('provisos') as FormArray;
 		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
+		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
 
 
 	}
+
+	ngOnInit() {
+		this.setTitle();
+		this.ckeConfig = {
+			allowedContent: true,
+			extraPlugins: 'divarea',
+			forcePasteAsPlainText: true,
+			removePlugins: 'exportpdf',
+			language: "fa",
+			font_defaultLabel: 'IRANSans'
+		};
+	}
+
+	ionViewWillEnter() {
+		this.getData();
+	}
+
+	setTitle() {
+		this.seo.generateTags({
+			title: 'افزودن قرار داد جدید',
+			description: 'قرار داد جدی ',
+			keywords: "قرار داد جدی",
+			isNoIndex: false,
+		});
+	}
+
+	/* ============================== All form arrays ===========================================*/
 
 	provisos(id: number, text = ''): FormGroup {
 		return this.fb.group({
@@ -103,7 +135,6 @@ export class ContractAddComponent implements OnInit {
 			proviso_text: [text, Validators.compose([Validators.required])],
 		})
 	}
-
 	get provisosFormGroup(): FormArray {
 		return this.contractsForm.get('provisos') as FormArray;
 	}
@@ -119,10 +150,23 @@ export class ContractAddComponent implements OnInit {
 		return this.contractsForm.get('extra_fields') as FormArray;
 	}
 
+	childrenAllowance(business_employee_id: number , employee_id : number): FormGroup {
+		return this.fb.group({
+			business_employee_id: [business_employee_id, Validators.compose([Validators.required])],
+			employee_id: [employee_id, Validators.compose([Validators.required])],
+			children_allowance: [0, Validators.compose([Validators.required])],
+		})
+	}
+
+	get childrenAllowanceFormGroup(): FormArray {
+		return this.contractsForm.get('children_allowances') as FormArray;
+	}
+
+	/* ============================== end All form arrays ===========================================*/
 
 	addCondition() {
 
-		console.log(this.contractsForm.value.contract_condition_id)
+		// console.log(this.contractsForm.value.contract_condition_id)
 		if (this.contractsForm.value.contract_condition_id.length) {
 			this.contractsForm.value.contract_condition_id.map((item: number) => {
 				const condition = _.find(this.contractConditionlist, { id: item });
@@ -140,36 +184,8 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	RemoveCondition(event: any) {
-
 		this.provisosFormGroup.controls.splice(event.index, 1);
 	}
-
-	ngOnInit() {
-		this.setTitle();
-		this.ckeConfig = {
-			allowedContent: true,
-			extraPlugins: 'divarea',
-			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
-			language: "fa",
-			font_defaultLabel: 'IRANSans'
-		};
-
-		// console.log(this.datetime.showDefaultTimeLabel)
-	}
-	ionViewWillEnter() {
-		this.getData();
-	}
-
-	setTitle() {
-		this.seo.generateTags({
-			title: 'افزودن قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: "قرار داد جدی",
-			isNoIndex: false,
-		});
-	}
-
 	getData() {
 		// const countries = this.global.httpGet('more/countries');
 		const business = this.global.httpPost('business/filteredList',
@@ -212,7 +228,7 @@ export class ContractAddComponent implements OnInit {
 				this.employeeList = res.list.map((item: any) => {
 					return new Employee().deserialize(item);
 				});
-				console.log(this.employeeList);
+				// console.log(this.employeeList);
 
 			}, async (error: any) => {
 				await this.global.dismisLoading();
@@ -228,21 +244,18 @@ export class ContractAddComponent implements OnInit {
 		this.businessList = data.list.map((item: any) => {
 			return new BusinessList().deserialize(item);
 		});
-		// console.log(this.businessList);
 	}
 
 	CreatecontractTheme(data: any) {
 		this.contractTemplatelist = data.list.map((item: any) => {
 			return new contractTemplate().deserialize(item);
 		});
-		// console.log(this.contractTemplatelist);
 	}
 
 	CreatecontractCondition(data: any) {
 		this.contractConditionlist = data.list.map((item: any) => {
 			return new contractConditions().deserialize(item);
 		});
-		// console.log(this.contractConditionlist);
 	}
 
 	CreatecontractExtra(data: any) {
@@ -250,19 +263,30 @@ export class ContractAddComponent implements OnInit {
 			this.extraFieldsList.push(this.extraFields(item.id));
 			return new contractExtraField().deserialize(item);
 		});
-		console.log(this.contractExtraFieldList);
+		// console.log(this.contractExtraFieldList);
 	}
 
 	CountAllYear(data: any) {
-		console.log(data);
+		// console.log(data);
 		this.severanceBaseCalculationList = data.list.map((item: any) => {
 			return new severanceBaseCalculation().deserialize(item);
 		});
 		this.severanceBaseCalculationList = this.severanceBaseCalculationList.reverse();
 	}
 
+	/* ==============================================================*/
+	/* ==============================================================*/
+	/* ==============================================================*/
+
 	returnNameExtraField(id: number) {
 		return this.contractExtraFieldList.find(x => x.id === id).name;
+	}
+
+	returnchildrenAllowanceName(id: number) {
+		const data: Employee = this.employeeList.find(x => x.id === id);
+		if (data) {
+			return data.first_name + ' ' + data.last_name;
+		}
 	}
 
 	setContractTheme() {
@@ -272,11 +296,11 @@ export class ContractAddComponent implements OnInit {
 				this.contractsForm.get('main_text').setValue(item.template);
 			}
 		});
-		console.log(this.contractsForm.value.main_text);
+		// console.log(this.contractsForm.value.main_text);
 	}
 
 	formatDate(value: string) {
-		console.log(this.datetime.dayValues);
+		// console.log(this.datetime.dayValues);
 		return format(new Date(value), 'yyyy-MM-dd');
 	}
 
@@ -298,14 +322,13 @@ export class ContractAddComponent implements OnInit {
 						await this.global.dismisLoading();
 
 						this.contractsForm.get('bonus').setValue(res.bonus);
-						this.contractsForm.get('children_allowance').setValue(res.children_allowance);
 						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
 						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
 						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);
 						this.contractsForm.get('severance_pay').setValue(res.severance_pay);
 						this.contractsForm.get('wage').setValue(res.wage);
 
-						console.log(res);
+						// console.log(res);
 
 					}, async (error: any) => {
 						this.submitet = false;
@@ -316,51 +339,88 @@ export class ContractAddComponent implements OnInit {
 		}
 	}
 
+	AddAlowences(event: any) {
+		const data = this.employeeList.find(x=> x.id === event);
+		this.businessEmpId.push(data.business_employee_info[0].id);
+		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
+		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
+		console.log(this.contractsForm.value.business_employee_ids);
+		console.log(this.childrenAllowancesList);
+	}
+
+	removeAlowences(event: any) {
+		// console.log("removeAlowences",event);
+		this.businessEmpId.splice(event.index, 1);
+		this.childrenAllowancesList.controls.splice(event.index, 1);
+		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
+		console.log(this.contractsForm.value.business_employee_ids);
+	}
+
+	calcChildrenAllowance() {
+		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
+			console.log('calcChildrenAllowance');
+			this.global.httpPost('contract/calculateChildrenAllowance', {
+				contract_year : this.contractsForm.value.contract_year,
+				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
+				employee_ids : this.contractsForm.value.employee_ids
+			}).subscribe(async (res: any) => {
+
+				this.childrenAllowanceFormGroup.controls.map((item:any)=>{
+					const  allowance = res.find((x:any) => x.employee_id === item.value.employee_id).children_allowance ;
+					item.get('children_allowance').setValue(allowance);
+				});
+
+				}, async (error: any) => {
+					this.global.showError(error);
+				});
+		} else {
+			// console.log('no-calcChildrenAllowance')
+		}
+	}
+
 	async onSubmit() {
-		console.log('submit form');
+		// console.log('submit form');
 		this.contractsForm.markAllAsTouched();
-		console.log(this.contractsForm)
+		// console.log(this.contractsForm)
 		if (this.contractsForm.valid) {
 			this.submitet = true;
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('contract/add', this.contractsForm.value)
-			.subscribe(async (res: any) => {
+				.subscribe(async (res: any) => {
 
-				await this.global.dismisLoading();
-				this.navCtrl.navigateForward('/contracts/list');
-				this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
-				this.contractsForm.reset();
+					await this.global.dismisLoading();
+					this.navCtrl.navigateForward('/contracts/list');
+					this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
+					this.contractsForm.reset();
 
-			}, async (error: any) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-				this.submitet = false;
-			});
-		}else{
+				}, async (error: any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+					this.submitet = false;
+				});
+		} else {
 
-			let errors : string[] = [];
+			let errors: string[] = [];
 			setTimeout(() => {
-				this.validation.forEach((elem : any)=>{
-					if(elem.text){
-						errors.push('<li class="font-size-14 color-danger">'+elem.text.el.innerText+'</li>');
+				this.validation.forEach((elem: any) => {
+					if (elem.text) {
+						errors.push('<li class="font-size-14 color-danger">' + elem.text.el.innerText + '</li>');
 					}
 				});
 				this.global.showAlert(
 					'خطا',
-					'<ul class="px-4 my-0">'+errors.join('')+'</ul>' ,
+					'<ul class="px-4 my-0">' + errors.join('') + '</ul>',
 					[{
 						text: 'متوجه شدم',
 						role: 'yes'
 					}],
 					'ابتدا موارد زیر را بررسی و سپس فرم را ثبت کنید'
-					).then((alert : any) => {
+				).then((alert: any) => {
 					alert.present();
 				});
 			}, 100);
 
 		}
 	}
-
-
 
 }

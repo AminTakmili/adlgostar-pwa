@@ -33,15 +33,15 @@ export class ContractPrintComponent implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		this.getData(this.route.snapshot.paramMap.get('id'));
+		this.getData(this.route.snapshot.paramMap.get('contract_id'),this.route.snapshot.paramMap.get('employee_id'),);
 		// this.moreData();
 	}
 
-	async getData(id: string) {
+	async getData(contract_id: string , employee_id: string) {
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('contract/detail', {
-			id: id,
-			with_replace: 1,
+		this.global.httpPost('contract/print', {
+			contract_id,
+			employee_id,
 		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
 
