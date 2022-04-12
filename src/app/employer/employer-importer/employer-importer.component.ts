@@ -59,6 +59,7 @@ export class EmployerImporterComponent implements OnInit {
 
 	async onSubmit() {
 
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			var formData: any = new FormData();
    			formData.append("file", this.addForm.get('file').value);

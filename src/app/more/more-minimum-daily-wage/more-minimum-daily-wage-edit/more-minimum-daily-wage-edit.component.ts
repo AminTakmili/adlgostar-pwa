@@ -76,6 +76,7 @@ export class MoreMinimumDailyWageEditComponent implements OnInit {
 
 
 	async onSubmit() {
+		this.editForm.markAllAsTouched();
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('salaryBaseInfo/minimumWage', this.editForm.value)

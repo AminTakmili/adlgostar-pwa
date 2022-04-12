@@ -103,7 +103,7 @@ export class BusinessEditComponent implements OnInit {
 					city_id: [item.city.id, Validators.compose([Validators.required])],
 					address: [item.address, Validators.compose([Validators.required])],
 					postal_code: [item.postal_code,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
-					phone: [item.phone,  Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
+					phone: [item.phone,  Validators.compose([Validators.maxLength(11)])],
 				});
 				return formAddress
 			});
@@ -119,7 +119,7 @@ export class BusinessEditComponent implements OnInit {
 				business_license_number: [this.dataList.business_license_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
 				national_id: [this.dataList.national_id, Validators.compose([Validators.pattern("^[0-9]*$")])],
 				business_category_id: [this.dataList.business_category.id, Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
-				addresses: this.fb.array(address),
+				addresses: this.fb.array( address.length ? address : [this.newAddresses()] ),
 			});
 
 			this.addresses = this.businessForm.get('addresses') as FormArray;

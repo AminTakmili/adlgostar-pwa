@@ -54,6 +54,7 @@ export class UsersTypeAddComponent implements OnInit {
 
 
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/userType/add', this.addForm.value)

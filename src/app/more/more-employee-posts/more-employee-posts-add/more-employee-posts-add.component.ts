@@ -52,6 +52,7 @@ export class MoreEmployeePostsAddComponent implements OnInit {
 
 
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('post/add', this.addForm.value)

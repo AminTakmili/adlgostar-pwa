@@ -84,6 +84,7 @@ export class UsersRoleAddComponent implements OnInit {
 
 	}
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 
 			let permission : any[]= [];

@@ -120,7 +120,7 @@ export class EmployeeEditComponent implements OnInit {
 					city_id: [item.city_id, Validators.compose([Validators.required])],
 					address: [item.address, Validators.compose([Validators.required])],
 					postal_code: [item.postal_code, Validators.compose([Validators.minLength(10),Validators.maxLength(10)] )],
-					phone: [item.phone, Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
+					phone: [item.phone, Validators.compose([Validators.maxLength(11)])],
 				});
 				return formAddress
 			});
@@ -208,7 +208,7 @@ export class EmployeeEditComponent implements OnInit {
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
 			postal_code: ['' ,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)] )],
-			phone: ['' ,Validators.compose([Validators.minLength(11),Validators.maxLength(11)])],
+			phone: ['' ,Validators.compose([Validators.maxLength(11)])],
 		})
 	}
 	get addressFormGroup(): FormArray {

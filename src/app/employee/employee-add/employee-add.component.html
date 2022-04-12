@@ -8,8 +8,8 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">افزودن قرار داد جدید</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضافه کنید
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت شما میتوانید {{ pageTitle }} اضافه کنید
 					</p>
 				</div>
 			</div>
@@ -208,7 +208,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['degree_id']" controlName="آخرین مدرک تحصیلی"></app-validator>
 								</span>
-								<span class="hint">مثلا : 071*******</span>
+								<span class="hint">مثلا لیسانس</span>
 							</div>
 						</div>
 						<!--  -->
@@ -374,7 +374,7 @@
 									>
 									</ng-select>
 									<span class="error">
-										<app-validator #validation [control]="item.get('name')" [controlName]="'بانک'"></app-validator>
+										<app-validator #validation [control]="item.get('id')" [controlName]="'انتخاب بانک '"></app-validator>
 									</span>
 									<span class="hint"> مثلا ملت </span>
 								</div>
