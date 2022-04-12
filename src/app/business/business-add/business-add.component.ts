@@ -36,7 +36,7 @@ export class BusinessAddComponent implements OnInit {
 		private navCtrl: NavController
 	) {
 		this.businessForm = this.fb.group({
-			employer_id: [this.global.user.id, Validators.compose([Validators.required])],
+			employer_id: ['', Validators.compose([Validators.required])],
 			name: ['', Validators.compose([Validators.required])],
 			employer_type: ['', Validators.compose([Validators.required])],
 			registration_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
@@ -59,7 +59,7 @@ export class BusinessAddComponent implements OnInit {
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
 			postal_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
-			phone: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
+			phone: ['', Validators.compose([Validators.required,Validators.maxLength(11)])],
 		}) ;
 	}
 

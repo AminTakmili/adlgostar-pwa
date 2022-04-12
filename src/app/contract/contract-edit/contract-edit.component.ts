@@ -485,6 +485,7 @@ export class ContractEditComponent implements OnInit {
 
 
 	async onSubmit() {
+		this.contractsForm.markAllAsTouched();
 		if (this.contractsForm.valid) {
 			this.submitet = true;
 			await this.global.showLoading('لطفا منتظر بمانید...');

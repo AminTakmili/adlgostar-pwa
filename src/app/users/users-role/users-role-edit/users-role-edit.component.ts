@@ -110,6 +110,7 @@ export class UsersRoleEditComponent implements OnInit {
 
 	}
 	async onSubmit() {
+		this.editForm.markAllAsTouched();
 		if (this.editForm.valid) {
 
 			let permission : any[]= [];

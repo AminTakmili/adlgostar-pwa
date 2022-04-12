@@ -95,6 +95,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		});
 	}
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('business/employee/add', this.addForm.value)

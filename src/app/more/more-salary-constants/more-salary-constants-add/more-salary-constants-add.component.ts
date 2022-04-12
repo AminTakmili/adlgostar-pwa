@@ -47,6 +47,7 @@ export class MoreSalaryConstantsAddComponent implements OnInit {
 
 		// console.log(this.extraSalary.value);
 		// return ;
+		this.addForm.markAllAsTouched();
 		if(this.addForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('salaryBaseInfo/contractConstantField', this.addForm.value )

@@ -93,6 +93,7 @@ export class ContractConditionsAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('contractProvisoTemplate/add', this.addForm.value)

@@ -97,6 +97,7 @@ export class MoreBusinessCategoryEditComponent implements OnInit {
 	}
 
 	async onSubmit() {
+		this.editForm.markAllAsTouched();
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('businessCategory/edit', this.editForm.value)

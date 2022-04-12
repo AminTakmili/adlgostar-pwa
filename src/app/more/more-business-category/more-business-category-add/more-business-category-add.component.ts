@@ -80,6 +80,7 @@ export class MoreBusinessCategoryAddComponent implements OnInit {
 	}
 
 	async onSubmit() {
+		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('businessCategory/add', this.addForm.value)

@@ -80,6 +80,7 @@ export class UsersTypeEditComponent implements OnInit {
 
 
 	async onSubmit() {
+		this.editForm.markAllAsTouched();
 		if (this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('user/userType/edit', this.editForm.value)
