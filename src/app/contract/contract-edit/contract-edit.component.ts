@@ -426,7 +426,7 @@ export class ContractEditComponent implements OnInit {
 						await this.global.dismisLoading();
 
 						this.contractsForm.get('bonus').setValue(res.bonus);
-						this.contractsForm.get('children_allowance').setValue(res.children_allowance);
+						// this.contractsForm.get('children_allowance').setValue(res.children_allowance);
 						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
 						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
 						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);

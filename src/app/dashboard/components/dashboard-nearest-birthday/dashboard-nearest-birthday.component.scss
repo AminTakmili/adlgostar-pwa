@@ -1,0 +1,45 @@
+//all extend include
+@import '/src/theme/extends';
+
+.emplyee-sample {
+	width: 150px !important;
+	margin: 20px 0 30px;
+	@extend %flex-column-center-center;
+	transition: .3s ease all;
+	.img {
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.24);
+		transition: .3s ease all;
+	}
+
+	.name {
+		margin-top: 10px;
+		text-align: center;
+		font-size: 14px;
+	}
+
+	.birthday {
+		text-align: center;
+		font-size: 12px;
+		color: var(--ion-color-step-500);
+	}
+
+	&:hover {
+		.img {
+			box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.24);
+		}
+
+		cursor: pointer;
+
+		.name {
+			color: var(--ion-color-primary);
+		}
+	}
+}
+
+.swiper-slide {
+	width: auto !important;
+}
+
+.swiper-container-horizontal>.swiper-pagination-bullets {
+	bottom: 0 !important;
+}

@@ -16,10 +16,10 @@ export const globalData = {
 			name: 'داشبورد',
 			url: '/',
 			icon: 'speedometer',
-
 			open: false,
 			state: "close",
-			function: 'showDetail'
+			function: 'showDetail',
+			access : true,
 		},
 		{
 			name: 'کاربران',

@@ -13,7 +13,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class MoreEmployeePostsEditComponent implements OnInit {
 
-	pageTitle: string = "ویرایش پست جدید برای کارمندان";
+	pageTitle: string = "ویرایش پست  کارمندان";
 	editForm: FormGroup;
 	dataList: Post;
 

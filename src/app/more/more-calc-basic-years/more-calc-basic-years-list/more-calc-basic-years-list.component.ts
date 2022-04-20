@@ -115,15 +115,12 @@ export class MoreCalcBasicYearsListComponent implements OnInit {
 			alert.onDidDismiss().then(async ( e : any) => {
 				if (e.role === 'yes') {
 					await this.global.showLoading('لطفا منتظر بمانید...');
-					this.global.httpDelete('salaryBaseInfo/contractExtraField', {
+					this.global.httpDelete('salaryBaseInfo/severanceBaseCalculationField', {
 						id: item.id,
 					}).subscribe(async (res:any) => {
 
 						await this.global.dismisLoading();
-
-
 						this.pageChange(1);
-
 						this.global.showToast(res.msg);
 
 					}, async (error:any) => {

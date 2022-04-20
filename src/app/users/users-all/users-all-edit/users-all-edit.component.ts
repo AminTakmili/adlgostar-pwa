@@ -38,7 +38,7 @@ export class UsersAllEditComponent implements OnInit {
 			last_name: ['', Validators.compose([Validators.required])],
 			national_code: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
 			mobile: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
-			email: ['', Validators.compose([Validators.required, Validators.email])],
+			email: ['', Validators.compose([ Validators.email])],
 			gender: ['', Validators.compose([Validators.required])],
 			born_at: ['', Validators.compose([Validators.required])],
 			birth_place: ['', Validators.compose([Validators.required])],
@@ -116,7 +116,7 @@ export class UsersAllEditComponent implements OnInit {
 				born_at: [this.dataList.born_at, Validators.compose([Validators.required])],
 				birth_certificate_issuance_place: [this.dataList.birth_certificate_issuance_place, Validators.compose([Validators.required])],
 				gender: [this.dataList.gender, Validators.compose([Validators.required])],
-				email: [this.dataList.email, Validators.compose([Validators.required, Validators.email])],
+				email: [this.dataList.email, Validators.compose([Validators.email])],
 				 image: [],
 				addresses: this.fb.array( address.length ? address :[ this.addresses()] ),
 			});

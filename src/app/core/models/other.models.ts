@@ -26,3 +26,24 @@ export class error implements Deserializable {
 		return this;
 	}
 }
+export class dashboard implements Deserializable {
+	contract_count!: number;
+	employee_count!: number;
+	finishing_contracts_count!: number;
+	without_contract_employees_count!: number;
+
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+
+export class bookmarks implements Deserializable {
+	id !:number;
+	title!: string;
+	link!: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}

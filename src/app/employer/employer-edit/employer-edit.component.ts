@@ -46,7 +46,7 @@ export class EmployerEditComponent implements OnInit {
 			born_at: ['', Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
 			gender: ['', Validators.compose([Validators.required])],
-			email: ['', Validators.compose([Validators.required, Validators.email])],
+			email: ['', Validators.compose([ Validators.email])],
 			image: [''],
 			image_old: [''],
 			addresses: this.fb.array([this.addresses()]),
@@ -132,7 +132,7 @@ export class EmployerEditComponent implements OnInit {
 				birth_certificate_issuance_place: [this.dataList.birth_certificate_issuance_place, Validators.compose([Validators.required])],
 				gender: [this.dataList.gender, Validators.compose([Validators.required])],
 				image_old: [this.dataList?.media[0]?.path ? this.dataList.media[0].path : ''],
-				email: [this.dataList.email, Validators.compose([Validators.required, Validators.email])],
+				email: [this.dataList.email, Validators.compose([ Validators.email])],
 				image: [],
 				addresses: this.fb.array(address.length ? address : [this.addresses()]),
 			});

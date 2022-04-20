@@ -1,0 +1,17 @@
+<ion-card class="counter-item m-0" mode="ios" color="white">
+	<ion-card-header>
+		<div class="row justify-content-between align-content-center">
+			<div class="col-10">یادداشت های من</div>
+			<div class="col-auto heigh-40">
+				<ion-spinner name="crescent" color="primary" *ngIf="loading"></ion-spinner>
+			</div>
+		</div>
+	</ion-card-header>
+	<ion-card-content class="ion-no-padding">
+		<div class="note">
+			<ion-item color="warning-light" lines="none">
+				<ion-textarea [(ngModel)]="note" debounce="1000" (ionChange)="updateNote()" rows="12" placeholder="یادداشتی داری اینجا بنویس, برات نگهش میداریم" ></ion-textarea>
+			</ion-item>
+		</div>
+	</ion-card-content>
+</ion-card>

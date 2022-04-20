@@ -1,0 +1,16 @@
+<ion-card class="counter-item m-0 mb-4" mode="ios" color="white" *ngIf="dataList && dataList.length">
+	<ion-card-header>لیست تولد های نزدیک کارمندان</ion-card-header>
+	<ion-card-content>
+		<ion-slides pager="true" [options]="slideOpts">
+			<ion-slide *ngFor="let item of dataList">
+				<div class="emplyee-sample">
+					<ion-avatar class="img">
+						<img [src]="item?.media?.employee_image?.options.subSizes['1x'] ? item?.media?.employee_image?.options?.subSizes['1x'] :  './assets/img/employee-img.png' ">
+					  </ion-avatar>
+					  <p class="name">{{ item.full_name }}</p>
+					  <p class="birthday">{{ item.birth_date }}</p>
+				</div>
+			</ion-slide>
+		</ion-slides>
+	</ion-card-content>
+</ion-card>

@@ -75,7 +75,7 @@ export class UsersTypeListComponent implements OnInit {
 	}
 
 	async removeItem(item : UserType){
-		this.global.showAlert('حذف نقش کاربر', 'آیا برای حذف اطمینان دارید؟', [
+		this.global.showAlert('حذف نوع کاربر', 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
 				role: 'yes'

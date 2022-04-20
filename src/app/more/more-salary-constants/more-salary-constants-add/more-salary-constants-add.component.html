@@ -19,96 +19,105 @@
 	</div>
 	<main>
 		<div class="container">
-			<div class="row my-4">
-				<div class="col-md-6">
-					<form [formGroup]="addForm" (submit)="onSubmit()" autocomplete="off">
+			<form [formGroup]="addForm" (submit)="onSubmit()" autocomplete="off">
+				<div class="row my-4">
+
 						<!-- سال -->
-						<div class="form-input mb-3">
-							<label>سال عقد قرار داد</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="year"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرار داد'"></app-validator>
-							</span>
-							<span class="hint">مثلا سال 1404</span>
-						</div>
-						<!-- -->
-						<div class="form-input mb-3">
-							<label>حق بن (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="grocery_allowance"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['grocery_allowance']" [controlName]="'حق بن'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
-						<!-- -->
-						<div class="form-input mb-3">
-							<label>حق مسکن (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
-						<!-- -->
-						<div class="form-input mb-3">
-							<label>حق اولاد (برای یک فرزند) (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
-						<!-- عنوان کسب و کار -->
-						<div class="form-input mb-3">
-							<label>حداکثر عیدی (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="max_new_year_gift"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['max_new_year_gift']" [controlName]="'حداکثر عیدی'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
-						<!-- عنوان کسب و کار -->
-						<div class="form-input mb-3">
-							<label>حداکثر  پاداش (ریال)</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['max_bonus']" [controlName]="'حداکثر پاداش'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
-
-						<hr>
-						<div class="row ion-justify-content-between ion-align-items-center">
-							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
-									پاک کردن فرم
-								</ion-button>
-							</div>
-							<div class="col-7">
-								<ion-button type="submit"  expand="block" color="success" fill="solid" shape="round">
-									ثبت {{ pageTitle }}
-								</ion-button>
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>سال عقد قرار داد</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="year"></ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرار داد'">
+									</app-validator>
+								</span>
+								<span class="hint">مثلا سال 1404</span>
 							</div>
 						</div>
-					</form>
-				</div>
-				<div class="col-md-6">
-					<ion-card mode="ios" color="white">
-						<ion-card-header>
-							<ion-card-title class="font-size-20">توضیحات نحوه {{ pageTitle }} </ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+						<!-- -->
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>حق بن (ریال)</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="grocery_allowance">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['grocery_allowance']"
+										[controlName]="'حق بن'"></app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+						</div>
+						<!-- -->
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>حق مسکن (ریال)</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['housing_allowance']"
+										[controlName]="'حق مسکن'"></app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+						</div>
+						<!-- -->
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>حق اولاد (برای یک فرزند) (ریال)</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['children_allowance']"
+										[controlName]="'حق اولاد'"></app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+						</div>
+						<!-- عنوان کسب و کار -->
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>حداکثر عیدی (ریال)</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="max_new_year_gift">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['max_new_year_gift']"
+										[controlName]="'حداکثر عیدی'"></app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+						</div>
+						<!-- عنوان کسب و کار -->
+						<div class="col-md-6">
+							<div class="form-input mb-3">
+								<label>حداکثر پاداش (ریال)</label>
+								<ion-input type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['max_bonus']" [controlName]="'حداکثر پاداش'">
+									</app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+						</div>
 
-						</ion-card-content>
-					</ion-card>
+						<div class="col-md-12"><hr></div>
+						<div class="col-md-12">
+							<div class="row ion-justify-content-end ion-align-items-center">
+								<div class="col-xl-2 col-lg-3">
+									<ion-button expand="block" color="medium" fill="outline" shape="round"
+										(click)="global.emptyFrom(addForm)">
+										پاک کردن فرم
+									</ion-button>
+								</div>
+								<div class="col-xl-3 col-lg-4">
+									<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+										ثبت {{ pageTitle }}
+									</ion-button>
+								</div>
+							</div>
+						</div>
+
 				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </ion-content>

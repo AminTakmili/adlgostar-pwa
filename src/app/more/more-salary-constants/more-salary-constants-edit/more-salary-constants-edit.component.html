@@ -19,11 +19,11 @@
 	</div>
 	<main>
 		<div class="container">
+			<form [formGroup]="editForm" (submit)="onSubmit()" autocomplete="off">
 			<div class="row my-4">
-				<div class="col-md-6">
-					<form [formGroup]="editForm" (submit)="onSubmit()" autocomplete="off">
 
-						<!-- سال -->
+					<!-- سال -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>سال عقد قرار داد</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="year"></ion-input>
@@ -32,7 +32,9 @@
 							</span>
 							<span class="hint">مثلا سال 1404</span>
 						</div>
-						<!-- -->
+					</div>
+					<!-- -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>حق بن (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="grocery_allowance"></ion-input>
@@ -41,7 +43,9 @@
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
-						<!-- -->
+					</div>
+					<!-- -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>حق مسکن (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
@@ -50,7 +54,9 @@
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
-						<!-- -->
+					</div>
+					<!-- -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>حق اولاد (برای یک فرزند) (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
@@ -59,7 +65,9 @@
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
-						<!-- عنوان کسب و کار -->
+					</div>
+					<!-- عنوان کسب و کار -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>حداکثر عیدی (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="max_new_year_gift"></ion-input>
@@ -68,7 +76,9 @@
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
-						<!-- عنوان کسب و کار -->
+					</div>
+					<!-- عنوان کسب و کار -->
+					<div class="col-md-6">
 						<div class="form-input mb-3">
 							<label>حداکثر  پاداش (ریال)</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
@@ -77,39 +87,25 @@
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
-
-						<hr>
-						<div class="row ion-justify-content-between ion-align-items-center">
-							<div class="col-5">
+					</div>
+					<div class="col-md-12"><hr></div>
+					<div class="col-md-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-xl-3 col-lg-2">
 								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>
-							<div class="col-7">
+							<div class="col-xl-4 col-lg-3">
 								<ion-button type="submit"  expand="block" color="success" fill="solid" shape="round">
 									ثبت {{ pageTitle }}
 								</ion-button>
 							</div>
 						</div>
-					</form>
-				</div>
-				<div class="col-md-6">
-					<ion-card mode="ios" color="white">
-						<ion-card-header>
-							<ion-card-title class="font-size-20">توضیحات نحوه {{ pageTitle }} </ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+					</div>
 
-						</ion-card-content>
-					</ion-card>
 				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </ion-content>
