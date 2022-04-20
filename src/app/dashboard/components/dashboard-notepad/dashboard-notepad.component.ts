@@ -8,7 +8,7 @@ import { GlobalService } from 'src/app/core/services/global.service';
 })
 export class DashboardNotepadComponent implements OnInit {
 
-	loadding: boolean = false;
+	loading: boolean = false;
 	note : string;
 	constructor(public global: GlobalService) { }
 
@@ -17,27 +17,27 @@ export class DashboardNotepadComponent implements OnInit {
 	}
 
 	async getData() {
-		this.loadding = true;
+		this.loading = true;
 		await this.global.httpGet('dashboard/userNote').subscribe(async (res: any) => {
 			console.log(res);
 			this.note = res.note;
-			this.loadding = false;
+			this.loading = false;
 		}, async (error: any) => {
-			this.loadding = false;
+			this.loading = false;
 			this.global.showError(error);
 		});
 	}
 
 	async updateNote(){
 		//dashboard/userBookmarks
-		this.loadding = true;
+		this.loading = true;
 		await this.global.httpPost('user/note/add',{
 			note : this.note
 		}).subscribe(async (res: any) => {
 			console.log(res);
-			this.loadding = false;
+			this.loading = false;
 		}, async (error: any) => {
-			this.loadding = false;
+			this.loading = false;
 			this.global.showError(error);
 		});
 	}
