@@ -8,10 +8,11 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title"> {{ pageTitle }}</h1>
-					<p class="dsec">در این بخش می توانید نام بانک را تغییر ویرایش کنید .</p>
+					<p class="dsec">در این بخش میتوانید یک درخواست جدید ارسال کنید</p>
 				</div>
 			</div>
 			<div class="col-lg-auto">
+
 				<ion-back-button defaultHref="more/bank" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
@@ -19,29 +20,40 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="editForm" (submit)="onSubmit()">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
+					<!-- عنوان تیکت -->
 					<div class="col-md-12">
-
-						<!-- درصد افزایش نسبت به سال قبل -->
 						<div class="form-input mb-3">
-							<label>عنوان بانک</label>
-							<ion-input type="text" autocomplete="new-pass" formControlName="name"></ion-input>
+							<label>عنوان درخواست</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="subject"></ion-input>
 							<span class="error">
-								<app-validator [control]="editForm.controls['name']" [controlName]="'عنوان'">
+								<app-validator [control]="addForm.controls['subject']" [controlName]="'عنوان'">
 								</app-validator>
 							</span>
-							<span class="hint">مثلا ملت</span>
+							<span class="hint"></span>
 						</div>
 					</div>
-
+					<!-- توضیحات تیکت -->
+					<div class="col-md-12">
+						<div class="form-input mb-3">
+							<label>توضیحات</label>
+							<ion-textarea type="text"  rows="6" autocomplete="new-pass" formControlName="content"></ion-textarea>
+							<span class="error">
+								<app-validator [control]="addForm.controls['content']" [controlName]="'توضیحات '">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- لاین -->
 					<div class="col-12">
 						<hr>
 					</div>
 					<div class="col-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-2">
-								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>

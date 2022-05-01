@@ -77,7 +77,7 @@
 				<!-- list of employee -->
 				<div class="row" *ngIf="business?.employees">
 					<div  class="col-lg-6 mb-4" *ngFor="let item of business?.employees">
-						<app-employee-card [employee]="item"></app-employee-card>
+						<app-employee-card  (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item" [businessId]="item.business_employee_id" [deleteId]="item.business_employee_id"></app-employee-card>
 					</div>
 				</div>
 				<!--  -->

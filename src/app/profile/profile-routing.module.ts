@@ -9,7 +9,12 @@ const routes: Routes = [
   {
     path: 'change-number',
 	component : ProfileChangeNumberComponent
+  },
+  {
+    path: 'support',
+    loadChildren: () => import('./profile-support/profile-support.module').then( m => m.ProfileSupportPageModule)
   }
+
 ];
 
 @NgModule({

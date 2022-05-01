@@ -192,12 +192,12 @@ export const globalData = {
 				// 	icon: 'call',
 				// 	function: 'showDetail'
 				// },
-				// {
-				// 	name: 'پشتیبانی',
-				// 	url: '/business',
-				// 	icon: 'chatbubbles',
-				// 	function: 'showDetail'
-				// },
+				{
+					name: 'پشتیبانی',
+					url: '/profile/support',
+					icon: 'chatbubbles',
+					function: 'showDetail',
+				},
 				{
 					name: 'تغییر شماره همراه',
 					url: '/profile/change-number',

@@ -20,7 +20,7 @@
 	</div>
 	<main>
 		<div class="container">
-			<form [formGroup]="addForm" (submit)="onSubmit()">
+			<form [formGroup]="editForm" (submit)="onSubmit()">
 				<div class="row my-4">
 					<div class="col-md-12">
 						<!-- مربوط به سال -->
@@ -30,7 +30,7 @@
 								bindValue="id" formControlName="employee_id">
 							</ng-select>
 							<span class="error">
-								<app-validator [control]="addForm.controls['employee_id']"
+								<app-validator [control]="editForm.controls['employee_id']"
 									[controlName]="'انتخاب کارمند'">
 								</app-validator>
 							</span>
@@ -44,7 +44,7 @@
 							<ion-input type="text" autocomplete="new-pass" formControlName="specialty">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['specialty']" [controlName]="'تخصص'">
+								<app-validator [control]="editForm.controls['specialty']" [controlName]="'تخصص'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا 12</span>
@@ -57,7 +57,7 @@
 							<ion-input type="number" autocomplete="new-pass" formControlName="net_income">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['net_income']" [controlName]="'خالص درآمد'">
+								<app-validator [control]="editForm.controls['net_income']" [controlName]="'خالص درآمد'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا : 234,4350 ریال</span>
@@ -69,7 +69,7 @@
 							<label>ساعت کار در هفته</label>
 							<ion-input type="number" autocomplete="new-pass" formControlName="work_hours"></ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['work_hours']"
+								<app-validator [control]="editForm.controls['work_hours']"
 									[controlName]="'مقدار ثابت اضافه شونده'"></app-validator>
 							</span>
 							<span class="hint">مثلا : 50 ساعت</span>
@@ -81,7 +81,7 @@
 							<label>مکان کار</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="work_place"></ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['work_place']" [controlName]="'مکان کار'">
+								<app-validator [control]="editForm.controls['work_place']" [controlName]="'مکان کار'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا : قدوسی</span>
@@ -136,13 +136,13 @@
 					<div class="col-md-12">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-xl-2 col-lg-3">
-								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>
-							<div class="col-xl-3 col-lg-4">
+							<div class="col-xl-4 col-lg-5">
 								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
-									 {{ pageTitle }}
+									{{ pageTitle }}
 								</ion-button>
 							</div>
 						</div>

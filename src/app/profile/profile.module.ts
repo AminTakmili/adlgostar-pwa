@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfileChangeNumberComponent } from './profile-change-number/profile-change-number.component';
 import { ShareModulePageModule } from '../share-module/share-module.module';
+import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
 
 
 
