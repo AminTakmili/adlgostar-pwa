@@ -37,7 +37,7 @@
 					</div>
 
 					<!-- کارفرما -->
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>انتخاب کارفرما</label>
 							<ng-select
@@ -55,7 +55,7 @@
 						</div>
 					</div>
 					<!-- عنوان کسب و کار -->
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>عنوان کسب و کار</label>
 							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
@@ -70,11 +70,16 @@
 					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>نوع شخصیت</label>
-							<ng-select formControlName="employer_type"
-								placeholder="نوع شخصیت حقیقی یا حقوقی را انتخاب کنید" [items]="personType"
-								[bindLabel]="'name'" [bindValue]="'id'"></ng-select>
+							<ng-select
+								formControlName="employer_type"
+								placeholder="نوع شخصیت حقیقی یا حقوقی را انتخاب کنید"
+								[items]="personType"
+								[bindLabel]="'name'"
+								[bindValue]="'id'"
+								>
+							</ng-select>
 							<span class="error">
-								<app-validator [control]="businessForm.controls['name']" [controlName]="'نوع شخصیت'">
+								<app-validator [control]="businessForm.controls['employer_type']" [controlName]="'نوع شخصیت'">
 								</app-validator>
 							</span>
 							<span class="hint">حقیقی یا حقوقی</span>

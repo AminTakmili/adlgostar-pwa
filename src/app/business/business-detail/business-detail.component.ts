@@ -37,11 +37,9 @@ export class BusinessDetailComponent implements OnInit {
 		this.global.httpPost('business/detail', {
 			business_id: this.businessId
 		}).subscribe(async (res:any) => {
-
 			await this.global.dismisLoading();
 			this.business = new Business().deserialize(res);
 			this.setTitle();
-
 
 		}, async (error:any) => {
 			await this.global.dismisLoading();
@@ -57,4 +55,37 @@ export class BusinessDetailComponent implements OnInit {
 			isNoIndex: false,
 		});
 	}
+
+	removeEmployee(id : any){
+		this.global.showAlert('حذف کارمند از کسب و کار', 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('business/employee/delete', {
+						business_employee_id: id,
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
+	}
+
 }

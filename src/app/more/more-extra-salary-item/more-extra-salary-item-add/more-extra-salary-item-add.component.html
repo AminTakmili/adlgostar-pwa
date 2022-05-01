@@ -11,7 +11,6 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-
 				<ion-back-button defaultHref="more/extra-salary-item" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
@@ -19,56 +18,49 @@
 	</div>
 	<main>
 		<div class="container">
-			<div class="row my-4">
-				<div class="col-md-6">
-					<form [formGroup]="addForm" (submit)="onSubmit()">
-						<!-- عنوان کسب و کار -->
+			<form [formGroup]="addForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<!-- عنوان اضافه حقوق -->
+					<div class="col-md-12">
 						<div class="form-input mb-3">
 							<label>عنوان اضافه حقوق</label>
 							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'"></app-validator>
+								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'">
+								</app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
-						<div class="form-input mb-3">
+					</div>
+					<!-- اضافه شدن به عیدی و پاداش و حق سنوات -->
+					<div class="col-md-12">
+						<div class="form-input ">
 							<ion-item lines="none">
 								<ion-label> اضافه شدن به عیدی و پاداش و حق سنوات </ion-label>
-								<ion-checkbox type="string"   slot="start" formControlName="add_to_bonus"></ion-checkbox>
-							  </ion-item>
+								<ion-checkbox type="string" slot="start" formControlName="add_to_bonus"></ion-checkbox>
+							</ion-item>
 						</div>
+					</div>
+					<div class="col-12">
 						<hr>
-						<div class="row ion-justify-content-between ion-align-items-center">
-							<div class="col-5">
-								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
+					</div>
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-xl-2 col-lg-3">
+								<ion-button expand="block" color="medium" fill="outline" shape="round"
+									(click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
 								</ion-button>
 							</div>
-							<div class="col-7">
-								<ion-button type="submit"  expand="block" color="success" fill="solid" shape="round">
+							<div class="col-xl-3 col-lg-4">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
 									ثبت {{ pageTitle }}
 								</ion-button>
 							</div>
 						</div>
-					</form>
+					</div>
 				</div>
-				<div class="col-md-6">
-					<ion-card mode="ios" color="white">
-						<ion-card-header>
-							<ion-card-title class="font-size-20">توضیحات نحوه {{ pageTitle }} </ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
-							<p class="font-size-14 line-height-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از
-								طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای
-								شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
-
-						</ion-card-content>
-					</ion-card>
-				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </ion-content>

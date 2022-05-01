@@ -41,7 +41,7 @@ export class EmployerAddComponent implements OnInit {
 			born_at: ['', Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['', Validators.compose([Validators.required])],
 			gender: ['', Validators.compose([Validators.required])],
-			email: ['', Validators.compose([Validators.required, Validators.email])],
+			email: ['', Validators.compose([ Validators.email])],
 			addresses: this.fb.array([this.addresses()]),
 			image: ['']
 		});

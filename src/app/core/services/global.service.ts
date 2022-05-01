@@ -36,10 +36,7 @@ export class GlobalService {
 		public navCtrl: NavController,
 		private toastController: ToastController,
 	) {
-
 		this.setUserInfo();
-
-
 	}
 
 

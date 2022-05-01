@@ -8,6 +8,7 @@ import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-e
 
 import { BusinessListComponent } from './business-list/business-list.component';
 import { BusinessImporterComponent } from './business-importer/business-importer.component';
+import { BusinessEmployeeEditComponent } from './business-employee-edit/business-employee-edit.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'add-employee/:id',
     component: BussinesEmployeeAddComponent,
+	canActivate: [LoginGuard]
+  },
+  {
+    path: 'edit-employee/:id',
+    component: BusinessEmployeeEditComponent,
 	canActivate: [LoginGuard]
   },
   {

@@ -129,7 +129,7 @@ export class EmployeeAddComponent implements OnInit {
 
 	military_information(): FormGroup {
 		return this.fb.group({
-			military_state: ['', Validators.compose([Validators.required])],
+			military_state: [''],
 			military_exempt_reason: [''],
 		})
 	}

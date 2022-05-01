@@ -1,0 +1,31 @@
+<ion-header mode="md">
+	<ion-toolbar color="white">
+		<ion-title class="font-size-14">کارمندان بدون قرار داد </ion-title>
+		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} کارمند</ion-badge>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div *ngIf="!loading && !dataList.length" class="empty-item">
+		<ion-icon name="person"></ion-icon>
+		<p>کارمند بدون قرداد یافت نشد </p>
+	</div>
+	<div *ngIf="loading || dataList.length" class="listItem">
+		<ion-item color="white" lines="full" *ngFor="let item of dataList" [routerLink]="['/employees/detail/',item.id]" detail>
+			<ion-avatar slot="start">
+				<img [src]="item?.media?.employee_image?.options.subSizes['1x'] ? item?.media?.employee_image?.options?.subSizes['1x'] :  './assets/img/employee-img.png' ">
+			</ion-avatar>
+			<ion-label>
+				<h2 class="font-size-10">{{ item.full_name }}</h2>
+				<p>
+					<ion-text class="font-size-12" color="medium">شماره همراه : {{ item.mobile }}</ion-text> -
+					<ion-text class="font-size-12" color="medium">کد ملی : {{ item.national_code }}</ion-text>
+				</p>
+			</ion-label>
+		</ion-item>
+	</div>
+	<!--  -->
+	<ion-infinite-scroll threshold="20" *ngIf="!this.end" (ionInfinite)="getData($event)">
+		<ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!--  -->
+</ion-content>

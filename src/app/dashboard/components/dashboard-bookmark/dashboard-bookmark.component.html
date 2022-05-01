@@ -1,0 +1,57 @@
+<ion-header mode="md">
+	<ion-toolbar color="white">
+		<ion-title class="font-size-14"> پیوند های مفید من </ion-title>
+		<ion-buttons slot="end" *ngIf="!loading">
+			<ion-button  (click)="addNewLink()">
+				<ion-icon slot="icon-only" name="add"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-spinner class="ml-2" slot="end" name="crescent" color="primary" *ngIf="loading"></ion-spinner>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div *ngIf="!loading && !dataList.length" class="empty-item">
+		<ion-icon name="link"></ion-icon>
+		<p> شما هنوز پیوندی ثبت نکرده اید </p>
+		<ion-button size="small" shape="round" color="success" (click)="addNewLink()">ثبت پیوند جدید</ion-button>
+	</div>
+	<div class="listItem">
+		<div class="bookmark">
+			<ion-item color="white" lines="full" *ngFor="let item of dataList">
+				<ion-icon color="medium" name="link" slot="start"></ion-icon>
+				<ion-label>
+					<a [href]="item.link" target="_blank"><h2 class="font-size-10">{{ item.title }}</h2></a>
+					<p>
+						<a [href]="item.link" target="_blank"><ion-text class="font-size-12" color="medium">{{ item.link }}</ion-text></a>
+
+					</p>
+				</ion-label>
+				<ion-buttons slot="end">
+					<ion-button [attr.id]="'link'+item.id">
+						<ion-icon slot="icon-only" size="small" name="ellipsis-vertical"></ion-icon>
+					</ion-button>
+				</ion-buttons>
+				<ion-popover [dismissOnSelect]="true" [attr.trigger]="'link'+item.id" reference="event">
+					<ng-template>
+						<ion-content>
+							<ion-item lines="inset" lines="full" (click)="editLink(item)" button>
+								<ion-icon class="ml-3" color="medium" name="build" slot="start"></ion-icon>
+								<ion-label>ویرایش</ion-label>
+							</ion-item>
+							<ion-item lines="inset" lines="full" (click)="remove(item)" button>
+								<ion-icon class="ml-3" color="medium" name="trash" slot="start"></ion-icon>
+								<ion-label>حذف</ion-label>
+							</ion-item>
+
+						</ion-content>
+					</ng-template>
+				</ion-popover>
+			</ion-item>
+		</div>
+	</div>
+	<!--  -->
+	<ion-infinite-scroll threshold="20" *ngIf="!this.end" (ionInfinite)="getData($event)">
+		<ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!--  -->
+</ion-content>

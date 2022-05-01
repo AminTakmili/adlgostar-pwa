@@ -133,7 +133,7 @@ export class EmployeeEditComponent implements OnInit {
 
 
 			const militaryInformation: FormGroup[] = [this.fb.group({
-				military_state: [this.dataList.militaryInformation.military_state, Validators.compose([Validators.required])],
+				military_state: [this.dataList.militaryInformation.military_state],
 				military_exempt_reason: [this.dataList.militaryInformation.military_exempt_reason,],
 
 			})];

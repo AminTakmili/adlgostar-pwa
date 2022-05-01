@@ -116,6 +116,8 @@ export class UsersRoleAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				});
+		}else{
+			this.global.showToast('یک یا چند فیلد خالی است');
 		}
 	}
 

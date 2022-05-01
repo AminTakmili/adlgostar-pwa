@@ -32,7 +32,7 @@
 							<label>انتخاب نقش</label>
 							<ng-select
 								[items]="userrole"
-								placeholder="یک شهر انتخاب کنید"
+								placeholder="یک نقش انتخاب کنید"
 								bindLabel="name"
 								bindValue="id"
 								formControlName="role_id"
@@ -41,9 +41,9 @@
 							>
 							</ng-select>
 							<span class="error">
-								<!-- <app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator> -->
+								<app-validator [control]="addForm.get('role_id')" [controlName]="'انتخاب نقش '"></app-validator>
 							</span>
-							<span class="hint"> مثلا شیراز </span>
+							<span class="hint"> مثلا مدیر میانی </span>
 						</div>
 					</div>
 					<!-- سال -->
@@ -67,7 +67,7 @@
 							<span class="error">
 								<app-validator [control]="addForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا رضاییان</span>
 						</div>
 					</div>
 					<!-- -->
@@ -80,7 +80,7 @@
 								<app-validator [control]="addForm.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا 2002</span>
 						</div>
 					</div>
 					<!-- -->
@@ -93,7 +93,7 @@
 								<app-validator [control]="addForm.controls['national_code']" [controlName]="'کد ملی'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">کد ملی عدد و 10 رقمی می باشد</span>
 						</div>
 					</div>
 					<!-- -->
@@ -118,7 +118,7 @@
 								<app-validator [control]="addForm.controls['birth_place']" [controlName]="'محل تولد'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا تبریز</span>
 						</div>
 					</div>
 					<!-- -->
@@ -163,7 +163,7 @@
 								<app-validator [control]="addForm.controls['gender']" [controlName]="'جنسیت'">
 								</app-validator>
 							</span>
-							<span class="hint">مثلا اصفهان</span>
+							<span class="hint">مثلا آقا</span>
 						</div>
 					</div>
 					<!-- -->
@@ -195,7 +195,7 @@
 					<div class="col-12">
 						<div class="title-1 my-4">
 							<h2 class="title">آدرس های کاریر</h2>
-							<p> اطلاعات آدرس و پستی کارفرما را تکمیل کنید . </p>
+							<p> اطلاعات آدرس و پستی کاربر را تکمیل کنید . </p>
 
 						</div>
 						<!--  -->

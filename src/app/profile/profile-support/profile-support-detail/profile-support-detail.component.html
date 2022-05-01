@@ -1,0 +1,73 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content *ngIf="dataList?.id">
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> جزییات تیکت #{{ dataList?.id }}</h1>
+					<p class="dsec">
+						<span>عنوان درخواست : {{ dataList?.subject }}</span>
+					</p>
+					<div class="dsec"><span class="status status-{{ dataList?.status }}"
+							[innerText]="returnStatus(dataList?.status)"></span></div>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
+					<ion-back-button defaultHref="/profile/support" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+				<ion-button shape="round" color="secondary" (click)="closeTicket()">
+					<ion-icon slot="start" name="close-circle"></ion-icon>
+					بستن درخواست
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<!-- tiket list -->
+			<div class="ticket-list">
+				<div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.is_response" [class.user]="!item.is_response">
+					<div class="ticket-description">
+						<div class="dscription" [innerHTML]="item.content"></div>
+						<div class="date"> ارسال شده در : {{ item.createdAt }} </div>
+					</div>
+					<div class="ticket-info">
+						<ion-avatar>
+							<ion-img *ngIf="!item.is_response" [src]="item?.user_info?.media  && item?.user_info?.media.length ? item?.user_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
+							<ion-img *ngIf="item.is_response" [src]="item?.user_info?.media  && item?.user_info?.media.length ? item?.user_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/admin.png' "></ion-img>
+						</ion-avatar>
+						<div class="info">  {{ item.user_info.first_name +' '+item.user_info.last_name }} </div>
+					</div>
+				</div>
+			</div>
+			<!-- replay -->
+			<hr>
+			<form  [formGroup]="ticketform" (submit)="onSubmit()">
+				<div class="form-input mb-3">
+					<label> پاسخ</label>
+					<ion-textarea rows="3" formControlName="content" autocomplete="new-pass">
+					</ion-textarea>
+					<span class="error">
+						<app-validator [control]="ticketform.get('content')" [controlName]="'پاسخ '">
+						</app-validator>
+					</span>
+				</div>
+				<div class="row justify-content-end mb-4">
+					<div class="col-auto">
+						<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+							پاسخ به درخواست
+						</ion-button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

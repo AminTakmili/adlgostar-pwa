@@ -36,7 +36,7 @@ export class UsersAllAddComponent implements OnInit {
 			last_name: ['', Validators.compose([Validators.required])],
 			national_code: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
 			mobile: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
-			email: ['', Validators.compose([Validators.required, Validators.email])],
+			email: ['', Validators.compose([ Validators.email])],
 			gender: ['', Validators.compose([Validators.required])],
 			born_at: ['', Validators.compose([Validators.required])],
 			birth_place: ['', Validators.compose([Validators.required])],

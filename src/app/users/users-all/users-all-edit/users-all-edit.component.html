@@ -41,9 +41,9 @@
 							>
 							</ng-select>
 							<span class="error">
-								<!-- <app-validator [control]="item.get('city_id')" [controlName]="'شهر'"></app-validator> -->
+								<app-validator [control]="editForm.get('role_id')" [controlName]="'انتخاب نقش'"></app-validator>
 							</span>
-							<span class="hint"> مثلا شیراز </span>
+							<span class="hint"> مثلا مدیر  </span>
 						</div>
 					</div>
 					<!-- سال -->
@@ -67,7 +67,7 @@
 							<span class="error">
 								<app-validator [control]="editForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا رضاییان</span>
 						</div>
 					</div>
 					<!-- -->
@@ -80,7 +80,7 @@
 								<app-validator [control]="editForm.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">کد ملی عدد است </span>
 						</div>
 					</div>
 					<!-- -->
@@ -93,7 +93,7 @@
 								<app-validator [control]="editForm.controls['national_code']" [controlName]="'کد ملی'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">کد ملی یک شماره 10 رقمی است .</span>
 						</div>
 					</div>
 					<!-- -->
@@ -118,7 +118,7 @@
 								<app-validator [control]="editForm.controls['birth_place']" [controlName]="'محل تولد'">
 								</app-validator>
 							</span>
-							<span class="hint">مبلغ به ریال است</span>
+							<span class="hint">مثلا شیراز</span>
 						</div>
 					</div>
 					<!-- -->
@@ -163,7 +163,7 @@
 								<app-validator [control]="editForm.controls['gender']" [controlName]="'جنسیت'">
 								</app-validator>
 							</span>
-							<span class="hint">مثلا اصفهان</span>
+							<span class="hint">مثلا آقا</span>
 						</div>
 					</div>
 					<!-- -->
@@ -197,7 +197,7 @@
 					<div class="col-12">
 						<div class="title-1 my-4">
 							<h2 class="title">آدرس های کاربر</h2>
-							<p> اطلاعات آدرس و پستی کارفرما را تکمیل کنید . </p>
+							<p> اطلاعات آدرس و پستی کاربر را تکمیل کنید . </p>
 
 						</div>
 						<!--  -->

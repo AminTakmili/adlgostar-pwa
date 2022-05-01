@@ -16,10 +16,10 @@ export const globalData = {
 			name: 'داشبورد',
 			url: '/',
 			icon: 'speedometer',
-
 			open: false,
 			state: "close",
-			function: 'showDetail'
+			function: 'showDetail',
+			access : true,
 		},
 		{
 			name: 'کاربران',
@@ -192,12 +192,12 @@ export const globalData = {
 				// 	icon: 'call',
 				// 	function: 'showDetail'
 				// },
-				// {
-				// 	name: 'پشتیبانی',
-				// 	url: '/business',
-				// 	icon: 'chatbubbles',
-				// 	function: 'showDetail'
-				// },
+				{
+					name: 'پشتیبانی',
+					url: '/profile/support',
+					icon: 'chatbubbles',
+					function: 'showDetail',
+				},
 				{
 					name: 'تغییر شماره همراه',
 					url: '/profile/change-number',

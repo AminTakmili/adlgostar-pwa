@@ -1,0 +1,154 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید موارد پایه سنوات برای یک سال را ایجاد کنید</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/extra-salary-item" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="editForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-md-12">
+						<!-- مربوط به سال -->
+						<div class="form-input mb-3">
+							<label>انتخاب کارمند</label>
+							<ng-select [items]="employeelist" placeholder="انتخاب کنید" bindLabel="full_name"
+								bindValue="id" formControlName="employee_id">
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['employee_id']"
+									[controlName]="'انتخاب کارمند'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا حمید رضا ثابت</span>
+						</div>
+					</div>
+					<!-- درصد افزایش نسبت به سال قبل -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>تخصص</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="specialty">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['specialty']" [controlName]="'تخصص'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا 12</span>
+						</div>
+					</div>
+					<!--مبلغ پایه (ریال) -->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>خالص درآمد (ریال)</label>
+							<ion-input type="number" autocomplete="new-pass" formControlName="net_income">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['net_income']" [controlName]="'خالص درآمد'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا : 234,4350 ریال</span>
+						</div>
+					</div>
+					<!-- مقدار ثابت اضافه شونده (ریال)-->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>ساعت کار در هفته</label>
+							<ion-input type="number" autocomplete="new-pass" formControlName="work_hours"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['work_hours']"
+									[controlName]="'مقدار ثابت اضافه شونده'"></app-validator>
+							</span>
+							<span class="hint">مثلا : 50 ساعت</span>
+						</div>
+					</div>
+					<!-- مقدار ثابت اضافه شونده (ریال)-->
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>مکان کار</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="work_place"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['work_place']" [controlName]="'مکان کار'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا : قدوسی</span>
+						</div>
+					</div>
+					<div class="col-lg-6 ">
+						<ion-item lines="none">
+							<ion-label> آیا بیمه دارد ؟ </ion-label>
+							<ion-checkbox type="string" slot="start" formControlName="has_insurance">
+							</ion-checkbox>
+						</ion-item>
+					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
+					<div formArrayName="posts" class="col-md-12">
+						<!-- title -->
+						<div class="title-1 mt-5 mb-4">
+							<h2 class="title">پست های کارمند</h2>
+						</div>
+						<div *ngFor="let item of postsFormGroup.controls ; let i = index"
+							[formGroupName]="i">
+							<div class="form-input mb-3">
+								<label>انتخاب پست</label>
+								<ng-select [items]="postList" placeholder="انتخاب کنید" bindLabel="name"
+									bindValue="id" formControlName="post_id">
+								</ng-select>
+								<span class="error">
+									<!-- <app-validator [control]="item.get('post_id')"
+										[controlName]="'انتخاب پست'">
+									</app-validator> -->
+								</span>
+								<span class="hint">مثلا حسابدار</span>
+							</div>
+						</div>
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p> آیا کارمند پست دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnother()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن پست دیگر
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
+					<div class="col-md-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-xl-2 col-lg-3">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(editForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-xl-4 col-lg-5">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									{{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

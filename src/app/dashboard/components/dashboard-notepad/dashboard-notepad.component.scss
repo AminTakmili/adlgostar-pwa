@@ -1,0 +1,18 @@
+@import '/src/theme/extends';
+
+.note{
+	ion-textarea{
+		font-size: 14px;
+		--padding-top:20px;
+		--padding-bottom:20px;
+	}
+}
+ion-textarea {
+	height: 268px;
+}
+.heigh-40{
+	overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 16px;
+}
