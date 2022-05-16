@@ -70,16 +70,17 @@ export class EmployeeImporterComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/employee');
 					this.addForm.reset();
 					this.global.showToast(' کارمندان با موفقیت ثبت شدند .');
+					this.navCtrl.navigateForward('/employee');
 				}, async (err: any) => {
 					await this.global.dismisLoading();
 					this.errors = err.error.data.map((item:any)=>{
 						return new error().deserialize(item);
 					});
+					this.addForm.reset();
 					this.errors = _.sortBy(this.errors, ['row']);
-					console.log(this.errors);
+					// console.log(this.errors);
 					this.global.showError(err);
 				});
 		}

@@ -21,9 +21,10 @@ export class HeaderComponent implements OnInit {
     openEnd() {
         this.menu.open('end');
     }
-	toggleMenu(){
+	async toggleMenu(){
+		console.log(1234)
+		await this.menu.open('mainContent');
 		this.menu.enable(true, 'mainContent');
-        this.menu.open('mainContent');
 	}
 
     openCustom() {

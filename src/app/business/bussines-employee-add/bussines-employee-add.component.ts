@@ -33,7 +33,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		this.addForm = this.fb.group({
 			business_id: [this.route.snapshot.paramMap.get('id'), Validators.compose([Validators.required ])],
 			employee_id: ['', Validators.compose([Validators.required ])],
-			specialty: ['', Validators.compose([Validators.required ])],
+			specialty: [''],
 			net_income: ['', Validators.compose([Validators.required ])],
 			work_hours: ['', Validators.compose([Validators.required ])],
 			work_place: ['', Validators.compose([Validators.required ])],
@@ -94,7 +94,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			return new Post().deserialize(item);
 		});
 	}
-	async onSubmit() {
+	async onSubmit(AddAnOther : boolean = false) {
 		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -103,7 +103,9 @@ export class BussinesEmployeeAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/businesses/detail/'+this.businessId);
+					if(!AddAnOther){
+						this.navCtrl.navigateForward('/businesses/detail/'+this.businessId);
+					}
 					this.global.showToast('کارمند با موفقیت اضافه شد');
 					this.addForm.reset();
 				}, async (error:any) => {

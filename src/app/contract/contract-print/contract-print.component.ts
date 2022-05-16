@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { contract } from 'src/app/core/models/contractConstant.model';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
 
 @Component({
 	selector: 'app-contract-print',
@@ -15,6 +18,10 @@ export class ContractPrintComponent implements OnInit {
 	pageTitle: string;
 	contractExtraFieldList: contractExtraField[];
 	dataList: contract;
+
+	@ViewChild('contract', { static: true }) contract: ElementRef;
+
+
 	constructor(
 		public global: GlobalService,
 		private seo: SeoService,
@@ -33,11 +40,11 @@ export class ContractPrintComponent implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		this.getData(this.route.snapshot.paramMap.get('contract_id'),this.route.snapshot.paramMap.get('employee_id'),);
+		this.getData(this.route.snapshot.paramMap.get('contract_id'), this.route.snapshot.paramMap.get('employee_id'),);
 		// this.moreData();
 	}
 
-	async getData(contract_id: string , employee_id: string) {
+	async getData(contract_id: string, employee_id: string) {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/print', {
 			contract_id,
@@ -72,6 +79,35 @@ export class ContractPrintComponent implements OnInit {
 			WindowPrt.print();
 			WindowPrt.close();
 		}, 1000);
+
+	}
+
+	downloadPDF(id: string) {
+
+		const printContent = document.getElementById(id);
+		const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+		WindowPrt.document.write('<link rel="stylesheet" type="text/css" href="/assets/css/print.css" />');
+		WindowPrt.document.write(printContent.innerHTML);
+		WindowPrt.document.close();
+
+		// const DATA = this.contract.nativeElement;
+		// const DATA = WindowPrt.document.documentElement.outerHTML;
+		// const doc: jsPDF = new jsPDF("p", "mm", "a4");
+		// doc.html(DATA, {
+		// 	callback: (doc) => {
+		// 		doc.output();
+		// 	}
+		// });
+
+		const doc = new jsPDF();
+		doc.setLanguage("fa-IR");
+		// doc.addFileToVFS("IRANSansWeb.otf", "/assets/fonts/iransans/IRANSansWeb.otf");
+		// doc.addFont("IRANSansWeb.otf", "IRANSansWeb", "normal");
+		doc.html(this.contract.nativeElement,{
+			callback: (pdf)=>{
+				pdf.save("sample.pdf")
+			}
+		})
 
 	}
 

@@ -34,8 +34,26 @@
 				<div class="col-md-12 mb-3">
 					<div class="title-1">
 						<h2 class="title">لیست {{ pageTitle }}</h2>
-						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-							گرافیک است</p>
+						<p class="dsec">در این قسمت میتوانید لیست کارفرما ها را مشاهده نمایید و یا کارفرما جدید ثبت کنید.</p>
+					</div>
+				</div>
+
+				<!-- جستجو بر اساس نام  -->
+				<div class="col-md-4">
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_name"  placeholder="نام کافرما"></ion-searchbar>
+					</div>
+				</div>
+				<!-- جست جو بر اساس کد ملی -->
+				<div class="col-md-4">
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_national_code"  placeholder="کد ملی"></ion-searchbar>
+					</div>
+				</div>
+				<!-- جست جو بر اساس شماره همراه -->
+				<div class="col-md-4">
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_phone" type="phone"  placeholder="موبایل"></ion-searchbar>
 					</div>
 				</div>
 			</div>
@@ -46,7 +64,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">نام و نام خانوادگی</th>
-							<!-- <th scope="col">مشغول در </th> -->
+							<th scope="col">شماره همراه / کد کلی</th>
 							<th class="ion-text-left" scope="col"></th>
 						</tr>
 					</thead>
@@ -57,7 +75,6 @@
 							<td>
 								<ion-item lines="none" class="item-transparent">
 									<ion-avatar slot="start">
-
 										<ion-img
 											[src]=" item?.media[0]?.path ? ( item?.media[0]?.options?.subSizes['1x'] | image ) : './assets/img/employer-img.png' ">
 										</ion-img>
@@ -66,6 +83,10 @@
 										<h2 class="title">{{ item.first_name }} {{ item.last_name }}</h2>
 									</ion-label>
 								</ion-item>
+							</td>
+							<td>
+								<span class="d-inline-flex flex-row ion-align-items-center ion-justify-content-between"> <ion-icon class="ml-2" name="call"></ion-icon> <span>{{ item.mobile }}</span></span> /
+								<span class="d-inline-flex flex-row ion-align-items-center ion-justify-content-between"> <ion-icon class="ml-2" name="card"></ion-icon> <span >{{ item.national_code }}</span></span>
 							</td>
 							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
 							<td class="ion-text-left">

@@ -22,6 +22,7 @@ export class EmployerListComponent implements OnInit {
 	dataInSearch: boolean = false
 
 	business_id: string;
+
 	filtered_name: string;
 	filtered_national_code: string;
 	filtered_phone: string;
@@ -42,13 +43,16 @@ export class EmployerListComponent implements OnInit {
 	async ionViewWillEnter() {
 		this.getData();
 	}
-	async getData(name: string = '') {
+	async getData(isSearch: boolean = false) {
 
-		this.dataInSearch = name ? true : false;
+		this.dataInSearch = isSearch;
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('employer/list', {
+		this.global.httpPost('employer/filteredList', {
 			limit: this.limit,
 			offset: this.offset,
+			filtered_name: this.filtered_name,
+			filtered_national_code: this.filtered_national_code,
+			filtered_phone: this.filtered_phone,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;

@@ -91,3 +91,42 @@ body {
 .inner-html-dev p {
 	line-height: 30px;
 }
+
+@media print {
+
+	body{
+		padding: 0 50px;
+		margin: 100px 0;
+	}
+
+	footer,
+	header {
+		position: fixed;
+	}
+
+	footer {
+		bottom: 0;
+	}
+
+	.footer-print::before {
+		counter-increment: page;
+		content: counter(page);
+		display: block;
+		text-align: center;
+		font-size: 20px;
+	}
+	.my-5{
+		padding: 30px 0;
+	}
+}
+@page {
+
+}
+
+
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
