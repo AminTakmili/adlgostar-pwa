@@ -40,14 +40,14 @@
 					<!-- درصد افزایش نسبت به سال قبل -->
 					<div class="col-md-6">
 						<div class="form-input mb-3">
-							<label>تخصص</label>
+							<label>مهارت</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="specialty">
 							</ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['specialty']" [controlName]="'تخصص'">
+								<app-validator [control]="addForm.controls['specialty']" [controlName]="'مهارت'">
 								</app-validator>
 							</span>
-							<span class="hint">مثلا 12</span>
+							<span class="hint">مثلا حسابدار</span>
 						</div>
 					</div>
 					<!--مبلغ پایه (ریال) -->
@@ -138,6 +138,11 @@
 							<div class="col-xl-2 col-lg-3">
 								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
 									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-xl-2 col-lg-3">
+								<ion-button type="button" expand="block" color="success" fill="solid" shape="round" (click)="onSubmit(true)">
+									ثبت و ثبت جدید
 								</ion-button>
 							</div>
 							<div class="col-xl-3 col-lg-4">

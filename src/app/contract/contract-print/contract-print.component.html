@@ -8,6 +8,10 @@
 						<div class="col-auto d-flex flex-row">
 							<ion-back-button [defaultHref]="'/contracts/detail/'+dataList?.id" text="بازگشت"
 								icon="arrow-back"></ion-back-button>
+							<ion-button shape="round" color="danger" (click)="downloadPDF('contract')">
+								<ion-icon slot="start" name="cloud-download"></ion-icon>
+								دانلود PDF
+							</ion-button>
 							<ion-button shape="round" color="success" (click)="printContract('contract')">
 								<ion-icon slot="start" name="print"></ion-icon>
 								پرینت کن
@@ -19,13 +23,30 @@
 				<div class="col">
 					<ion-card class="my-4 mx-0" color="white">
 						<ion-card-content>
-							<div id="contract">
-								<div class="container-print">
-									<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
-									<div *ngFor="let item of dataList?.provisos" class="inner-html-dev"
-										[innerHTML]="item.proviso_text"></div>
-									<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
-								</div>
+							<div id="contract" #contract>
+								<table>
+									<thead>
+										<th></th>
+									</thead>
+									<tbody>
+										<td>
+											<div class="container-print">
+												<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
+												<div *ngFor="let item of dataList?.provisos" class="inner-html-dev"
+													[innerHTML]="item.proviso_text"></div>
+												<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
+											</div>
+										</td>
+									</tbody>
+									<tfoot>
+										<td>
+											<div class="row align-content-center justify-content-around">
+												<div class="col-auto my-5">امضا کارفرما</div>
+												<div class="col-auto my-5">امضا کارمند</div>
+											</div>
+										</td>
+									</tfoot>
+								</table>
 							</div>
 						</ion-card-content>
 					</ion-card>

@@ -50,6 +50,12 @@ const routes: Routes = [
 		loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
 		canActivate: [LoginGuard]
 	},
+	{
+		path: 'test',
+		loadChildren: () => import('./test/test.module').then(m => m.TestPageModule),
+		canActivate: [LoginGuard]
+	},
+
 	// {
 	// 	path: '',
 	// 	redirectTo: 'home',

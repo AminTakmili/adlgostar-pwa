@@ -34,7 +34,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			business_employee_id: [this.route.snapshot.paramMap.get('id')],
 			business_id: [],
 			employee_id: ['', Validators.compose([Validators.required])],
-			specialty: ['', Validators.compose([Validators.required])],
+			specialty: [''],
 			net_income: ['', Validators.compose([Validators.required])],
 			work_hours: ['', Validators.compose([Validators.required])],
 			work_place: ['', Validators.compose([Validators.required])],

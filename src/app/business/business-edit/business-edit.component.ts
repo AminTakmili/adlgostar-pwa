@@ -135,7 +135,7 @@ export class BusinessEditComponent implements OnInit {
 	getData() {
 		const countries = this.global.httpGet('more/countries');
 		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
-		const employerList = this.global.httpPost('employer/list', { limit: 1000, offset: this.categoryoffSet });
+		const employerList = this.global.httpPost('employer/filteredList', { limit: 1000, offset: this.categoryoffSet });
 
 
 		this.global.parallelRequest([countries, businessCategory , employerList])

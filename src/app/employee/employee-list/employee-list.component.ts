@@ -48,12 +48,10 @@ export class EmployeeListComponent implements OnInit {
 		this.setTitle();
 	}
 
-	changeSearch(){
-		this.pageChange(1);
-	}
-	async getData(name: string = '') {
 
-		this.dataInSearch = name ? true : false;
+	async getData(isSearch: boolean = false) {
+
+		this.dataInSearch = isSearch;
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('employee/filteredList', {
 			limit: this.limit,
@@ -88,7 +86,7 @@ export class EmployeeListComponent implements OnInit {
 
 	extraData(){
 		const businesses = this.global.httpPost('business/filteredList',{ limit : 1000 , offset : 0 });
-		const employers = this.global.httpPost('employer/list',{ limit : 1000 , offset : 0 });
+		const employers = this.global.httpPost('employer/filteredList',{ limit : 1000 , offset : 0 });
 		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
 		this.global.parallelRequest([businesses , employers])
 			.subscribe(([businessesRes , employersRes = '' ]) => {

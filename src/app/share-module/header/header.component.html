@@ -1,8 +1,10 @@
 <ion-toolbar color="white">
 	<ion-buttons slot="start">
-		<ion-button>
-			<ion-icon slot="icon-only" name="menu" (click)="toggleMenu()"></ion-icon>
-		</ion-button>
+		<ion-menu-toggle autoHide="false">
+			<ion-button>
+				<ion-icon slot="icon-only" name="menu"></ion-icon>
+			</ion-button>
+		</ion-menu-toggle>
 	</ion-buttons>
 	<ion-title class="ion-hide-lg-up">{{ title }}</ion-title>
 	<ion-buttons slot="end">

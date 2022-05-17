@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="dataList && dataList.length">
+
+	<ng-select [items]="dataList"
+           [virtualScroll]="true"
+           [loading]="loading"
+           bindLabel="full_name"
+           bindValue="id"
+           placeholder="انتخاب کارمند"
+           appendTo="body"
+		   (search)="searchFun($event)"
+           (scroll)="onScroll($event)"
+           (scrollToEnd)="onScrollToEnd()">
+    <!-- <ng-template ng-header-tmp>
+        <small class="form-text text-muted">Loaded {{photosBuffer.length}} of {{photos.length}}</small>
+    </ng-template> -->
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+       	{{item.full_name}}
+    </ng-template>
+</ng-select>
+</ion-content>

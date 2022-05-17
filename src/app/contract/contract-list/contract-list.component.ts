@@ -91,7 +91,7 @@ export class ContractListComponent implements OnInit {
 			{ limit: 2000, offset: 0 }
 		);
 
-		const empoloyer = this.global.httpPost('employer/list',
+		const empoloyer = this.global.httpPost('employer/filteredList',
 			{ limit: 2000, offset: 0 }
 		);
 

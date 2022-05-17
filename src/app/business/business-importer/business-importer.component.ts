@@ -79,6 +79,7 @@ export class BusinessImporterComponent implements OnInit {
 					});
 					this.errors = _.sortBy(this.errors, ['row']);
 					console.log(this.errors);
+					this.addForm.reset();
 					this.global.showError(err);
 				});
 		}

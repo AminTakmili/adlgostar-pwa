@@ -74,7 +74,7 @@ export class BusinessAddComponent implements OnInit {
 	getData() {
 		const countries = this.global.httpGet('more/countries');
 		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
-		const employerList = this.global.httpPost('employer/list', { limit: 1000, offset: this.categoryoffSet });
+		const employerList = this.global.httpPost('employer/filteredList', { limit: 1000, offset: this.categoryoffSet });
 
 
 		this.global.parallelRequest([countries, businessCategory , employerList])
@@ -143,7 +143,7 @@ export class BusinessAddComponent implements OnInit {
 		});
 	}
 
-	async onSubmit() {
+	async onSubmit(AddAnOther : boolean = false) {
 
 		this.businessForm.markAllAsTouched();
 		if (this.businessForm.valid) {
@@ -153,7 +153,9 @@ export class BusinessAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/businesses');
+					if(!AddAnOther){
+						this.navCtrl.navigateForward('/businesses');
+					}
 					this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
 					this.businessForm.reset();
 				}, async (error:any) => {

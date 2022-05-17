@@ -462,12 +462,12 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	calcChildrenAllowance() {
-		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
+		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.employee_ids.length) {
 			console.log('calcChildrenAllowance');
 			this.global.httpPost('contract/calculateChildrenAllowance', {
 				contract_year : this.contractsForm.value.contract_year,
 				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
-				employee_ids : this.contractsForm.value.business_employee_ids
+				employee_ids : this.contractsForm.value.employee_ids
 			}).subscribe(async (res: any) => {
 
 				this.childrenAllowanceFormGroup.controls.map((item:any)=>{
