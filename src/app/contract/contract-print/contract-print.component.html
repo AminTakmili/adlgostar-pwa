@@ -8,10 +8,10 @@
 						<div class="col-auto d-flex flex-row">
 							<ion-back-button [defaultHref]="'/contracts/detail/'+dataList?.id" text="بازگشت"
 								icon="arrow-back"></ion-back-button>
-							<ion-button shape="round" color="danger" (click)="downloadPDF('contract')">
+							<!-- <ion-button shape="round" color="danger" (click)="downloadPDF('contract')">
 								<ion-icon slot="start" name="cloud-download"></ion-icon>
 								دانلود PDF
-							</ion-button>
+							</ion-button> -->
 							<ion-button shape="round" color="success" (click)="printContract('contract')">
 								<ion-icon slot="start" name="print"></ion-icon>
 								پرینت کن
@@ -40,10 +40,12 @@
 									</tbody>
 									<tfoot>
 										<td>
-											<div class="row align-content-center justify-content-around">
-												<div class="col-auto my-5">امضا کارفرما</div>
-												<div class="col-auto my-5">امضا کارمند</div>
-											</div>
+											<footer class="footer-print">
+												<div class="row align-content-center justify-content-around">
+													<div class="col-auto my-5">امضا کارفرما</div>
+													<div class="col-auto my-5">امضا کارمند</div>
+												</div>
+											</footer>
 										</td>
 									</tfoot>
 								</table>

@@ -76,11 +76,15 @@ body {
 
 @page {
 	margin: 0.5cm;
+
+	@top-right {
+		content: "Page "counter(page) " of "counter(pages);
+	}
 }
 
 .container-print {
 	max-width: 1200px;
-	padding: ;
+
 	width: auto;
 }
 
@@ -94,9 +98,18 @@ body {
 
 @media print {
 
-	body{
+	body {
 		padding: 0 50px;
 		margin: 100px 0;
+		counter-reset: page;
+	}
+
+	#contract {
+		display: table;
+	}
+
+	table {
+		display: table;
 	}
 
 	footer,
@@ -108,20 +121,36 @@ body {
 		bottom: 0;
 	}
 
-	.footer-print::before {
+	table tfoot {
+		counter-reset: page;
+		display: table-footer-group;
+		position: relative;
+
+	}
+
+	table tfoot::before {
+
 		counter-increment: page;
-		content: counter(page);
+		content: "صفحه "counter(page);
+		white-space: nowrap;
 		display: block;
 		text-align: center;
 		font-size: 20px;
 	}
-	.my-5{
+
+	.footer-print {
+		position: relative;
+
+	}
+
+	.footer-print {}
+
+	.my-5 {
 		padding: 30px 0;
 	}
 }
-@page {
 
-}
+@page {}
 
 
 .row {
