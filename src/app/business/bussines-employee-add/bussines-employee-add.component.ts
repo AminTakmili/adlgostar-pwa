@@ -27,18 +27,22 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private route: ActivatedRoute,
+		public route: ActivatedRoute,
 
 	) {
 		this.addForm = this.fb.group({
 			business_id: [this.route.snapshot.paramMap.get('id'), Validators.compose([Validators.required ])],
 			employee_id: ['', Validators.compose([Validators.required ])],
-			specialty: [''],
+			specialty: ['', Validators.compose([Validators.required])],
 			net_income: ['', Validators.compose([Validators.required ])],
-			work_hours: ['', Validators.compose([Validators.required ])],
+			work_hours_in_day: ['', Validators.compose([Validators.required ])],
+			work_hours_in_night: [''],
 			work_place: ['', Validators.compose([Validators.required ])],
 			has_insurance: [false, Validators.compose([Validators.required ])],
 			posts: this.fb.array([this.newPosts(true)]),
+			guarantors: this.fb.array([]),
+			cheques: this.fb.array([]),
+			promissory_notes: this.fb.array([]),
 		});
 
 		this.posts = this.addForm.get('posts') as FormArray;
@@ -51,7 +55,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 
 	newPosts(isTrue : boolean): FormGroup {
 		return this.fb.group({
-			post_id: [''],
+			post_id: ['', Validators.compose([Validators.required])],
 			is_default: [isTrue],
 		})
 	}

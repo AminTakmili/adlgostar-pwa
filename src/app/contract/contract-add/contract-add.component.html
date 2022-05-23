@@ -70,8 +70,14 @@
 								>
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
-									<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
-										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}</span>
+									<span class="font-size-12">
+										 سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}
+										| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
+										| ساعت کاری در شب : {{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }} ساعت
+										| بیمه   {{ item.business_employee_info[0].has_insurance ? 'دارد' : 'ندارد' }}
+
+									</span>
 									</ng-option>
 								</ng-select>
 								<span class="error">

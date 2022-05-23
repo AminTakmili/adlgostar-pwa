@@ -27,19 +27,24 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private route: ActivatedRoute,
+		public route: ActivatedRoute,
 
 	) {
 		this.editForm = this.fb.group({
 			business_employee_id: [this.route.snapshot.paramMap.get('id')],
 			business_id: [],
 			employee_id: ['', Validators.compose([Validators.required])],
-			specialty: [''],
+			specialty: ['', Validators.compose([Validators.required])],
 			net_income: ['', Validators.compose([Validators.required])],
-			work_hours: ['', Validators.compose([Validators.required])],
+			work_hours_in_day: ['', Validators.compose([Validators.required])],
+			work_hours_in_night: [''],
 			work_place: ['', Validators.compose([Validators.required])],
 			has_insurance: [false, Validators.compose([Validators.required])],
 			posts: this.fb.array([]),
+			guarantors: this.fb.array([]),
+			cheques: this.fb.array([]),
+			promissory_notes: this.fb.array([]),
+
 		});
 
 		this.posts = this.editForm.get('posts') as FormArray;
@@ -55,13 +60,13 @@ export class BusinessEmployeeEditComponent implements OnInit {
 
 	newPosts(isTrue: boolean): FormGroup {
 		return this.fb.group({
-			post_id: [''],
+			post_id: ['', Validators.compose([Validators.required])],
 			is_default: [isTrue],
 		})
 	}
 	exsistPosts(isTrue: boolean,postId :number): FormGroup {
 		return this.fb.group({
-			post_id: [postId],
+			post_id: [postId, Validators.compose([Validators.required])],
 			is_default: [isTrue],
 		})
 	}
@@ -97,7 +102,8 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			this.editForm.get('employee_id').setValue(res.employee_id);
 			this.editForm.get('specialty').setValue(res.specialty);
 			this.editForm.get('net_income').setValue(res.net_income);
-			this.editForm.get('work_hours').setValue(res.work_hours);
+			this.editForm.get('work_hours_in_day').setValue(res.work_hours_in_day);
+			this.editForm.get('work_hours_in_night').setValue(res.work_hours_in_night);
 			this.editForm.get('work_place').setValue(res.work_place);
 			this.editForm.get('has_insurance').setValue(res.has_insurance);
 

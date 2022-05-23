@@ -69,6 +69,8 @@ export class businessEmployeeInfo implements Deserializable {
 	specialty !: string;
 	net_income !: number;
 	work_hours !: number;
+	work_hours_in_day !: number;
+	work_hours_in_night !: number;
 	work_place !: string;
 	has_insurance !: boolean;
 	business !: businessEmployee;

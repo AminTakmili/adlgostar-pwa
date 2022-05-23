@@ -8,12 +8,12 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title"> {{ pageTitle }}</h1>
-					<p class="dsec">در این قسمت میتوانید موارد پایه سنوات برای یک سال را ایجاد کنید</p>
+					<p class="dsec"> در این قسمت میتوانید یک کارمند جدید به کسب کار خود اضافه کنید </p>
 				</div>
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-back-button defaultHref="more/extra-salary-item" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				<ion-back-button [defaultHref]="'/businesses/detail/'+route.snapshot.paramMap.get('id')" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 					<!-- درصد افزایش نسبت به سال قبل -->
 					<div class="col-md-6">
 						<div class="form-input mb-3">
-							<label>مهارت</label>
+							<label>تخصص</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="specialty">
 							</ion-input>
 							<span class="error">
@@ -66,11 +66,22 @@
 					<!-- مقدار ثابت اضافه شونده (ریال)-->
 					<div class="col-md-6">
 						<div class="form-input mb-3">
-							<label>ساعت کار در هفته</label>
-							<ion-input type="number" autocomplete="new-pass" formControlName="work_hours"></ion-input>
+							<label>ساعت کار در روز (مجموع در ماه)</label>
+							<ion-input type="number" autocomplete="new-pass" formControlName="work_hours_in_day"></ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['work_hours']"
-									[controlName]="'مقدار ثابت اضافه شونده'"></app-validator>
+								<app-validator [control]="addForm.controls['work_hours_in_day']"
+									[controlName]="'ساعت کار در روز'"></app-validator>
+							</span>
+							<span class="hint">مثلا : 50 ساعت</span>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-input mb-3">
+							<label>ساعت کار در شب (مجموع در ماه)</label>
+							<ion-input type="number" autocomplete="new-pass" formControlName="work_hours_in_night"></ion-input>
+							<span class="error">
+								<app-validator [control]="addForm.controls['work_hours_in_night']"
+									[controlName]="'ساعت کار در شب'"></app-validator>
 							</span>
 							<span class="hint">مثلا : 50 ساعت</span>
 						</div>
@@ -89,7 +100,7 @@
 					</div>
 					<div class="col-lg-6 ">
 						<ion-item lines="none">
-							<ion-label> آیا بیمه دارد ؟ </ion-label>
+							<ion-label> بیمه دارد </ion-label>
 							<ion-checkbox type="string" slot="start" formControlName="has_insurance">
 							</ion-checkbox>
 						</ion-item>
@@ -110,9 +121,9 @@
 									bindValue="id" formControlName="post_id">
 								</ng-select>
 								<span class="error">
-									<!-- <app-validator [control]="item.get('post_id')"
+									<app-validator [control]="item.get('post_id')"
 										[controlName]="'انتخاب پست'">
-									</app-validator> -->
+									</app-validator>
 								</span>
 								<span class="hint">مثلا حسابدار</span>
 							</div>
