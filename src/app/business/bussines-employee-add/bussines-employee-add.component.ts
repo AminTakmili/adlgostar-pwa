@@ -21,6 +21,9 @@ export class BussinesEmployeeAddComponent implements OnInit {
 	businessId : string;
 
 	posts: FormArray;
+	guarantors: FormArray;
+	cheques: FormArray;
+	promissory_notes: FormArray;
 
 	constructor(
 		public global: GlobalService,
@@ -40,15 +43,19 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			work_place: ['', Validators.compose([Validators.required ])],
 			has_insurance: [false, Validators.compose([Validators.required ])],
 			posts: this.fb.array([this.newPosts(true)]),
-			guarantors: this.fb.array([]),
-			cheques: this.fb.array([]),
-			promissory_notes: this.fb.array([]),
+			guarantors: this.fb.array([this.newGuarantors()]),
+			cheques: this.fb.array([this.newCheques()]),
+			promissory_notes : this.fb.array([this.newPromissoryNotes()]),
 		});
 
 		this.posts = this.addForm.get('posts') as FormArray;
+		this.guarantors = this.addForm.get('guarantors') as FormArray;
+		this.cheques = this.addForm.get('cheques') as FormArray;
+		this.promissory_notes = this.addForm.get('promissory_notes') as FormArray;
 		this.businessId = this.route.snapshot.paramMap.get('id');
 	}
 
+	// posts
 	get postsFormGroup(): FormArray {
 		return this.addForm.get('posts') as FormArray;
 	}
@@ -59,6 +66,148 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			is_default: [isTrue],
 		})
 	}
+
+	addAnotherPost(){
+		this.posts.push(this.newPosts(false));
+	}
+
+	removePost(index:number){
+		this.global.showAlert('حذف پست',
+		'آیا برای حذف پست اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.posts.removeAt(index);
+				}
+			});
+		});
+	}
+	// guarantors
+	get guarantorsFormGroup(): FormArray {
+		return this.addForm.get('guarantors') as FormArray;
+	}
+
+	newGuarantors(): FormGroup {
+		return this.fb.group({
+			first_name: ['', Validators.compose([Validators.required])],
+			last_name: ['', Validators.compose([Validators.required])],
+			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			mobile: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
+		})
+	}
+
+	addAnotherGuarantors(){
+		this.guarantors.push(this.newGuarantors());
+	}
+
+	removeGuarantors(index : number){
+		this.global.showAlert('حذف ضامن',
+		'آیا برای حذف ضامن اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.guarantors.removeAt(index);
+				}
+			});
+		});
+	}
+	// cheques
+	get chequesFormGroup(): FormArray {
+		return this.addForm.get('cheques') as FormArray;
+	}
+
+	newCheques(): FormGroup {
+		return this.fb.group({
+			number: ['', Validators.compose([Validators.required])],
+			amount: ['', Validators.compose([Validators.required])],
+		})
+	}
+
+	addAnotherCheques(){
+		this.cheques.push(this.newCheques());
+	}
+
+	removeCheques(index:number){
+		this.global.showAlert('حذف چک',
+		'آیا برای حذف چک اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.cheques.removeAt(index);
+				}
+			});
+		});
+	}
+
+	// cheques
+	get promissorynotesFormGroup(): FormArray {
+		return this.addForm.get('promissory_notes') as FormArray;
+	}
+
+	newPromissoryNotes(): FormGroup {
+		return this.fb.group({
+			number: ['', Validators.compose([Validators.required])],
+			amount: ['', Validators.compose([Validators.required])],
+		})
+	}
+
+	addAnotherPromissoryNotes(){
+		this.promissory_notes.push(this.newPromissoryNotes());
+	}
+
+	removePromissoryNotes(index:number){
+		this.global.showAlert('حذف سفته',
+		'آیا برای حذف سفته اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.promissory_notes.removeAt(index);
+				}
+			});
+		});
+	}
+
+
 
 	ngOnInit() {
 		this.setTitle();
@@ -119,8 +268,6 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		}
 	}
 
-	addAnother(){
-		this.posts.push(this.newPosts(false));
-	}
+
 
 }

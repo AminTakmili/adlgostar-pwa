@@ -123,7 +123,6 @@ export class BusinessAddComponent implements OnInit {
 		this.global.showAlert('حذف آدرس',
 		'آیا برای حذف آدرس اطمینان دارید ؟ ',
 		[
-
 			{
 				text: 'خیر',
 				role: 'cancel'
@@ -146,22 +145,23 @@ export class BusinessAddComponent implements OnInit {
 	async onSubmit(AddAnOther : boolean = false) {
 
 		this.businessForm.markAllAsTouched();
-		if (this.businessForm.valid) {
+		if (this.businessForm.valid)
+		{
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('business/add', this.businessForm.value)
-				.subscribe(async (res:any) => {
+			.subscribe(async (res:any) => {
 
-					await this.global.dismisLoading();
-					// console.log(res:any);
-					if(!AddAnOther){
-						this.navCtrl.navigateForward('/businesses');
-					}
-					this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
-					this.businessForm.reset();
-				}, async (error:any) => {
-					await this.global.dismisLoading();
-					this.global.showError(error);
-				});
+				await this.global.dismisLoading();
+				// console.log(res:any);
+				if(!AddAnOther){
+					this.navCtrl.navigateForward('/businesses');
+				}
+				this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
+				this.businessForm.reset();
+			}, async (error:any) => {
+				await this.global.dismisLoading();
+				this.global.showError(error);
+			});
 		}
 	}
 
