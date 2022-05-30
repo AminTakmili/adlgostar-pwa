@@ -36,8 +36,14 @@
 					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>انتخاب کارفرما</label>
-							<ng-select [items]="employerList" formControlName="employer_id" bindLabel="full_name"
-								bindValue="id" [clearable]="false">
+							<ng-select
+							[items]="employerList"
+							formControlName="employer_ids"
+							[multiple]="true"
+							bindLabel="full_name"
+							bindValue="id"
+							[clearable]="false"
+							>
 							</ng-select>
 							<span class="error">
 								<app-validator [control]="businessForm.controls['employer_id']"

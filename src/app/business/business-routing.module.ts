@@ -9,6 +9,7 @@ import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-e
 import { BusinessListComponent } from './business-list/business-list.component';
 import { BusinessImporterComponent } from './business-importer/business-importer.component';
 import { BusinessEmployeeEditComponent } from './business-employee-edit/business-employee-edit.component';
+import { BusinessEmployeeImporterComponent } from './business-employee-importer/business-employee-importer.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,11 @@ const routes: Routes = [
   {
     path: 'edit-employee/:id',
     component: BusinessEmployeeEditComponent,
+	canActivate: [LoginGuard]
+  },
+  {
+    path: 'import-employee/:id',
+    component: BusinessEmployeeImporterComponent,
 	canActivate: [LoginGuard]
   },
   {

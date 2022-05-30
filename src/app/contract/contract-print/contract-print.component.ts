@@ -5,8 +5,7 @@ import { contractExtraField } from 'src/app/core/models/contractExtraField.model
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
-import { jsPDF } from "jspdf";
-import html2canvas from 'html2canvas';
+
 
 @Component({
 	selector: 'app-contract-print',
@@ -90,24 +89,6 @@ export class ContractPrintComponent implements OnInit {
 		WindowPrt.document.write(printContent.innerHTML);
 		WindowPrt.document.close();
 
-		// const DATA = this.contract.nativeElement;
-		// const DATA = WindowPrt.document.documentElement.outerHTML;
-		// const doc: jsPDF = new jsPDF("p", "mm", "a4");
-		// doc.html(DATA, {
-		// 	callback: (doc) => {
-		// 		doc.output();
-		// 	}
-		// });
-
-		const doc = new jsPDF();
-		doc.setLanguage("fa-IR");
-		// doc.addFileToVFS("IRANSansWeb.otf", "/assets/fonts/iransans/IRANSansWeb.otf");
-		// doc.addFont("IRANSansWeb.otf", "IRANSansWeb", "normal");
-		doc.html(this.contract.nativeElement,{
-			callback: (pdf)=>{
-				pdf.save("sample.pdf")
-			}
-		})
 
 	}
 

@@ -86,7 +86,7 @@ export class contract implements Deserializable {
 	is_manual !: boolean;
 	provisos !: ConditionInContract[];
 	extra_fields !: ContractExtraField[];
-	employer_info !:  Employer;
+	employers_info !:  Employer[];
 	employee_info !:  Employee[];
 	business_info !:  BusinessList;
 	createdAt !: string ;
@@ -116,8 +116,13 @@ export class contract implements Deserializable {
 				return new childrenAllowances().deserialize(column);
 			});
 		}
+		if(input.employers_info && input.employers_info.length){
+			this.employers_info = input.employers_info.map((column: any) => {
+				return new Employer().deserialize(column);
+			});
+		}
 
-		this.employer_info = new Employer().deserialize(input.employer_info);
+		// this.employers_info = new Employer().deserialize(input.employer_info);
 		this.business_info =  new BusinessList().deserialize(input.business_info);
 
 

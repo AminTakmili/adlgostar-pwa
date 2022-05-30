@@ -36,7 +36,7 @@ export class BusinessAddComponent implements OnInit {
 		private navCtrl: NavController
 	) {
 		this.businessForm = this.fb.group({
-			employer_id: ['', Validators.compose([Validators.required])],
+			employer_ids: [ [], Validators.compose([Validators.required])],
 			name: ['', Validators.compose([Validators.required])],
 			employer_type: ['', Validators.compose([Validators.required])],
 			registration_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],

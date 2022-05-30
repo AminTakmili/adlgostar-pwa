@@ -40,8 +40,8 @@
 				</div>
 				<!-- list of employee -->
 				<div class="row my-3">
-					<div class="col-lg-6 mb-3">
-						<app-employer-card [employer]="dataList?.employer_info"></app-employer-card>
+					<div class="col-lg-6 mb-3" *ngFor="let item of dataList?.employers_info">
+						<app-employer-card [employer]="item"></app-employer-card>
 					</div>
 				</div>
 

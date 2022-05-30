@@ -11,6 +11,8 @@ import { contractConditions, contractTemplate } from 'src/app/core/models/contra
 import * as _ from 'lodash';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
+import { Employer } from 'src/app/core/models/employer.model';
+import { async } from '@angular/core/testing';
 
 @Component({
 	selector: 'app-contract-add',
@@ -31,9 +33,6 @@ export class ContractAddComponent implements OnInit {
 
 	@ViewChild("popoverDatetime2", { static: true }) datetime: IonDatetime;
 
-	dateValue: string = '';
-	dateValue2 = '';
-
 	datePickerConfig = {
 		drops: 'up',
 		format: 'YY/M/D'
@@ -41,6 +40,7 @@ export class ContractAddComponent implements OnInit {
 	submitet: boolean = false;
 	businessList: BusinessList[] = [];
 	employeeList: Employee[] = [];
+	employerList: Employer[] = [];
 	contractTemplatelist: contractTemplate[];
 	contractConditionlist: contractConditions[] = [];
 	contractExtraFieldList: contractExtraField[];
@@ -58,13 +58,15 @@ export class ContractAddComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController
 	) {
-		this.dateValue = format(new Date(), 'yyyy-MM-dd');
+
+
 
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			business_id: ['', Validators.compose([Validators.required])],
 			contract_condition_id: [''],
 			employee_ids: [[], Validators.compose([Validators.required])],
+			employer_ids: [[], Validators.compose([Validators.required])],
 			business_employee_ids: [[], Validators.compose([Validators.required])],
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
@@ -133,7 +135,7 @@ export class ContractAddComponent implements OnInit {
 		return this.fb.group({
 			contract_proviso_template_id: [id, Validators.compose([Validators.required])],
 			proviso_text: [text, Validators.compose([Validators.required])],
-		})
+		});
 	}
 	get provisosFormGroup(): FormArray {
 		return this.contractsForm.get('provisos') as FormArray;
@@ -143,7 +145,7 @@ export class ContractAddComponent implements OnInit {
 		return this.fb.group({
 			contract_extra_field_id: [id, Validators.compose([Validators.required])],
 			price: [0, Validators.compose([Validators.required])],
-		})
+		});
 	}
 
 	get extraFieldsFormGroup(): FormArray {
@@ -155,7 +157,7 @@ export class ContractAddComponent implements OnInit {
 			business_employee_id: [business_employee_id, Validators.compose([Validators.required])],
 			employee_id: [employee_id, Validators.compose([Validators.required])],
 			children_allowance: [0, Validators.compose([Validators.required])],
-		})
+		});
 	}
 
 	get childrenAllowanceFormGroup(): FormArray {
@@ -178,7 +180,7 @@ export class ContractAddComponent implements OnInit {
 					this.provisosList.push(this.provisos(condition.id, condition.template));
 				}
 				// }
-			})
+			});
 		}
 
 	}
@@ -188,55 +190,41 @@ export class ContractAddComponent implements OnInit {
 	}
 	getData() {
 		// const countries = this.global.httpGet('more/countries');
-		const business = this.global.httpPost('business/filteredList',
-			{ limit: 2000, offset: 0 }
-		);
 
-		const contractTheme = this.global.httpPost('contractTemplate/list',
-			{ limit: 2000, offset: 0 }
-		);
+		const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
 
-		const contractCondition = this.global.httpPost('contractProvisoTemplate/list',
-			{ limit: 2000, offset: 0 }
-		);
+		const contractTheme = this.global.httpPost('contractTemplate/list',{ limit: 2000, offset: 0 });
+
+		const contractCondition = this.global.httpPost('contractProvisoTemplate/list',{ limit: 2000, offset: 0 });
 
 		const contractExtra = this.global.httpGet('salaryBaseInfo/contractExtraFieldList');
 
-		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',
-			{ limit: 1000, offset: 0 }
-		);
+		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',{ limit: 1000, offset: 0 });
 
 		this.global.parallelRequest([business, contractTheme, contractCondition, contractExtra, severanceBaseCalculation])
-			.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
-				this.CreateBusiness(businessRes);
-				this.CreatecontractTheme(contractThemeRes);
-				this.CreatecontractCondition(contractConditionRes);
-				this.CreatecontractExtra(contractExtraRes);
-				this.CountAllYear(severanceBaseCRes);
-			});
+		.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
+			this.CreateBusiness(businessRes);
+			this.CreatecontractTheme(contractThemeRes);
+			this.CreatecontractCondition(contractConditionRes);
+			this.CreatecontractExtra(contractExtraRes);
+			this.CountAllYear(severanceBaseCRes);
+		});
 	}
 
 	async GetEmployee() {
-		if (this.contractsForm.value.business_id) {
-			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('employee/filteredList', {
-				limit: 1000,
-				offset: 0,
-				business_id: this.contractsForm.value.business_id,
-			}).subscribe(async (res: any) => {
-				await this.global.dismisLoading();
-				this.employeeList = res.list.map((item: any) => {
-					return new Employee().deserialize(item);
-				});
-				// console.log(this.employeeList);
 
-			}, async (error: any) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-			});
-		} else {
-			this.employeeList = [];
-		}
+		await this.global.showLoading('لطفا منتظر بمانید...');
+
+		const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
+
+		const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
+
+		 this.global.parallelRequest([employerReq, employeeReq])
+		.subscribe(async ([employer = '', employee = '']) => {
+			await this.global.dismisLoading();
+			this.employeeLists(employee);
+			this.employerLists(employer);
+		});
 
 	}
 
@@ -272,6 +260,33 @@ export class ContractAddComponent implements OnInit {
 			return new severanceBaseCalculation().deserialize(item);
 		});
 		this.severanceBaseCalculationList = this.severanceBaseCalculationList.reverse();
+	}
+
+	employerLists(data: any){
+		 console.log(data);
+
+		if(data.employers.length === 0){
+			this.employerList = [];
+			this.global.showToast('کسب کار فاقد کارفرما می باشد');
+
+		}else{
+			this.employerList = data.employers.map((item: any) => {
+				return new Employer().deserialize(item);
+			});
+		}
+	}
+
+	employeeLists(data: any){
+		if(data.list || data.list.length){
+			this.employeeList = [];
+			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید');
+
+		}else{
+			this.employeeList = data.list.map((item: any) => {
+				return new Employee().deserialize(item);
+			});
+		}
+
 	}
 
 	/* ==============================================================*/

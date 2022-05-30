@@ -3,7 +3,7 @@
 </ion-header>
 <ion-content>
 	<!-- top bar content -->
-	<div class="content-header">
+	<div class="content-header ">
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
@@ -13,7 +13,6 @@
 				</div>
 			</div>
 			<div class="col-lg-auto">
-
 				<ion-back-button defaultHref="businesses" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
@@ -25,7 +24,7 @@
 		<div class="container">
 			<!-- form -->
 			<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
-				<div class="row">
+				<div class="row mt-4">
 					<!-- title -->
 					<div class="col-12">
 						<div class="title-1 mb-4">
@@ -42,7 +41,8 @@
 							<label>انتخاب کارفرما</label>
 							<ng-select
 							[items]="employerList"
-							formControlName="employer_id"
+							formControlName="employer_ids"
+							[multiple]="true"
 							bindLabel="full_name"
 							bindValue="id"
 							[clearable]="false"

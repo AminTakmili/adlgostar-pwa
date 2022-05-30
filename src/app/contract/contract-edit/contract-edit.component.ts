@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
 import { ActivatedRoute } from '@angular/router';
+import { Employer } from 'src/app/core/models/employer.model';
 
 @Component({
 	selector: 'app-contract-edit',
@@ -42,6 +43,7 @@ export class ContractEditComponent implements OnInit {
 	submitet: boolean = false;
 	businessList: BusinessList[] = [];
 	employeeList: Employee[] = [];
+	employerList: Employer [] = [];
 	contractTemplatelist: contractTemplate[];
 	contractConditionlist: contractConditions[] = [];
 	contractExtraFieldList: contractExtraField[];
@@ -71,6 +73,7 @@ export class ContractEditComponent implements OnInit {
 			business_id: ['', Validators.compose([Validators.required])],
 			contract_condition_id: [''],
 			employee_ids: [[], Validators.compose([Validators.required])],
+			employer_ids: [[], Validators.compose([Validators.required])],
 			business_employee_ids: [[], Validators.compose([Validators.required])],
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
@@ -176,7 +179,6 @@ export class ContractEditComponent implements OnInit {
 
 	addCondition() {
 
-
 		if (this.contractsForm.value.contract_condition_id.length) {
 			this.contractsForm.value.contract_condition_id.map((item: number) => {
 				const condition = _.find(this.contractConditionlist, { id: item });
@@ -220,11 +222,11 @@ export class ContractEditComponent implements OnInit {
 
 			this.contractsForm.get('contract_condition_id').setValue(contract_proviso_id);
 
-			const employees: number[] = this.dataList.employee_info.map((x: any) => {
-				return x.business_employee_id;
-			});
-			console.log(employees);
+			const employees: number[] = this.dataList.employee_info.map((x: any) => {return x.business_employee_id;});
 			this.contractsForm.get('business_employee_ids').setValue(employees);
+
+			const employers: number[] = this.dataList.employers_info.map((x: any) => {return x.id;});
+			this.contractsForm.get('employer_ids').setValue(employers);
 
 			this.contractsForm.get('contract_template_id').setValue(this.dataList.contract_template_id);
 			this.contractsForm.get('main_text').setValue(this.dataList.main_text);
@@ -324,27 +326,16 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	async GetEmployee() {
-		if (this.contractsForm.value.business_id) {
-			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('employee/filteredList', {
-				limit: 1000,
-				offset: 0,
-				business_id: this.contractsForm.value.business_id,
-			}).subscribe(async (res: any) => {
-				await this.global.dismisLoading();
-				this.employeeList = res.list.map((item: any) => {
-					return new Employee().deserialize(item);
-				});
 
-				console.log(this.employeeList);
+		const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
 
-			}, async (error: any) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-			});
-		} else {
-			this.employeeList = [];
-		}
+		const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
+
+		 this.global.parallelRequest([employerReq, employeeReq])
+		.subscribe(async ([employer = '', employee = '']) => {
+			this.employeeLists(employee);
+			this.employerLists(employer);
+		});
 
 	}
 
@@ -408,6 +399,17 @@ export class ContractEditComponent implements OnInit {
 	}
 
 
+	employerLists(data: any){
+		this.employerList = data.employers.map((item: any) => {
+			return new Employer().deserialize(item);
+		});
+   }
+
+   employeeLists(data: any){
+		this.employeeList = data.list.map((item: any) => {
+			return new Employee().deserialize(item);
+		});
+   }
 
 	async CalculationField() {
 

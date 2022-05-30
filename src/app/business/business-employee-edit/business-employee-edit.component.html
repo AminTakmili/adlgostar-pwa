@@ -143,6 +143,198 @@
 							</div>
 						</div>
 					</div>
+					<!-- اطلاعات ضامن -->
+					<div formArrayName="guarantors" class="col-md-12">
+						<!-- title -->
+						<div *ngFor="let item of guarantorsFormGroup.controls ; let i = index" [formGroupName]="i">
+							<div class="row justify-content-between align-items-center">
+								<div class="col-12" *ngIf="i"><hr></div>
+								<div class="col-9">
+									<div class="title-1">
+										<h2 class="title"> اطلاعات  ضامن  {{ i + 1 }}</h2>
+									</div>
+								</div>
+								<div class="col-auto" *ngIf="i">
+									<ion-buttons>
+										<ion-button (click)="removeGuarantors(i)" color="danger">
+											<ion-icon slot="icon-only" name="trash"></ion-icon>
+										</ion-button>
+									</ion-buttons>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>نام ضامن</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('first_name')" [controlName]="'نام ضامن'"></app-validator>
+										</span>
+										<span class="hint">مثلا میلاد</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>نام خانوادگی ضامن</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="last_name"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('last_name')" [controlName]="'نام خانوادگی ضامن'"></app-validator>
+										</span>
+										<span class="hint">مثلا محمدی</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>کد ملی ضامن</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="national_code"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('national_code')" [controlName]="'کد ملی ضامن'"></app-validator>
+										</span>
+										<span class="hint">کد ملی یک عدد 10 رقمی است .</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>شماره همراه ضامن</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="mobile"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('mobile')" [controlName]="'شماره همراه ضامن'"></app-validator>
+										</span>
+										<span class="hint">شماره همراه 11 رقمی و با 09 شروع می شود</span>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p> آیا ضامن دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherGuarantors()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن ضامن دیگر
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
+					<!-- اطلاعات چک -->
+					<div formArrayName="cheques" class="col-md-12">
+						<!-- title -->
+						<div *ngFor="let item of chequesFormGroup.controls ; let i = index" [formGroupName]="i">
+							<div class="row justify-content-between align-items-center">
+								<div class="col-12" *ngIf="i"><hr></div>
+								<div class="col-9">
+									<div class="title-1">
+										<h2 class="title">اطلاعات چک {{ i + 1 }}</h2>
+									</div>
+								</div>
+								<div class="col-auto" *ngIf="i">
+									<ion-buttons>
+										<ion-button (click)="removeCheques(i)" color="danger">
+											<ion-icon slot="icon-only" name="trash"></ion-icon>
+										</ion-button>
+									</ion-buttons>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>شماره چک</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="number"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('number')" [controlName]="'شماره چک'"></app-validator>
+										</span>
+										<span class="hint">مثلا 1232352123</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>مبلغ (ریال)</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="amount"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('amount')" [controlName]="'مبلغ'"></app-validator>
+										</span>
+										<span class="hint"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p> آیا چک دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherCheques()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن چک دیگر
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
+					<!-- اطلاعات سفته -->
+					<div formArrayName="promissory_notes" class="col-md-12">
+						<div *ngFor="let item of promissorynotesFormGroup.controls ; let i = index" [formGroupName]="i">
+							<!-- title -->
+							<div class="row justify-content-between align-items-center">
+								<div class="col-12" *ngIf="i"><hr></div>
+								<div class="col-9">
+									<div class="title-1">
+										<h2 class="title">اطلاعات سفته {{ i + 1 }}</h2>
+									</div>
+								</div>
+								<div class="col-auto" *ngIf="i">
+									<ion-buttons>
+										<ion-button (click)="removePromissoryNotes(i)" color="danger">
+											<ion-icon slot="icon-only" name="trash"></ion-icon>
+										</ion-button>
+									</ion-buttons>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>شماره سفته</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="number"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('number')" [controlName]="'شماره سفته'"></app-validator>
+										</span>
+										<span class="hint">مثلا 1232352123</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>مبلغ (ریال)</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="amount"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('amount')" [controlName]="'مبلغ'"></app-validator>
+										</span>
+										<span class="hint"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p> آیا سفته دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherPromissoryNotes()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن سفته دیگر
+								</ion-button>
+							</div>
+						</div>
+					</div>
 					<div class="col-md-12">
 						<hr>
 					</div>

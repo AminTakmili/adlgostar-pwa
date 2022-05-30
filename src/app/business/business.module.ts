@@ -15,6 +15,7 @@ import { BusinessDetailComponent } from './business-detail/business-detail.compo
 import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-employee-add.component';
 import { BusinessImporterComponent } from './business-importer/business-importer.component';
 import { BusinessEmployeeEditComponent } from './business-employee-edit/business-employee-edit.component';
+import { BusinessEmployeeImporterComponent } from './business-employee-importer/business-employee-importer.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { BusinessEmployeeEditComponent } from './business-employee-edit/business
 		BusinessDetailComponent,
 		BussinesEmployeeAddComponent,
 		BusinessImporterComponent,
-		BusinessEmployeeEditComponent
+		BusinessEmployeeEditComponent,
+		BusinessEmployeeImporterComponent
 
 	]
 })

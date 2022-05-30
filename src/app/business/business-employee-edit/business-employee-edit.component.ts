@@ -20,7 +20,10 @@ export class BusinessEmployeeEditComponent implements OnInit {
 	postList: Post[];
 	businessId: string;
 
-	posts: FormArray ;
+	posts: FormArray;
+	guarantors: FormArray;
+	cheques: FormArray;
+	promissory_notes: FormArray;
 
 	constructor(
 		public global: GlobalService,
@@ -48,7 +51,9 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		});
 
 		this.posts = this.editForm.get('posts') as FormArray;
-
+		this.guarantors = this.editForm.get('guarantors') as FormArray;
+		this.cheques = this.editForm.get('cheques') as FormArray;
+		this.promissory_notes = this.editForm.get('promissory_notes') as FormArray;
 
 		this.businessId = this.route.snapshot.paramMap.get('id');
 
@@ -64,12 +69,179 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			is_default: [isTrue],
 		})
 	}
-	exsistPosts(isTrue: boolean,postId :number): FormGroup {
+
+	addAnotherPost() {
+		this.posts.push(this.newPosts(false));
+	}
+
+	existPosts(isTrue: boolean, postId: number): FormGroup {
 		return this.fb.group({
 			post_id: [postId, Validators.compose([Validators.required])],
 			is_default: [isTrue],
 		})
 	}
+
+	removePost(index: number) {
+		this.global.showAlert('حذف پست',
+			'آیا برای حذف پست اطمینان دارید ؟ ',
+			[
+				{
+					text: 'خیر',
+					role: 'cancel'
+				},
+				{
+					text: 'بلی',
+					role: 'yes'
+				}
+			]).then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.posts.removeAt(index);
+					}
+				});
+			});
+	}
+	// guarantors
+	get guarantorsFormGroup(): FormArray {
+		return this.editForm.get('guarantors') as FormArray;
+	}
+
+	newGuarantors(): FormGroup {
+		return this.fb.group({
+			first_name: ['', Validators.compose([Validators.required])],
+			last_name: ['', Validators.compose([Validators.required])],
+			national_code: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
+			mobile: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
+		})
+	}
+
+	existGuarantors(first_name: string, last_name: string, national_code: number, mobile: string): FormGroup {
+		return this.fb.group({
+			first_name: [first_name, Validators.compose([Validators.required])],
+			last_name: [last_name, Validators.compose([Validators.required])],
+			national_code: [national_code, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
+			mobile: [mobile, Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
+		})
+	}
+
+	addAnotherGuarantors() {
+		this.guarantors.push(this.newGuarantors());
+	}
+
+	removeGuarantors(index: number) {
+		this.global.showAlert('حذف ضامن',
+			'آیا برای حذف ضامن اطمینان دارید ؟ ',
+			[
+				{
+					text: 'خیر',
+					role: 'cancel'
+				},
+				{
+					text: 'بلی',
+					role: 'yes'
+				}
+			]).then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.guarantors.removeAt(index);
+					}
+				});
+			});
+	}
+	// cheques
+	get chequesFormGroup(): FormArray {
+		return this.editForm.get('cheques') as FormArray;
+	}
+
+	newCheques(): FormGroup {
+		return this.fb.group({
+			number: ['', Validators.compose([Validators.required])],
+			amount: ['', Validators.compose([Validators.required])],
+		})
+	}
+
+	existCheques(number: string, amount: number): FormGroup {
+		return this.fb.group({
+			number: [number, Validators.compose([Validators.required])],
+			amount: [amount, Validators.compose([Validators.required])],
+		})
+	}
+
+	addAnotherCheques() {
+		this.cheques.push(this.newCheques());
+	}
+
+	removeCheques(index: number) {
+		this.global.showAlert('حذف چک',
+			'آیا برای حذف چک اطمینان دارید ؟ ',
+			[
+				{
+					text: 'خیر',
+					role: 'cancel'
+				},
+				{
+					text: 'بلی',
+					role: 'yes'
+				}
+			]).then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.cheques.removeAt(index);
+					}
+				});
+			});
+	}
+
+	// cheques
+	get promissorynotesFormGroup(): FormArray {
+		return this.editForm.get('promissory_notes') as FormArray;
+	}
+
+	newPromissoryNotes(): FormGroup {
+		return this.fb.group({
+			number: ['', Validators.compose([Validators.required])],
+			amount: ['', Validators.compose([Validators.required])],
+		})
+	}
+
+	existPromissoryNotes(number: string, amount: number): FormGroup {
+		return this.fb.group({
+			number: [number, Validators.compose([Validators.required])],
+			amount: [amount, Validators.compose([Validators.required])],
+		})
+	}
+
+	addAnotherPromissoryNotes() {
+		this.promissory_notes.push(this.newPromissoryNotes());
+	}
+
+	removePromissoryNotes(index: number) {
+		this.global.showAlert('حذف سفته',
+			'آیا برای حذف سفته اطمینان دارید ؟ ',
+			[
+				{
+					text: 'خیر',
+					role: 'cancel'
+				},
+				{
+					text: 'بلی',
+					role: 'yes'
+				}
+			]).then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.promissory_notes.removeAt(index);
+					}
+				});
+			});
+	}
+
+
+	//
 
 	ngOnInit() {
 		this.setTitle();
@@ -97,7 +269,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		}).subscribe(async (res: any) => {
 
 			await this.global.dismisLoading();
-			this.businessId = res.business_id ;
+			this.businessId = res.business_id;
 			this.editForm.get('business_id').setValue(res.business_id);
 			this.editForm.get('employee_id').setValue(res.employee_id);
 			this.editForm.get('specialty').setValue(res.specialty);
@@ -107,20 +279,42 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			this.editForm.get('work_place').setValue(res.work_place);
 			this.editForm.get('has_insurance').setValue(res.has_insurance);
 
-			if(res.posts && res.posts.length){
-				res.posts.map((item : any,index : number)=>{
-					this.posts.push(
-						this.exsistPosts(
-							( index===0 ? true : false) ,
-							item.id,
-						)
-					);
+			//posts
+			if (res.posts && res.posts.length !== 0) {
+				res.posts.map((item: any, index: number) => {
+					this.posts.push(this.existPosts((index === 0 ? true : false), item.id));
 				})
-			}else{
+			} else {
 				this.posts.push(this.newPosts(true));
 			}
 
-			console.log(this.posts);
+			//guarantors_info
+			if (res.guarantors_info && res.guarantors_info.length !== 0) {
+				res.guarantors_info.map((item: any) => {
+					this.guarantors.push(this.existGuarantors(item.first_name, item.last_name, item.national_code, item.mobile));
+				})
+			} else {
+				this.guarantors.push(this.newGuarantors());
+			}
+
+			//cheques_info
+			if (res.cheques_info && res.cheques_info.length !== 0) {
+				res.cheques_info.map((item: any) => {
+					this.cheques.push(this.existCheques(item.number, item.amount));
+				})
+			} else {
+				this.cheques.push(this.newCheques());
+			}
+			//promissory_notes_info
+			if (res.promissory_notes_info && res.promissory_notes_info.length !== 0) {
+				res.promissory_notes_info.map((item: any) => {
+					this.promissory_notes.push(this.existPromissoryNotes(item.number, item.amount));
+				})
+			} else {
+				this.promissory_notes.push(this.newPromissoryNotes());
+			}
+
+
 		}, async (error: any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);

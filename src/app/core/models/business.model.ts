@@ -45,7 +45,7 @@ export class BusinessList implements Deserializable {
 }
 export class Business implements Deserializable {
 	id !: number;
-	employer_id !: number;
+	employer_ids !: number[];
 	name !: string;
 	employer_type !: string;
 	registration_number !: string;
@@ -54,7 +54,7 @@ export class Business implements Deserializable {
 	business_category !: BusinessCategory;
 	createdAt !: string;
 	employees !: Employee[];
-	employer !: Employer;
+	employer !: Employer[];
 	addresses !: Address[];
 	deserialize(input: any): this {
 		if (input.employees && input.employees.length) {
@@ -68,7 +68,13 @@ export class Business implements Deserializable {
 			});
 		}
 		this.business_category = new BusinessCategory().deserialize(this.business_category);
-		this.employer = new Employer().deserialize(this.employer);
+
+		if (input.employers && input.employers.length) {
+			this.employer = input.employers.map((item: Address) => {
+				return new Employer().deserialize(item);
+			});
+		}
+		// this.employer = new Employer().deserialize(this.employer);
 		Object.assign(this, input);
 		return this;
 	}

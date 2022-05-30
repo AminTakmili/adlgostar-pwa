@@ -91,7 +91,6 @@
 						</td>
 						<td class="py-1">
 							<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.business_info.name }}</a></p>
-							<p class="my-1 font-size-12" ><a [routerLink]="['/employers/detail/',item.employer_info.id ] "><ion-icon name="person-circle"></ion-icon> {{ item.employer_info.first_name }} {{ item.employer_info.last_name }}</a></p>
 						</td>
 						<td>
 							<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>

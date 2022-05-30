@@ -46,7 +46,7 @@ export class BusinessEditComponent implements OnInit {
 
 		this.businessForm = this.fb.group({
 			business_id: ['', Validators.compose([Validators.required])],
-			employer_id: ['', Validators.compose([Validators.required])],
+			employer_ids: ['', Validators.compose([Validators.required])],
 			name: ['', Validators.compose([Validators.required])],
 			employer_type: ['', Validators.compose([Validators.required])],
 			registration_number: ['', Validators.compose([Validators.pattern("^[0-9]*$")])],
@@ -97,34 +97,35 @@ export class BusinessEditComponent implements OnInit {
 			this.dataList = new Business().deserialize(res);
 			console.log(this.dataList);
 
-			const address : FormGroup[] = this.dataList.addresses.map((item) => {
+			if(this.dataList.addresses && this.dataList.addresses.length){
+				this.dataList.addresses.map((item) => {
+					const formAddress = this.fb.group({
+						city_id: [item.city.id, Validators.compose([Validators.required])],
+						address: [item.address, Validators.compose([Validators.required])],
+						postal_code: [item.postal_code,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
+						phone: [item.phone,  Validators.compose([Validators.maxLength(11)])],
+					});
 
-				const formAddress = this.fb.group({
-					city_id: [item.city.id, Validators.compose([Validators.required])],
-					address: [item.address, Validators.compose([Validators.required])],
-					postal_code: [item.postal_code,  Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
-					phone: [item.phone,  Validators.compose([Validators.maxLength(11)])],
+					this.addresses.push(formAddress);
 				});
-				return formAddress
-			});
+			}else{
+				this.addresses.push(this.newAddresses())
+			}
 
+			const employer_ids : number[] = this.dataList.employer.map((item:any)=>{return item.id});
 
-
-			this.businessForm = this.fb.group({
-				business_id: [this.dataList.id, Validators.compose([Validators.required])],
-				employer_id: [this.dataList.employer.id, Validators.compose([Validators.required])],
-				name: [this.dataList.name, Validators.compose([Validators.required])],
-				employer_type: [this.dataList.employer_type, Validators.compose([Validators.required])],
-				registration_number: [this.dataList.registration_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
-				business_license_number: [this.dataList.business_license_number, Validators.compose([Validators.pattern("^[0-9]*$")])],
-				national_id: [this.dataList.national_id, Validators.compose([Validators.pattern("^[0-9]*$")])],
-				business_category_id: [this.dataList.business_category.id, Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])],
-				addresses: this.fb.array( address.length ? address : [this.newAddresses()] ),
-			});
+			this.businessForm.get('business_id').setValue(this.dataList.id);
+			this.businessForm.get('employer_ids').setValue(employer_ids);
+			this.businessForm.get('name').setValue(this.dataList.name);
+			this.businessForm.get('employer_type').setValue(this.dataList.employer_type);
+			this.businessForm.get('registration_number').setValue(this.dataList.registration_number);
+			this.businessForm.get('business_license_number').setValue(this.dataList.business_license_number);
+			this.businessForm.get('national_id').setValue(this.dataList.national_id);
+			this.businessForm.get('business_category_id').setValue(this.dataList.business_category.id);
 
 			this.addresses = this.businessForm.get('addresses') as FormArray;
-			// console.log(this.dataList);
-			// console.log(res:any);
+
+
 		}, async (error: any) => {
 			await this.global.dismisLoading();
 			this.global.showError(error);
@@ -137,15 +138,14 @@ export class BusinessEditComponent implements OnInit {
 		const businessCategory = this.global.httpPost('businessCategory/list', { limit: this.categoryLimit, offset: this.categoryoffSet });
 		const employerList = this.global.httpPost('employer/filteredList', { limit: 1000, offset: this.categoryoffSet });
 
-
 		this.global.parallelRequest([countries, businessCategory , employerList])
 			.subscribe(([countriesData, businessCategory  ='', employerRes = '']) => {
-
 				this.province = this.global.createCountry(countriesData);
 				this.setBussinessCategory(businessCategory);
 				this.employerList =  this.global.createEmployer(employerRes)
 			});
 	}
+
 	setTitle() {
 		this.seo.generateTags({
 			title: 'ویرایش کسب و کار ',
@@ -154,8 +154,6 @@ export class BusinessEditComponent implements OnInit {
 			isNoIndex: false,
 		});
 	}
-
-
 
 	setCountry(data : any) {
 		data[0].provinces.map((province: any) => {
@@ -168,12 +166,8 @@ export class BusinessEditComponent implements OnInit {
 				this.province.push(cities);
 			});
 		});
-		// this.province = data[0].provinces.map((province : any) => {
-		// 	return new provinces().deserialize(province);
-		// });
-		// console.log(this.province)
-
 	}
+
 	setBussinessCategory(data: any) {
 		data.list.map((category: any) => {
 			category.child.map((business: any) => {
