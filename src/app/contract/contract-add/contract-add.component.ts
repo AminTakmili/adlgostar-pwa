@@ -277,7 +277,7 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	employeeLists(data: any){
-		if(data.list || data.list.length){
+		if(data.list.length === 0){
 			this.employeeList = [];
 			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید');
 
@@ -359,8 +359,8 @@ export class ContractAddComponent implements OnInit {
 		this.businessEmpId.push(data.business_employee_info[0].id);
 		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
 		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
-		console.log(this.contractsForm.value.business_employee_ids);
-		console.log(this.childrenAllowancesList);
+		// console.log(this.contractsForm.value.business_employee_ids);
+		// console.log(this.childrenAllowancesList);
 	}
 
 	removeAlowences(event: any) {
@@ -368,12 +368,12 @@ export class ContractAddComponent implements OnInit {
 		this.businessEmpId.splice(event.index, 1);
 		this.childrenAllowancesList.controls.splice(event.index, 1);
 		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
-		console.log(this.contractsForm.value.business_employee_ids);
+		// console.log(this.contractsForm.value.business_employee_ids);
 	}
 
 	calcChildrenAllowance() {
 		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
-			console.log('calcChildrenAllowance');
+			// console.log('calcChildrenAllowance');
 			this.global.httpPost('contract/calculateChildrenAllowance', {
 				contract_year : this.contractsForm.value.contract_year,
 				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
