@@ -154,7 +154,7 @@
 										<h2 class="title"> اطلاعات  ضامن  {{ i + 1 }}</h2>
 									</div>
 								</div>
-								<div class="col-auto" *ngIf="i">
+								<div class="col-auto" >
 									<ion-buttons>
 										<ion-button (click)="removeGuarantors(i)" color="danger">
 											<ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -209,12 +209,13 @@
 						<!-- add another address -->
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-auto">
-								<p> آیا ضامن دیگری دارد</p>
+								<p *ngIf="guarantorsFormGroup.controls.length === 0"> آیا کارمند ضامن  دارد</p>
+								<p *ngIf="guarantorsFormGroup.controls.length !== 0"> آیا کارمند ضامن دیگری دارد</p>
 							</div>
 							<div class="col-auto">
 								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherGuarantors()">
 									<ion-icon slot="start" name="add"></ion-icon>
-									افزودن ضامن دیگر
+									افزودن ضامن
 								</ion-button>
 							</div>
 						</div>
@@ -233,7 +234,7 @@
 										<h2 class="title">اطلاعات چک {{ i + 1 }}</h2>
 									</div>
 								</div>
-								<div class="col-auto" *ngIf="i">
+								<div class="col-auto" >
 									<ion-buttons>
 										<ion-button (click)="removeCheques(i)" color="danger">
 											<ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -267,12 +268,13 @@
 						<!-- add another address -->
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-auto">
-								<p> آیا چک دیگری دارد</p>
+								<p *ngIf="chequesFormGroup.controls.length === 0"> آیا کارمند چک دارد</p>
+								<p *ngIf="chequesFormGroup.controls.length !== 0"> آیا کارمند چک دیگری دارد</p>
 							</div>
 							<div class="col-auto">
 								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherCheques()">
 									<ion-icon slot="start" name="add"></ion-icon>
-									افزودن چک دیگر
+									افزودن چک
 								</ion-button>
 							</div>
 						</div>
@@ -291,7 +293,7 @@
 										<h2 class="title">اطلاعات سفته {{ i + 1 }}</h2>
 									</div>
 								</div>
-								<div class="col-auto" *ngIf="i">
+								<div class="col-auto" >
 									<ion-buttons>
 										<ion-button (click)="removePromissoryNotes(i)" color="danger">
 											<ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -325,12 +327,13 @@
 						<!-- add another address -->
 						<div class="row ion-justify-content-between ion-align-items-center">
 							<div class="col-auto">
-								<p> آیا سفته دیگری دارد</p>
+								<p *ngIf="promissorynotesFormGroup.controls.length === 0"> آیا کارمند سفته دارد</p>
+								<p *ngIf="promissorynotesFormGroup.controls.length !== 0"> آیا کارمند سفته دیگری دارد</p>
 							</div>
 							<div class="col-auto">
 								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherPromissoryNotes()">
 									<ion-icon slot="start" name="add"></ion-icon>
-									افزودن سفته دیگر
+									افزودن سفته
 								</ion-button>
 							</div>
 						</div>

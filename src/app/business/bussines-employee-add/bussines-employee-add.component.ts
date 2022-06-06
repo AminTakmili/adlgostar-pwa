@@ -43,9 +43,9 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			work_place: ['', Validators.compose([Validators.required ])],
 			has_insurance: [false, Validators.compose([Validators.required ])],
 			posts: this.fb.array([this.newPosts(true)]),
-			guarantors: this.fb.array([this.newGuarantors()]),
-			cheques: this.fb.array([this.newCheques()]),
-			promissory_notes : this.fb.array([this.newPromissoryNotes()]),
+			guarantors: this.fb.array([]),
+			cheques: this.fb.array([]),
+			promissory_notes : this.fb.array([]),
 		});
 
 		this.posts = this.addForm.get('posts') as FormArray;

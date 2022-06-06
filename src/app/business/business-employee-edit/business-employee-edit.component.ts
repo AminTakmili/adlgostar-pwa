@@ -294,7 +294,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 					this.guarantors.push(this.existGuarantors(item.first_name, item.last_name, item.national_code, item.mobile));
 				})
 			} else {
-				this.guarantors.push(this.newGuarantors());
+				// this.guarantors.push(this.newGuarantors());
 			}
 
 			//cheques_info
@@ -303,7 +303,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 					this.cheques.push(this.existCheques(item.number, item.amount));
 				})
 			} else {
-				this.cheques.push(this.newCheques());
+				// this.cheques.push(this.newCheques());
 			}
 			//promissory_notes_info
 			if (res.promissory_notes_info && res.promissory_notes_info.length !== 0) {
@@ -311,7 +311,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 					this.promissory_notes.push(this.existPromissoryNotes(item.number, item.amount));
 				})
 			} else {
-				this.promissory_notes.push(this.newPromissoryNotes());
+				// this.promissory_notes.push(this.newPromissoryNotes());
 			}
 
 
