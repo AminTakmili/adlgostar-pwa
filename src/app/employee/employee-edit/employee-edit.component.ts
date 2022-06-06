@@ -142,7 +142,7 @@ export class EmployeeEditComponent implements OnInit {
 				this.fb.group({
 					id: [this.dataList.bankInformation.id],
 					name: [this.dataList.bankInformation.name,Validators.compose([Validators.required])],
-					branch_name: [this.dataList.bankInformation.branch_name, Validators.compose([Validators.required])],
+					branch_name: [this.dataList.bankInformation.branch_name],
 					account_number: [this.dataList.bankInformation.account_number],
 					card_number: [this.dataList.bankInformation.card_number,Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 					iban_number: [this.dataList.bankInformation.iban_number,Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],

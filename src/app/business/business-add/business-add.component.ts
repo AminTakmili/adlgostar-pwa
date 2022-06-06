@@ -6,6 +6,7 @@ import { businessClass } from 'src/app/core/classes/business.class';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-business-add',
@@ -33,7 +34,8 @@ export class BusinessAddComponent implements OnInit {
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private router: Router
 	) {
 		this.businessForm = this.fb.group({
 			employer_ids: [ [], Validators.compose([Validators.required])],
@@ -149,19 +151,22 @@ export class BusinessAddComponent implements OnInit {
 		{
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('business/add', this.businessForm.value)
-			.subscribe(async (res:any) => {
+				.subscribe(async (res:any) => {
 
-				await this.global.dismisLoading();
-				// console.log(res:any);
-				if(!AddAnOther){
-					this.navCtrl.navigateForward('/businesses');
-				}
-				this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
-				this.businessForm.reset();
-			}, async (error:any) => {
-				await this.global.dismisLoading();
-				this.global.showError(error);
-			});
+					await this.global.dismisLoading();
+					// console.log(res:any);
+					this.global.showToast('کسب و کار جدید با نام ' + this.businessForm.value.name + ' ثبت شد .');
+					this.businessForm.reset();
+					if(!AddAnOther){
+						this.navCtrl.navigateForward('/businesses');
+					}else{
+						location.reload();
+					}
+
+				}, async (error:any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				});
 		}
 	}
 
@@ -169,5 +174,7 @@ export class BusinessAddComponent implements OnInit {
 	checkControll(item : any){
 		console.log(item.controls.address);
 	}
+
+
 
 }

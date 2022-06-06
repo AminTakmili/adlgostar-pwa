@@ -550,8 +550,12 @@
 							پیش نمایش
 						</ion-button>
 					</div>
+					<div class="col-lg-3" *ngIf="step === 5">
+						<ion-button   type="button" (click)="onSubmit(true)" expand="block" color="success" fill="solid" shape="round">ثبت و ثبت جدید</ion-button>
+					</div>
 					<div class="col-lg-3">
 						<ion-button  *ngIf="step !== 5" type="button" (click)="NextStep()" expand="block" color="success" fill="solid" shape="round">ثبت و ادامه</ion-button>
+
 						<ion-button  *ngIf="step === 5" type="submit" expand="block" color="success" fill="solid" shape="round">ثبت کارمند</ion-button>
 					</div>
 				</div>

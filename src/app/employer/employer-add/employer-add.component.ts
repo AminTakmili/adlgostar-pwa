@@ -90,7 +90,7 @@ export class EmployerAddComponent implements OnInit {
 
 
 
-	async onSubmit() {
+	async onSubmit(AddAnOther : boolean = false) {
 
 		this.addForm.markAllAsTouched();
 		console.log(this.addForm)
@@ -101,9 +101,10 @@ export class EmployerAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/employers');
+
 					this.global.showToast('کارفرما با نام ' + this.addForm.value.first_name + ' ' + this.addForm.value.last_name + ' ثبت شد .');
 					this.addForm.reset();
+					if(!AddAnOther){this.navCtrl.navigateForward('/employers');}else{location.reload();}
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
