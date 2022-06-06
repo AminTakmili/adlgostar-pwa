@@ -141,7 +141,7 @@ export class EmployeeAddComponent implements OnInit {
 	bank_information(): FormGroup {
 		return this.fb.group({
 			id: ['', Validators.compose([Validators.required])],
-			branch_name: ['', Validators.compose([Validators.required])],
+			branch_name: [''],
 			account_number: ['', ],
 			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
@@ -252,7 +252,7 @@ export class EmployeeAddComponent implements OnInit {
 		}
 	}
 
-	async onSubmit() {
+	async onSubmit(AddAnOther : boolean = false) {
 
 		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
@@ -262,9 +262,13 @@ export class EmployeeAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.navCtrl.navigateForward('/employees');
 					this.global.showToast('کارمند با نام ' + this.employeeForm.value.first_name + ' ' + this.employeeForm.value.last_name + ' ثبت شد .');
 					this.employeeForm.reset();
+					if(!AddAnOther){
+					this.navCtrl.navigateForward('/employees');
+					}else{
+						location.reload();
+					}
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
