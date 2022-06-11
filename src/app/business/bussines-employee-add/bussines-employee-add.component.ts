@@ -24,6 +24,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 	guarantors: FormArray;
 	cheques: FormArray;
 	promissory_notes: FormArray;
+	agreed_arbitrators: FormArray;
 
 	constructor(
 		public global: GlobalService,
@@ -46,12 +47,15 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			guarantors: this.fb.array([]),
 			cheques: this.fb.array([]),
 			promissory_notes : this.fb.array([]),
+			agreed_arbitrators : this.fb.array([]),
 		});
 
 		this.posts = this.addForm.get('posts') as FormArray;
 		this.guarantors = this.addForm.get('guarantors') as FormArray;
 		this.cheques = this.addForm.get('cheques') as FormArray;
 		this.promissory_notes = this.addForm.get('promissory_notes') as FormArray;
+		this.agreed_arbitrators = this.addForm.get('agreed_arbitrators') as FormArray;
+
 		this.businessId = this.route.snapshot.paramMap.get('id');
 	}
 
@@ -127,6 +131,45 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			alert.onDidDismiss().then(async (e: any) => {
 				if (e.role === 'yes') {
 					this.guarantors.removeAt(index);
+				}
+			});
+		});
+	}
+	// داور مرضی الطرفین
+	get agreedArbitratorsFormGroup(): FormArray {
+		return this.addForm.get('agreed_arbitrators') as FormArray;
+	}
+
+	newaGreedArbitrators(): FormGroup {
+		return this.fb.group({
+			first_name: ['', Validators.compose([Validators.required])],
+			last_name: ['', Validators.compose([Validators.required])],
+			national_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			mobile: ['', Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
+		})
+	}
+
+	addAnotherAgreedArbitrators(){
+		this.agreed_arbitrators.push(this.newaGreedArbitrators());
+	}
+
+	removeAgreedArbitrators(index : number){
+		this.global.showAlert('حذف داور مرضی الطرفینداور مرضی الطرفین',
+		'آیا برای حذف داور مرضی الطرفین اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.agreed_arbitrators.removeAt(index);
 				}
 			});
 		});
