@@ -143,6 +143,9 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
 					<!-- اطلاعات ضامن -->
 					<div formArrayName="guarantors" class="col-md-12">
 						<!-- title -->
@@ -223,6 +226,87 @@
 					<div class="col-md-12">
 						<hr>
 					</div>
+					<!-- اطلاعات داور مرضی الطرفین -->
+					<div formArrayName="agreed_arbitrators" class="col-md-12">
+						<!-- title -->
+						<div *ngFor="let item of agreedArbitratorsFormGroup.controls ; let i = index" [formGroupName]="i">
+							<div class="row justify-content-between align-items-center">
+								<div class="col-12" *ngIf="i"><hr></div>
+								<div class="col-9">
+									<div class="title-1">
+										<h2 class="title"> اطلاعات  داور مرضی الطرفین  {{ i + 1 }}</h2>
+									</div>
+								</div>
+								<div class="col-auto" >
+									<ion-buttons>
+										<ion-button (click)="removeAgreedArbitrators(i)" color="danger">
+											<ion-icon slot="icon-only" name="trash"></ion-icon>
+										</ion-button>
+									</ion-buttons>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>نام داور مرضی الطرفین</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="first_name"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('first_name')" [controlName]="'نام داور مرضی الطرفین'"></app-validator>
+										</span>
+										<span class="hint">مثلا میلاد</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>نام خانوادگی داور مرضی الطرفین</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="last_name"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('last_name')" [controlName]="'نام خانوادگی داور مرضی الطرفین'"></app-validator>
+										</span>
+										<span class="hint">مثلا محمدی</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>کد ملی داور مرضی الطرفین</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="national_code"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('national_code')" [controlName]="'کد ملی داور مرضی الطرفین'"></app-validator>
+										</span>
+										<span class="hint">کد ملی یک عدد 10 رقمی است .</span>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-input mb-3">
+										<label>شماره همراه داور مرضی الطرفین</label>
+										<ion-input type="text" autocomplete="new-pass" formControlName="mobile"></ion-input>
+										<span class="error">
+											<app-validator [control]="item.get('mobile')" [controlName]="'شماره همراه داور مرضی الطرفین'"></app-validator>
+										</span>
+										<span class="hint">شماره همراه 11 رقمی و با 09 شروع می شود</span>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<!-- add another address -->
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p *ngIf="agreedArbitratorsFormGroup.controls.length === 0"> آیا کارمند داور مرضی الطرفین  دارد</p>
+								<p *ngIf="agreedArbitratorsFormGroup.controls.length !== 0"> آیا کارمند داور مرضی الطرفین دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherAgreedArbitrators()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن داور مرضی الطرفین
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<hr>
+					</div>
+
 					<!-- اطلاعات چک -->
 					<div formArrayName="cheques" class="col-md-12">
 						<!-- title -->
