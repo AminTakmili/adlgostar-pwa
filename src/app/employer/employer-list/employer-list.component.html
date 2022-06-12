@@ -73,7 +73,7 @@
 							*ngFor="let item of dataList  | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td>
-								<ion-item lines="none" class="item-transparent">
+								<ion-item lines="none"  [routerLink]="['detail', item.id]" class="item-transparent">
 									<ion-avatar slot="start">
 										<ion-img
 											[src]=" item?.media[0]?.path ? ( item?.media[0]?.options?.subSizes['1x'] | image ) : './assets/img/employer-img.png' ">
