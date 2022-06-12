@@ -78,7 +78,7 @@ export class ContractEditComponent implements OnInit {
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
 			end_text: [''],
-			employee_start_date: [, Validators.compose([Validators.required])],
+			// employee_start_date: [, Validators.compose([Validators.required])],
 			start_date: [, Validators.compose([Validators.required])],
 			end_date: [, Validators.compose([Validators.required])],
 			contract_year: ['', Validators.compose([Validators.required])],
@@ -233,7 +233,7 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('end_text').setValue(this.dataList.end_text);
 
 
-			this.contractsForm.get('employee_start_date').setValue(this.dataList.employee_start_date);
+			// this.contractsForm.get('employee_start_date').setValue(this.dataList.employee_start_date);
 			this.contractsForm.get('start_date').setValue(this.dataList.start_date);
 			this.contractsForm.get('end_date').setValue(this.dataList.end_date);
 

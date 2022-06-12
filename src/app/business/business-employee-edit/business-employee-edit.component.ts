@@ -43,6 +43,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			work_hours_in_day: ['', Validators.compose([Validators.required])],
 			work_hours_in_night: [''],
 			work_place: ['', Validators.compose([Validators.required])],
+			employee_start_date: ['', Validators.compose([Validators.required])],
 			has_insurance: [false, Validators.compose([Validators.required])],
 			posts: this.fb.array([]),
 			guarantors: this.fb.array([]),
@@ -329,6 +330,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			this.editForm.get('work_hours_in_night').setValue(res.work_hours_in_night);
 			this.editForm.get('work_place').setValue(res.work_place);
 			this.editForm.get('has_insurance').setValue(res.has_insurance);
+			this.editForm.get('employee_start_date').setValue(res.employee_start_date);
 
 			//posts
 			if (res.posts && res.posts.length !== 0) {

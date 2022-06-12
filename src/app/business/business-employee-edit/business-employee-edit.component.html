@@ -37,6 +37,19 @@
 							<span class="hint">مثلا حمید رضا ثابت</span>
 						</div>
 					</div>
+					<!-- زمان شروع به کار -->
+					<div class="col-lg-6">
+						<div class="form-input mb-3">
+							<label>زمان شروع به کار</label>
+							<ng-persian-datepicker   [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text"   formControlName="employee_start_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="editForm.controls['employee_start_date']" [controlName]="'زمان شروع به کار'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
 					<!-- درصد افزایش نسبت به سال قبل -->
 					<div class="col-md-6">
 						<div class="form-input mb-3">

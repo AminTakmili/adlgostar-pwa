@@ -71,7 +71,7 @@ export class ContractAddComponent implements OnInit {
 			contract_template_id: ['', Validators.compose([Validators.required])],
 			main_text: ['', Validators.compose([Validators.required])],
 			end_text: [''],
-			employee_start_date: ['', Validators.compose([Validators.required])],
+			// employee_start_date: ['', Validators.compose([Validators.required])],
 			start_date: ['', Validators.compose([Validators.required])],
 			end_date: ['', Validators.compose([Validators.required])],
 			contract_year: ['', Validators.compose([Validators.required])],

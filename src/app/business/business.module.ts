@@ -16,6 +16,7 @@ import { BussinesEmployeeAddComponent } from './bussines-employee-add/bussines-e
 import { BusinessImporterComponent } from './business-importer/business-importer.component';
 import { BusinessEmployeeEditComponent } from './business-employee-edit/business-employee-edit.component';
 import { BusinessEmployeeImporterComponent } from './business-employee-importer/business-employee-importer.component';
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { BusinessEmployeeImporterComponent } from './business-employee-importer/
 		ShareModulePageModule,
 		NgSelectModule,
 		ReactiveFormsModule,
-		NgxPaginationModule
+		NgxPaginationModule,
+		NgPersianDatepickerModule
 	],
 	declarations: [
 		BusinessListComponent,
