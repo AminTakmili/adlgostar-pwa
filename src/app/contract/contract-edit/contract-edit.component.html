@@ -443,7 +443,22 @@
 								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="is_manual" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
+
 						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه مرخصی استفاده نشده</ion-label>
+								<ion-toggle color="success" formControlName="calc_monthly_unused_leave"    slot="start"></ion-toggle>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه مالیات بر حقوق</ion-label>
+								<ion-toggle color="success" formControlName="calc_payroll_tax"   slot="start"></ion-toggle>
+							</ion-item>
+						</ion-card>
+								<!--  -->
 						<ion-button  *ngIf="!this.contractsForm.get('is_manual').value" (click)="CalculationField()" expand="block" color="primary" fill="outline" >محاسبه مجدد</ion-button>
 					</div>
 				</div>

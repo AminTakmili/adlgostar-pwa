@@ -53,6 +53,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">عنوان</th>
+							<th scope="col">شناسه کسب و کار</th>
 							<th scope="col">دسته بندی</th>
 							<th scope="col">تاریخ ثبت</th>
 							<th class="ion-text-left" scope="col"></th>
@@ -63,6 +64,7 @@
 							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td>{{ item.name }}</td>
+							<td>{{ item.id }}</td>
 							<td>{{ item.category }}</td>
 							<td>{{ item.createdAt }}</td>
 							<td scope="col-1">
