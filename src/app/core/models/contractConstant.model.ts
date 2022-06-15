@@ -85,7 +85,7 @@ export class contract implements Deserializable {
 	is_hourly_contract !: boolean;
 	is_manual !: boolean;
 	calc_payroll_tax !: boolean;
-	calc_monthly_unused_leave !: boolean;
+	calc_unused_leave_monthly !: boolean;
 	provisos !: ConditionInContract[];
 	extra_fields !: ContractExtraField[];
 	employers_info !:  Employer[];
