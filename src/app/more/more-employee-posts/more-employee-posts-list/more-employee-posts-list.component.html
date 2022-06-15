@@ -27,11 +27,16 @@
 		<div class="container">
 			<!-- search and title -->
 			<div class="row mt-4">
-				<div class="col-md-12 mb-3">
+				<div class="col-md-8 mb-3">
 					<div class="title-1">
 						<h2 class="title">لیست {{ pageTitle }}</h2>
-						<p class="dsec">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-							گرافیک است</p>
+
+					</div>
+				</div>
+				<div class="col-md-4">
+					<!-- search -->
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="getData()" placeholder="جستجو"></ion-searchbar>
 					</div>
 				</div>
 			</div>
@@ -42,6 +47,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">نام</th>
+							<th scope="col">شناسه پست</th>
 							<th scope="col">تاریخ ایجاد</th>
 							<th scope="col">تاریخ آخرین ویرایش</th>
 							<th class="ion-text-left" scope="col"></th>
@@ -52,6 +58,7 @@
 							*ngFor="let item of dataList  | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td>{{ item.name }}</td>
+							<td>{{ item.id }}</td>
 							<td>{{ item.createdAt }}</td>
 							<td>{{ item.updatedAt }}</td>
 							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->

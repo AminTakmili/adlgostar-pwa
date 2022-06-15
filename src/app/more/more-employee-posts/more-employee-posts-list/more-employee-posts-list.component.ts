@@ -20,7 +20,8 @@ export class MoreEmployeePostsListComponent implements OnInit {
 	end = false;
 	Searching = 0;
 	dataList: Post[];
-	dataInSearch: boolean = false
+	dataInSearch: boolean = false;
+	filtered_name:string;
 
 
 
@@ -52,9 +53,10 @@ export class MoreEmployeePostsListComponent implements OnInit {
 
 		this.dataInSearch = name ? true : false;
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('post/list', {
+		this.global.httpPost('post/filteredList', {
 			limit: this.limit,
 			offset: this.offset,
+			filtered_name: this.filtered_name,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
