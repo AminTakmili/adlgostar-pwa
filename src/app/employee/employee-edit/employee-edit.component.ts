@@ -141,7 +141,7 @@ export class EmployeeEditComponent implements OnInit {
 			const bankInformation: FormGroup[] = [
 				this.fb.group({
 					id: [this.dataList.bankInformation.id],
-					name: [this.dataList.bankInformation.name,Validators.compose([Validators.required])],
+					// name: [this.dataList.bankInformation.name,Validators.compose([Validators.required])],
 					branch_name: [this.dataList.bankInformation.branch_name],
 					account_number: [this.dataList.bankInformation.account_number],
 					card_number: [this.dataList.bankInformation.card_number,Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
@@ -240,7 +240,7 @@ export class EmployeeEditComponent implements OnInit {
 
 	bank_information(): FormGroup {
 		return this.fb.group({
-			name: ['', Validators.compose([Validators.required])],
+			id: ['', Validators.compose([Validators.required])],
 			branch_name: ['', Validators.compose([Validators.required])],
 			account_number: ['', ],
 			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
@@ -351,6 +351,7 @@ export class EmployeeEditComponent implements OnInit {
 	async onSubmit() {
 
 		this.employeeForm.markAllAsTouched();
+		console.log(this.employeeForm);
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('employee/edit', this.employeeForm.value)
@@ -371,6 +372,7 @@ export class EmployeeEditComponent implements OnInit {
 			setTimeout(() => {
 				this.validation.forEach((elem : any)=>{
 					if(elem.text){
+						console.log(elem.text.el.innerText);
 						errors.push('<li class="font-size-14 color-danger">'+elem.text.el.innerText+'</li>');
 					}
 				});

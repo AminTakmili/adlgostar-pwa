@@ -84,7 +84,7 @@ export class ContractAddComponent implements OnInit {
 			food_cost: [0, Validators.compose([Validators.required])],
 			pension_cost: [0, Validators.compose([Validators.required])],
 			calc_payroll_tax: [0, Validators.compose([Validators.required])],
-			calc_monthly_unused_leave: [0, Validators.compose([Validators.required])],
+			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
 			calc_severance_base: [true],
 			calc_severance_pay_monthly: [true],
 			calc_bonus_monthly: [true],
