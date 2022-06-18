@@ -38,7 +38,6 @@ export class ContractListComponent implements OnInit {
 	empoloyerList: Employer[] = [];
 	employeeList: Employee[] = [];
 
-
 	@ViewChildren('searchInp') Search: IonInput;
 
 	constructor(
@@ -118,7 +117,6 @@ export class ContractListComponent implements OnInit {
 		this.businessList = data.list.map((item: any) => {
 			return new BusinessList().deserialize(item);
 		});
-		// console.log(this.businessList);
 	}
 	CreateEmployer(data: any) {
 		this.empoloyerList = data.list.map((item: any) => {
