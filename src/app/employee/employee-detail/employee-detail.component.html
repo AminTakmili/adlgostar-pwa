@@ -1,7 +1,6 @@
 <ion-header>
 	<app-header [title]="pageTitle"></app-header>
 </ion-header>
-
 <ion-content *ngIf="Employee">
 	<!-- top bar content -->
 	<div class="content-header">
@@ -72,17 +71,15 @@
 										<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
 										<td class="ion-text-left">
 											<ion-buttons class="justify-content-end">
-												<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="حذف">
+												<ion-button fill="clear" class="px-0 mx-0 tooltip-show"  tooltip="حذف" *ngIf="global.userPermision['contract_delete']" (click)="removeContractALert(contract,businessemployee.id)">
 													<ion-icon size="small" color="medium" slot="icon-only" name="trash"></ion-icon>
 												</ion-button>
-												<ion-button fill="clear" [routerLink]="['edit', contract.id]"
-													class="px-0 mx-0 tooltip-show" tooltip="ویرایش">
+												<ion-button fill="clear" [routerLink]="['/contracts/edit', contract.id]" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_edit']">
 													<ion-icon size="small" color="medium" slot="icon-only"
 														name="build">
 													</ion-icon>
 												</ion-button>
-												<ion-button fill="clear" [routerLink]="['detail', contract.id]"
-													class="px-0 mx-0 tooltip-show" tooltip="جزییات">
+												<ion-button fill="clear" [routerLink]="['/contracts/detail', contract.id]" class="px-0 mx-0 tooltip-show" tooltip="جزییات" *ngIf="global.userPermision['contract_detail']">
 													<ion-icon size="small" color="medium" slot="icon-only"
 														name="search">
 													</ion-icon>
