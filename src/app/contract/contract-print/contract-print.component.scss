@@ -9,3 +9,8 @@
 .header-print ,.footer-print{
 	display: none;
 }
+.container-print *{
+	font-family: "IRANSans" !important;
+	font-size: 16px;
+	line-height: 30px;
+}

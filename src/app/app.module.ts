@@ -14,6 +14,7 @@ import { ShareModulePageModule } from './share-module/share-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { PipeModule } from './core/pipes/pipe.module';
 
 @NgModule({
 	declarations: [
@@ -36,7 +37,8 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 			name: '__adlgostar',
 			driverOrder: [Drivers.LocalStorage]
 		}),
-		ShareModulePageModule
+		ShareModulePageModule,
+		PipeModule
 	],
 	providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
 	bootstrap: [AppComponent],

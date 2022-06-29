@@ -22,6 +22,7 @@ import { ContractConditionsAddComponent } from './contract-conditions-add/contra
 import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { ContractPrintComponent } from './contract-print/contract-print.component';
+import { PipeModule } from '../core/pipes/pipe.module';
 
 
 
@@ -37,7 +38,8 @@ import { ContractPrintComponent } from './contract-print/contract-print.componen
 		NgSelectModule,
 		CKEditorModule,
 		NgPersianDatepickerModule,
-		ClipboardModule
+		ClipboardModule,
+		PipeModule
 
 
 	],
