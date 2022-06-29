@@ -273,7 +273,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 	getData(){
 
 		const employees = this.global.httpPost('employee/filteredList', { for_combo:true , limit: 1000, offset: 0 });
-		const posts = this.global.httpPost('post/list', { limit: 1000, offset: 0 });
+		const posts = this.global.httpPost('post/filteredList', { limit: 1000, offset: 0 });
 		this.global.parallelRequest([employees , posts])
 			.subscribe(([employeesRes , postsRes = '' ]) => {
 				this.employeesSet(employeesRes);
