@@ -14,6 +14,7 @@ import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { EmployerCardComponent } from './employer-card/employer-card.component';
 import { ImporterListComponent } from './importer-list/importer-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PipeModule } from '../core/pipes/pipe.module';
 
 
 
@@ -24,7 +25,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 		IonicModule,
 		RouterModule,
 		ReactiveFormsModule,
-		NgxPaginationModule
+		NgxPaginationModule,
+		PipeModule
 	],
 	declarations: [
 		SidebarComponent,

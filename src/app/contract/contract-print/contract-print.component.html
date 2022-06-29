@@ -23,9 +23,14 @@
 				</div>
 				<!-- قرار داد -->
 				<div class="col">
+					<ion-item lines="full">
+						<ion-checkbox slot="start" [(ngModel)]="contractBorder"></ion-checkbox>
+						<ion-label>پرینت قرار داد با هاشیه</ion-label>
+					</ion-item>
 					<ion-card class="my-4 mx-0" color="white">
 						<ion-card-content>
 							<div id="contract" #contract>
+								<div *ngIf="contractBorder" id="pageborder"></div>
 								<table>
 									<thead>
 										<th></th>
@@ -33,15 +38,17 @@
 									<tbody>
 										<td>
 											<div class="container-print">
-												<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
+												<div class="inner-html-dev" [innerHTML]="dataList?.main_text | safeHtml"></div>
 												<div *ngFor="let item of dataList?.provisos" class="inner-html-dev"
 													[innerHTML]="item.proviso_text"></div>
 												<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
 											</div>
+
 										</td>
 									</tbody>
 									<tfoot>
 										<td>
+
 											<footer class="footer-print">
 												<div class="row align-content-center justify-content-around">
 													<div class="col-auto my-5">امضاو اثر انگشت کارمند</div>
@@ -59,3 +66,4 @@
 		</div>
 	</section>
 </ion-content>
+<div></div>

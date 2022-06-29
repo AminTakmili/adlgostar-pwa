@@ -14,6 +14,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class ContractPrintComponent implements OnInit {
 
+	contractBorder : boolean = false;
 	pageTitle: string;
 	contractExtraFieldList: contractExtraField[];
 	dataList: contract;
@@ -81,15 +82,6 @@ export class ContractPrintComponent implements OnInit {
 
 	}
 
-	downloadPDF(id: string) {
 
-		const printContent = document.getElementById(id);
-		const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-		WindowPrt.document.write('<link rel="stylesheet" type="text/css" href="/assets/css/print.css" />');
-		WindowPrt.document.write(printContent.innerHTML);
-		WindowPrt.document.close();
-
-
-	}
 
 }
