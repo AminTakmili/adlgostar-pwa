@@ -17,6 +17,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 	rxTime = new Date();
 	intervalId : any;
 
+
+
 	constructor(
 		public global: GlobalService
 	) { }
@@ -38,15 +40,15 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 
 	async getData() {
 
-		await this.global.showLoading('لطفا منتظر بمانید...');
+		// await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpGet('dashboard/getCounts').subscribe(async (res: any) => {
 
 			this.data = new dashboard().deserialize(res);
 
-			await this.global.dismisLoading();
+			// await this.global.dismisLoading();
 
 		}, async (error: any) => {
-			await this.global.dismisLoading();
+			// await this.global.dismisLoading();
 			this.global.showError(error);
 		});
 
