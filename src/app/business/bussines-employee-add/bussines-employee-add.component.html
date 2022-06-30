@@ -26,8 +26,16 @@
 						<!-- مربوط به سال -->
 						<div class="form-input mb-3">
 							<label>انتخاب کارمند</label>
-							<ng-select [items]="employeelist" placeholder="انتخاب کنید" bindLabel="full_name"
-								bindValue="id" formControlName="employee_id">
+							<ng-select
+								[items]="employeelist$ | async"
+								placeholder="انتخاب کنید"
+								[loading]="inputLoading"
+								bindLabel="full_name"
+								bindValue="id"
+								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+								[typeahead]="employeeInput$"
+								formControlName="employee_id"
+							>
 							</ng-select>
 							<span class="error">
 								<app-validator [control]="addForm.controls['employee_id']"
