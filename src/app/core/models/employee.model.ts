@@ -35,6 +35,7 @@ export class Employee implements Deserializable {
 	militaryInformation !: military_information;
 	bankInformation !: bank_information;
 	deserialize(input: any): this {
+		Object.assign(this, input);
 
 		if (input.posts && input.posts.length) {
 			this.posts = input.posts.map((item: Post) => {
@@ -55,9 +56,9 @@ export class Employee implements Deserializable {
 			});
 		}
 
-		this.full_name = input.first_name+' '+input.last_name;
+		this.full_name = input.first_name.trim()+' '+input.last_name.trim();
 
-		Object.assign(this, input);
+
 		return this;
 	}
 }

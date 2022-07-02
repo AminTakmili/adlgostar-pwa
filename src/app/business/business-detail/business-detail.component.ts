@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Business } from 'src/app/core/models/business.model';
+import { Employee } from 'src/app/core/models/employee.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -15,6 +16,7 @@ export class BusinessDetailComponent implements OnInit {
 	pageTitle = "جزییات کسب و کار";
 	business : Business;
 	businessId;
+	businessEmployees : Employee[] = [];
 	constructor(
 		public global: GlobalService,
 		private seo: SeoService,
@@ -39,6 +41,7 @@ export class BusinessDetailComponent implements OnInit {
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.business = new Business().deserialize(res);
+			this.businessEmployees = this.business.employees;
 			this.setTitle();
 
 		}, async (error:any) => {
@@ -88,4 +91,12 @@ export class BusinessDetailComponent implements OnInit {
 		});
 	}
 
+	filterEmployee($event:any){
+		const searchTerm = $event.detail.value;
+		console.log(this.businessEmployees);
+		this.businessEmployees  = this.business.employees.filter(item => {
+            return item.full_name.indexOf(searchTerm) > -1;
+            // item.full_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+        });
+	}
 }

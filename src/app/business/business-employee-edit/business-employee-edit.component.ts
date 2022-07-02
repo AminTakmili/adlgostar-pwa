@@ -59,7 +59,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		this.promissory_notes = this.editForm.get('promissory_notes') as FormArray;
 		this.agreed_arbitrators = this.editForm.get('agreed_arbitrators') as FormArray;
 
-		this.businessId = this.route.snapshot.paramMap.get('id');
+		// this.businessId = this.route.snapshot.paramMap.get('id');
 
 	}
 
@@ -300,8 +300,8 @@ export class BusinessEmployeeEditComponent implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		this.getData();
 		this.getEmployeeData(this.route.snapshot.paramMap.get('id'));
+		this.getData();
 	}
 
 	setTitle() {
@@ -386,11 +386,11 @@ export class BusinessEmployeeEditComponent implements OnInit {
 
 	getData() {
 
-		const employees = this.global.httpPost('employee/filteredList', { for_combo: true, limit: 1000, offset: 0 });
-		const posts = this.global.httpPost('post/list', { limit: 1000, offset: 0 });
-		this.global.parallelRequest([employees, posts])
-			.subscribe(([employeesRes, postsRes = '']) => {
-				this.employeesSet(employeesRes);
+		// const employees = this.global.httpPost('employee/filteredList', { for_combo: true, limit: 1000, offset: 0 });
+		const posts = this.global.httpPost('post/filteredList', { limit: 1000, offset: 0 });
+		this.global.parallelRequest([posts])
+			.subscribe(([ postsRes = '']) => {
+				// this.employeesSet(employeesRes);
 				this.postsSet(postsRes);
 			});
 	}

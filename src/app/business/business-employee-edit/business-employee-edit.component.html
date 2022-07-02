@@ -13,7 +13,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-back-button [defaultHref]="'/businesses/detail/'+route.snapshot.paramMap.get('id')" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				<ion-back-button [defaultHref]="'/businesses/detail/'+businessId" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
 		</div>
@@ -24,7 +24,7 @@
 				<div class="row my-4">
 					<div class="col-md-12">
 						<!-- مربوط به سال -->
-						<div class="form-input mb-3">
+						<!-- <div class="form-input mb-3">
 							<label>انتخاب کارمند</label>
 							<ng-select [items]="employeelist" placeholder="انتخاب کنید" bindLabel="full_name"
 								bindValue="id" formControlName="employee_id">
@@ -35,7 +35,7 @@
 								</app-validator>
 							</span>
 							<span class="hint">مثلا حمید رضا ثابت</span>
-						</div>
+						</div> -->
 					</div>
 					<!-- زمان شروع به کار -->
 					<div class="col-lg-6">
