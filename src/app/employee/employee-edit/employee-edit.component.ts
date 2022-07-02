@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
@@ -203,6 +203,22 @@ export class EmployeeEditComponent implements OnInit {
 		});
 	}
 
+	
+	duplicate2(data:FormGroup|AbstractControl) {
+		console.log(data);
+		if(data.get('id').value){
+			data.get('card_number').setValidators([Validators.required, Validators.minLength(16),Validators.maxLength(16)]);
+			// data.get('card_number').setValue('123')
+			data.get('card_number').setValue('');
+			data.markAllAsTouched();
+		}else{
+			data.get('card_number').setValidators([Validators.minLength(16),Validators.maxLength(16)]);
+			// data.get('card_number').setValue('123')
+			data.get('card_number').setValue('');
+			data.markAllAsTouched();
+		}
+	}
+
 	addresses(): FormGroup {
 		return this.fb.group({
 			city_id: ['', Validators.compose([Validators.required])],
@@ -246,7 +262,7 @@ export class EmployeeEditComponent implements OnInit {
 			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
 			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
 
-		})
+		}) 
 	}
 
 	get bankInformationGroup(): FormArray {

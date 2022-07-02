@@ -371,6 +371,7 @@
 										bindLabel="name"
 										bindValue="id"
 										formControlName="id"
+										(change)="duplicate2(item);"
 									>
 									</ng-select>
 									<span class="error">
@@ -403,7 +404,7 @@
 							<div class="col-lg-6 ">
 								<div class="form-input mb-3">
 									<label>شماره کارت</label>
-									<ion-input  type="phone" (keypress)="global.justNumber($event)" autocomplete="new-pass" formControlName="card_number"></ion-input>
+									<ion-input  type="phone" (keypress)="global.justNumber($event)"  autocomplete="new-pass" formControlName="card_number"></ion-input>
 									<span class="error">
 										<app-validator #validation [control]="item.get('card_number')" [controlName]="'شماره کارت'"></app-validator>
 									</span>
