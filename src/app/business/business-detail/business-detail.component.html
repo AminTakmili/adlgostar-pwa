@@ -16,7 +16,8 @@
 			</div>
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
-					<ion-back-button defaultHref="/businesses" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'"></ion-back-button>
+					<ion-back-button defaultHref="/businesses" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
 					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت -->
 				</ion-button>
@@ -54,38 +55,47 @@
 			<div class="container">
 				<!-- title -->
 				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-auto">
+					<div class="col-md-4">
 						<div class="title-1">
 							<h2 class="title">کارمندان</h2>
 						</div>
 					</div>
-					<!-- <div class="col-md-4">
-						<div class="search-input-2">
-							<ion-searchbar enterkeyhint="" type="text" #SearchEmployee placeholder="جستجو در کارمندان">
-							</ion-searchbar>
-						</div>
-					</div> -->
-					<div class="col-auto">
+
+					<div class="col-lg-4 ion-text-left">
 						<!-- افزودن کارمند -->
-						<ion-button class="ml-3" shape="round" color="warning" [routerLink]="['/businesses/import-employee',business?.id]" *ngIf="global.userPermision['business_add-employee']">
+						<ion-button class="ml-3" shape="round" color="warning"
+							[routerLink]="['/businesses/import-employee',business?.id]"
+							*ngIf="global.userPermision['business_add-employee']">
 							<ion-icon slot="start" name="push"></ion-icon>
 							افزودن با اکسل
 						</ion-button>
-						<ion-button  shape="round" color="success" [routerLink]="['/businesses/add-employee',business?.id]" *ngIf="global.userPermision['business_add-employee']">
+						<ion-button shape="round" color="success"
+							[routerLink]="['/businesses/add-employee',business?.id]"
+							*ngIf="global.userPermision['business_add-employee']">
 							<ion-icon slot="start" name="add-circle"></ion-icon>
 							افزودن کارمند
 						</ion-button>
 					</div>
+					<div class="col-lg-4">
+						<div class="search-input-2">
+							<ion-searchbar enterkeyhint="" type="text" (ionChange)="filterEmployee($event)" debounce="500" placeholder="جستجو در کارمندان">
+							</ion-searchbar>
+						</div>
+					</div>
+
 				</div>
 				<hr>
 				<!-- list of employee -->
 				<div class="row" *ngIf="business?.employees">
-					<div  class="col-lg-6 mb-4" *ngFor="let item of business?.employees">
-						<app-employee-card  (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item" [businessId]="item.business_employee_id" [deleteId]="item.business_employee_id"></app-employee-card>
+					<div class="col-lg-6 mb-4" *ngFor="let item of businessEmployees ">
+						<app-employee-card (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item"
+							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id">
+						</app-employee-card>
 					</div>
 				</div>
 				<!--  -->
-				<div *ngIf="business?.employees && business?.employees.length === 0 " class="alert alert-warning my-3" role="alert">
+				<div *ngIf="business?.employees && business?.employees.length === 0 " class="alert alert-warning my-3"
+					role="alert">
 					<h4 class="title mb-0"> کارمندی برای نمایش یافت نشد </h4>
 
 				</div>

@@ -57,6 +57,7 @@ export class Business implements Deserializable {
 	employer !: Employer[];
 	addresses !: Address[];
 	deserialize(input: any): this {
+		Object.assign(this, input);
 		if (input.employees && input.employees.length) {
 			this.employees = input.employees.map((item: Employee) => {
 				return new Employee().deserialize(item);
@@ -75,7 +76,7 @@ export class Business implements Deserializable {
 			});
 		}
 		// this.employer = new Employer().deserialize(this.employer);
-		Object.assign(this, input);
+
 		return this;
 	}
 }
