@@ -46,6 +46,7 @@ export class ValidatorComponent implements OnInit {
 	chkError(errors: ValidationErrors) {
 		if (this.control.touched || this.control.dirty) {
 			if (errors !== null) {
+				// console.log(errors);
 				// tslint:disable-next-line: forin
 				for (const error in errors) {
 					switch (error) {

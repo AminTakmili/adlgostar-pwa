@@ -1,5 +1,5 @@
 import { asNativeElements, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
@@ -140,13 +140,50 @@ export class EmployeeAddComponent implements OnInit {
 
 	bank_information(): FormGroup {
 		return this.fb.group({
-			id: ['', Validators.compose([Validators.required])],
+			id: ['',],
 			branch_name: [''],
 			account_number: ['', ],
-			card_number: ['', Validators.compose([Validators.required,Validators.minLength(16),Validators.maxLength(16)])],
+			card_number: ['', Validators.compose([Validators.minLength(16),Validators.maxLength(16)])],
 			iban_number: ['', Validators.compose([Validators.minLength(24),Validators.maxLength(24)])],
 
 		})
+	}
+
+	duplicate2(data:FormGroup|AbstractControl) {
+		console.log(data);
+		if(data.get('id').value){
+			data.get('card_number').setValidators([Validators.required, Validators.minLength(16),Validators.maxLength(16)]);
+			// data.get('card_number').setValue('123')
+			data.get('card_number').setValue('');
+			data.markAllAsTouched();
+		}else{
+			data.get('card_number').setValidators([Validators.minLength(16),Validators.maxLength(16)]);
+			// data.get('card_number').setValue('123')
+			data.get('card_number').setValue('');
+			data.markAllAsTouched();
+		}
+	}
+	// duplicate(control: AbstractControl) {
+	// 		console.log(
+	// 		"amin",control.parent
+	// 		)
+	// 		console.log("changeID",control?.parent?.value?.id);
+	// 	if (control.parent && control.parent.value.id) {
+			
+	// 		control.parent.markAllAsTouched();
+	// 		control.parent.get('card_number').setValidators([Validators.required,Validators.minLength(16),Validators.maxLength(16)]);
+	// 		return { required: true }; 
+	// 	}
+			  
+	// 	return null; 
+	// }
+	cardNumberValidation(control: AbstractControl){
+		console.log(control);
+
+		if (!control.value.startsWith('1') || !control.value.includes('front')) {
+			return { required: true };
+		  }
+		  return null;
 	}
 
 	get bankInformationGroup(): FormArray {
