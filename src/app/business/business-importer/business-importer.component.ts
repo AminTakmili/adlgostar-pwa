@@ -8,6 +8,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
 import { error } from 'src/app/core/models/other.models';
 import * as _ from 'lodash';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'app-business-importer',
@@ -38,6 +39,7 @@ export class BusinessImporterComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController,
 		private cd: ChangeDetectorRef,
+		private route: ActivatedRoute,
 	) {
 		this.addForm = this.fb.group({
 			file: ['', Validators.compose([Validators.required])],
@@ -62,6 +64,7 @@ export class BusinessImporterComponent implements OnInit {
 		if (this.addForm.valid) {
 			var formData: any = new FormData();
 			formData.append("file", this.addForm.get('file').value);
+			formData.append("business_id",  this.route.snapshot.paramMap.get('businessId'));
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPostFormData('business/import', formData)
