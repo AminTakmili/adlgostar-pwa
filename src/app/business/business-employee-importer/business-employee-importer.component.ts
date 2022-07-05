@@ -62,6 +62,7 @@ export class BusinessEmployeeImporterComponent implements OnInit {
 		if (this.addForm.valid) {
 			var formData: any = new FormData();
 			formData.append("file", this.addForm.get('file').value);
+			formData.append("business_id", this.route.snapshot.paramMap.get('id'));
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPostFormData('businessEmployee/import', formData)
