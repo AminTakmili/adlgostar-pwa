@@ -193,8 +193,9 @@ export class GlobalService {
 			await alert.present();
 		}
 	}
+	// async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button? : any) {
 
-	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button?: any) {
+	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top',color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'dark' | 'medium' | 'light' | string='dark',mode?:'ios'|'md', button?: any) {
 
 		const toast = await this.toastController.create({
 			message: message,
@@ -202,9 +203,11 @@ export class GlobalService {
 			position: position,
 			buttons: button,
 			animated: true,
-			mode: 'ios',
+		
 			keyboardClose: true,
-			color: 'dark'
+		
+			color:color,
+			mode:mode,
 		});
 		toast.present();
 	}

@@ -98,6 +98,22 @@ export const globalData = {
 
 				},
 				{
+					name: 'قالب سربرگ قرارداد',
+					url: '/contracts/header/template/list',
+					// icon: 'document-attach',
+					src: '/assets/svg/headerIcon.svg',
+					function: 'showDetail'
+
+				},
+				{
+					name: 'قالب پاورقی قرارداد',
+					url: '/contracts/footer/template/list',
+					// icon: 'document-attach',
+					src: '/assets/svg/footerIcon.svg',
+					function: 'showDetail'
+
+				},
+				{
 					name: 'شروط ضمن قرار داد',
 					url: '/contracts/conditions',
 					icon: 'document-lock',

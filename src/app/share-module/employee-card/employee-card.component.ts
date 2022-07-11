@@ -15,6 +15,7 @@ export class EmployeeCardComponent implements OnInit {
 	@Input() contractid: number = 0;
 	@Input() businessId: number = 0;
 	@Input() deleteId: number = 0;
+	@Input() isSentence!: boolean;
 
 	constructor() { }
 

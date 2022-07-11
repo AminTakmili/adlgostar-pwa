@@ -49,7 +49,7 @@ export class ContractTemplateEditComponent implements OnInit {
 			type: ['', Validators.compose([Validators.required])],
 			business_categories: [[]],
 			businesses: [[]],
-			header_as_logo: [false],
+			// header_as_logo: [false],
 
 		});
 		//

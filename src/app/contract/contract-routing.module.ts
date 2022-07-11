@@ -58,6 +58,20 @@ const routes: Routes = [
     path: 'conditions/edit/:id',
     component: ContractConditionsEditComponent
   },
+  {
+    path: 'sentence',
+    loadChildren: () => import('./sentence/sentence.module').then( m => m.SentencePageModule)
+  },
+  {
+    path: 'footer/template',
+    loadChildren: () => import('./footer-template/footer-template.module').then( m => m.FooterTemplatePageModule)
+  },
+  {
+    path: 'header/template',
+    loadChildren: () => import('./header-template/header-template.module').then( m => m.HeaderTemplatePageModule)
+  },
+
+
 ];
 
 @NgModule({

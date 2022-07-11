@@ -1,3 +1,5 @@
+import { contractHeaderTemplate, contractFooterTemplate } from './../../core/models/contractConstant.model';
+// import { sentenceTemplate } from './../../core/models/sentence.model';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
@@ -42,6 +44,8 @@ export class ContractAddComponent implements OnInit {
 	employeeList: Employee[] = [];
 	employerList: Employer[] = [];
 	contractTemplatelist: contractTemplate[];
+	contractHeaderTemplatelist: contractHeaderTemplate[];
+	contractFooterTemplatelist: contractFooterTemplate[];
 	contractConditionlist: contractConditions[] = [];
 	contractExtraFieldList: contractExtraField[];
 	severanceBaseCalculationList: severanceBaseCalculation[];
@@ -49,6 +53,8 @@ export class ContractAddComponent implements OnInit {
 	provisosList: FormArray;
 	extraFieldsList: FormArray;
 	childrenAllowancesList: FormArray;
+	contractHeaderTemplateInfoList: FormArray;
+	contractFooterTemplateInfoList: FormArray;
 
 	businessEmpId : number[] = [];
 
@@ -96,12 +102,16 @@ export class ContractAddComponent implements OnInit {
 			children_allowances: this.fb.array([]),
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
+			contract_header_template_info: this.fb.array([this.newContractHeaderTemplateInfoList()]),
+			contract_footer_template_info: this.fb.array([this.newContractFooterTemplateInfoList()]),
 
 		});
 
 		this.provisosList = this.contractsForm.get('provisos') as FormArray;
 		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
 		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
+		this.contractHeaderTemplateInfoList = this.contractsForm.get('contract_header_template_info') as FormArray;
+		this.contractFooterTemplateInfoList = this.contractsForm.get('contract_footer_template_info') as FormArray;
 
 
 	}
@@ -132,6 +142,25 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	/* ============================== All form arrays ===========================================*/
+	get contractHeaderTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_header_template_info') as FormArray;
+	}
+	get contractFooterTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_footer_template_info') as FormArray;
+	}
+
+	newContractHeaderTemplateInfoList(): FormGroup {
+		return this.fb.group({
+			contract_header_template_id: [],
+			header_text: [],
+		})
+	}
+	newContractFooterTemplateInfoList(): FormGroup {
+		return this.fb.group({
+			contract_footer_template_id: [],
+			footer_text: [],
+		})
+	}
 
 	provisos(id: number, text = ''): FormGroup {
 		return this.fb.group({
@@ -196,6 +225,8 @@ export class ContractAddComponent implements OnInit {
 		const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
 
 		const contractTheme = this.global.httpPost('contractTemplate/list',{ limit: 2000, offset: 0 });
+		const contractHeaderTheme = this.global.httpPost('contractHeaderTemplate/filteredList',{ limit: 2000, offset: 0 ,filtered_name:''});
+		const contractFooterTheme = this.global.httpPost('contractFooterTemplate/filteredList',{ limit: 2000, offset: 0,filtered_name:'' });
 
 		const contractCondition = this.global.httpPost('contractProvisoTemplate/list',{ limit: 2000, offset: 0 });
 
@@ -203,10 +234,12 @@ export class ContractAddComponent implements OnInit {
 
 		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',{ limit: 1000, offset: 0 });
 
-		this.global.parallelRequest([business, contractTheme, contractCondition, contractExtra, severanceBaseCalculation])
-		.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
+		this.global.parallelRequest([business, contractTheme,contractHeaderTheme,contractFooterTheme, contractCondition, contractExtra, severanceBaseCalculation])
+		.subscribe(([businessRes, contractThemeRes = '',contractHeaderThemeRes='',contractFooterThemeRes='', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
 			this.CreateBusiness(businessRes);
 			this.CreatecontractTheme(contractThemeRes);
+			this.CreatecontractHeaderTheme(contractHeaderThemeRes);
+			this.CreatecontractFooterTheme(contractFooterThemeRes);
 			this.CreatecontractCondition(contractConditionRes);
 			this.CreatecontractExtra(contractExtraRes);
 			this.CountAllYear(severanceBaseCRes);
@@ -239,6 +272,16 @@ export class ContractAddComponent implements OnInit {
 	CreatecontractTheme(data: any) {
 		this.contractTemplatelist = data.list.map((item: any) => {
 			return new contractTemplate().deserialize(item);
+		});
+	}
+	CreatecontractHeaderTheme(data: any) {
+		this.contractHeaderTemplatelist = data.list.map((item: any) => {
+			return new contractHeaderTemplate().deserialize(item);
+		});
+	}
+	CreatecontractFooterTheme(data: any) {
+		this.contractFooterTemplatelist = data.list.map((item: any) => {
+			return new contractFooterTemplate().deserialize(item);
 		});
 	}
 
@@ -306,6 +349,38 @@ export class ContractAddComponent implements OnInit {
 		}
 	}
 
+	setHeaderContractTheme() {
+		
+		const id = 	this.contractHeaderTemplateInfoListGroup.value[0].contract_header_template_id;
+		this.contractHeaderTemplatelist.map((item) => {
+			if (item.id === id) {
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(item.template);
+			}else{
+				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
+	}
+	setFooterContractTheme() {
+		
+		const id = 	this.contractFooterTemplateInfoListGroup.value[0].contract_footer_template_id;
+		this.contractFooterTemplatelist.map((item) => {
+			if (item.id === id) {
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(item.template);
+			}else{
+				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
+	}
 	setContractTheme() {
 		const id = this.contractsForm.value.contract_template_id;
 		this.contractTemplatelist.map((item) => {
@@ -439,5 +514,6 @@ export class ContractAddComponent implements OnInit {
 
 		}
 	}
+
 
 }

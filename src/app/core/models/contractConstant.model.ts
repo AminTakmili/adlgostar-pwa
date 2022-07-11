@@ -45,6 +45,33 @@ export class contractTemplate implements Deserializable {
 		return this;
 	}
 }
+export class contractHeaderTemplate implements Deserializable {
+    id !: number;
+    contract_header_template_id !: number;
+    header_text!:string
+    template!:string
+    name!:string
+
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+
+	}
+}
+export class contractFooterTemplate implements Deserializable {
+    id !: number;
+    contract_footer_template_id !: number;
+    footer_text!:string
+    template!:string
+    name!:string
+
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+
+	}
+}
+
 
 export class contract implements Deserializable {
 	id !: number;
@@ -59,6 +86,8 @@ export class contract implements Deserializable {
 	bonus !: number;
 	title !: string;
 	main_text !: string;
+	header_text !: string;
+	footer_text!: string;
 	employee_start_date !: string;
 	end_text !: string;
 	contract_year !: string;
@@ -95,6 +124,9 @@ export class contract implements Deserializable {
 	createdAtEn !: string ;
 	updatedAt !: string ;
 	updatedAtEn !: string ;
+	is_confirmed!:number
+	contract_header_template_info!:contractHeaderTemplate
+	contract_footer_template_info!:contractFooterTemplate
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		if(input.provisos && input.provisos.length){
@@ -159,6 +191,34 @@ export class contractTemplateVariable implements Deserializable {
 	id !: number;
 	variable !: string;
 	description !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class contractFooterTemplateDetail implements Deserializable {
+
+	id !: number;
+	template !: string;
+	name !: string;
+	createdAt !: string;
+	createdAtEn !: string;
+	updatedAt !: string;
+	updatedAtEn !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class contractHeaderTemplateDetail implements Deserializable {
+
+	id !: number;
+	template !: string;
+	name !: string;
+	createdAt !: string;
+	createdAtEn !: string;
+	updatedAt !: string;
+	updatedAtEn !: string;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

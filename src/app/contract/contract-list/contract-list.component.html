@@ -119,6 +119,10 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
 								</ion-button>
+								<ion-button [routerLink]="['/contracts/sentence',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حکم" *ngIf="global.userPermision['contract_sentence_list']">
+									<ion-icon size="small" color="medium" slot="icon-only" name="document-text">
+									</ion-icon>
+								</ion-button>
 								<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
 									<ion-icon size="small" color="medium" slot="icon-only" name="copy">
 									</ion-icon>
