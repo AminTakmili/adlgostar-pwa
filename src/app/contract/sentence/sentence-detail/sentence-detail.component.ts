@@ -12,13 +12,17 @@ import { Component, OnInit } from '@angular/core';
 export class SentenceDetailComponent implements OnInit {
   dataList:sentence
   pageTitle!:string
+  id
+  
   constructor(
     public global :GlobalService,
     private seo: SeoService,
     private route: ActivatedRoute,
 
 
-  ) { }
+  ) { 
+		this.id=this.route.snapshot.paramMap.get('id')
+  }
 
   ngOnInit() {}
   ionViewWillEnter() {

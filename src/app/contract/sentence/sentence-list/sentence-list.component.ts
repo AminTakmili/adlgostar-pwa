@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SentenceListComponent implements OnInit {
   dataList!:Array<sentence>
+  id:string
   
 	limit: number = 10;
 	offset: number = 0;
@@ -24,7 +25,10 @@ export class SentenceListComponent implements OnInit {
     private route: ActivatedRoute,
 
 
-  ) { }
+  ) { 
+    this.id=route.snapshot.paramMap.get('id')
+
+  }
 
   ngOnInit() {}
   ionViewWillEnter() {
@@ -39,8 +43,8 @@ export class SentenceListComponent implements OnInit {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contractSentence/filteredList', {
 			filtered_contract_id: id,
-			offset : 0 ,
-			limit :1 ,
+			offset : this.offset ,
+			limit :this.limit,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
       console.log(res);
@@ -83,6 +87,46 @@ export class SentenceListComponent implements OnInit {
 		this.CurrentPage = $event;
 		this.offset = (this.limit * this.CurrentPage) - this.limit;
 		this.getData(this.route.snapshot.paramMap.get('id'));
+	}
+	
+	removeContract(id:number,date:string){
+		this.global.showAlert('حذف حکم تاریخ  '+ date , 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes',
+				cssClass: 'dark',
+			},
+			{
+				text: 'خیر',
+				role: 'cancel',
+				cssClass: 'medium',
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+
+
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('contractSentence/delete', {
+						id
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+
+						this.offset = 0;
+						this.CurrentPage = 1;
+						this.getData(this.route.snapshot.paramMap.get('id'));
+
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 
 }

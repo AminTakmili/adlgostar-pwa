@@ -39,7 +39,9 @@ export class ValidatorComponent implements OnInit {
 			minlength: `${this.controlName} حداقل باید دارای %p کاراکتر باشد.`,
 			maxlength: `${this.controlName} حداکثر باید دارای %p کاراکتر باشد.`,
 			email: `${this.controlName}  معتیر نمی باشد .`,
-			notSame : `${this.controlName}  با کلمه عبور یکسان نیستند .`
+			notSame : `${this.controlName}  با کلمه عبور یکسان نیستند .`,
+			min :  `${this.controlName} حداقل باید %p  باشد.`,
+			max :  `${this.controlName} حداکثر باید %p  باشد.`,
 		};
 	}
 
@@ -56,6 +58,11 @@ export class ValidatorComponent implements OnInit {
 						case 'maxlength':
 							this.param = this.control.errors['maxlength'].requiredLength.toString();
 							break;
+							case 'min':
+							
+								this.param = this.control.errors['min'].min.toString();
+								break;
+							case 'max':
 						default:
 							this.param = '';
 							break;

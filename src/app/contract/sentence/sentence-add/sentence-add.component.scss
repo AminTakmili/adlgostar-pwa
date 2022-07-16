@@ -1,0 +1,15 @@
+
+@import "/src/theme/extends";
+
+:host ::ng-deep .ck.ck-editor__editable:not([contenteditable]) {
+	background: #fafafa;
+	color: #888;
+}
+
+
+.position-sticky{
+	position: sticky;
+}
+.top-15{
+	top:15px
+}

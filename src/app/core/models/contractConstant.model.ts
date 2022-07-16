@@ -228,6 +228,7 @@ export class contractHeaderTemplateDetail implements Deserializable {
 
 export class childrenAllowances implements Deserializable {
 
+	count_children_allowance:number
 	business_employee_id !: number;
 	children_allowance !: number;
 	employee_id !: number;

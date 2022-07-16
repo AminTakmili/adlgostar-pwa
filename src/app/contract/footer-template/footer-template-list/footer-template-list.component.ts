@@ -82,7 +82,7 @@ export class FooterTemplateListComponent implements OnInit {
 	}
 
 	removeItem(item : contractFooterTemplate){
-		this.global.showAlert('حذف '+ this.pageTitle , 'آیا برای حذف اطمینان دارید؟', [
+		this.global.showAlert('حذف قالب '+item.name , 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
 				role: 'yes'

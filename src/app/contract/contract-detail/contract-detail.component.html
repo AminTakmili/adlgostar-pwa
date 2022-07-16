@@ -84,7 +84,7 @@
 				<!-- list of employee -->
 				<div class="row my-3" *ngIf="dataList?.employee_info">
 					<div class="col-lg-6 mb-4" *ngFor="let item of dataList?.employee_info">
-						<app-employee-card [employee]="item" [contractid]="dataList?.id"></app-employee-card>
+						<app-employee-card [employee]="item" [contractid]="dataList?.id" [businessEmId]="item.business_employee_id"></app-employee-card>
 					</div>
 				</div>
 
@@ -278,12 +278,21 @@
 						<h2 class="title">متون اصلی قرار داد</h2>
 					</div>
 				</div>
+				<!-- header -->
+				<ion-list>
+					<ion-list-header> سربرگ</ion-list-header>
+					<ion-card class="mb-4 main-text" color="white">
+						<ion-card-content>
+							<div class="inner-html-dev" [innerHTML]="dataList?.contract_header_template_info?.header_text|safeHtml"></div>
+						</ion-card-content>
+					</ion-card>
+				</ion-list>
 				<!-- متن -->
 				<ion-list>
 					<ion-list-header>متن قرار داد</ion-list-header>
 					<ion-card class="mb-4 main-text" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList?.main_text|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -292,7 +301,7 @@
 					<ion-list-header>شروط ضمن عقد قرار داد</ion-list-header>
 					<ion-card class="mb-4" color="white" *ngFor="let item of dataList?.provisos">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="item.proviso_text"></div>
+							<div class="inner-html-dev" [innerHTML]="item.proviso_text|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -302,20 +311,35 @@
 					<ion-list-header>متن پایانی قرار داد</ion-list-header>
 					<ion-card class="mb-4" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList?.end_text|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
 				<!--  -->
+
+					<!-- footer -->
+					<ion-list>
+						<ion-list-header> پاورقی</ion-list-header>
+						<ion-card class="mb-4 main-text" color="white">
+							<ion-card-content>
+								<div class="inner-html-dev" [innerHTML]="dataList?.contract_footer_template_info?.footer_text|safeHtml"></div>
+							</ion-card-content>
+						</ion-card>
+					</ion-list>
 			</div>
-			<!-- حکم -->
 		</section>
 		<hr>
+		<!-- حکم -->
 		<section class="container">
-			<div class="col-md-auto mb-1">
-				<div class="title-1 ">
+			<div class="col-md-auto mb-1 d-flex">
+				<div class="title-1 col-9 ">
 					<h2 class="title"> حکم های قرارداد</h2>
 				</div>
+				
+				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success" [routerLink]="['/contracts/add']" class="col-3 width-50">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					حکم جدید
+				</ion-button>
 			</div>
 		<!-- جدول حکم -->
 				<table class="width-100 theme-table ">
@@ -338,7 +362,7 @@
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td>
 							{{ item.date }}
-								<ion-chip mod="ios" color="success" *ngIf="!item.contract_info.business_employee_id||item.contract_info.employee_info.length!=1">
+								<ion-chip mod="ios" color="success" *ngIf="item.contract_info.employee_info.length!=1">
 									<ion-label class="font-size-10">گروهی</ion-label>
 								  </ion-chip>
 							</td>

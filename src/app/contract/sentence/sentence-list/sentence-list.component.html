@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success" [routerLink]="['/contracts/add']">
+				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success"  [routerLink]="['/contracts/sentence',id,'add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					حکم جدید
 				</ion-button>
@@ -87,12 +87,12 @@
 									</ion-icon>
 								</ion-button> -->
                  <!-- (click)="removeContractALert(item)"  -->
-								<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_sentence_delete']&&dataList.length!=1">
+								<ion-button (click)="removeContract(item.id,item.date)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_sentence_delete']&&dataList.length!=1">
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
                
-								<ion-button [routerLink]="['/contracts/sentence',item.id,'detail']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_sentence_edit']&&i==0">
+								<ion-button [routerLink]="['/contracts/sentence',item.id,'edit']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_sentence_edit']&&i==0">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
 								</ion-button>

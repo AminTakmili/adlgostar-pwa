@@ -18,10 +18,10 @@
 					پرینت
 				</ion-button> -->
 				<!-- ! do -->
-				<!-- <ion-button shape="round" [routerLink]="['/contracts/sentence/edit/'+dataList?.contract_info?.id]" color="secondary" *ngIf="global.userPermision['contract_sentence_edit']&&dataList.is_confirmed==0">
+				<ion-button shape="round" [routerLink]="['/contracts/sentence',id,'edit']" color="secondary" *ngIf="global.userPermision['contract_sentence_edit']&&dataList?.is_confirmed==0&&this.dataList.can_edit">
 					<ion-icon slot="start" name="build"></ion-icon>
 					 ویرایش حکم 
-				</ion-button> -->
+				</ion-button>
 
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 				<!-- list of employee -->
 				<div class="row my-3" *ngIf="dataList?.contract_info?.employee_info">
 					<div class="col-lg-6 mb-4" *ngFor="let item of dataList?.contract_info?.employee_info">
-						<app-employee-card [employee]="item" [contractid]="dataList?.id" [isSentence]="true"></app-employee-card>
+						<app-employee-card [employee]="item" [contractid]="dataList?.contract_id" [businessEmId]="item?.business_employee_id" [isSentence]="true"></app-employee-card>
 					</div>
 				</div>
 

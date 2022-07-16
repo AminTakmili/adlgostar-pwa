@@ -6,6 +6,8 @@ import { Deserializable } from './deserializable.model';
 
 export class sentence implements Deserializable {
     id !: number;
+    can_edit !: boolean;
+    contract_id !: number;
     is_confirmed !: number;
 	business_id !: number;
     date!:string
@@ -28,6 +30,7 @@ export class sentence implements Deserializable {
    updatedAtEn!:string;
    contract_info!:contract
    children_allowance_info:childrenAllowances[]
+   
 
 	deserialize(input: any): this {
 		Object.assign(this, input);

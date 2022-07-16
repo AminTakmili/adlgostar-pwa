@@ -13,8 +13,8 @@
 	}
 }
 .main-text{
-	height: 300px;
-	overflow-y: scroll;
+	max-height: 300px;
+	overflow-y: auto;
 }
 .main-text::-webkit-scrollbar-track
 {
