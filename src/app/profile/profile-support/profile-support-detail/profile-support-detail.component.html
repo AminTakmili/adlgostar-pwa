@@ -3,12 +3,13 @@
 </ion-header>
 
 <ion-content *ngIf="dataList?.id">
+
 	<!-- top bar content -->
 	<div class="content-header">
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title"> جزییات تیکت #{{ dataList?.id }}</h1>
+					<h1 class="title"> جزییات درخواست #{{ dataList?.id }}</h1>
 					<p class="dsec">
 						<span>عنوان درخواست : {{ dataList?.subject }}</span>
 					</p>
@@ -23,6 +24,10 @@
 					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت -->
 				</ion-button>
+				<ion-button id="open-referred-modal" shape="round" color="secondary" >
+					<ion-icon slot="start" name="arrow-undo"></ion-icon>
+					ارجاع درخواست
+				</ion-button>
 				<ion-button shape="round" color="secondary" (click)="closeTicket()">
 					<ion-icon slot="start" name="close-circle"></ion-icon>
 					بستن درخواست
@@ -34,17 +39,29 @@
 		<div class="container">
 			<!-- tiket list -->
 			<div class="ticket-list">
-				<div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.is_response" [class.user]="!item.is_response">
+				<div class="ticket-item user">
+					<div class="ticket-description">
+						<div class="dscription" [innerHTML]="dataList.content"></div>
+						<div class="date"> ارسال شده در : {{ dataList.createdAt }} </div>
+					</div>
+					<div class="ticket-info">
+						<ion-avatar>
+							<ion-img  [src]="dataList?.sender_info?.media  && dataList?.sender_info?.media.length ? dataList?.sender_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
+						</ion-avatar>
+						<div class="info">  {{ dataList.sender_info.first_name +' '+dataList.sender_info.last_name }} </div>
+					</div>
+				</div>
+				<div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.responder_info.id!==dataList.sender_info.id" [class.user]="item.responder_info.id===dataList.sender_info.id">
 					<div class="ticket-description">
 						<div class="dscription" [innerHTML]="item.content"></div>
 						<div class="date"> ارسال شده در : {{ item.createdAt }} </div>
 					</div>
 					<div class="ticket-info">
 						<ion-avatar>
-							<ion-img *ngIf="!item.is_response" [src]="item?.user_info?.media  && item?.user_info?.media.length ? item?.user_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
-							<ion-img *ngIf="item.is_response" [src]="item?.user_info?.media  && item?.user_info?.media.length ? item?.user_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/admin.png' "></ion-img>
+							<ion-img *ngIf="item.responder_info.id===dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
+							<ion-img *ngIf="item.responder_info.id!==dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/admin.png' "></ion-img>
 						</ion-avatar>
-						<div class="info">  {{ item.user_info.first_name +' '+item.user_info.last_name }} </div>
+						<div class="info">  {{ item.responder_info.first_name +' '+item.responder_info.last_name }} </div>
 					</div>
 				</div>
 			</div>
@@ -70,4 +87,89 @@
 			</form>
 		</div>
 	</main>
+
+	<!-- referredform -->
+
+
+	<ion-modal mode="ios" #modal trigger="open-referred-modal" (willDismiss)="onWillReferredModalDismiss($event)">
+		<ng-template>
+		  <ion-header class="ion-no-border">
+			<ion-toolbar color="secondary">
+			  <ion-buttons (click)=" this.modal.dismiss(null, 'cancel');" slot="start">
+				
+				  <ion-icon slot="start" name="close"></ion-icon>
+				  <ion-button >انصراف</ion-button>
+			  </ion-buttons>
+			
+			</ion-toolbar>
+		  </ion-header>
+		  <ion-content class="ion-padding">
+		
+			<form [formGroup]="referredform" (ngSubmit)="submitreferredForm()">
+			
+		
+				<div class="col-md-12 mb-3">
+					<div class="form-input ">
+						<label>بخش</label>
+						<ng-select
+						
+						[items]="supportList"
+						[clearable]="false"
+						placeholder="انتخاب بخش مربوطه  "
+						bindLabel="name"
+						bindValue="id"
+						formControlName="section_id"
+						>
+						<!-- (change)="pageChange(1)" -->
+						</ng-select>
+						<span class="error">
+							<app-validator [control]="referredform.controls['section_id']" [controlName]="'انتخاب بخش '">
+							</app-validator>
+						</span>
+						<span class="hint"> 
+							برای ارجاع این درخواست ابتدا یک بخش را انتخاب کنید
+						</span>
+					</div>
+				</div>
+				<!-- chose section childern -->
+				
+				<div *ngIf="supportList&&referredform.controls['section_id'].value" class="col-md-12 mb-3 section-childern">
+					<div class="form-input ">
+					
+						<label >کارکنان بخش</label>
+					
+							<ion-radio-group mode="md"	formControlName="receiver_id"  class="row" name="auto" value="tesla">
+							
+							<ion-item lines="none" class="chose-button">
+
+								<ion-radio  [value]="null" color="success" ></ion-radio>
+								<ion-label>تمام افراد بخش </ion-label>
+							</ion-item>
+							
+							<ion-item *ngFor=" let item of setSectionChildern(referredform.controls['section_id'].value)" lines="none" class="chose-button">
+
+								<ion-radio [value]="item?.id" ></ion-radio>
+								<ion-label>{{item.first_name}} {{item.last_name}} </ion-label>
+							</ion-item>
+							
+							
+							
+							</ion-radio-group>
+					
+					
+					</div>
+				</div>
+				<ion-item lines="none" *ngIf="supportList&&referredform.controls['section_id'].value" >
+					<ion-button type="submit" id="open-referred-modal" shape="round" color="secondary" >
+						<ion-icon slot="start" name="checkmark"></ion-icon>
+						ارجاع درخواست
+					</ion-button>
+					
+				</ion-item>
+
+				</form>
+		  </ion-content>
+		</ng-template>
+	  </ion-modal>
+
 </ion-content>

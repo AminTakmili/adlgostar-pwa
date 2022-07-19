@@ -13,13 +13,20 @@ export class ProfileSupportListComponent implements OnInit {
 
 	pageTitle: string = 'پشتیبانی';
 
-	limit: number = 10;
-	offset: number = 0;
-	total: number = 0;
-	CurrentPage: number = 1;
-	end = false;
+	limitReceive: number = 10;
+	offsetReceive: number = 0;
+	totalReceive: number = 0;
+	CurrentPageReceive: number = 1;
+	endReceive = false;
+
+	limitSend: number = 10;
+	offsetSend: number = 0;
+	totalSend: number = 0;
+	CurrentPageSend: number = 1;
+	endSend = false;
 	Searching = 0;
-	dataList: Support[];
+	receiveDataList: Support[];
+	sendDataList: Support[];
 	dataInSearch: boolean = false
 
 
@@ -41,29 +48,64 @@ export class ProfileSupportListComponent implements OnInit {
 	}
 	async getData(name: string = '') {
 
+		const receive=this.global.httpPost('profile/userTicket/filteredList', {
+			limit: this.limitReceive,
+			offset: this.offsetReceive,
+			filtered_type:'receive'
+		})
+		const send=this.global.httpPost('profile/userTicket/filteredList', {
+			limit: this.limitSend,
+			offset: this.offsetSend,
+			filtered_type:'send'
+		})
+		
 		this.dataInSearch = name ? true : false;
 		await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpPost('profile/userTicket/list', {
-			limit: this.limit,
-			offset: this.offset,
-		}).subscribe(async (res:any) => {
+	this.global.parallelRequest([receive,send]).subscribe(
+		async ([ receiveRes  ='', sendRes ={totalRows:0,list:[]}]) => {
 			await this.global.dismisLoading();
-			this.total = res.totalRows;
-			this.dataList = res.list.map((item: any) => {
+			console.log(sendRes,receiveRes);
+			this.totalSend = sendRes.totalRows;
+			this.totalReceive = receiveRes.totalRows;
+			this.receiveDataList = receiveRes.list.map((item: any) => {
 				return new Support().deserialize(item);
 			});
-			console.log(this.dataList);
+			this.sendDataList = sendRes.list.map((item: any) => {
+				return new Support().deserialize(item);
+			});
+			console.log(this.sendDataList,'sendDataList');
+			console.log(this.receiveDataList,'receiveDataList');
 			// console.log(res:any);
-		}, async (error:any) => {
+		}, async ([receiveError,sendError]) => {
 			await this.global.dismisLoading();
-			this.global.showError(error);
+			this.global.showError(receiveError);
+			this.global.showError(sendError);
 		});
+
+		
+		// this.global.parallelRequest([receive, send ])
+		// 	.subscribe(([receiveRes, sendRes  ={totalRows:0,}]) => {
+
+		// 		this.totalSend = sendRes.totalRows;
+		// 	this.totalReceive = receiveRes.totalRows;
+		// 	this.receiveDataList = receiveRes.list.map((item: any) => {
+		// 		return new Support().deserialize(item);
+		// 	});
+		// 	this.sendDataList = sendRes.list.map((item: any) => {
+		// 		return new Support().deserialize(item);
+		// 	});
+		// 	});
 
 	}
 
-	pageChange($event: any) {
-		this.CurrentPage = $event;
-		this.offset = (this.limit * this.CurrentPage) - this.limit;
+	pageChangeSend($event: any) {
+		this.CurrentPageSend = $event;
+		this.offsetSend = (this.limitSend * this.CurrentPageSend) - this.limitSend;
+		this.getData();
+	}
+	pageChangeReceive($event: any) {
+		this.CurrentPageReceive = $event;
+		this.offsetReceive = (this.limitReceive * this.CurrentPageReceive) - this.limitReceive;
 		this.getData();
 	}
 
@@ -89,9 +131,12 @@ export class ProfileSupportListComponent implements OnInit {
 		}else if(text === "replied"){
 			replyText = "پاسخ داده شده";
 		}else if(text === "responded"){
-			replyText = "پاسخ کارفرما";
+			replyText = " پاسخ فرستند";
 		}else if(text === "closed"){
 			replyText = "بسته شده" ;
+		}
+		else if(text === "referred"){
+			replyText = "ارجاع داده شده" ;
 		}
 		return replyText;
 	}

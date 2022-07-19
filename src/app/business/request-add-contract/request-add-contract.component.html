@@ -1,0 +1,55 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+    
+      <ion-icon slot="start" name="close"></ion-icon>
+      <ion-button >انصراف</ion-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-12" *ngIf="businessEmployees && businessEmployees.length">
+        <div class="form-input mb-3">
+          <label>انتخاب کارمندان</label>
+          <ng-select
+          [clearable]="false"
+          placeholder="انتخاب کنید"
+          [multiple]="true"
+          [items]="EmployeesList"
+          bindLabel="full_name"
+          bindValue="packDetail"
+          formControlName="Employees"
+          >
+          <!-- (add)="AddAlowences($event)"
+          (remove)="removeAlowences($event)"
+          (change)="calcChildrenAllowance();" -->
+       
+          </ng-select>
+          <span class="error">
+            <app-validator #validation [control]="addForm.controls['Employees']" [controlName]="'انتخاب کارمندان '"></app-validator>
+          </span>
+          <span class="hint">کارمندان در این قرار داد را اضافه کنید .</span>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="businessEmployees && businessEmployees.length">
+        <div class="form-input mb-3">
+          <label>متن </label>
+     
+          <ion-textarea cols=4 rows=4 wrap="soft" placeholder="متن مور نظر را بنویسید"  formControlName="text"></ion-textarea>
+        
+          <span class="hint">در صورت تمایل متن برای این درخواست بنویسید .</span>
+        </div>
+      </div>
+      <ion-item lines="none" >
+        <ion-button type="submit" id="open-referred-modal" shape="round" color="secondary" >
+          <ion-icon slot="start" name="checkmark"></ion-icon>
+          ثبت درخواست
+        </ion-button>
+        
+      </ion-item>
+   
+    </form>
+  
+  </ion-content>

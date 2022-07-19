@@ -34,6 +34,7 @@ export class Employee implements Deserializable {
 	familyInformation !: family_information;
 	militaryInformation !: military_information;
 	bankInformation !: bank_information;
+	packDetail!:string
 	deserialize(input: any): this {
 		Object.assign(this, input);
 
@@ -54,6 +55,9 @@ export class Employee implements Deserializable {
 			this.businesses = input.businesses.map((item: businessEmployeeInfo) => {
 				return new businessEmployeeInfo().deserialize(item);
 			});
+		}
+		if (this.full_name&&this.national_code) {
+			this.packDetail=` نام : ${this.full_name} ,کد ملی :${this.national_code}  `
 		}
 
 		this.full_name = input.first_name.trim()+' '+input.last_name.trim();

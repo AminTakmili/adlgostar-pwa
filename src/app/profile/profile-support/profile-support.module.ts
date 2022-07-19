@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +22,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 		ProfileSupportPageRoutingModule,
 		ShareModulePageModule,
 		ReactiveFormsModule,
-		NgxPaginationModule
+		NgxPaginationModule,
+		NgSelectModule,
 	],
 	declarations: [
 		ProfileSupportAddComponent,

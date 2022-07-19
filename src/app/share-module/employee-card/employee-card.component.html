@@ -29,11 +29,16 @@
 			</ion-button>
 		</ion-buttons>
 		<ion-buttons *ngIf="contractid" class="justify-content-end">
-		
+			<ion-button *ngIf="!isSentence&&!loadingDownload" fill="clear" class="px-0 mx-0 tooltip-show" (click)="download(contractid,employee?.id)"  tooltip="دانلود PDF" >
+				<ion-icon size="small" color="medium" slot="icon-only" name="download">
+				</ion-icon>
+			</ion-button>
+			<ion-spinner  color="medium" *ngIf="loadingDownload" name="lines-small"></ion-spinner>
 			<ion-button *ngIf="!isSentence" fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/contracts/print',contractid,employee?.id]" tooltip="چاپ" >
 				<ion-icon size="small" color="medium" slot="icon-only" name="print">
 				</ion-icon>
 			</ion-button>
+		
 			  <!-- *ngIf="!isSentence" -->
 			<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/contracts/sentence', contractid,'add']" [queryParams]="{singel: true,id:businessEmId}"  tooltip=" افزودن حکم تکی" >
 				<ion-icon size="small" color="medium" slot="icon-only" name="document-text">

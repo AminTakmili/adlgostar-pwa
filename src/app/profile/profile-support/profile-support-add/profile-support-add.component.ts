@@ -13,6 +13,7 @@ export class ProfileSupportAddComponent implements OnInit {
 
 	pageTitle: string = "ارسال درخواست جدید";
 	addForm: FormGroup;
+	supportList!:any
 
 	categoryId: number;
 	constructor(
@@ -24,6 +25,8 @@ export class ProfileSupportAddComponent implements OnInit {
 	) {
 
 		this.addForm = this.fb.group({
+			receiver_id:[],
+			section_id: [, Validators.compose([Validators.required])],
 			subject: ['', Validators.compose([Validators.required])],
 			content: ['', Validators.compose([Validators.required])],
 		});
@@ -35,6 +38,26 @@ export class ProfileSupportAddComponent implements OnInit {
 	}
 	ionViewWillEnter() {
 
+		this.getData()
+	}
+	async getData(){
+
+		await this.global.showLoading()
+		this.global.httpGet('more/enumList').subscribe(
+			async (res:any) => {
+				await this.global.dismisLoading()
+				// console.log(res.sections);
+				this.supportList=res.sections
+			},
+			async (error:any) => {
+				await this.global.dismisLoading()
+
+				this.global.showError(error)
+			},
+		)
+	}
+	setSectionChildern(id:number){
+		return this.supportList?.find((item:any)=>item.id==id)?.users
 	}
 
 	setTitle() {

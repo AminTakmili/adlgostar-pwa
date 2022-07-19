@@ -1,3 +1,4 @@
+import { RequestAddContractComponent } from './request-add-contract/request-add-contract.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -39,7 +40,8 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 		BussinesEmployeeAddComponent,
 		BusinessImporterComponent,
 		BusinessEmployeeEditComponent,
-		BusinessEmployeeImporterComponent
+		BusinessEmployeeImporterComponent,
+		RequestAddContractComponent
 
 	]
 })
