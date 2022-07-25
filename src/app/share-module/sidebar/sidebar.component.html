@@ -1,7 +1,7 @@
 <ion-content *ngIf="check">
 	<div class="user-info my-3 ">
 		<ion-thumbnail class="mx-auto mb-2">
-			<ion-img [src]="'../assets/img/user-image.png'"></ion-img>
+			<ion-img [src]="this.global?.user?.media && this.global?.user?.media.length &&this.global?.user?.media.length !=0 ? this.global?.user?.media[0]?.options?.subSizes['1x'] :'../assets/img/user-image.png'"></ion-img>
 		</ion-thumbnail>
 		<h5 class="my-0 name font-size-16 ion-text-center"><ion-text color="white">{{ this.global?.user?.first_name + ' ' + this.global?.user?.last_name }}</ion-text></h5>
 		<p class="desc my-1 font-size-12 ion-text-center"><ion-text color="medium">{{ this.global?.user?.mobile }}</ion-text></p>
@@ -9,7 +9,7 @@
 	<div class="sidebar-item">
 		<ion-list >
 			<ng-template ngFor let-item [ngForOf]="Sidemenu"  let-i="index" >
-				<ion-item  button lines="none" *ngIf="item.access" [routerLink]="item.url" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: ( item.submenu !== undefined && item?.submenu?.length ? false : true )}" (click)="routerClickFun(item)" (isActiveChange)="onRouterLinkActive($event , i )" color="tertiary">
+				<ion-item detail="false" button lines="none" *ngIf="item.access" [routerLink]="item.url" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: ( item.submenu !== undefined && item?.submenu?.length ? false : true )}" (click)="routerClickFun(item)" (isActiveChange)="onRouterLinkActive($event , i )" color="tertiary">
 					<ion-icon [name]="item.icon" slot="start"></ion-icon>
 					<ion-label >{{ item.name }}</ion-label>
 					<ion-icon  *ngIf="item.submenu && item.submenu.length" name="chevron-down" slot="end"></ion-icon>

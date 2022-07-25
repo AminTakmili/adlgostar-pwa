@@ -601,30 +601,34 @@ export class ContractEditComponent implements OnInit {
 	setHeaderContractTheme() {
 		
 		const id = 	this.contractHeaderTemplateInfoListGroup.value[0].contract_header_template_id;
-		this.contractHeaderTemplatelist.map((item) => {
+		this.contractHeaderTemplatelist?.map((item) => {
 			if (item.id === id) {
 				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
 			
 				// this.contractsForm.get('main_text').setValue(text);
 				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(item.template);
 			}else{
-				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+				// this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
 
 			}
 		});
 		// console.log(this.contractsForm.value.main_text);
 	}
 	setFooterContractTheme() {
+		// console.log(this.contractFooterTemplateInfoListGroup.controls[0].get('contract_footer_template_id').value);
+		// console.log(this.contractFooterTemplateInfoListGroup.controls[0].value);
+		// console.log(this.contractFooterTemplateInfoListGroup.value);
 		
-		const id = 	this.contractFooterTemplateInfoListGroup.value[0].contract_footer_template_id;
+		const id = 	this.contractFooterTemplateInfoListGroup.controls[0].get('contract_footer_template_id').value;
 		this.contractFooterTemplatelist.map((item) => {
 			if (item.id === id) {
+				console.log(id);
 				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
 			
 				// this.contractsForm.get('main_text').setValue(text);
 				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(item.template);
 			}else{
-				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+				// this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
 
 			}
 		});

@@ -50,8 +50,9 @@ addForm:FormGroup
       content=` <ul> لیست کارمندان :  ${li} </ul>  <hr>   <p> ${this.addForm.value.text} </p>`
       let section_id:number=21
      let  subject:string='تنظیم قرارداد'
+    let is_add_contract_request=true
     
-      this.global.httpPost('profile/userTicket/add',{content,subject,section_id}).subscribe(
+      this.global.httpPost('profile/userTicket/add',{content,subject,section_id,is_add_contract_request}).subscribe(
        async (res:any) => {
        await  this.global.dismisLoading()
        console.log(res);

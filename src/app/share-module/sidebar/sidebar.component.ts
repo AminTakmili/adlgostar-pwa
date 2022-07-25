@@ -25,6 +25,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 			})),
 			transition('close <=> open', animate('300ms ease')),
 		]),
+		
 	]
 })
 export class SidebarComponent implements OnInit {
@@ -41,6 +42,7 @@ export class SidebarComponent implements OnInit {
 	) { }
 
 	async ngOnInit() {
+		console.log(this.global?.user);
 		this.userInfo = await this.global.getUserInfo();
 
 

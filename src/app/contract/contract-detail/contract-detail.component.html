@@ -28,8 +28,8 @@
 	</div>
 	<!-- main -->
 	<main><!-- وضعیت -->
-		<section class="mt-3 confirm ">
-			<div class="container">
+		<section class="mt-3 container ">
+			<div class="confirm">
 				<!-- title -->
 			
 			<ion-item lines="none" class="confirm-item">
@@ -283,7 +283,7 @@
 					<ion-list-header> سربرگ</ion-list-header>
 					<ion-card class="mb-4 main-text" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.contract_header_template_info?.header_text|safeHtml"></div>
+							<div class="inner-html-dev" [innerHTML]="(dataList?.contract_header_template_info?.header_text)?dataList?.contract_header_template_info?.header_text:'این قرارداد قالب سربرگ ندارد!'|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -292,7 +292,7 @@
 					<ion-list-header>متن قرار داد</ion-list-header>
 					<ion-card class="mb-4 main-text" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.main_text|safeHtml"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList.main_text?dataList?.main_text:'متنی یافت نشد !'|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -304,6 +304,11 @@
 							<div class="inner-html-dev" [innerHTML]="item.proviso_text|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
+					<ion-card class="mb-4" color="white" *ngIf="!dataList?.provisos||dataList?.provisos.length==0">
+						<ion-card-content color="danger">
+							<div class="inner-html-dev" [innerHTML]="'این قرارداد هیچ شرط ضمن عقدی ندارد !'|safeHtml"></div>
+						</ion-card-content>
+					</ion-card>
 				</ion-list>
 
 				<!-- -->
@@ -311,7 +316,7 @@
 					<ion-list-header>متن پایانی قرار داد</ion-list-header>
 					<ion-card class="mb-4" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.end_text|safeHtml"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList.end_text?dataList?.end_text:'این قرارداد متن پایانی ندارد! '|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -322,7 +327,7 @@
 						<ion-list-header> پاورقی</ion-list-header>
 						<ion-card class="mb-4 main-text" color="white">
 							<ion-card-content>
-								<div class="inner-html-dev" [innerHTML]="dataList?.contract_footer_template_info?.footer_text|safeHtml"></div>
+								<div class="inner-html-dev" [innerHTML]="dataList?.contract_footer_template_info?.footer_text?dataList?.contract_footer_template_info?.footer_text:'این قرارداد قالب پاورقی ندارد !'|safeHtml"></div>
 							</ion-card-content>
 						</ion-card>
 					</ion-list>
@@ -336,7 +341,7 @@
 					<h2 class="title"> حکم های قرارداد</h2>
 				</div>
 				
-				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success" [routerLink]="['/contracts/add']" class="col-3 width-50">
+				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success" [routerLink]="['/contracts/sentence',this.route.snapshot.paramMap.get('id'),'add']" class="col-3 width-50">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					حکم جدید
 				</ion-button>
@@ -391,12 +396,12 @@
 										</ion-icon>
 									</ion-button> -->
 					 <!-- (click)="removeContractALert(item)"  -->
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_sentence_delete']">
-										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
-										</ion-icon>
-									</ion-button>
+					 <ion-button (click)="removeContract(item.id,item.date)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_sentence_delete']&&SentenceList.length!=1">
+						<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+						</ion-icon>
+					</ion-button>
 				   
-									<ion-button [routerLink]="['/contracts/sentence',item.id,'detail']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_sentence_edit']&&i==0">
+									<ion-button [routerLink]="['/contracts/sentence',item.id,'edit']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_sentence_edit']&&i==0">
 										<ion-icon size="small" color="medium" slot="icon-only" name="build">
 										</ion-icon>
 									</ion-button>

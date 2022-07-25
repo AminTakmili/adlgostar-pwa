@@ -1,3 +1,4 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ApplicationRef, Component, ViewChild } from '@angular/core';
 import { IonMenu, MenuController, Platform } from '@ionic/angular';
 import { StaticData } from './core/models/StaticData.model';
@@ -11,10 +12,25 @@ import { interval } from 'rxjs/internal/observable/interval';
 	selector: 'app-root',
 	templateUrl: 'app.component.html',
 	styleUrls: ['app.component.scss'],
+    // animations: [
+	// 	// Define animation here
+		
+	// 	trigger('triggerMenue', [
+	// 		state('close', style({
+    //             display:'none',
+			
+	// 		})),
+	// 		state('open', style({
+    //             display:'block'
+	// 		})),
+	// 		transition('close <=> open', animate('10ms ease')),
+	// 	]),
+	// ]
 })
 export class AppComponent {
 
 	isLogin: boolean = false;
+	isLg!: boolean ;
 
 	constructor(
 		private platform: Platform,
@@ -37,6 +53,16 @@ export class AppComponent {
 
 
 	}
+    ionSplitPane(e:any){
+        console.log(e,'e');
+        console.log(e.detail.visible);
+        this.isLg=e.detail.visible
+        // if (e.detail.visible) {
+        // }else{
+        //     this.global?.menueState.next('open')
+        //     // this.global?.menueState.next('close')
+        // }
+    }
 
 	initializeApp() {
         this.platform.ready().then(() => { });

@@ -55,6 +55,12 @@ const routes: Routes = [
 		loadChildren: () => import('./test/test.module').then(m => m.TestPageModule),
 		canActivate: [LoginGuard]
 	},
+  {
+    path: 'notification',
+    loadChildren: () => import('./notification/notification.module').then( m => m.NotificationPageModule),
+	canActivate: [LoginGuard]
+  },
+
 
 	// {
 	// 	path: '',

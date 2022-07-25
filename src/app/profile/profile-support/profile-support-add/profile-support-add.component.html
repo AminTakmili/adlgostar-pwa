@@ -46,6 +46,7 @@
 							bindLabel="name"
 							bindValue="id"
 							formControlName="section_id"
+							(change)="setSectionChildern($event)" 
 							>
 							<!-- (change)="pageChange(1)" -->
 							</ng-select>
@@ -57,32 +58,33 @@
 						</div>
 					</div>
 					<!-- chose section childern -->
-					<div *ngIf="supportList&&addForm.controls['section_id'].value" class="col-md-12 mb-3 section-childern">
-						<div class="form-input ">
-						
-							<label >کارکنان بخش</label>
-						
-								<ion-radio-group 	formControlName="receiver_id"  class="row" name="auto" value="tesla">
-								
-								<ion-item lines="none" class="chose-button">
 
-									<ion-radio  [value]="null" color="success" ></ion-radio>
-									<ion-label>تمام افراد بخش </ion-label>
-								</ion-item>
-								
-								<ion-item *ngFor=" let item of setSectionChildern(addForm.controls['section_id'].value)" lines="none" class="chose-button">
 
-									<ion-radio [value]="item?.id" ></ion-radio>
-									<ion-label>{{item.first_name}} {{item.last_name}} </ion-label>
-								</ion-item>
-								
-								
-								
-								</ion-radio-group>
+					<div *ngIf="supportList&&addForm.controls['section_id'].value" class="col-md-12 mb-3 section-childern" >
+						<div class="form-input mb-3">
+						  <label>انتخاب کارکنان بخش</label>
+						  <ng-select
+						  [clearable]="true"
+						  placeholder="انتخاب کنید"
+						  [multiple]="false"
+						  [items]="users"
+						  bindLabel="full_name"
+						  bindValue="id"
+						  formControlName="receiver_id" 
+						  >
+						  <!-- (add)="AddAlowences($event)"
+						  (remove)="removeAlowences($event)"
+						  (change)="calcChildrenAllowance();" -->
+					   
 						
-						
+						  </ng-select>
+						  <span class="error">
+							<app-validator #validation [control]="addForm.controls['receiver_id']" [controlName]="'انتخاب کارمندان '"></app-validator>
+						  </span>
+						  <span class="hint">در صورت تمایل یکی از کارکنان بخش را انتخاب کنید .</span>
 						</div>
-					</div>
+					  </div>
+
 					<!-- توضیحات تیکت -->
 					<div class="col-md-12">
 						<div class="form-input mb-3">

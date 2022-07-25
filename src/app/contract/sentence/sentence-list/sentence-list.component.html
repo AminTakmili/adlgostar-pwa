@@ -67,7 +67,7 @@
 							<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.contract_info.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.contract_info.business_info.name }}</a></p>
 						</td>
 						<td>
-							<span class="font-size-12 " *ngFor="let emp of item.contract_info.employee_info"> {{ emp.first_name }} {{ emp.last_name}} ، </span>
+							<span class="font-size-12 " *ngFor="let emp of item.contract_info.employee_info; last as isLast"> {{ emp.first_name }} {{ emp.last_name}} <span  *ngIf="item.contract_info.employee_info.length!=1&&!isLast">،</span>  </span>
 						</td>
 						<td>
 							<span class="my-1 font-size-12"><span>{{ item['wage']|number }} ریال</span></span> 

@@ -73,7 +73,7 @@
 							[routerLink]="['/businesses/add-employee',business?.id]"
 							*ngIf="global.userPermision['business_add-employee']">
 							<ion-icon slot="start" name="add-circle"></ion-icon>
-							افزودن کارمند
+							افزودن کارمند به این کسب و کار
 						</ion-button>
 						<!-- افزودن کارمند جدید -->
 						<ion-button shape="round" color="success"
@@ -128,7 +128,7 @@
 						<ion-button class="ml-3" shape="round" color="warning"
 						(click)="openAddContractModal()"
 						
-						*ngIf="!global.userPermision['contract_add']">
+						*ngIf="global.userPermision['add_contract_request_via_ticket']">
 						<ion-icon slot="start" name="options"></ion-icon>
 					درخواست ثبت قرارداد
 					</ion-button>

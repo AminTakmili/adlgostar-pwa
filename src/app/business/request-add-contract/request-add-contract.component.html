@@ -1,15 +1,15 @@
-<ion-header class="ion-no-border">
+<ion-header mode="md" class="ion-no-border">
   <ion-toolbar color="secondary">
     <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
-    
-      <ion-icon slot="start" name="close"></ion-icon>
-      <ion-button >انصراف</ion-button>
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
-  
+    <ion-title>ارسال درخواست ثبت قرارا داد برای کارمندان</ion-title>
   </ion-toolbar>
   </ion-header>
-  <ion-content>
-    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+  <ion-content mode="md">
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()" class="pt-15">
       <div class="col-md-12" *ngIf="businessEmployees && businessEmployees.length">
         <div class="form-input mb-3">
           <label>انتخاب کارمندان</label>
@@ -37,7 +37,7 @@
         <div class="form-input mb-3">
           <label>متن </label>
      
-          <ion-textarea cols=4 rows=4 wrap="soft" placeholder="متن مور نظر را بنویسید"  formControlName="text"></ion-textarea>
+          <ion-textarea class="px-15" cols=4 rows=4 wrap="soft" placeholder="متن مور نظر را بنویسید"  formControlName="text"></ion-textarea>
         
           <span class="hint">در صورت تمایل متن برای این درخواست بنویسید .</span>
         </div>

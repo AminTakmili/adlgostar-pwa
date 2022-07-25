@@ -38,25 +38,74 @@
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label>جستجو در کسب کار</label>
-						<ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
-						</ng-select>
+						</ng-select> -->
+						<ng-select
+						[items]="businesslist$ | async"
+						placeholder="انتخاب کسب و کار"
+						[loading]="businessInputLoading"
+						bindLabel="name"
+						bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+						[typeahead]="businessInput$"
+						[(ngModel)]="filtered_business_id"
+						[clearable]="true"
+						(change)="changeFilter()"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه کسب و کاری یافت نشد"
+					
+					>
+					</ng-select>
+
 					</div>
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label>جستجو در کارفرمایان</label>
-						<ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
+						<!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
-						</ng-select>
+						</ng-select> -->
+
+						<ng-select
+						[items]="employerlist$ | async"
+						placeholder="انتخاب کارفرما"
+						[loading]="employerInputLoading"
+						bindLabel="full_name"
+						bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+						[typeahead]="employerInput$"
+						[(ngModel)]="filtered_employer_id" 
+						[clearable]="true"
+						(change)="changeFilter()"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه کارفرمای یافت نشد"
+					></ng-select>
+					
+
 					</div>
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label>جستجو در کارمندان</label>
-						<ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
+						<!-- <ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
-						</ng-select>
+						</ng-select> -->
+						
+						<ng-select
+						[items]="employeelist$ | async"
+						placeholder="انتخاب کارمند"
+						[loading]="employeeInputLoading"
+						bindLabel="full_name"
+						bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+						[typeahead]="employeeInput$"
+						[(ngModel)]="filtered_employee_id"
+						[clearable]="true"
+						(change)="changeFilter()"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه کارمندی یافت نشد"
+					></ng-select>
 					</div>
 				</div>
 				<div class="col-12">

@@ -27,7 +27,8 @@
 		<div class="col-md-12" *ngIf="businessList && businessList.length">
 			<div class="form-input mb-3">
 				<label> کسب کار</label>
-				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList"
+				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList" loadingText="لطفا صبر کنید ..."
+				notFoundText="مناسفانه کسب و کاری یافت نشد"
 					placeholder="انتخاب کنید" [readonly]="true" [(ngModel)]="businessId">
 				</ng-select>
 
@@ -38,7 +39,8 @@
 		<div class="col-md-12" >
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
-				<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"  [readonly]="true" [(ngModel)]="employerId">
+				<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"  [readonly]="true" [(ngModel)]="employerId"> loadingText="لطفا صبر کنید ..."
+					notFoundText="مناسفانه کارفرمایی یافت نشد"
 					<ng-option *ngFor="let item of employerList" [value]="item.id">
 						<div class="font-size-14">{{item.full_name}}</div>
 					</ng-option>
@@ -63,14 +65,16 @@
 	<!-- (add)="AddAlowences($event)"
 	(remove)="removeAlowences($event)"
 	(change)="calcChildrenAllowance();" -->
-	<div class="col-md-12" *ngIf="employeeList && employeeList.length">
-		<div class="form-input mb-3">
+	<div  *ngIf=" !employeeLoading" class="col-md-12">
+		<div class="form-input mb-3" *ngIf="employeeList && employeeList.length" >
 			<label>انتخاب کارمندان</label>
 			<ng-select
 			[clearable]="false"
 			placeholder="انتخاب کنید"
 			[multiple]="true"
 			formControlName="business_employee_ids"
+			loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کارمندی یافت نشد"
 			
 			>
 			<ng-option *ngFor="let item of employeeList" [value]="item.business_employee_id" >
@@ -88,7 +92,17 @@
 			</span>
 			<span class="hint">کارمندان در این حکم را اضافه کنید .</span>
 		</div>
+
+		
 	</div>
+	<div   *ngIf="employeeLoading" class="col-md-12">
+		<div class="ion-padding custom-skeleton employee-loading ">
+		
+		  <ion-skeleton-text class="title"  ></ion-skeleton-text>
+		  <ion-skeleton-text class="box" animated></ion-skeleton-text>
+		 
+		</div>
+	  </div>
 
 				
 					<div class="col-12">

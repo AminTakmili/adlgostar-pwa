@@ -16,6 +16,19 @@ import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalcu
 import { Employer } from 'src/app/core/models/employer.model';
 import { async } from '@angular/core/testing';
 
+import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	switchMap,
+	tap,
+	map,
+	filter,
+} from 'rxjs/operators';
+
+
+
 @Component({
 	selector: 'app-contract-add',
 	templateUrl: './contract-add.component.html',
@@ -57,6 +70,24 @@ export class ContractAddComponent implements OnInit {
 	contractFooterTemplateInfoList: FormArray;
 
 	businessEmpId : number[] = [];
+	
+
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
+	
+	minLengthTerm = 3;
+
+	// employeeLimit: number = 1000;
+	// employeeOffset: number = 0;
+	// employeeTotal: number = 0;
+	// employeeEnd: boolean = false;
+
+	// employerLimit: number = 1000;
+	// employerOffset: number = 0;
+	// employerTotal: number = 0;
+	// employerEnd: boolean = false;
+
 
 	constructor(
 		public global: GlobalService,
@@ -69,7 +100,7 @@ export class ContractAddComponent implements OnInit {
 
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
-			business_id: ['', Validators.compose([Validators.required])],
+			business_id: [, Validators.compose([Validators.required])],
 			contract_condition_id: [''],
 			employee_ids: [[], Validators.compose([Validators.required])],
 			employer_ids: [[], Validators.compose([Validators.required])],
@@ -197,6 +228,48 @@ export class ContractAddComponent implements OnInit {
 
 	/* ============================== end All form arrays ===========================================*/
 
+		
+	loadBusiness() {
+		this.businesslist$ = concat(
+			of([]), // default items
+			this.businessInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.businessInputLoading = true)),
+				switchMap((term) => {
+					return this.getbusiness(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.businessInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getbusiness(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('business/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+
 	addCondition() {
 
 		// console.log(this.contractsForm.value.contract_condition_id)
@@ -222,8 +295,8 @@ export class ContractAddComponent implements OnInit {
 	getData() {
 		// const countries = this.global.httpGet('more/countries');
 
-		const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
-
+		// const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
+		this.loadBusiness()
 		const contractTheme = this.global.httpPost('contractTemplate/list',{ limit: 2000, offset: 0 });
 		const contractHeaderTheme = this.global.httpPost('contractHeaderTemplate/filteredList',{ limit: 2000, offset: 0 ,filtered_name:''});
 		const contractFooterTheme = this.global.httpPost('contractFooterTemplate/filteredList',{ limit: 2000, offset: 0,filtered_name:'' });
@@ -234,9 +307,9 @@ export class ContractAddComponent implements OnInit {
 
 		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',{ limit: 1000, offset: 0 });
 
-		this.global.parallelRequest([business, contractTheme,contractHeaderTheme,contractFooterTheme, contractCondition, contractExtra, severanceBaseCalculation])
-		.subscribe(([businessRes, contractThemeRes = '',contractHeaderThemeRes='',contractFooterThemeRes='', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
-			this.CreateBusiness(businessRes);
+		this.global.parallelRequest([ contractTheme,contractHeaderTheme,contractFooterTheme, contractCondition, contractExtra, severanceBaseCalculation])
+		.subscribe(([ contractThemeRes = '',contractHeaderThemeRes='',contractFooterThemeRes='', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
+			// this.CreateBusiness(businessRes);
 			this.CreatecontractTheme(contractThemeRes);
 			this.CreatecontractHeaderTheme(contractHeaderThemeRes);
 			this.CreatecontractFooterTheme(contractFooterThemeRes);
@@ -246,28 +319,42 @@ export class ContractAddComponent implements OnInit {
 		});
 	}
 
+
 	async GetEmployee() {
+		if (this.contractsForm.value.business_id) {
+			
+			await this.global.showLoading('لطفا منتظر بمانید...');
+	
+			const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
+	
+			const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
+	
+			 this.global.parallelRequest([employerReq, employeeReq])
+			.subscribe(async ([employer = '', employee = '']) => {
+				await this.global.dismisLoading();
+				this.contractsForm.controls.employer_ids.setValue('')
+				this.contractsForm.controls.employee_ids.setValue('')
+				this.employeeLists(employee);
+				this.employerLists(employer);
+			});
+		}else{
+			this.contractsForm.controls.business_id.markAsTouched()
+			this.employeeList=[]
+			this.employerList=[]
+			// this.contractsForm.markAllAsTouched()
+			this.businesslist$=of([])
+			this.loadBusiness()
 
-		await this.global.showLoading('لطفا منتظر بمانید...');
+		}
 
-		const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
-
-		const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
-
-		 this.global.parallelRequest([employerReq, employeeReq])
-		.subscribe(async ([employer = '', employee = '']) => {
-			await this.global.dismisLoading();
-			this.employeeLists(employee);
-			this.employerLists(employer);
-		});
 
 	}
 
-	CreateBusiness(data: any) {
-		this.businessList = data.list.map((item: any) => {
-			return new BusinessList().deserialize(item);
-		});
-	}
+	// CreateBusiness(data: any) {
+	// 	this.businessList = data.list.map((item: any) => {
+	// 		return new BusinessList().deserialize(item);
+	// 	});
+	// }
 
 	CreatecontractTheme(data: any) {
 		this.contractTemplatelist = data.list.map((item: any) => {
@@ -309,6 +396,7 @@ export class ContractAddComponent implements OnInit {
 
 	employerLists(data: any){
 		 console.log(data);
+		 
 
 		if(data.employers.length === 0){
 			this.employerList = [];

@@ -63,7 +63,7 @@ export class SentenceAddComponent implements OnInit {
 	employeeId: number[];
 	isSingel!:boolean
 	singelEmployeeId:number
-
+	employeeLoading:boolean=true
 
 	constructor(
 		public global: GlobalService,
@@ -235,6 +235,7 @@ export class SentenceAddComponent implements OnInit {
 	}
 
 	employeeLists(data: any){
+		this.employeeLoading=false
 	
 		let domy:any=[]
 		console.log(this.employeeId,data.list);

@@ -10,6 +10,19 @@ import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
+import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	switchMap,
+	tap,
+	map,
+	filter,
+} from 'rxjs/operators';
+
+
+
 @Component({
 	selector: 'app-contract-list',
 	templateUrl: './contract-list.component.html',
@@ -37,6 +50,21 @@ export class ContractListComponent implements OnInit {
 	businessList: BusinessList[] = [];
 	empoloyerList: Employer[] = [];
 	employeeList: Employee[] = [];
+	
+	employerlist$: Observable<Employer[]>;
+	employerInputLoading = false;
+	employerInput$ = new Subject<string>();
+	
+	employeelist$: Observable<Employee[]>;
+	employeeInputLoading = false;
+	employeeInput$ = new Subject<string>();
+
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
+	selectedMovie: any;
+	minLengthTerm = 3;
+
 
 	@ViewChildren('searchInp') Search: IonInput;
 
@@ -86,26 +114,152 @@ export class ContractListComponent implements OnInit {
 
 	getFilters() {
 		// const countries = this.global.httpGet('more/countries');
-		const business = this.global.httpPost('business/filteredList',
-			{ limit: 2000, offset: 0 }
+		// const business = this.global.httpPost('business/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// const empoloyer = this.global.httpPost('employer/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// const employee = this.global.httpPost('employee/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// this.global.parallelRequest([business, empoloyer, employee])
+		// 	.subscribe(([businessRes, empoloyerRes = '', employeeRes = '']) => {
+
+		// 		this.CreateBusiness(businessRes);
+		// 		this.CreateEmployer(empoloyerRes);
+		// 		this.CreateEmployee(employeeRes);
+
+			// });
+			this.loadBusiness()
+			this.loadEmployer()
+			this.loadEmployee()
+	}
+	
+	
+	loadBusiness() {
+		this.businesslist$ = concat(
+			of([]), // default items
+			this.businessInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.businessInputLoading = true)),
+				switchMap((term) => {
+					return this.getbusiness(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.businessInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		const empoloyer = this.global.httpPost('employer/filteredList',
-			{ limit: 2000, offset: 0 }
+	getbusiness(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('business/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	
+	loadEmployer() {
+		this.employerlist$ = concat(
+			of([]), // default items
+			this.employerInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employerInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployer(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employerInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		const employee = this.global.httpPost('employee/filteredList',
-			{ limit: 2000, offset: 0 }
+	getEmployer(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employer/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employer().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	loadEmployee() {
+		this.employeelist$ = concat(
+			of([]), // default items
+			this.employeeInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employeeInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployee(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employeeInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		this.global.parallelRequest([business, empoloyer, employee])
-			.subscribe(([businessRes, empoloyerRes = '', employeeRes = '']) => {
-
-				this.CreateBusiness(businessRes);
-				this.CreateEmployer(empoloyerRes);
-				this.CreateEmployee(employeeRes);
-
-			});
+	getEmployee(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employee/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employee().deserialize(item);
+						});
+					}
+				})
+			);
 	}
 
 	changeFilter() {

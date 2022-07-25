@@ -1,0 +1,98 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content *ngIf="dataList?.id">
+
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> جزییات اعلان #{{ dataList?.id }}</h1>
+					<p class="dsec">
+						<!-- <span>عنوان اعلان : {{ dataList?.subject }}</span> -->
+					</p>
+					<div class="dsec"><span class="status status-{{ dataList?.status }}"
+							[innerText]="dataList.status=='unread'?'خوانده نشده':'خوانده شده'"></span></div>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
+					<ion-back-button defaultHref="/notification" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<!-- tiket list -->
+			<div class="ticket-list">
+				<div class="ticket-item user">
+					<div class="ticket-description">
+						<div class="dscription" [innerHTML]="dataList.description"></div>
+						<div class="row justify-content-between ion-align-items-center">
+
+
+							<div class="date"> ارسال شده در : {{ dataList.createdAt }} </div>
+							<div *ngIf="dataList.type=='ticket_received'" class="col-2">
+
+								<ion-button *ngFor="let item of dataList.notification_info "
+									[routerLink]="['/profile/support/detail',item.id]" expand="block" fill="clear"
+									shape="round">
+									رفتن به تیکت
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="ticket-info ">
+
+						<div class="col-lg-auto">
+
+							<p class="type">
+								( {{setTypeName(dataList.type)}} )
+							</p>
+							<div *ngFor="let item of dataList.notification_info " class="notification_info">
+
+								<div *ngIf="dataList.type=='ticket_received'" class="ticket_received">
+
+
+									<span>ارسال کننده پیام:</span>
+									<p>
+										{{item.sender_info.first_name}} {{item.sender_info.last_name}}
+									</p>
+									<span>متن تیکت:</span>
+									<p>{{item.content}} </p>
+								</div>
+
+
+							</div>
+						</div>
+						<!-- <div class="info">  {{ dataList.sender_info.first_name +' '+dataList.sender_info.last_name }} </div> -->
+
+
+					</div>
+				</div>
+				<!-- <div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.responder_info.id!==dataList.sender_info.id" [class.user]="item.responder_info.id===dataList.sender_info.id">
+					<div class="ticket-description">
+						<div class="dscription" [innerHTML]="item.content"></div>
+						<div class="date"> ارسال شده در : {{ item.createdAt }} </div>
+					</div>
+					<div class="ticket-info">
+						<ion-avatar>
+							<ion-img *ngIf="item.responder_info.id===dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
+							<ion-img *ngIf="item.responder_info.id!==dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/admin.png' "></ion-img>
+						</ion-avatar>
+						<div class="info">  {{ item.responder_info.first_name +' '+item.responder_info.last_name }} </div>
+					</div>
+				</div> -->
+			</div>
+			<!-- replay -->
+
+		</div>
+	</main>
+</ion-content>

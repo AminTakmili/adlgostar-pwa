@@ -9,9 +9,9 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title"> جزییات درخواست #{{ dataList?.id }}</h1>
+					<h1 class="title">عنوان درخواست : {{ dataList?.subject }} </h1>
 					<p class="dsec">
-						<span>عنوان درخواست : {{ dataList?.subject }}</span>
+						<span>جزییات درخواست #{{ dataList?.id }}</span>
 					</p>
 					<div class="dsec"><span class="status status-{{ dataList?.status }}"
 							[innerText]="returnStatus(dataList?.status)"></span></div>
@@ -118,6 +118,7 @@
 						placeholder="انتخاب بخش مربوطه  "
 						bindLabel="name"
 						bindValue="id"
+						(change)="setSectionChildern($event)" 
 						formControlName="section_id"
 						>
 						<!-- (change)="pageChange(1)" -->
@@ -133,32 +134,31 @@
 				</div>
 				<!-- chose section childern -->
 				
-				<div *ngIf="supportList&&referredform.controls['section_id'].value" class="col-md-12 mb-3 section-childern">
-					<div class="form-input ">
+				<div *ngIf="supportList&&referredform.controls['section_id'].value" class="col-md-12 mb-3 section-childern" >
+					<div class="form-input mb-3">
+					  <label>انتخاب کارکنان بخش</label>
+					  <ng-select
+					  [clearable]="true"
+					  placeholder="انتخاب کنید"
+					  [multiple]="false"
+					  [items]="users"
+					  bindLabel="full_name"
+					  bindValue="id"
+					  formControlName="receiver_id" 
+					  >
+					  <!-- (add)="AddAlowences($event)"
+					  (remove)="removeAlowences($event)"
+					  (change)="calcChildrenAllowance();" -->
+				   
 					
-						<label >کارکنان بخش</label>
-					
-							<ion-radio-group mode="md"	formControlName="receiver_id"  class="row" name="auto" value="tesla">
-							
-							<ion-item lines="none" class="chose-button">
-
-								<ion-radio  [value]="null" color="success" ></ion-radio>
-								<ion-label>تمام افراد بخش </ion-label>
-							</ion-item>
-							
-							<ion-item *ngFor=" let item of setSectionChildern(referredform.controls['section_id'].value)" lines="none" class="chose-button">
-
-								<ion-radio [value]="item?.id" ></ion-radio>
-								<ion-label>{{item.first_name}} {{item.last_name}} </ion-label>
-							</ion-item>
-							
-							
-							
-							</ion-radio-group>
-					
-					
+					  </ng-select>
+					  <span class="error">
+						<app-validator #validation [control]="referredform.controls['receiver_id']" [controlName]="'انتخاب کارمندان '"></app-validator>
+					  </span>
+					  <span class="hint">در صورت تمایل یکی از کارکنان بخش را انتخاب کنید .</span>
 					</div>
-				</div>
+				  </div>
+
 				<ion-item lines="none" *ngIf="supportList&&referredform.controls['section_id'].value" >
 					<ion-button type="submit" id="open-referred-modal" shape="round" color="secondary" >
 						<ion-icon slot="start" name="checkmark"></ion-icon>

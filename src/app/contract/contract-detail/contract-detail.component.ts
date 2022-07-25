@@ -29,7 +29,7 @@ export class ContractDetailComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private route: ActivatedRoute
+		public route: ActivatedRoute
 	) {}
 
 	ngOnInit() {}
@@ -104,8 +104,8 @@ export class ContractDetailComponent implements OnInit {
 		this.global
 			.httpPost('contractSentence/filteredList', {
 				filtered_contract_id: id,
-				offset: 0,
-				limit: 1,
+				offset: this.offset,
+				limit: this.limit,
 			})
 			.subscribe(
 				async (res: any) => {
@@ -184,5 +184,44 @@ export class ContractDetailComponent implements OnInit {
 				// 	}
 				// });
 			});
+	}
+	removeContract(id:number,date:string){
+		this.global.showAlert('حذف حکم تاریخ  '+ date , 'آیا برای حذف اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes',
+				cssClass: 'dark',
+			},
+			{
+				text: 'خیر',
+				role: 'cancel',
+				cssClass: 'medium',
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+
+
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('contractSentence/delete', {
+						id
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+
+						this.offset = 0;
+						this.CurrentPage = 1;
+						this.getData(this.route.snapshot.paramMap.get('id'));
+
+						this.global.showToast(res.msg);
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 }

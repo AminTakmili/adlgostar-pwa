@@ -27,7 +27,8 @@
 		<div class="col-md-12" *ngIf="businessList && businessList.length">
 			<div class="form-input mb-3">
 				<label> کسب کار</label>
-				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList"
+				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList" loadingText="لطفا صبر کنید ..."
+				notFoundText="مناسفانه کسب و کاری یافت نشد"
 					placeholder="انتخاب کنید" [readonly]="true" [(ngModel)]="businessId">
 				</ng-select>
 
@@ -38,7 +39,8 @@
 		<div class="col-md-12" >
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
-				<ng-select  [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true" [(ngModel)]="employerId">
+				<ng-select  [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true" [(ngModel)]="employerId" loadingText="لطفا صبر کنید ..."
+				notFoundText="مناسفانه کارفرمایی یافت نشد">
 					<ng-option *ngFor="let item of employerList" [value]="item.id">
 						<div class="font-size-14">{{item.full_name}}</div>
 					</ng-option>
@@ -66,6 +68,8 @@
 			placeholder="انتخاب کنید"
 			[multiple]="true"
 			formControlName="business_employee_ids"
+			loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کارمندی یافت نشد"
 			
 			>
 			<ng-option *ngFor="let item of employeeList" [value]="item.business_employee_id" >

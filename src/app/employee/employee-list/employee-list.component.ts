@@ -5,6 +5,17 @@ import { Employee } from 'src/app/core/models/employee.model';
 import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	switchMap,
+	tap,
+	map,
+	filter,
+} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-employee-list',
@@ -32,6 +43,15 @@ export class EmployeeListComponent implements OnInit {
 	businessList : BusinessList[] = [];
 	employersList : Employer[] = [];
 
+	employerlist$: Observable<Employer[]>;
+	employerInputLoading = false;
+	employerInput$ = new Subject<string>();
+
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
+	selectedMovie: any;
+	minLengthTerm = 3;
 
 
 	constructor(
@@ -85,17 +105,101 @@ export class EmployeeListComponent implements OnInit {
 	}
 
 	extraData(){
-		const businesses = this.global.httpPost('business/filteredList',{ limit : 1000 , offset : 0 });
-		const employers = this.global.httpPost('employer/filteredList',{ limit : 1000 , offset : 0 });
-		// const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
-		this.global.parallelRequest([businesses , employers])
-			.subscribe(([businessesRes , employersRes = '' ]) => {
+		// const businesses = this.global.httpPost('business/filteredList',{ limit : 1000 , offset : 0 });
+		// const employers = this.global.httpPost('employer/filteredList',{ limit : 1000 , offset : 0 });
+		// // const businessCategory = this.global.httpPost('business-category/list',{limit : this.categoryLimit, offset : this.categoryoffSet });
+		// this.global.parallelRequest([businesses , employers])
+		// 	.subscribe(([businessesRes , employersRes = '' ]) => {
 
-				this.businessList = this.global.createBusiness(businessesRes);
-				this.employersList = this.global.createEmployer(employersRes);
+		// 		this.businessList = this.global.createBusiness(businessesRes);
+		// 		this.employersList = this.global.createEmployer(employersRes);
 
-				// this.setBussinessCategory(businessCategory);
-			});
+		// 		// this.setBussinessCategory(businessCategory);
+		// 	});
+		this.loadBusiness()
+		this.loadEmployer()
+	}
+
+	
+	loadBusiness() {
+		this.businesslist$ = concat(
+			of([]), // default items
+			this.businessInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.businessInputLoading = true)),
+				switchMap((term) => {
+					return this.getbusiness(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.businessInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getbusiness(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('business/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	loadEmployer() {
+		this.employerlist$ = concat(
+			of([]), // default items
+			this.employerInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employerInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployer(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employerInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getEmployer(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employer/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employer().deserialize(item);
+						});
+					}
+				})
+			);
 	}
 
 

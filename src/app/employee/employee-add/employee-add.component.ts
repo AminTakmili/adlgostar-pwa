@@ -300,6 +300,7 @@ export class EmployeeAddComponent implements OnInit {
 	async onSubmit(AddAnOther : boolean = false) {
 
 
+		console.log(this.businessId,AddAnOther);
 		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');

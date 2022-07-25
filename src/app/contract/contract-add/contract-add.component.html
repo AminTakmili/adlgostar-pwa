@@ -36,10 +36,11 @@
 						</div>
 					</div>
 						<!-- انتخاب کسب و کار -->
-						<div class="col-md-12" *ngIf="businessList && businessList.length">
+						<!-- *ngIf="businessList && businessList.length" -->
+						<div class="col-md-12" >
 							<div class="form-input mb-3">
 								<label>انتخاب کسب کار</label>
-								<ng-select
+								<!-- <ng-select
 								bindLabel="name"
 								bindValue="id"
 								[clearable]="false"
@@ -48,11 +49,31 @@
 								(change)="GetEmployee()"
 								formControlName="business_id"
 								>
-								</ng-select>
+								</ng-select> -->
+								
+								<ng-select
+								[items]="businesslist$ | async"
+								placeholder="انتخاب کسب و کار"
+								[loading]="businessInputLoading"
+								bindLabel="name"
+								bindValue="id"
+								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+								[typeahead]="businessInput$"
+								formControlName="business_id"
+								[clearable]="true"
+								(change)="GetEmployee()"
+								loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کسب و کاری یافت نشد"
+								
+								
+							
+							>
+							</ng-select>
+
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['business_id']" [controlName]="'انتخاب کسب و کار '"></app-validator>
 								</span>
-								<span class="hint">کارفرما در قرار داد چه کسی باشد</span>
+								<span class="hint"> این قرارداد برای کدام  کسب کار است	</span>
 							</div>
 						</div>
 						<!-- انتحاب کارفرما -->

@@ -23,6 +23,7 @@ export class GlobalService {
 	public login: boolean = false;
 	public _login = new BehaviorSubject<boolean>(this.login);
 	public baseData = new BehaviorSubject<StaticData>(null);
+	public menuState = new BehaviorSubject<string>('open');
 	public user: User;
 	public _user =  new BehaviorSubject<User>(null);
 	public sitename: string = environment.sitename;

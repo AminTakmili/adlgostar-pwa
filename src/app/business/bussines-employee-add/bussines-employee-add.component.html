@@ -35,6 +35,9 @@
 								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
 								[typeahead]="employeeInput$"
 								formControlName="employee_id"
+								loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کارمندی یافت نشد"
+								(focus)="employChange()"
 							>
 							</ng-select>
 

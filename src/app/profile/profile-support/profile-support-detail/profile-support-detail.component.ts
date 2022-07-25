@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonModal, NavController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { Support } from 'src/app/core/models/supoort.model';
+import { User } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -19,6 +20,7 @@ export class ProfileSupportDetailComponent implements OnInit {
 	ticketform : FormGroup;
 	referredform : FormGroup;
 	supportList!:any
+	users:User[]
 
 	constructor(
 		public global: GlobalService,
@@ -77,9 +79,17 @@ export class ProfileSupportDetailComponent implements OnInit {
 			},
 		)
 	}
-	setSectionChildern(id:number){
-		return this.supportList?.find((item:any)=>item.id==id)?.users
+	setSectionChildern(item:any){
+		let id=item.id
+		console.log(id);
+		this.users=[new User().deserialize( {full_name:`همه کارکنان بخش ${this.supportList?.find((item:any)=>item.id==id)?.name}`})]
+	
+		this.supportList?.find((item:any)=>item.id==id)?.users.map((item:User)=>{
+			this.users.push(new User().deserialize(item))
+		})
+	
 	}
+
 
 
 	setTitle() {

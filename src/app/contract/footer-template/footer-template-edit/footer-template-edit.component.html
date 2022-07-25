@@ -88,6 +88,9 @@
 						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
 							<label>دسته بندی کسب و کار</label>
 							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید"
+
+								loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه دسته بندی کسب و کاری یافت نشد"
 							[items]="businessCatgeories"
 								bindLabel="name"
 								 bindValue="id"
@@ -108,6 +111,8 @@
 						<div class="form-input mb-3" *ngIf="business && business.length">
 							<label>انتخاب کسب و کار</label>
 							<ng-select placeholder="انتخاب کسب و کار" [items]="business" bindLabel="name" bindValue="id"
+							loadingText="لطفا صبر کنید ..."
+							notFoundText="مناسفانه کسب و کاری یافت نشد"
 								[multiple]="true" formControlName="businesses">
 
 							</ng-select>

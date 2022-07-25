@@ -31,6 +31,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 	postList: Post[];
 	businessId: string;
 	employeeId: string;
+	// employeeName: string;
 
 	employeelist$: Observable<Employee[]>;
 	inputLoading = false;
@@ -86,14 +87,18 @@ export class BussinesEmployeeAddComponent implements OnInit {
 
 		this.businessId = this.route.snapshot.paramMap.get('id');
 		this.employeeId = this.route.snapshot.queryParamMap.get('id');
-		console.log(this.employeeId);
-
+		
 		if (this.employeeId) {
 			this.getEmployeeById(this.employeeId);
 		} else {
 			this.loadEmployee();
 		}
 		console.log(this.employeelist$);
+	}
+	employChange(){
+		if (this.employeeId) {
+			this.loadEmployee();
+		}
 	}
 
 	loadEmployee() {
@@ -136,7 +141,8 @@ export class BussinesEmployeeAddComponent implements OnInit {
 				})
 			);
 	}
-	getEmployeeById(employee_id: string = null) {
+	async getEmployeeById(employee_id: string = null) {
+	await	this.global.showLoading()
 		console.log(employee_id);
 		this.global
 			.httpPost('employee/filteredList', {
@@ -147,11 +153,18 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			})
 			.subscribe(
 				async (res: any) => {
-					console.log(of(res.list), res.list);
-					this.employeelist$ = of(res.list);
-					this.addForm.get('employee_id').setValue(employee_id);
+					await this.global.dismisLoading()
+					console.log(of(res.list), res.list[0].id);
+					this.employeelist$ = of(res.list.map((item: any) => {
+						return new Employee().deserialize(item);
+					})) ;
+				
+					this.addForm.get('employee_id').setValue(res.list[0]?.id);
 				},
 				async (error: any) => {
+					await this.global.dismisLoading()
+
+					this.global.showError(error)
 					console.log(error);
 				}
 			);
