@@ -63,6 +63,8 @@ export class ValidatorComponent implements OnInit {
 								this.param = this.control.errors['min'].min.toString();
 								break;
 							case 'max':
+								this.param = this.control.errors['max'].max.toString();
+								break;
 						default:
 							this.param = '';
 							break;

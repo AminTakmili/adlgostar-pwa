@@ -60,6 +60,13 @@ const routes: Routes = [
     loadChildren: () => import('./notification/notification.module').then( m => m.NotificationPageModule),
 	canActivate: [LoginGuard]
   },
+  {
+    path: 'payrolls',
+    loadChildren: () => import('./payroll/payroll.module').then( m => m.PayrollPageModule),
+	canActivate: [LoginGuard]
+  },
+ 
+
 
 
 	// {

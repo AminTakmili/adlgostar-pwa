@@ -4,6 +4,7 @@
 			<ion-img [src]="this.global?.user?.media && this.global?.user?.media.length &&this.global?.user?.media.length !=0 ? this.global?.user?.media[0]?.options?.subSizes['1x'] :'../assets/img/user-image.png'"></ion-img>
 		</ion-thumbnail>
 		<h5 class="my-0 name font-size-16 ion-text-center"><ion-text color="white">{{ this.global?.user?.first_name + ' ' + this.global?.user?.last_name }}</ion-text></h5>
+		<p class="desc my-1 font-size-12 ion-text-center"><ion-text color="medium">{{ this.global?.user?.role?.name }}</ion-text></p>
 		<p class="desc my-1 font-size-12 ion-text-center"><ion-text color="medium">{{ this.global?.user?.mobile }}</ion-text></p>
 	</div>
 	<div class="sidebar-item">
@@ -19,9 +20,23 @@
 						<ion-item *ngIf="subitem.name && subitem.access" lines="none"  button [routerLink]="subitem.url"  (click)="routerClickFun(subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event , i )" >
 							<ion-icon [src]="subitem.src" [name]="subitem.icon" slot="start"></ion-icon>
 							<ion-label >{{ subitem.name }}</ion-label>
+							
 						</ion-item>
+
+						
 					</ng-template>
 				</div>
+				<!-- <ng-template ngFor let-item [ngForOf]="item?.submenu"  let-i="index" >
+					<div class="level-2" [@openAnimation]='item.state' *ngIf="item.submenu !== undefined && item.submenu.length">
+						<ng-template  ngFor let-subitem [ngForOf]="item.submenu" >
+							<ion-item *ngIf="subitem.name && subitem.access" lines="none"  button [routerLink]="subitem.url"  (click)="routerClickFun(subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event , i )" >
+								<ion-icon [src]="subitem.src" [name]="subitem.icon" slot="start"></ion-icon>
+								<ion-label >{{ subitem.name }}</ion-label>
+							</ion-item>
+						</ng-template>
+					</div>
+				</ng-template> -->
+
 			</ng-template>
 		</ion-list>
 	</div>

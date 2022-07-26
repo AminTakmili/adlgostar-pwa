@@ -79,7 +79,7 @@ export const globalData = {
 		},
 		{
 			name: 'قرارداد ها',
-			icon: 'document-text',
+			icon: 'document',
 			open: false,
 			state: "close",
 			function: 'showDetail',
@@ -87,7 +87,7 @@ export const globalData = {
 				{
 					name: 'لیست قرار داد ها',
 					url: '/contracts/list',
-					icon: 'document-text',
+					icon: 'document',
 					function: 'showDetail'
 				},
 				{
@@ -120,6 +120,41 @@ export const globalData = {
 					function: 'showDetail'
 
 				},
+			]
+		},
+		{
+			name: 'حقوق و دستمزد',
+			icon: 'document-text',
+			open: false,
+			state: "close",
+			function: 'showDetail',
+			access : true,
+			submenu: [
+				{
+					name: 'اطلاعات پایه حقوق و دستمزد',
+					url: '/payrolls/payroll_base_info',
+					icon: 'document-text',
+					function: 'showDetail',
+					access : true,
+					submenu: [
+						{
+						name: 'لیست ساعت های موظفی',
+						url: '/payrolls/payroll_base_info/working_hour/list',
+						icon: 'document-text',
+						function: 'showDetail',
+						access : true,
+					}
+					]
+				},
+				{
+					name: 'لیست حقوق و دستمزد',
+					url: '/payrolls/payroll',
+					icon: 'list',
+					function: 'showDetail',
+					access : true,
+
+				},
+				
 			]
 		},
 		{

@@ -101,10 +101,12 @@ export class permissionsDetail implements Deserializable {
 	is_checked : boolean = false;
 	access : boolean = false;
 	permission_category !: permision;
+	children !: permissionsDetail[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		if(input.permission_category){
 			this.permission_category = input.permission_category;
+			// if()
 		}
 		return this;
 	}

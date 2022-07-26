@@ -28,6 +28,26 @@ export class GlobalService {
 	public _user =  new BehaviorSubject<User>(null);
 	public sitename: string = environment.sitename;
 	public userPermision  : LooseObject = {};
+	public monthList  : Array<{
+		name:string,
+		number:number
+	}> = [];
+	public	getMonthName:string[] =[
+		"",
+		"فروردین",
+		"اردیبهشت",
+		"خرداد",
+		"تیر",
+		"مرداد",
+		"شهریور",
+		"مهر",
+		"آبان",
+		"آذر",
+		"دی",
+		"بهمن",
+		"اسفند"
+	]
+
 	constructor(
 		private http: HttpClient,
 		private storage: StorageService,
@@ -38,6 +58,30 @@ export class GlobalService {
 		private toastController: ToastController,
 	) {
 		this.setUserInfo();
+		const monthNames=[
+			"فروردین",
+			"اردیبهشت",
+			"خرداد",
+			"تیر",
+			"مرداد",
+			"شهریور",
+			"مهر",
+			"آبان",
+			"آذر",
+			"دی",
+			"بهمن",
+			"اسفند"
+		]
+		monthNames.map((monthName,monthIndex)=>{
+			this.monthList.push(
+				{
+					name:monthName,
+					number:monthIndex+1
+				}
+			)
+		})
+	
+		
 	}
 
 
@@ -231,11 +275,15 @@ export class GlobalService {
 	}
 
 	setPermision(persmion : permissionsDetail[]){
-		// console.log(persmion);
+		 console.log("persmion",persmion);
 
-		persmion.map((item)=>{
+		persmion.map((item:permissionsDetail)=>{
 			this.userPermision[item.en_name] =  item.access;
+			// if(item.children && item.children.length){
+			// 	item.children.map((child:permissionsDetail)=>{
 
+			// 	})
+			// }
 		});
 		console.log(this.userPermision);
 	}

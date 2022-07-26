@@ -21,7 +21,7 @@ export class StaticData implements Deserializable {
 		if(input.years && input.years.length){
 			this.years = input.years.map((item : any)=>{
 				return new  DataSets().deserialize(item);
-			})
+			}).reverse()
 		}
 		if(input.degree && input.degree.length){
 			this.degree = input.degree.map((item : any)=>{
@@ -62,6 +62,16 @@ export class DataSets implements Deserializable {
 	value!: string;
 	id!: number;
 	year !:number;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+
+export class monthSets implements Deserializable {
+	name!: string;
+	value!: number;
+	
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;
