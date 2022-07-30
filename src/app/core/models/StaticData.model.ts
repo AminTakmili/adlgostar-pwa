@@ -1,8 +1,9 @@
-import { notificationType } from 'src/app/core/models/notification.model';
 import { Deserializable } from "./deserializable.model";
+import { notificationType } from 'src/app/core/models/notification.model';
 
 export class StaticData implements Deserializable {
 	contract_template_type!: DataSets[];
+	settlement_type!: DataSets[];
 	degree!: DataSets[];
 	employee_status!: DataSets[];
 	employer_type!: DataSets[];
@@ -18,6 +19,12 @@ export class StaticData implements Deserializable {
 				return new  DataSets().deserialize(item);
 			})
 		}
+		if(input.settlement_type && input.settlement_type.length){
+			this.settlement_type = input.settlement_type.map((item : any)=>{
+				return new  DataSets().deserialize(item);
+			})
+		}
+
 		if(input.years && input.years.length){
 			this.years = input.years.map((item : any)=>{
 				return new  DataSets().deserialize(item);
@@ -63,6 +70,7 @@ export class DataSets implements Deserializable {
 	id!: number;
 	year !:number;
 	deserialize(input: any): this {
+
 		Object.assign(this, input);
 		return this;
 	}

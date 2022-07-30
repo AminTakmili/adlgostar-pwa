@@ -43,6 +43,16 @@ export class User implements Deserializable {
 						this.permissionsList.push(new permissionsDetail().deserialize(item));
 					})
 				}
+				if(per.children && per.children.length){
+					 per.children.map((item:any)=>{
+						 if (item.permissions&&item.permissions.length) {
+							item.permissions.map((childPermissin:any)=>{
+
+								this.permissionsList.push(new permissionsDetail().deserialize(childPermissin));
+							})
+						 }
+					})
+				}
 			})
 		}
 

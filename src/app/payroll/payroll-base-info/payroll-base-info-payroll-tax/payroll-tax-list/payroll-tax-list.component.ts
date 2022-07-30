@@ -1,17 +1,11 @@
-import { payrollTaxList } from './../../../../core/models/payroll-base-info.model';
-import { DataSets } from './../../../../core/models/StaticData.model';
-
-import { Component, OnInit, ViewChildren } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AlertController, IonInput } from '@ionic/angular';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 
-import { BusinessList } from 'src/app/core/models/business.model';
-// import { contract } from 'src/app/core/models/contractConstant.model';
-import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
-import { Employee } from 'src/app/core/models/employee.model';
-import { Employer } from 'src/app/core/models/employer.model';
+import { DataSets } from './../../../../core/models/StaticData.model';
+import { FormBuilder } from '@angular/forms';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { payrollTaxList } from './../../../../core/models/payroll-base-info.model';
 
 @Component({
   selector: 'app-payroll-tax-list',

@@ -1,0 +1,98 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="/payrolls/payroll_base_info/settlement/template/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-12 my-4">
+						<div class="title-1">
+							<h2 class="title">{{ pageTitle }}</h2>
+							<p class="dsec">در این قسمت میتوانید یک قالب تسویه حساب جدید تعریف کنید
+							</p>
+						</div>
+					</div>
+					<!-- عنوان  -->
+					<div class="col-md-12 mb-4">
+						<div class="form-input mb-3">
+							<label>عنوان قالب </label>
+							<ion-input    autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<app-validator [control]="addForm.controls['name']" [controlName]="'عنوان'">
+								</app-validator>
+							</span>
+						
+						</div>
+					</div>
+					<!-- توع قالب  -->
+					<div class="col-md-12 mb-4">
+						<div class="form-input mb-3">
+							<label> نوع قالب </label>
+							<ng-select formControlName="type"
+								placeholder="انتخاب کنید"
+								[items]="  settlement_type"
+								bindLabel="name"
+								bindValue="value"
+							 >
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="addForm.controls['type']" [controlName]="'نوع قالب'">
+								</app-validator>
+							</span>
+						
+						</div>
+					</div>
+					<!-- دسته بندی کسب و کار -->
+			
+					<!-- شروط ضمن عقد  -->
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label> قالب تسویه حساب</label>
+							<ckeditor name="myckeditor" formControlName="template" [config]="ckeConfig"></ckeditor>
+							<span class="error">
+								<app-validator [control]="addForm.controls['template']" [controlName]="'قالب قرار داد'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<hr>
+					</div>
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-3">
+								<ion-button expand="block" color="medium" fill="outline" shape="round" (click)="global.emptyFrom(addForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-4">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ثبت {{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

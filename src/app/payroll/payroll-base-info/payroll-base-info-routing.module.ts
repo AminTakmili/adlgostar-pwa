@@ -1,12 +1,13 @@
+import { RouterModule, Routes } from '@angular/router';
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
 // import { PayrollBaseInfoPage } from './payroll-base-info.page';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo:'payroll_tax/list'
+    redirectTo:'settlement'
   },
   {
   
@@ -18,8 +19,16 @@ const routes: Routes = [
     loadChildren: () => import('./payroll-base-info-payroll-tax/payroll-base-info-payroll-tax.module').then( m => m.PayrollBaseInfoPayrollTaxPageModule)
   },
   {
-    path: 'payroll-base-info-payroll-addition-list',
-    loadChildren: () => import('./payroll-base-info-payroll-addition-list/payroll-base-info-payroll-addition-list.module').then( m => m.PayrollBaseInfoPayrollAdditionListPageModule)
+    path: 'payroll_addition',
+    loadChildren: () => import('./payroll-base-info-payroll-addition/payroll-base-info-payroll-addition-list.module').then( m => m.PayrollBaseInfoPayrollAdditionListPageModule)
+  },
+  {
+    path: 'payroll_deduction',
+    loadChildren: () => import('./payroll-base-info-payroll-deduction/payroll-base-info-payroll-deduction.module').then( m => m.PayrollBaseInfoPayrollDeductionPageModule)
+  },
+  {
+    path: 'settlement',
+    loadChildren: () => import('./payroll-base-info-settlement/payroll-base-info-settlement.module').then( m => m.PayrollBaseInfoSettlementPageModule)
   }
 ];
 

@@ -1,19 +1,19 @@
-import { ActivatedRoute } from '@angular/router';
-import { DataSets } from './../../../../core/models/StaticData.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+
+import { ActivatedRoute } from '@angular/router';
+import { DataSets } from './../../../../core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
+import { NavController } from '@ionic/angular';
 import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
-  selector: 'app-payroll-tax-edit',
-  templateUrl: './payroll-tax-edit.component.html',
-  styleUrls: ['./payroll-tax-edit.component.scss'],
+	selector: 'app-payroll-tax-edit',
+	templateUrl: './payroll-tax-edit.component.html',
+	styleUrls: ['./payroll-tax-edit.component.scss'],
 })
 export class PayrollTaxEditComponent implements OnInit {
-
-  pageTitle: string = 'ویرایش مالیات بر حقوق';
+	pageTitle: string = 'ویرایش مالیات بر حقوق';
 	editForm: FormGroup;
 	yearsList!: DataSets[];
 	monthList!: Array<{
@@ -32,9 +32,16 @@ export class PayrollTaxEditComponent implements OnInit {
 		this.id = route.snapshot.paramMap.get('id');
 
 		this.editForm = this.fb.group({
-      id: [this.id],
+			id: [this.id],
 			year: [, Validators.compose([Validators.required])],
-			percent: [, Validators.compose([Validators.required,Validators.min(0),Validators.max(100)])],
+			percent: [
+				,
+				Validators.compose([
+					Validators.required,
+					Validators.min(0),
+					Validators.max(100),
+				]),
+			],
 			from_amount: [
 				'',
 				Validators.compose([Validators.required, Validators.min(0)]),
@@ -93,14 +100,18 @@ export class PayrollTaxEditComponent implements OnInit {
 					async (res: any) => {
 						await this.global.dismisLoading();
 						// console.log(res:any);
+
 						this.navCtrl.navigateForward(
-							'/payrolls/payroll_base_info/working_hour/list'
-						);
-            this.navCtrl.navigateForward(
 							'/payrolls/payroll_base_info/payroll_tax/list'
 						);
-						this.global.showToast('مالیت بر حقوق ویرایش شد',1000,'top','success','ios');
-	
+						this.global.showToast(
+							'مالیت بر حقوق ویرایش شد',
+							1000,
+							'top',
+							'success',
+							'ios'
+						);
+
 						this.editForm.reset();
 					},
 					async (error: any) => {
@@ -110,5 +121,4 @@ export class PayrollTaxEditComponent implements OnInit {
 				);
 		}
 	}
-
 }

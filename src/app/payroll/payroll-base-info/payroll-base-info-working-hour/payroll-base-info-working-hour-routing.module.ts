@@ -1,15 +1,16 @@
-import { PayrollBaseInfoWorkingHourEditComponent } from './payroll-base-info-working-hour-edit/payroll-base-info-working-hour-edit.component';
-import { PayrollBaseInfoWorkingHourAddComponent } from './payroll-base-info-working-hour-add/payroll-base-info-working-hour-add.component';
-import { PayrollBaseInfoWorkingHourListComponent } from './payroll-base-info-working-hour-list/payroll-base-info-working-hour-list.component';
+import { RouterModule, Routes } from '@angular/router';
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { PayrollBaseInfoWorkingHourAddComponent } from './payroll-base-info-working-hour-add/payroll-base-info-working-hour-add.component';
+import { PayrollBaseInfoWorkingHourEditComponent } from './payroll-base-info-working-hour-edit/payroll-base-info-working-hour-edit.component';
+import { PayrollBaseInfoWorkingHourListComponent } from './payroll-base-info-working-hour-list/payroll-base-info-working-hour-list.component';
 
 // import { WorkingHourPage } from './working-hour.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PayrollBaseInfoWorkingHourListComponent
+    redirectTo:'list'
   },
   {
     path:'list',

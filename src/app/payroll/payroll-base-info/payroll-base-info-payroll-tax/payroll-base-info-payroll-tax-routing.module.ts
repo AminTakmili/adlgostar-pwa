@@ -1,16 +1,17 @@
-import { PayrollTaxEditComponent } from './payroll-tax-edit/payroll-tax-edit.component';
-import { PayrollTaxAddComponent } from './payroll-tax-add/payroll-tax-add.component';
-import { PayrollTaxListComponent } from './payroll-tax-list/payroll-tax-list.component';
+import { RouterModule, Routes } from '@angular/router';
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { PayrollTaxAddComponent } from './payroll-tax-add/payroll-tax-add.component';
+import { PayrollTaxEditComponent } from './payroll-tax-edit/payroll-tax-edit.component';
+import { PayrollTaxListComponent } from './payroll-tax-list/payroll-tax-list.component';
 
 // import { PayrollBaseInfoPayrollTaxPage } from './payroll-base-info-payroll-tax.page';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: PayrollBaseInfoPayrollTaxPage
-  // }
+  {
+    path: '',
+    redirectTo:'list'
+  },
   {
     path: 'list',
     component: PayrollTaxListComponent

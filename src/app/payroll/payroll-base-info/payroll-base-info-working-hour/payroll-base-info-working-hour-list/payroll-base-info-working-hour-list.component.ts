@@ -180,13 +180,12 @@ export class PayrollBaseInfoWorkingHourListComponent implements OnInit {
 								id: item.id,
 							})
 							.subscribe(
+								
 								async (res: any) => {
 									await this.global.dismisLoading();
-
 									this.offset = 0;
 									this.CurrentPage = 1;
 									this.getData();
-
 									this.global.showToast(res.msg);
 								},
 								async (error: any) => {

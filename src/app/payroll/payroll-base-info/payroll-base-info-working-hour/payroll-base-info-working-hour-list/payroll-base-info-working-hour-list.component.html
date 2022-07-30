@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button *ngIf="global.userPermision['contract_add']" shape="round" color="success" [routerLink]="['/payrolls/payroll_base_info/working_hour/add']">
+				<ion-button *ngIf="global.userPermision['payroll_base_info_working_hour_add']" shape="round" color="success" [routerLink]="['/payrolls/payroll_base_info/working_hour/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					ساعت های موظفی جدید
 				</ion-button>
@@ -117,11 +117,11 @@
 									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 									</ion-icon>
 								</ion-button> -->
-								<ion-button (click)="removeWorkingHour(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_delete']">
+								<ion-button (click)="removeWorkingHour(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['payroll_base_info_working_hour_delete']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button [routerLink]="['/payrolls/payroll_base_info/working_hour/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_edit']">
+								<ion-button [routerLink]="['/payrolls/payroll_base_info/working_hour/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_working_hour_edit']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
 								</ion-button>
@@ -144,8 +144,11 @@
 			</table>
 			<div *ngIf="dataList && dataList.length === 0 && !(yeraNumber||monthNumber)" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">ساعت موظفی برای نمایش یافت نشد .</h4>
-				<p class="dsec"> شما تا کنون ساعت موظفی ثبت نکردید . برای اضافه کردن مالیات برحقوق بر روی دکمه <a [routerLink]="['/payrolls/payroll_base_info/working_hour/add']">  ساعت های موظفی جدید </a>
-					کلیک کنید</p>
+				<p class="dsec"> شما تا کنون ساعت موظفی ثبت نکردید .
+					<span *ngIf="global.userPermision['payroll_base_info_working_hour_add']">
+					 برای اضافه کردن مالیات برحقوق بر روی دکمه <a *ngIf="global.userPermision['payroll_base_info_working_hour_add']" [routerLink]="['/payrolls/payroll_base_info/working_hour/add']">  ساعت های موظفی جدید </a> 
+					</span>
+					 کلیک کنید</p>
 			</div>
 			<!-- if search return empty cell -->
 			<div *ngIf="dataList && dataList.length === 0 && (yeraNumber||monthNumber)" class="alert alert-warning my-3" role="alert">
