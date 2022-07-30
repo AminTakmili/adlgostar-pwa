@@ -1,18 +1,19 @@
+import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
+import { BehaviorSubject, Observable, forkJoin } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
-import { BehaviorSubject, forkJoin, Observable } from "rxjs";
-import { environment } from 'src/environments/environment'
-import { citiesClass } from "../classes/cities.class";
+import { User, UserRole, permissionsDetail } from "../models/user.model";
+
 import { Bank } from "../models/bank.model";
 import { BusinessList } from "../models/business.model";
-import { contract } from "../models/contractConstant.model";
 import { Employee } from "../models/employee.model";
 import { Employer } from "../models/employer.model";
+import { FormGroup } from "@angular/forms";
 import { StaticData } from "../models/StaticData.model";
-import { permissionsDetail, User, UserRole } from "../models/user.model";
 import { StorageService } from "./storage.service";
+import { citiesClass } from "../classes/cities.class";
+import { contract } from "../models/contractConstant.model";
+import { environment } from 'src/environments/environment'
 
 @Injectable({
 	providedIn: 'root'
@@ -269,13 +270,13 @@ export class GlobalService {
 				this.user = new User().deserialize(val);
 				this._user.next(this.user);
 				this.setPermision(this.user.permissionsList);
-				console.log(this.user);
+				
 			}
 		});
 	}
 
 	setPermision(persmion : permissionsDetail[]){
-		 console.log("persmion",persmion);
+		
 
 		persmion.map((item:permissionsDetail)=>{
 			this.userPermision[item.en_name] =  item.access;
@@ -285,7 +286,6 @@ export class GlobalService {
 			// 	})
 			// }
 		});
-		console.log(this.userPermision);
 	}
 
 	showAlert(

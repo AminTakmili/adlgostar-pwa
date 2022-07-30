@@ -1,12 +1,15 @@
 import { RouterModule, Routes } from '@angular/router';
 
+import { HasPermissionGuard } from './../core/guards/has-permission.guard';
 import { NgModule } from '@angular/core';
 
 const routes: Routes = [
 
   {
     path: 'type',
-    loadChildren: () => import('./users-type/users-type.module').then( m => m.UsersTypePageModule)
+    loadChildren: () => import('./users-type/users-type.module').then( m => m.UsersTypePageModule),
+   data: {routeName: "user_type_list"},
+   canActivate:[HasPermissionGuard]
   },
   {
     path: 'role',
