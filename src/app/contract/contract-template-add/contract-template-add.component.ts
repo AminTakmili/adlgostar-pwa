@@ -49,14 +49,14 @@ export class ContractTemplateAddComponent implements OnInit {
 			type: ['', Validators.compose([Validators.required])],
 			business_categories: [[]],
 			businesses: [[]],
-			header_as_logo: [false],
+			// header_as_logo: [false],
 		});
 		//
 		this.ckeConfig = {
 			allowedContent: false,
 			extraPlugins: 'divarea',
 			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
+			removePlugins: 'exportpdf,font',
 			language: "fa",
 			font_defaultLabel: 'IRANSans'
 		};

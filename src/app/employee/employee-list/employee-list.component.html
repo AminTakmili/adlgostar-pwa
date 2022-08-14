@@ -41,7 +41,7 @@
 				<!-- انتخاب کسب کار -->
 				<div class="col-md-6 mb-3">
 					<div class="form-input ">
-						<ng-select
+						<!-- <ng-select
 						[(ngModel)]="business_id"
 						[items]="businessList"
 						[clearable]="true"
@@ -50,13 +50,31 @@
 						bindValue="id"
 						(change)="pageChange(1)"
 						>
-						</ng-select>
+						</ng-select> -->
+						<ng-select
+						[items]="businesslist$ | async"
+						placeholder="انتخاب کسب و کار"
+						[loading]="businessInputLoading"
+						bindLabel="name"
+						bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+						[typeahead]="businessInput$"
+						[(ngModel)]="business_id"
+						[clearable]="true"
+						(change)="pageChange(1)"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه کسب و کاری یافت نشد"
+					
+					>
+					</ng-select>
+
+
 					</div>
 				</div>
 				<!-- انتخاب کسب کار -->
 				<div class="col-md-6  mb-3">
 					<div class="form-input">
-						<ng-select
+						<!-- <ng-select
 						[(ngModel)]="employer_id"
 						[items]="employersList"
 						[clearable]="true"
@@ -65,7 +83,25 @@
 						bindValue="id"
 						(change)="getData()"
 						>
-						</ng-select>
+						</ng-select> -->
+
+						<ng-select
+						[items]="employerlist$ | async"
+						placeholder="انتخاب کارفرما"
+						[loading]="employerInputLoading"
+						bindLabel="full_name"
+						bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+						[typeahead]="employerInput$"
+						[(ngModel)]="employer_id"
+						[clearable]="true"
+						(change)="getData()"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانهکارفرمای یافت نشد"
+					
+					>
+					</ng-select>
+
 					</div>
 				</div>
 				<!-- جستجو بر اساس نام  -->

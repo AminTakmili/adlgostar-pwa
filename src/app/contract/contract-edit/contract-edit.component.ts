@@ -1,3 +1,4 @@
+import { contractFooterTemplate, contractHeaderTemplate } from './../../core/models/contractConstant.model';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
@@ -48,6 +49,8 @@ export class ContractEditComponent implements OnInit {
 	contractConditionlist: contractConditions[] = [];
 	contractExtraFieldList: contractExtraField[];
 	severanceBaseCalculationList: severanceBaseCalculation[];
+	contractHeaderTemplatelist: contractHeaderTemplate[];
+	contractFooterTemplatelist: contractFooterTemplate[];
 
 	dataList: contract;
 
@@ -56,6 +59,9 @@ export class ContractEditComponent implements OnInit {
 	childrenAllowancesList: FormArray;
 
 	businessEmpId : number[] = [];
+	contractHeaderTemplateInfoList: FormArray;
+	contractFooterTemplateInfoList: FormArray;
+
 
 	constructor(
 		public global: GlobalService,
@@ -103,12 +109,17 @@ export class ContractEditComponent implements OnInit {
 			children_allowances: this.fb.array([]),
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
+			contract_header_template_info: this.fb.array([this.newContractHeaderTemplateInfoList()]),
+			contract_footer_template_info: this.fb.array([this.newContractFooterTemplateInfoList()]),
 
 		});
 
 		this.provisosList = this.contractsForm.get('provisos') as FormArray;
 		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
 		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
+		this.contractHeaderTemplateInfoList = this.contractsForm.get('contract_header_template_info') as FormArray;
+		this.contractFooterTemplateInfoList = this.contractsForm.get('contract_footer_template_info') as FormArray;
+
 
 
 	}
@@ -119,7 +130,7 @@ export class ContractEditComponent implements OnInit {
 			allowedContent: true,
 			extraPlugins: 'divarea',
 			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
+			removePlugins: 'exportpdf,font',
 			language: "fa",
 			font_defaultLabel: 'IRANSans'
 		};
@@ -142,6 +153,26 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	/* ============================== All form arrays ===========================================*/
+
+	get contractHeaderTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_header_template_info') as FormArray;
+	}
+	get contractFooterTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_footer_template_info') as FormArray;
+	}
+
+	newContractHeaderTemplateInfoList(id?:number,text?:string): FormGroup {
+		return this.fb.group({
+			contract_header_template_id: [id?id:''],
+			header_text: [text?text:''],
+		})
+	}
+	newContractFooterTemplateInfoList(): FormGroup {
+		return this.fb.group({
+			contract_footer_template_id: [],
+			footer_text: [],
+		})
+	}
 
 	provisos(id: number, text = ''): FormGroup {
 		return this.fb.group({
@@ -210,14 +241,23 @@ export class ContractEditComponent implements OnInit {
 			with_replace: 0,
 		}).subscribe(async (res: any) => {
 			await this.global.dismisLoading();
-
+			
 			this.dataList = new contract().deserialize(res);
+			// console.log(this.dataList['contract_header_template_info'][0]?.id,this.dataList['contract_footer_template_info'][0]?.id);
 			this.pageTitle = this.dataList.title;
 			this.pageTitle = this.dataList.title;
 
 			this.contractsForm.get('id').setValue(this.dataList.id);
 			this.contractsForm.get('title').setValue(this.dataList.title);
 			this.contractsForm.get('business_id').setValue(this.dataList.business_info.id);
+			console.log(this.dataList['contract_footer_template_info']);
+			// this.newContractHeaderTemplateInfoList(this.dataList['contract_header_template_info'][0]?.id,this.dataList['contract_header_template_info'][0]?.template)
+			this.contractHeaderTemplateInfoListGroup.controls[0].get('contract_header_template_id').setValue(this.dataList['contract_header_template_info']?.contract_header_template_id);
+			// this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(this.dataList['contract_header_template_info']?.header_text);
+			this.setHeaderContractTheme()
+			this.contractFooterTemplateInfoListGroup.controls[0].get('contract_footer_template_id').setValue(this.dataList['contract_footer_template_info']?.contract_footer_template_id);
+			// this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(this.dataList['contract_footer_template_info']?.footer_text);
+			this.setFooterContractTheme()
 			const contract_proviso_id: number[] = this.dataList.provisos.map((x: any) => {
 				return x.contract_proviso_template_id;
 			});
@@ -318,11 +358,17 @@ export class ContractEditComponent implements OnInit {
 		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',
 			{ limit: 1000, offset: 0 }
 		);
+		const contractHeaderTheme = this.global.httpPost('contractHeaderTemplate/filteredList',{ limit: 2000, offset: 0 ,filtered_name:''});
+		const contractFooterTheme = this.global.httpPost('contractFooterTemplate/filteredList',{ limit: 2000, offset: 0,filtered_name:'' });
 
-		this.global.parallelRequest([business, contractTheme, contractCondition, contractExtra, severanceBaseCalculation])
-			.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
+
+
+		this.global.parallelRequest([business, contractTheme, contractHeaderTheme,contractFooterTheme,contractCondition, contractExtra, severanceBaseCalculation])
+			.subscribe(([businessRes, contractThemeRes = '',contractHeaderThemeRes='',contractFooterThemeRes='', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
 				this.CreateBusiness(businessRes);
 				this.CreatecontractTheme(contractThemeRes);
+				this.CreatecontractHeaderTheme(contractHeaderThemeRes);
+				this.CreatecontractFooterTheme(contractFooterThemeRes);
 				this.CreatecontractCondition(contractConditionRes);
 				this.CreatecontractExtra(contractExtraRes);
 				this.CountAllYear(severanceBaseCRes);
@@ -357,6 +403,16 @@ export class ContractEditComponent implements OnInit {
 		// console.log(this.contractTemplatelist);
 	}
 
+	CreatecontractHeaderTheme(data: any) {
+		this.contractHeaderTemplatelist = data.list.map((item: any) => {
+			return new contractHeaderTemplate().deserialize(item);
+		});
+	}
+	CreatecontractFooterTheme(data: any) {
+		this.contractFooterTemplatelist = data.list.map((item: any) => {
+			return new contractFooterTemplate().deserialize(item);
+		});
+	}
 	CreatecontractCondition(data: any) {
 		this.contractConditionlist = data.list.map((item: any) => {
 			return new contractConditions().deserialize(item);
@@ -540,6 +596,43 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('is_group_editing').setValue(0)
 		}
 		// console.log(this.contractsForm.value.is_group_editing);
+	}
+	
+	setHeaderContractTheme() {
+		
+		const id = 	this.contractHeaderTemplateInfoListGroup.value[0].contract_header_template_id;
+		this.contractHeaderTemplatelist?.map((item) => {
+			if (item.id === id) {
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(item.template);
+			}else{
+				// this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
+	}
+	setFooterContractTheme() {
+		// console.log(this.contractFooterTemplateInfoListGroup.controls[0].get('contract_footer_template_id').value);
+		// console.log(this.contractFooterTemplateInfoListGroup.controls[0].value);
+		// console.log(this.contractFooterTemplateInfoListGroup.value);
+		
+		const id = 	this.contractFooterTemplateInfoListGroup.controls[0].get('contract_footer_template_id').value;
+		this.contractFooterTemplatelist.map((item) => {
+			if (item.id === id) {
+				console.log(id);
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(item.template);
+			}else{
+				// this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
 	}
 
 }

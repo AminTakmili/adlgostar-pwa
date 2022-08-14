@@ -1,0 +1,143 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p> در این قسمت میتوانید اعلان های خود را ببینید . </p>
+				</div>
+			</div>
+			<!--  -->
+
+			<!-- <div class="col-lg-auto">
+				<ion-button shape="round" color="success" [routerLink]="['add']" *ngIf="global.userPermision['profile_support_add']" >
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					ارسال درخواست جدید
+				</ion-button>
+			</div> -->
+		</div>
+	</div>
+	<!-- main -->
+	<main class="container">
+
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<div class="title-1">
+					<h2 class="title">لیست اعلان ها</h2>
+					<p class="dsec">لیست اعلان به شرح زیر است</p>
+				</div>
+			</div>
+
+			<!--  -->
+			<div class="col-lg-6 mt-3">
+				<div class="form-input ">
+					<label> وضعیت اعلان</label>
+					<ng-select [(ngModel)]="filtered_status" [items]="statusList" bindLabel="name" [clearable]="false"
+						bindValue="value" placeholder="انتخاب کنید" (change)="changeFilter()">
+					</ng-select>
+				</div>
+			</div>
+			<div class="col-lg-6 mt-3">
+				<div class="form-input ">
+					<label>نوع اعلان</label>
+					<ng-select [(ngModel)]="filtered_type" [items]="notificationTypesList" bindLabel="name"
+						[clearable]="false" bindValue="value" placeholder="انتخاب کنید" (change)="changeFilter()">
+					</ng-select>
+				</div>
+			</div>
+
+
+
+			<div class="col-12">
+				<hr>
+			</div>
+		</div>
+
+
+
+		<table *ngIf="dataList &&dataList.length" class="width-100 theme-table ">
+			<thead class="thead-dark">
+				<tr class="ion-text-center">
+					<th class="ion-text-center">#</th>
+					<th scope="col">عنوان</th>
+					<th scope="col">تاریخ</th>
+					<th scope="col">نوع</th>
+					<th scope="col">وضعیت</th>
+					<th class="ion-text-left" scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr [routerLink]="[item.id]"
+					*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+					<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+					<td>
+						<!-- <a [routerLink]="['/contracts/detail',item.id]">{{ item.title }}</a> -->
+						<span> {{item.title}}</span>
+					</td>
+					<td class="py-1">
+						<span>
+							{{ item.createdAt}}
+
+						</span>
+
+					</td>
+					<td>
+						<!-- <a [routerLink]="['/contracts/detail',item.id]">{{ item.title }}</a> -->
+						<span> {{ setTypeName(item.type)}}</span>
+					</td>
+
+
+					<td>
+						<ion-chip *ngIf="item.status=='read'" color="success">
+							<ion-icon name="checkmark-done"></ion-icon>
+							<ion-label>خوانده شده</ion-label>
+						</ion-chip>
+						<ion-chip chip *ngIf="item.status=='unread'" color="primary">
+							<ion-icon name="at-circle"></ion-icon>
+							<ion-label>خوانده نشده</ion-label>
+						</ion-chip>
+
+
+					</td>
+
+					<td class="ion-text-left">
+						<ion-buttons class="justify-content-end">
+
+							<ion-button [routerLink]="[item.id]" fill="clear" class="px-0 mx-0 tooltip-show"
+								tooltip="جزییات">
+								<ion-icon size="small" color="medium" slot="icon-only" name="search">
+								</ion-icon>
+							</ion-button>
+						</ion-buttons>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot *ngIf="limit < total && dataList && dataList.length">
+				<tr>
+					<td colspan="8">
+						<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+							[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+							[autoHide]="true">
+						</pagination-controls>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+    	<!-- if there is no table -->
+			<div *ngIf="dataList && dataList.length === 0 && (filtered_status=='all'&&filtered_type=='all')" class="alert alert-warning my-3"
+      role="alert">
+      <h4 class="title"> اعلان برای نمایش یافت نشد .</h4>
+    </div>
+    <!-- if search return empty cell -->
+    <div *ngIf="dataList && dataList.length === 0 && !(filtered_status=='all'&&filtered_type=='all')" class="alert alert-warning my-3"
+      role="alert">
+      <h4 class="title"> برای نمایش یافت نشد اعلان .</h4>
+      <p class="dsec">اعلان با {{filtered_status!='all'? (filtered_type!=='all'?'وضعیت و نوع':'وضعیت') :'نوع'}} جستجو شده یافت نشد</p>
+    </div>
+
+	</main>
+</ion-content>

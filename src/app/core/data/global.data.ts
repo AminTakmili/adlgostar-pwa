@@ -1,54 +1,52 @@
 export const globalData = {
-	"personType" : [
-		{ id : 'real' , name : 'حقیقی' } ,
-		{ id : 'legal' , name : 'حقوقی' }
+	personType: [
+		{ id: 'real', name: 'حقیقی' },
+		{ id: 'legal', name: 'حقوقی' },
 	],
-	"conditionType" : [
-		{ id : 'public' , name : 'عمومی' } ,
-		{ id : 'private' , name : 'خصوصی' }
+	conditionType: [
+		{ id: 'public', name: 'عمومی' },
+		{ id: 'private', name: 'خصوصی' },
 	],
-	"gender" : [
-		{ id : 'male' , name : 'آقا' } ,
-		{ id : 'female' , name : 'خانم' }
+	gender: [
+		{ id: 'male', name: 'آقا' },
+		{ id: 'female', name: 'خانم' },
 	],
-	"menu" : [
+	menu: [
 		{
 			name: 'داشبورد',
 			url: '/',
 			icon: 'speedometer',
 			open: false,
-			state: "close",
+			state: 'close',
 			function: 'showDetail',
-			access : true,
+			access: true,
 		},
 		{
 			name: 'کاربران',
 			icon: 'people-circle',
 			open: false,
-			state: "close",
+			state: 'close',
 			function: 'showDetail',
 			submenu: [
 				{
 					name: 'انواع کاربران',
 					url: '/users/type',
 					icon: 'color-palette',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'نقش ها',
 					url: '/users/role',
 					icon: 'construct',
-					function: 'showDetail'
+					function: 'showDetail',
 				},
 				{
 					name: 'کاربران',
 					url: '/users/list',
 					icon: 'person-add',
-					function: 'showDetail'
+					function: 'showDetail',
 				},
 			],
-
 		},
 		{
 			name: 'کسب و کار ها',
@@ -56,8 +54,8 @@ export const globalData = {
 			icon: 'business',
 
 			open: false,
-			state: "close",
-			function: 'showDetail'
+			state: 'close',
+			function: 'showDetail',
 		},
 		{
 			name: 'کارفرمایان',
@@ -65,8 +63,8 @@ export const globalData = {
 			icon: 'person-circle',
 
 			open: false,
-			state: "close",
-			function: 'showDetail'
+			state: 'close',
+			function: 'showDetail',
 		},
 		{
 			name: 'کارمندان',
@@ -74,110 +72,253 @@ export const globalData = {
 			icon: 'people',
 
 			open: false,
-			state: "close",
-			function: 'showDetail'
+			state: 'close',
+			function: 'showDetail',
 		},
+	
 		{
 			name: 'قرارداد ها',
-			icon: 'document-text',
+			icon: 'document',
 			open: false,
-			state: "close",
+			state: 'close',
 			function: 'showDetail',
 			submenu: [
 				{
 					name: 'لیست قرار داد ها',
 					url: '/contracts/list',
-					icon: 'document-text',
-					function: 'showDetail'
+					icon: 'document',
+					function: 'showDetail',
 				},
 				{
 					name: 'قالب قرارداد',
 					url: '/contracts/template',
 					icon: 'document-attach',
-					function: 'showDetail'
-
+					function: 'showDetail',
+				},
+				{
+					name: 'قالب سربرگ قرارداد',
+					url: '/contracts/header/template/list',
+					// icon: 'document-attach',
+					src: '/assets/svg/headerIcon.svg',
+					function: 'showDetail',
+				},
+				{
+					name: 'قالب پاورقی قرارداد',
+					url: '/contracts/footer/template/list',
+					// icon: 'document-attach',
+					src: '/assets/svg/footerIcon.svg',
+					function: 'showDetail',
 				},
 				{
 					name: 'شروط ضمن قرار داد',
 					url: '/contracts/conditions',
 					icon: 'document-lock',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
-			]
+			],
+		},
+		{
+			name: 'حقوق و دستمزد',
+			icon: 'document-text',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			access: true,
+			submenu: [
+				{
+					name: 'اطلاعات پایه حقوق و دستمزد',
+					// url: '/payrolls/payroll_base_info',
+					icon: 'document-text',
+					function: 'showDetail',
+				
+					open: false,
+					state: 'close',
+					childeren: [
+						{
+							name: ' ساعت های موظفی',
+							url: '/payrolls/payroll_base_info/working_hour/list',
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: ' مالیات حقوق',
+							url: '/payrolls/payroll_base_info/payroll_tax/list',
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: ' اضافات حقوق و دستمزد ',
+							url: '/payrolls/payroll_base_info/payroll_addition/list',
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: 'کسورات حقوق و دستمزد ',
+							url: '/payrolls/payroll_base_info/payroll_deduction/list',
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: 'قالب های تسویه حساب ',
+							url: '/payrolls/payroll_base_info/settlement/template/list',
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: ' اضافات تسویه حساب ',
+							url: "/payrolls/payroll_base_info/settlement/addition/list",
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+						{
+							name: ' کسورات تسویه حساب ',
+							url: "/payrolls/payroll_base_info/settlement/deduction/list",
+							icon: 'ellipse',
+							function: 'showDetail',
+						
+						},
+					],
+				},
+				{
+					name: 'لیست حقوق و دستمزد',
+					url: '/payrolls/payroll',
+					icon: 'list',
+					function: 'showDetail',
+					access: true,
+				},
+			],
+		},
+		{
+			name: ' گزارشات',
+			icon: 'receipt',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			access: true,
+			submenu: [
+				// {
+				// 	name: 'ویرایش اطلاعات',
+				// 	url: '/business',
+				// 	icon: 'create',
+				// 	function: 'showDetail'
+
+				// },
+				// {
+				// 	name: 'اطلاعات تماس',
+				// 	url: '/business',
+				// 	icon: 'call',
+				// 	function: 'showDetail'
+				// },
+				{
+					name: 'مرخصی باقی مانده',
+					url: '/report/payroll/remainingLeave',
+					icon: 'calendar',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'دستمزد ماهیانه',
+					url: '/report/payroll/monthlyWage',
+					icon: 'card',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'پایه سنوات',
+					icon: 'file-tray-full',
+					url: '/report/payroll/severancePayList',
+					function: 'showDetail',
+				},
+			],
 		},
 		{
 			name: 'بیشتر',
 			icon: 'ellipsis-vertical',
 			open: false,
-			state: "close",
+			state: 'close',
 			function: 'showDetail',
 			submenu: [
 				{
 					name: 'پایه سنوات',
 					url: '/more/basic-years',
 					icon: 'trending-up',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'حداقل مزد روزانه',
 					url: '/more/minimum-daily-wage',
 					icon: 'golf',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'محاسبه پایه سنوات',
 					url: '/more/calc-basic-years',
 					icon: 'options',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'موارد اضافه حقوق',
 					url: '/more/extra-salary-item',
 					icon: 'options',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'ثابت های حقوق',
 					url: '/more/salary-constants',
 					icon: 'layers',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'دسته بندی کسب کار',
 					url: '/more/business-category',
 					icon: 'git-network',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'سمت های کارمندان',
 					url: '/more/employee-posts',
 					icon: 'git-compare',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
 				{
 					name: 'بانک ها',
 					url: '/more/bank',
 					icon: 'cash',
-					function: 'showDetail'
-
+					function: 'showDetail',
 				},
+			],
+		},
+		{
+			name: 'تنظیمات ',
+			icon: 'settings',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			access: true,
+			submenu: [
+			
+				{
+					name: 'بخش تنظیم قرارداد',
+					url: '/setting/contract_definition_section',
+					icon: 'reader',
+					function: 'showDetail',
+				},
+				
 			],
 		},
 		{
 			name: 'پروفایل من',
 			icon: 'person-circle',
 			open: false,
-			state: "close",
+			state: 'close',
 			function: 'showDetail',
-			access : true,
+			access: true,
 			submenu: [
 				// {
 				// 	name: 'ویرایش اطلاعات',
@@ -203,17 +344,16 @@ export const globalData = {
 					url: '/profile/change-number',
 					icon: 'id-card',
 					function: 'showDetail',
-					access : true,
+					access: true,
 				},
 				{
 					name: 'خروج از حساب کاربری',
-					access : true,
+					access: true,
 					icon: 'log-out-outline',
-					function: 'logout'
-
+					function: 'logout',
 				},
 			],
-
-		}
-	]
-}
+		},
+	
+	],
+};

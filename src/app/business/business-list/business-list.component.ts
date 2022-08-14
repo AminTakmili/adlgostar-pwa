@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { IonInput } from '@ionic/angular';
-import { fromEvent } from 'rxjs';
+import { IonInput, NavController } from '@ionic/angular';
 import { debounceTime, map } from 'rxjs/operators';
+
 import { BusinessList } from 'src/app/core/models/business.model';
+import { FormBuilder } from '@angular/forms';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
-
+import { fromEvent } from 'rxjs';
 
 @Component({
 	selector: 'app-business-list',
@@ -25,13 +25,15 @@ export class BusinessListComponent implements OnInit {
 	dataList: BusinessList[];
 	dataInSearch: boolean = false;
 	filtered_name:string;
+	
 
 	@ViewChild('Search') Search: IonInput;
 
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
-		private seo: SeoService
+		private seo: SeoService,
+		private navCtrl: NavController,
 	) {
 
 	}
@@ -112,6 +114,7 @@ export class BusinessListComponent implements OnInit {
 			});
 		});
 	}
+
 
 }
 

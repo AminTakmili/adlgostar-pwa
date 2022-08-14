@@ -51,7 +51,7 @@ export class ContractConditionsEditComponent implements OnInit {
 			allowedContent: false,
 			extraPlugins: 'divarea',
 			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
+			removePlugins: 'exportpdf,font',
 			language: "fa",
 			font_defaultLabel: 'IRANSans'
 		};

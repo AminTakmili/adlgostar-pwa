@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+
 import { LoginGuard } from './core/guards/login.guard';
+import { NgModule } from '@angular/core';
 import { NotLoginGuard } from './core/guards/not-login.guard';
 
 const routes: Routes = [
@@ -55,6 +56,37 @@ const routes: Routes = [
 		loadChildren: () => import('./test/test.module').then(m => m.TestPageModule),
 		canActivate: [LoginGuard]
 	},
+  {
+    path: 'notification',
+    loadChildren: () => import('./notification/notification.module').then( m => m.NotificationPageModule),
+	canActivate: [LoginGuard]
+  },
+  {
+    path: 'payrolls',
+    loadChildren: () => import('./payroll/payroll.module').then( m => m.PayrollPageModule),
+	canActivate: [LoginGuard],
+	 pathMatch:'prefix' 
+	
+  },
+  {
+    path: 'settlement',
+    loadChildren: () => import('./settlement/settlement.module').then( m => m.SettlementPageModule),
+		canActivate: [LoginGuard],
+  },
+  {
+    path: 'report',
+    loadChildren: () => import('./report/report.module').then( m => m.ReportPageModule),
+		canActivate: [LoginGuard],
+  },
+  {
+    path: 'setting',
+    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule),
+		canActivate: [LoginGuard],
+  },
+
+ 
+
+
 
 	// {
 	// 	path: '',

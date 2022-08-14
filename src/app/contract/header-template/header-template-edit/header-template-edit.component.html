@@ -1,0 +1,166 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="contracts/header/template/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="editForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-12 my-4">
+						<div class="title-1">
+							<h2 class="title">{{ pageTitle }}</h2>
+							<p class="dsec">در این قسمت میتوانید  قالب  سربرگِ " {{setcontractHeaderTemplateDetailObj?.name}} " ویرایش کنید
+							</p>
+						</div>
+					</div>
+					<!-- varable List -->
+					<div class="col-12">
+						<ion-card color="white" class="my-3 mx-0  overflow-visible" mode="ios">
+							<ion-card-header>
+								<h4 class="mb-3 mt-0">لیست متغییرها در قالب سربرگ قرار داد </h4>
+								<div class="search-input-2">
+									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="100" (ionChange)="ChangeSearch($event)"
+										placeholder="جستجو در متغییرهای  {{ pageTitle }}"></ion-searchbar>
+								</div>
+								<hr>
+							</ion-card-header>
+							<ion-card-content>
+								<div class="row">
+									<div class="col-lg-6" *ngFor="let item of filterList">
+										<div class="list-var" >
+											<div class="name " >
+												<span class="icon tooltip-show"  tooltip="برای کپی کلیک کنید" ><ion-icon size="small" color="primary" name="copy" (click)="copyText(item)"></ion-icon></span>
+												<span class="variable">{{ item.variable }}</span>
+											</div>
+											<div class="value">به جای {{ item.description }}</div>
+										</div>
+									</div>
+								</div>
+								<div *ngIf="filterList && filterList.length === 0" class="alert alert-warning" role="alert">
+									<p class="dsec"> متغیری برای نمایش یافت نشد .</p>
+								</div>
+							</ion-card-content>
+						</ion-card>
+					</div>
+					<!-- عنوان  -->
+					<div class="col-md-12 mb-4">
+						<div class="form-input mb-3">
+							<label>عنوان </label>
+							<ion-input autocomplete="new-pass" formControlName="name"></ion-input>
+							<span class="error">
+								<app-validator [control]="editForm.controls['name']" [controlName]="'عنوان'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- توع قالب  -->
+					<!-- <div class="col-md-12 mb-4">
+						<div class="form-input mb-3">
+							<label> نوع قالب </label>
+							<ng-select formControlName="type" placeholder="انتخاب کنید" [items]="conditionType"
+								bindLabel="name" bindValue="id">
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['type']" [controlName]="'نوع قالب'">
+								</app-validator>
+							</span>
+							<span class="hint">عمومی یا خصوصی</span>
+						</div>
+					</div> -->
+					<!-- دسته بندی کسب و کار -->
+					<div class="col-12 mb-3" *ngIf="this.editForm.value['type'] === 'private' ">
+						<div class="form-input mb-3" *ngIf="businessCatgeories && businessCatgeories.length">
+							<label>دسته بندی کسب و کار</label>
+							<ng-select placeholder="دسته بندی کسب و کار را انتخاب کنید"
+							[items]="businessCatgeories"
+								bindLabel="name"
+								 bindValue="id"
+								 groupBy="parentName" [multiple]="true"
+								formControlName="business_categories" (change)="ChangeBusinessCat()">
+								<ng-template ng-optgroup-tmp let-item="item">
+									{{item.parentName || 'Unnamed group'}}
+								</ng-template>
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['business_categories']"
+									[controlName]="'انتخاب دسته بندی'"></app-validator>
+							</span>
+						</div>
+					</div>
+					<!-- انتخاب کسب و کار -->
+					<div class="col-12 mb-3" *ngIf="this.editForm.value['type'] === 'private' ">
+						<div class="form-input mb-3" *ngIf="business && business.length">
+							<label>انتخاب کسب و کار</label>
+							<ng-select placeholder="انتخاب کسب و کار" [items]="business" bindLabel="name" bindValue="id"
+								[multiple]="true" formControlName="businesses">
+
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['businesses']"
+									[controlName]="'انتخاب دسته بندی'"></app-validator>
+							</span>
+						</div>
+					</div>
+					<!-- شروط ضمن عقد  -->
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label> متن قالب سربرگ قرار داد</label>
+							<ckeditor name="myckeditor" formControlName="template" [config]="ckeConfig"></ckeditor>
+							<span class="error">
+								<app-validator [control]="editForm.controls['template']" [controlName]="'قالب سربرگ قرار داد'">
+								</app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- استفاده به عنوان سربرگ -->
+					<!-- <div class="col-12">
+
+						<div class="form-input mb-3">
+							<ion-item lines="none">
+								<ion-label> استفاده به عنوان سربرگ </ion-label>
+								<ion-checkbox type="string" slot="start" formControlName="header_as_logo">
+								</ion-checkbox>
+							</ion-item>
+						</div>
+					</div> -->
+					<!--  -->
+					<div class="col-12">
+						<hr>
+					</div>
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-3">
+								<ion-button expand="block" color="medium" fill="outline" shape="round"  (click)="global.emptyFrom(editForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-4">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ثبت {{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

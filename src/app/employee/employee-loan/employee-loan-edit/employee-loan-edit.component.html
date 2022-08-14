@@ -1,0 +1,187 @@
+<ion-header>
+	<app-header [title]="'ویرایش وام  جدید'"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header ">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">ویرایش وام</h1>
+					<p class="dsec">در این قسمت شما میتوانید وام را ویرایش کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container">
+			<!-- form -->
+			<form [formGroup]="loanForm" (ngSubmit)="onSubmit()">
+				<div class="row mt-4">
+					<!-- title -->
+					<div class="col-12">
+						<div class="title-1 my-4">
+							<h2 class="title">اطلاعات اولیه</h2>
+							<p class="dsec">اطلاعات اولیه و کلی وام را در این قسمت وارد کنید</p>
+						</div>
+					</div>
+          
+        
+
+					<!-- عنوان وام -->
+					<div class="col-lg-6">
+						<div class="form-input mb-3">
+							<label>زمان وام</label>
+						  <ng-persian-datepicker  [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                <input class="form-input" type="text"   formControlName="date" />
+               </ng-persian-datepicker>
+              <span class="error">
+                <app-validator #validation [control]="loanForm.controls['date']" [controlName]="'زمان وام '"></app-validator>
+              </span>
+							<span class="hint">تاریخ وام را وارد کنید</span>
+						</div>
+					</div>
+				
+					<!-- عنوان وام -->
+					<div class="col-lg-6">
+						<div class="form-input mb-3">
+							<label>میزان وام</label>
+							<ion-input [clearInput]="true" type="number" min="0" autocomplete="new-pass" formControlName="amount"></ion-input>
+							<span class="error">
+								<app-validator [control]="loanForm.controls['amount']" [controlName]="'مقدار وام'">
+								</app-validator>
+							</span>
+							<span class="hint">مقدار وام را به ریال وارد کنید. مثلا 400</span>
+						</div>
+					</div>
+				
+				
+
+					<!-- title -->
+					<div class="col-lg-12">
+						<div class="title-1 mt-5 mb-4">
+							<h2 class="title">اطلاعات اقساط</h2>
+              <p class="dsec">اطلاعات هر قسط را اینجا وارد کنید و برای افزود هر قسط بر روی دکمه "	افزودن قسط دیگر " کلیک کنید 
+						</div>
+					</div>
+					<!-- بلاک قسط -->
+					<div class="col-lg-12">
+						<div formArrayName="details">
+							<div class="business-address"
+								*ngFor="let item of  detailsFormGroup.controls ; let i = index" [formGroupName]="i">
+								<div class="row mb-3 justify-content-between align-items-center" *ngIf="i > 0">
+									<div class="col-12">
+										<hr>
+									</div>
+									<div class="col-9">
+										<div class="title-1">
+											<h2 class="title"> قسط شماره {{ i }}</h2>
+										</div>
+									</div>
+									<div class="col-auto">
+										<ion-buttons>
+											<ion-button (click)="removeDetail(i)" color="danger">
+												<ion-icon slot="icon-only" name="trash"></ion-icon>
+											</ion-button>
+										</ion-buttons>
+									</div>
+								</div>
+<!-- *ngIf="province && province.length" -->
+								<div class="form-input mb-3" >
+									<label>انتخاب سال</label>
+									<!-- <ng-select [items]="province" placeholder="یک شهر انتخاب کنید" bindLabel="name"
+										bindValue="id" groupBy="province" formControlName="city_id">
+									</ng-select> -->
+                  <ng-select [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
+								formControlName="year" notFoundText="مناسفانه سال یافت نشد" bindValue="year"
+								placeholder="انتخاب کنید">
+							</ng-select>
+
+									<span class="error">
+										<app-validator [control]="item.get('year')" [controlName]="'انتخاب سال'">
+										</app-validator>
+									</span>
+								</div>
+								<div class="form-input mb-3" >
+									<label>انتخاب ماه</label>
+									<ng-select [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
+								formControlName="month" notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
+								placeholder="انتخاب کنید">
+							</ng-select>
+
+									<span class="error">
+										<app-validator [control]="item.get('month')" [controlName]="'انتخاب ماه'">
+										</app-validator>
+									</span>
+								</div>
+								<div class="form-input mb-3" >
+									<label>مقدار قسط</label>
+									<!-- <ng-select [items]="province" placeholder="یک شهر انتخاب کنید" bindLabel="name"
+										bindValue="id" groupBy="province" formControlName="city_id">
+									</ng-select> -->
+                  <ion-input [clearInput]="true" type="number" min="0" autocomplete="new-pass" formControlName="installment_amount"></ion-input>
+
+									<span class="error">
+										<app-validator [control]="item.get('installment_amount')" [controlName]="'مقدار قسط'">
+										</app-validator>
+									</span>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+					<!-- end address -->
+					<!-- add another address -->
+					<div class="col-lg-12">
+						<div class="row ion-justify-content-between ion-align-items-center">
+							<div class="col-auto">
+								<p> آیا وام شما قسط دیگری دارد</p>
+							</div>
+							<div class="col-auto">
+								<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherDetails()">
+									<ion-icon slot="start" name="add"></ion-icon>
+									افزودن قسط دیگر
+								</ion-button>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<hr>
+					</div>
+					<div class="col-lg-12 mb-4">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round"
+									(click)="global.emptyFrom(loanForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<!-- <div class="col-lg-3">
+								<ion-button type="button" (click)="onSubmit(true)" expand="block" color="success" fill="solid" shape="round">
+									ثبت و ثبت جدید
+								</ion-button>
+							</div> -->
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ویرایش وام
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+					<!-- add another address -->
+
+					<!-- desc -->
+				</div>
+			</form>
+		</div>
+	</main>
+
+</ion-content>

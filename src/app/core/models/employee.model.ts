@@ -1,9 +1,11 @@
-import { StringLiteralLike } from "typescript";
 import { Address } from "./address.model";
-import { contract } from "./contractConstant.model";
 import { Deserializable } from "./deserializable.model";
 import { Media } from "./media.model";
 import { Post } from "./post.model";
+import { StringLiteralLike } from "typescript";
+import { contract } from "./contractConstant.model";
+import { leave } from './leave.model';
+import { loan } from './loan.model';
 
 export class Employee implements Deserializable {
 	id!: number;
@@ -34,6 +36,7 @@ export class Employee implements Deserializable {
 	familyInformation !: family_information;
 	militaryInformation !: military_information;
 	bankInformation !: bank_information;
+	packDetail!:string
 	deserialize(input: any): this {
 		Object.assign(this, input);
 
@@ -55,6 +58,9 @@ export class Employee implements Deserializable {
 				return new businessEmployeeInfo().deserialize(item);
 			});
 		}
+		if (this.full_name&&this.national_code) {
+			this.packDetail=` نام : ${this.full_name} ,کد ملی :${this.national_code}  `
+		}
 
 		this.full_name = input.first_name.trim()+' '+input.last_name.trim();
 
@@ -65,6 +71,7 @@ export class Employee implements Deserializable {
 
 export class businessEmployeeInfo implements Deserializable {
 
+	
 	id !: number;
 	employee_status !: string;
 	specialty !: string;
@@ -100,6 +107,8 @@ export class businessEmployee implements Deserializable {
 	employee_status !: string ;
 	posts !: Post[];
 	contracts !: contract[];
+	loans !: loan[];
+	leaves !: leave[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 
@@ -108,10 +117,21 @@ export class businessEmployee implements Deserializable {
 			});
 
 		if (input.contracts && input.contracts.length) {
-			this.contracts = input.contracts.map((item: Post) => {
+			this.contracts = input.contracts.map((item: contract) => {
 				return new contract().deserialize(item);
 			});
 		}
+		if (input.loans && input.loans.length) {
+			this.loans = input.loans.map((item: loan) => {
+				return new loan().deserialize(item);
+			});
+		}
+		if (input.leaves && input.leaves.length) {
+			this.leaves = input.leaves.map((item: leave) => {
+				return new leave().deserialize(item);
+			});
+		}
+	
 		return this;
 	}
 }

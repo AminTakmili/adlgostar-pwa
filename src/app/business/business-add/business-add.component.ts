@@ -1,3 +1,4 @@
+import { Employer } from './../../core/models/employer.model';
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { globalData } from 'src/app/core/data/global.data'
@@ -7,6 +8,17 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { SeoService } from 'src/app/core/services/seo.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	switchMap,
+	tap,
+	map,
+	filter,
+} from 'rxjs/operators';
+
 
 @Component({
 	selector: 'app-business-add',
@@ -29,6 +41,12 @@ export class BusinessAddComponent implements OnInit {
 
 	categoryLimit = 1000;
 	categoryoffSet = 0;
+	
+	employerlist$: Observable<Employer[]>;
+	inputLoading = false;
+	employerInput$ = new Subject<string>();
+	selectedMovie: any;
+	minLengthTerm = 3;
 
 	constructor(
 		public global: GlobalService,
@@ -65,11 +83,53 @@ export class BusinessAddComponent implements OnInit {
 		}) ;
 	}
 
+	loadEmployee() {
+		this.employerlist$ = concat(
+			of([]), // default items
+			this.employerInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.inputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployee(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.inputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getEmployee(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employer/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return  this.global.createEmployer(resp)
+					}
+				})
+			);
+	}
+	clearEmployerlist(){
+		this.employerlist$=of([])
+	}
 	ngOnInit() {
 
 
 		this.getData();
 		this.setTitle();
+		this.loadEmployee()
 	}
 
 

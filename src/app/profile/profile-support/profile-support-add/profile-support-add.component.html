@@ -34,6 +34,57 @@
 							<span class="hint"></span>
 						</div>
 					</div>
+					<!-- select section -->
+					<div class="col-md-12 mb-3">
+						<div class="form-input ">
+							<label>بخش</label>
+							<ng-select
+							
+							[items]="supportList"
+							[clearable]="false"
+							placeholder="انتخاب بخش مربوطه  "
+							bindLabel="name"
+							bindValue="id"
+							formControlName="section_id"
+							(change)="setSectionChildern($event)" 
+							>
+							<!-- (change)="pageChange(1)" -->
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="addForm.controls['section_id']" [controlName]="'انتخاب بخش '">
+								</app-validator>
+							</span>
+							<!-- <span class="hint"></span> -->
+						</div>
+					</div>
+					<!-- chose section childern -->
+
+
+					<div *ngIf="supportList&&addForm.controls['section_id'].value" class="col-md-12 mb-3 section-childern" >
+						<div class="form-input mb-3">
+						  <label>انتخاب کارکنان بخش</label>
+						  <ng-select
+						  [clearable]="true"
+						  placeholder="انتخاب کنید"
+						  [multiple]="false"
+						  [items]="users"
+						  bindLabel="full_name"
+						  bindValue="id"
+						  formControlName="receiver_id" 
+						  >
+						  <!-- (add)="AddAlowences($event)"
+						  (remove)="removeAlowences($event)"
+						  (change)="calcChildrenAllowance();" -->
+					   
+						
+						  </ng-select>
+						  <span class="error">
+							<app-validator #validation [control]="addForm.controls['receiver_id']" [controlName]="'انتخاب کارمندان '"></app-validator>
+						  </span>
+						  <span class="hint">در صورت تمایل یکی از کارکنان بخش را انتخاب کنید .</span>
+						</div>
+					  </div>
+
 					<!-- توضیحات تیکت -->
 					<div class="col-md-12">
 						<div class="form-input mb-3">

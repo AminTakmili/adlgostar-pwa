@@ -1,7 +1,10 @@
 import { Deserializable } from "./deserializable.model";
+import { notificationType } from 'src/app/core/models/notification.model';
 
 export class StaticData implements Deserializable {
 	contract_template_type!: DataSets[];
+	settlement_type!: DataSets[];
+	badges!: DataSets;
 	degree!: DataSets[];
 	employee_status!: DataSets[];
 	employer_type!: DataSets[];
@@ -9,6 +12,8 @@ export class StaticData implements Deserializable {
 	maritalStatus!: DataSets[];
 	military_status!: DataSets[];
 	years!: DataSets[];
+	ticket_status!: DataSets[];
+	notification_types!: notificationType[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		if(input.contract_template_type && input.contract_template_type.length){
@@ -16,10 +21,16 @@ export class StaticData implements Deserializable {
 				return new  DataSets().deserialize(item);
 			})
 		}
+		if(input.settlement_type && input.settlement_type.length){
+			this.settlement_type = input.settlement_type.map((item : any)=>{
+				return new  DataSets().deserialize(item);
+			})
+		}
+
 		if(input.years && input.years.length){
 			this.years = input.years.map((item : any)=>{
 				return new  DataSets().deserialize(item);
-			})
+			}).reverse()
 		}
 		if(input.degree && input.degree.length){
 			this.degree = input.degree.map((item : any)=>{
@@ -60,6 +71,27 @@ export class DataSets implements Deserializable {
 	value!: string;
 	id!: number;
 	year !:number;
+	deserialize(input: any): this {
+
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class badges implements Deserializable {
+	
+	notifications!: number;
+	tickets !:number;
+	deserialize(input: any): this {
+
+		Object.assign(this, input);
+		return this;
+	}
+}
+
+export class monthSets implements Deserializable {
+	name!: string;
+	value!: number;
+	
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

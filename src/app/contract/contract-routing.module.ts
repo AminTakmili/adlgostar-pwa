@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 import { ContractAddComponent } from './contract-add/contract-add.component';
 import { ContractConditionsAddComponent } from './contract-conditions-add/contract-conditions-add.component';
 import { ContractConditionsEditComponent } from './contract-conditions-edit/contract-conditions-edit.component';
@@ -11,7 +11,7 @@ import { ContractPrintComponent } from './contract-print/contract-print.componen
 import { ContractTemplateAddComponent } from './contract-template-add/contract-template-add.component';
 import { ContractTemplateEditComponent } from './contract-template-edit/contract-template-edit.component';
 import { ContractTemplateListComponent } from './contract-template-list/contract-template-list.component';
-
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
@@ -22,6 +22,11 @@ const routes: Routes = [
     path: 'add',
     component: ContractAddComponent
   },
+  {
+    path: 'add/:businessEmployeeId',
+    component: ContractAddComponent
+  },
+ 
   {
     path: 'detail/:id',
     component: ContractDetailComponent
@@ -58,6 +63,20 @@ const routes: Routes = [
     path: 'conditions/edit/:id',
     component: ContractConditionsEditComponent
   },
+  {
+    path: 'sentence',
+    loadChildren: () => import('./sentence/sentence.module').then( m => m.SentencePageModule)
+  },
+  {
+    path: 'footer/template',
+    loadChildren: () => import('./footer-template/footer-template.module').then( m => m.FooterTemplatePageModule)
+  },
+  {
+    path: 'header/template',
+    loadChildren: () => import('./header-template/header-template.module').then( m => m.HeaderTemplatePageModule)
+  },
+
+
 ];
 
 @NgModule({

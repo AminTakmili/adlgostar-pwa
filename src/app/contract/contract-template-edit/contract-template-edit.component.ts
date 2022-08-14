@@ -49,7 +49,7 @@ export class ContractTemplateEditComponent implements OnInit {
 			type: ['', Validators.compose([Validators.required])],
 			business_categories: [[]],
 			businesses: [[]],
-			header_as_logo: [false],
+			// header_as_logo: [false],
 
 		});
 		//
@@ -57,7 +57,7 @@ export class ContractTemplateEditComponent implements OnInit {
 			allowedContent: false,
 			extraPlugins: 'divarea',
 			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
+			removePlugins: 'exportpdf,font',
 			language: "fa",
 			font_defaultLabel: 'IRANSans'
 		};

@@ -1,14 +1,25 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AlertController, IonInput } from '@ionic/angular';
+import { Component, OnInit, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, Subject, concat, of, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	filter,
+	map,
+	switchMap,
+	tap,
+} from 'rxjs/operators';
 
 import { BusinessList } from 'src/app/core/models/business.model';
-import { contract } from 'src/app/core/models/contractConstant.model';
-import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { Employee } from 'src/app/core/models/employee.model';
 import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { User } from './../../core/models/user.model';
+import { contract } from 'src/app/core/models/contractConstant.model';
+import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 
 @Component({
 	selector: 'app-contract-list',
@@ -37,6 +48,27 @@ export class ContractListComponent implements OnInit {
 	businessList: BusinessList[] = [];
 	empoloyerList: Employer[] = [];
 	employeeList: Employee[] = [];
+	
+	employerlist$: Observable<Employer[]>;
+	employerInputLoading = false;
+	employerInput$ = new Subject<string>();
+	
+	employeelist$: Observable<Employee[]>;
+	employeeInputLoading = false;
+	employeeInput$ = new Subject<string>();
+
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
+	selectedMovie: any;
+	minLengthTerm = 3;
+	
+	filtered_confirmer_id:number
+	filtered_title:string
+	// filtered_confirm_date:string
+	filtered_confirmer_list:User[]
+	datepickerIsChange:boolean=false
+	date:FormGroup
 
 	@ViewChildren('searchInp') Search: IonInput;
 
@@ -44,8 +76,12 @@ export class ContractListComponent implements OnInit {
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		public alertController: AlertController
-	) { }
+		public alertController: AlertController,
+	) {
+		this.date=fb.group({
+			filtered_confirm_date:[]
+		})
+	 }
 
 	ngOnInit() {
 		// set jalali curent year
@@ -62,6 +98,9 @@ export class ContractListComponent implements OnInit {
 	}
 
 	async getData() {
+		// console.log(this.filtered_confirm_date);
+		this.datepickerIsChange=true
+
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/filteredList', {
 			limit: this.limit,
@@ -70,7 +109,12 @@ export class ContractListComponent implements OnInit {
 			filtered_employer_id: this.filtered_employer_id,
 			filtered_employee_id: this.filtered_employee_id,
 
+			filtered_title:this.filtered_title,
+			filtered_confirm_date:this.date.value.filtered_confirm_date,
+			filtered_confirmer_id:this.filtered_confirmer_id,
+
 		}).subscribe(async (res: any) => {
+					this.datepickerIsChange=false
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
@@ -79,33 +123,182 @@ export class ContractListComponent implements OnInit {
 			console.log(this.dataList);
 
 		}, async (error: any) => {
+			this.datepickerIsChange=false
+
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
 	}
 
+	datepickerChange(){
+		console.log("object");
+		if (!this.datepickerIsChange) {
+			this.changeFilter() 
+		}
+	}
 	getFilters() {
 		// const countries = this.global.httpGet('more/countries');
-		const business = this.global.httpPost('business/filteredList',
-			{ limit: 2000, offset: 0 }
+		// const business = this.global.httpPost('business/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// const empoloyer = this.global.httpPost('employer/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// const employee = this.global.httpPost('employee/filteredList',
+		// 	{ limit: 2000, offset: 0 }
+		// );
+
+		// this.global.parallelRequest([business, empoloyer, employee])
+		// 	.subscribe(([businessRes, empoloyerRes = '', employeeRes = '']) => {
+
+		// 		this.CreateBusiness(businessRes);
+		// 		this.CreateEmployer(empoloyerRes);
+		// 		this.CreateEmployee(employeeRes);
+
+			// });
+			this.loadBusiness()
+			this.loadEmployer()
+			this.loadEmployee()
+			this.getConfirmData()
+	}
+	
+	
+	loadBusiness() {
+		this.businesslist$ = concat(
+			of([]), // default items
+			this.businessInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.businessInputLoading = true)),
+				switchMap((term) => {
+					return this.getbusiness(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.businessInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		const empoloyer = this.global.httpPost('employer/filteredList',
-			{ limit: 2000, offset: 0 }
+	getbusiness(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('business/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	
+	loadEmployer() {
+		this.employerlist$ = concat(
+			of([]), // default items
+			this.employerInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employerInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployer(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employerInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		const employee = this.global.httpPost('employee/filteredList',
-			{ limit: 2000, offset: 0 }
+	getEmployer(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employer/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employer().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	loadEmployee() {
+		this.employeelist$ = concat(
+			of([]), // default items
+			this.employeeInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employeeInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployee(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employeeInputLoading = false))
+					);
+				})
+			)
 		);
+	}
 
-		this.global.parallelRequest([business, empoloyer, employee])
-			.subscribe(([businessRes, empoloyerRes = '', employeeRes = '']) => {
-
-				this.CreateBusiness(businessRes);
-				this.CreateEmployer(empoloyerRes);
-				this.CreateEmployee(employeeRes);
-
-			});
+	getEmployee(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employee/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employee().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+	getConfirmData(){
+		this.global.httpGet('contract/confirmerList').subscribe(
+			async (res:any) => {
+				console.log(res);
+				this.filtered_confirmer_list=res.map((confirmer:User)=>{
+					return new User().deserialize(confirmer)
+				})
+				console.log(this.filtered_confirmer_list);
+			},
+			async (error:any) => {
+				await this.global.showError(error)
+			},
+		)
 	}
 
 	changeFilter() {

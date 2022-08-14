@@ -1,0 +1,125 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<!-- <p class="dsec">لیست تمام کسورات حقوق و دستمزد های مربوط به کسب و کارهای من
+					</p> -->
+				</div>
+			</div>
+			<div class="col-lg-auto">
+        
+
+				<ion-button *ngIf="global.userPermision['payroll_base_info_payroll_deduction_add']" shape="round" color="success" [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/add']">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					کسورات حقوق و دستمزد جدید
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+		<div class="container pb-5">
+			<!-- search and title -->
+		
+      <div class="row mt-4">
+				<div class="col-md-8">
+					<div class="title-1">
+						<h2 class="title">لیست کسورات حقوق و دستمزد </h2>
+						<p class="dsec">لیست کسورات حقوق و دستمزد به شرح زیر است</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<!-- search -->
+				
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="changeFilter()" placeholder="جستجو نام"></ion-searchbar>
+					</div>
+				</div>
+			</div>
+
+			<!-- لیست قرر داد ها -->
+			<!-- table -->
+			<table class="width-100 theme-table ">
+				<thead class="thead-dark">
+					<tr class="ion-text-center">
+						<th class="ion-text-center">#</th>
+						<th scope="col">نام</th>
+					
+				
+						<th scope="col">تاریخ آخرین ویرایش</th>
+						<th scope="col">تاریخ ایجاد</th>
+						<th class="ion-text-left" scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+						<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+					
+						<td class="py-1">
+							<span class="my-1 font-size-12" >{{item.name}}</span>
+						</td>
+					
+					
+            <td> <span class="my-1 font-size-12" >{{ item.updatedAt }}</span> </td>
+						<td> <span class="my-1 font-size-12" >{{ item.createdAt }}</span></td>
+						<td class="ion-text-left">
+							<ion-buttons class="justify-content-end">
+								<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+									[id]="'hover-button-'+item.id">
+									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+									</ion-icon>
+								</ion-button> -->
+								<ion-button (click)="removeTax(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['payroll_base_info_payroll_deduction_delete']">
+									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+									</ion-icon>
+								</ion-button>
+								<ion-button [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_payroll_deduction_edit']">
+									<ion-icon size="small" color="medium" slot="icon-only" name="build">
+									</ion-icon>
+								</ion-button>
+							
+							
+							</ion-buttons>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot *ngIf="limit < total && dataList && dataList.length">
+					<tr>
+						<td colspan="8">
+							<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+								[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+								[autoHide]="true">
+							</pagination-controls>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+
+      <div *ngIf="dataList && dataList.length === 0&& !(filtered_name)" class="alert alert-warning my-3" role="alert">
+				<h4 class="title">کسورات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
+				<p class="dsec">
+					 شما تا کنون کسورات حقوق و دستمزد ثبت نکردید .
+					 <span  *ngIf="global.userPermision['payroll_base_info_payroll_deduction_add']">
+
+					  برای اضافه کردن کسورات حقوق و دستمزد بر روی دکمه <a [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/add']"> کسورات حقوق و دستمزد جدید</a>
+					کلیک کنید
+				 </span>
+				</p>
+			</div>
+			<!-- if search return empty cell -->
+			<div *ngIf="dataList && dataList.length === 0 && (filtered_name)" class="alert alert-warning my-3" role="alert">
+				<h4 class="title"> کسورات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
+				<p class="dsec">  کسورات حقوق و دستمزدی مطابق عبارت جستجو شده یافت نشد</p>
+			</div>
+
+		</div>
+	</main>
+</ion-content>

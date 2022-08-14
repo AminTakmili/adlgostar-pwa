@@ -36,10 +36,11 @@
 						</div>
 					</div>
 						<!-- انتخاب کسب و کار -->
-						<div class="col-md-12" *ngIf="businessList && businessList.length">
+						<!-- *ngIf="businessList && businessList.length" -->
+						<div class="col-md-12" >
 							<div class="form-input mb-3">
 								<label>انتخاب کسب کار</label>
-								<ng-select
+								<!-- <ng-select
 								bindLabel="name"
 								bindValue="id"
 								[clearable]="false"
@@ -48,33 +49,34 @@
 								(change)="GetEmployee()"
 								formControlName="business_id"
 								>
-								</ng-select>
+								</ng-select> -->
+								
+								<ng-select
+								[items]="businesslist$ | async"
+								placeholder="انتخاب کسب و کار"
+								[loading]="businessInputLoading"
+								bindLabel="name"
+								bindValue="id"
+								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+								[typeahead]="businessInput$"
+								formControlName="business_id"
+								[clearable]="true"
+								(change)="GetEmployee()"
+								loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کسب و کاری یافت نشد"
+								
+								
+							
+							>
+							</ng-select>
+
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['business_id']" [controlName]="'انتخاب کسب و کار '"></app-validator>
 								</span>
-								<span class="hint">کارفرما در قرار داد چه کسی باشد</span>
+								<span class="hint"> این قرارداد برای کدام  کسب کار است	</span>
 							</div>
 						</div>
-						<!-- انتحاب کارفرما -->
-						<div class="col-md-12" *ngIf="employerList && employerList.length">
-							<div class="form-input mb-3">
-								<label>انتخاب کارفرما</label>
-								<ng-select
-								[clearable]="false"
-								placeholder="انتخاب کنید"
-								[multiple]="true"
-								formControlName="employer_ids"
-								>
-									<ng-option *ngFor="let item of employerList" [value]="item.id">
-										<div class="font-size-14">{{item.full_name}}</div>
-									</ng-option>
-								</ng-select>
-								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارفرما '"></app-validator>
-								</span>
-								<span class="hint">کارفرمایان در این قرار داد را اضافه کنید .</span>
-							</div>
-						</div>
+					
 						<!-- انتحاب کارمندان -->
 						<div class="col-md-12" *ngIf="employeeList && employeeList.length">
 							<div class="form-input mb-3">
@@ -87,6 +89,7 @@
 								(remove)="removeAlowences($event)"
 								(change)="calcChildrenAllowance();"
 								formControlName="employee_ids"
+								
 								>
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
@@ -106,6 +109,26 @@
 								<span class="hint">کارمندان در این قرار داد را اضافه کنید .</span>
 							</div>
 						</div>
+							<!-- انتحاب کارفرما -->
+						<div class="col-md-12" *ngIf="employerList && employerList.length">
+							<div class="form-input mb-3">
+								<label>انتخاب کارفرما</label>
+								<ng-select
+								[clearable]="false"
+								placeholder="انتخاب کنید"
+								[multiple]="true"
+								formControlName="employer_ids"
+								>
+									<ng-option *ngFor="let item of employerList" [value]="item.id">
+										<div class="font-size-14">{{item.full_name}}</div>
+									</ng-option>
+								</ng-select>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارفرما '"></app-validator>
+								</span>
+								<span class="hint">کارفرمایان در این قرار داد را اضافه کنید .</span>
+							</div>
+						</div>
 						<!-- عنوان قرار داد -->
 						<div class="col-md-12 ">
 							<div class="form-input mb-3">
@@ -118,6 +141,40 @@
 							</div>
 						</div>
 					<!--  -->
+					<!-- انتخاب قالب header قرار داد -->
+							
+					<div formArrayName="contract_header_template_info" class="col-12">
+						<div *ngFor="let item of contractHeaderTemplateInfoListGroup.controls ; let i = index" [formGroupName]="i">
+							<div class="form-input mb-3">
+								<label>قالب سربرگ قرار داد</label>
+								<ng-select
+									formControlName="contract_header_template_id"
+									bindLabel="name"
+									bindValue="id"
+									[items]="contractHeaderTemplatelist"
+									placeholder="انتخاب کنید"
+									[clearable]="true"
+									(change)="setHeaderContractTheme()"
+								>
+								</ng-select>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['contract_header_template_id']"  [controlName]="'قالب قرار داد'">
+									</app-validator>
+								</span>
+								<span class="hint">از بین قالب های سربرگ قرار داد یک قالب را انتخاب کنید.</span>
+							</div>
+							<!-- header txt -->
+							<div *ngIf="this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').value" class="form-input mb-3">
+								<label>سربرگ</label>
+								<ckeditor name="myckeditor" formControlName="header_text" [config]="ckeConfig"></ckeditor>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['header_text']" [controlName]="'قالب قرار داد'"></app-validator>
+								</span>
+								<span class="hint"></span>
+							</div>
+							
+						</div>
+					</div>
 					<!-- انتخاب قالب قرار داد -->
 					<div class="col-12">
 						<div class="form-input mb-3">
@@ -139,7 +196,7 @@
 							<span class="hint">از بین قالب های قرار داد یک قالب را انتخاب کنید.</span>
 						</div>
 					</div>
-
+					
 					<!-- قرار داد -->
 					<div class="col-12" >
 						<div class="form-input mb-3">
@@ -203,6 +260,40 @@
 							<span class="hint"></span>
 						</div>
 					</div>
+						<!-- انتخاب قالب footer قرار داد -->
+							
+						<div formArrayName="contract_footer_template_info" class="col-12">
+							<div *ngFor="let item of contractFooterTemplateInfoListGroup.controls ; let i = index" [formGroupName]="i">
+								<div class="form-input mb-3">
+									<label>قالب پاورقی قرار داد</label>
+									<ng-select
+										formControlName="contract_footer_template_id"
+										bindLabel="name"
+										bindValue="id"
+										[items]="contractFooterTemplatelist"
+										placeholder="انتخاب کنید"
+										[clearable]="true"
+										(change)="setFooterContractTheme()"
+									>
+									</ng-select>
+									<span class="error">
+										<app-validator #validation [control]="contractsForm.controls['contract_footer_template_id']"  [controlName]="'قالب پاورقی قرار داد'">
+										</app-validator>
+									</span>
+									<span class="hint">از بین قالب های پاورقی قرار داد یک قالب را انتخاب کنید.</span>
+								</div>
+								<!-- header txt -->
+								<div *ngIf="this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').value" class="form-input mb-3">
+									<label>پاورقی</label>
+									<ckeditor name="myckeditor" formControlName="footer_text" [config]="ckeConfig"></ckeditor>
+									<span class="error">
+										<app-validator #validation [control]="contractsForm.controls['footer_text']" [controlName]="'قالب پاورقی قرار داد'"></app-validator>
+									</span>
+									<span class="hint"></span>
+								</div>
+								
+							</div>
+						</div>
 					<div class="col-12">
 						<hr>
 					</div>
@@ -381,7 +472,7 @@
 									<span [innerText]="returnNameExtraField(item['value']['contract_extra_field_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
 								</label>
-								<ion-input type="number" autocomplete="new-pass" (ionChange)="CalculationField()" debounce="500"  formControlName="price"></ion-input>
+								<ion-input min="0" type="number" autocomplete="new-pass" (ionChange)="CalculationField()" debounce="500"  formControlName="price"></ion-input>
 								<span class="error">
 									<!-- <app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 								</span>

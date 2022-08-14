@@ -27,7 +27,27 @@
 		</div>
 	</div>
 	<!-- main -->
-	<main>
+	<main><!-- وضعیت -->
+		<section class="mt-3 container ">
+			<div class="confirm">
+				<!-- title -->
+			
+			<ion-item lines="none" class="confirm-item">
+				<ion-label  slot="start">
+					<h2 class="title">وضعیت قرار داد</h2>
+					<p class="posts"><span [innerHtml]="dataList.is_confirmed==1? '<strong> تایید شده </strong> توسط '+dataList.confirmer_info.full_name +' در تاریخ  ' + dataList.confirm_date :'پیشنویس'" ></span></p>
+				</ion-label>
+				<ion-button (click)="submitConfirm()" slot="end" shape="round" color="success" *ngIf="global.userPermision['contract_confirm']&&dataList.is_confirmed==0">
+					<ion-icon slot="start" name="checkmark"></ion-icon>
+				تایید قرارداد
+				</ion-button>
+
+			</ion-item>
+
+			</div>
+			<!-- end title -->
+		</section>
+		<!--  -->
 		<!-- کارگران -->
 		<section>
 			<div class="container">
@@ -48,6 +68,7 @@
 			</div>
 		</section>
 		<hr>
+		
 		<!-- کارمندان -->
 		<section class="mt-3">
 			<div class="container">
@@ -63,7 +84,7 @@
 				<!-- list of employee -->
 				<div class="row my-3" *ngIf="dataList?.employee_info">
 					<div class="col-lg-6 mb-4" *ngFor="let item of dataList?.employee_info">
-						<app-employee-card [employee]="item" [contractid]="dataList?.id"></app-employee-card>
+						<app-employee-card [employee]="item" [contractid]="dataList?.id" [businessEmId]="item.business_employee_id"></app-employee-card>
 					</div>
 				</div>
 
@@ -144,6 +165,13 @@
 								<ion-label>
 									<h2 class="value">{{ dataList?.food_cost ?? 0 | number }} ریال</h2>
 									<p class="title">هزینه ی غذا</p>
+								</ion-label>
+							</ion-item>
+							<!-- ! پانسیون هزینه-->
+							<ion-item lines="full" color="white">
+								<ion-label>
+									<h2 class="value">{{ dataList?.pension_cost ?? 0 | number }} ریال</h2>
+									<p class="title">هزینه ی پانسیون</p>
 								</ion-label>
 							</ion-item>
 							<ion-item lines="full" color="white">
@@ -245,12 +273,26 @@
 		<hr>
 		<section>
 			<div class="container">
+				<div class="col-md-auto">
+					<div class="title-1 ">
+						<h2 class="title">متون اصلی قرار داد</h2>
+					</div>
+				</div>
+				<!-- header -->
+				<ion-list>
+					<ion-list-header> سربرگ</ion-list-header>
+					<ion-card class="mb-4 main-text" color="white">
+						<ion-card-content>
+							<div class="inner-html-dev" [innerHTML]="(dataList?.contract_header_template_info?.header_text)?dataList?.contract_header_template_info?.header_text:'این قرارداد قالب سربرگ ندارد!'|safeHtml"></div>
+						</ion-card-content>
+					</ion-card>
+				</ion-list>
 				<!-- متن -->
 				<ion-list>
 					<ion-list-header>متن قرار داد</ion-list-header>
-					<ion-card class="mb-4" color="white">
+					<ion-card class="mb-4 main-text" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.main_text"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList.main_text?dataList?.main_text:'متنی یافت نشد !'|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
@@ -259,22 +301,139 @@
 					<ion-list-header>شروط ضمن عقد قرار داد</ion-list-header>
 					<ion-card class="mb-4" color="white" *ngFor="let item of dataList?.provisos">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="item.proviso_text"></div>
+							<div class="inner-html-dev" [innerHTML]="item.proviso_text|safeHtml"></div>
+						</ion-card-content>
+					</ion-card>
+					<ion-card class="mb-4" color="white" *ngIf="!dataList?.provisos||dataList?.provisos.length==0">
+						<ion-card-content color="danger">
+							<div class="inner-html-dev" [innerHTML]="'این قرارداد هیچ شرط ضمن عقدی ندارد !'|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
 
-				<!-- پایان -->
+				<!-- -->
 				<ion-list>
 					<ion-list-header>متن پایانی قرار داد</ion-list-header>
 					<ion-card class="mb-4" color="white">
 						<ion-card-content>
-							<div class="inner-html-dev" [innerHTML]="dataList?.end_text"></div>
+							<div class="inner-html-dev" [innerHTML]="dataList.end_text?dataList?.end_text:'این قرارداد متن پایانی ندارد! '|safeHtml"></div>
 						</ion-card-content>
 					</ion-card>
 				</ion-list>
+				<!--  -->
+
+				
+					<!-- footer -->
+					<ion-list>
+						<ion-list-header> پاورقی</ion-list-header>
+						<ion-card class="mb-4 main-text" color="white">
+							<ion-card-content>
+								<div class="inner-html-dev" [innerHTML]="dataList?.contract_footer_template_info?.footer_text?dataList?.contract_footer_template_info?.footer_text:'این قرارداد قالب پاورقی ندارد !'|safeHtml"></div>
+							</ion-card-content>
+						</ion-card>
+					</ion-list>
 			</div>
 		</section>
+		<hr>
+		<!-- حکم -->
+		<section class="container">
+			<div class="col-md-auto mb-1 d-flex">
+				<div class="title-1 col-9 ">
+					<h2 class="title"> حکم های قرارداد</h2>
+				</div>
+				
+				<ion-button *ngIf="global.userPermision['contract_sentence_add']" shape="round" color="success" [routerLink]="['/contracts/sentence',this.route.snapshot.paramMap.get('id'),'add']" class="col-3 width-50">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					حکم جدید
+				</ion-button>
+			</div>
+		<!-- جدول حکم -->
+				<table class="width-100 theme-table ">
+					<thead class="thead-dark">
+						<tr class="ion-text-center">
+							<th class="ion-text-center">#</th>
+							<th scope="col">تاریخ حکم</th>
+							<th scope="col">کسب و کار</th>
+							<!-- <th scope="col">کارمندان در قرار داد</th> -->
+							<th scope="col">دستمزد روزانه</th>
+							<th scope="col"> وضعیت حکم </th>
+							<th scope="col">تاریخ ثبت</th>
+							<th scope="col">تاریخ آخرین ویرایش</th>
+							<th class="ion-text-left" scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							*ngFor="let item of SentenceList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+							<td>
+							{{ item.date }}
+								<ion-chip mod="ios" color="success" *ngIf="item.contract_info.employee_info.length!=1">
+									<ion-label class="font-size-10">گروهی</ion-label>
+								  </ion-chip>
+							</td>
+							<td class="py-1">
+								<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.contract_info.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.contract_info.business_info.name }}</a></p>
+							</td>
+							<!-- <td>
+								<span class="font-size-12 " *ngFor="let emp of item.contract_info.employee_info"> {{ emp.first_name }} {{ emp.last_name}} ، </span>
+							</td> -->
+							<td>
+								<span class="my-1 font-size-12"><span>{{ item['wage']|number }} ریال</span></span> 
+							
+							</td>
+							<td>
+								<span class="my-1 font-size-12"><span>{{ item.is_confirmed!==0?'تایید شده':' تایید نشده' }} </span></span> 
+							
+							</td>
+						
+							<td>{{ item.createdAt }}</td>
+							<td>{{ item.updatedAt }}</td>
+							<td class="ion-text-left">
+								<ion-buttons class="justify-content-end">
+									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+										[id]="'hover-button-'+item.id">
+										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+										</ion-icon>
+									</ion-button> -->
+					 <!-- (click)="removeContractALert(item)"  -->
+					 <ion-button (click)="removeContract(item.id,item.date)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_sentence_delete']&&SentenceList.length!=1">
+						<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+						</ion-icon>
+					</ion-button>
+				   
+									<ion-button [routerLink]="['/contracts/sentence',item.id,'edit']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_sentence_edit']&&i==0">
+										<ion-icon size="small" color="medium" slot="icon-only" name="build">
+										</ion-icon>
+									</ion-button>
+								
+									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+										<ion-icon size="small" color="medium" slot="icon-only" name="copy">
+										</ion-icon>
+									</ion-button> -->
+									<ion-button [routerLink]="['/contracts/sentence',item.id,'detail']" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات" *ngIf="global.userPermision['contract_sentence_detail']">
+										<ion-icon size="small" color="medium" slot="icon-only" name="search">
+										</ion-icon>
+									</ion-button>
+								</ion-buttons>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot *ngIf="limit < total && SentenceList && SentenceList.length">
+						<tr>
+							<td colspan="8">
+								<pagination-controls *ngIf="limit < total && SentenceList && SentenceList.length"
+									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+									[autoHide]="true">
+								</pagination-controls>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+		
+
+		</section>
+		<!-- پایان -->
 	</main>
 	<!-- end main -->
 </ion-content>

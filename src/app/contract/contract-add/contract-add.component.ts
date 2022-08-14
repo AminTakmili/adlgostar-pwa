@@ -1,18 +1,54 @@
+import * as _ from 'lodash';
+
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
+import { Observable, Subject, concat, of, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	filter,
+	map,
+	switchMap,
+	tap,
+} from 'rxjs/operators';
+import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
+import { contractFooterTemplate, contractHeaderTemplate } from './../../core/models/contractConstant.model';
+
+import { ActivatedRoute } from '@angular/router';
+import { BusinessList } from 'src/app/core/models/business.model';
+import { CKEditorComponent } from 'ng2-ckeditor';
+import { Employee } from 'src/app/core/models/employee.model';
+import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
-import { CKEditorComponent } from 'ng2-ckeditor';
-import { format } from 'date-fns-jalali'
-import { BusinessList } from 'src/app/core/models/business.model';
-import { Employee } from 'src/app/core/models/employee.model';
-import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
-import * as _ from 'lodash';
-import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
-import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
-import { Employer } from 'src/app/core/models/employer.model';
 import { async } from '@angular/core/testing';
+import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
+import { format } from 'date-fns-jalali'
+import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
+
+// import { sentenceTemplate } from './../../core/models/sentence.model';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
 	selector: 'app-contract-add',
@@ -42,6 +78,8 @@ export class ContractAddComponent implements OnInit {
 	employeeList: Employee[] = [];
 	employerList: Employer[] = [];
 	contractTemplatelist: contractTemplate[];
+	contractHeaderTemplatelist: contractHeaderTemplate[];
+	contractFooterTemplatelist: contractFooterTemplate[];
 	contractConditionlist: contractConditions[] = [];
 	contractExtraFieldList: contractExtraField[];
 	severanceBaseCalculationList: severanceBaseCalculation[];
@@ -49,21 +87,50 @@ export class ContractAddComponent implements OnInit {
 	provisosList: FormArray;
 	extraFieldsList: FormArray;
 	childrenAllowancesList: FormArray;
+	contractHeaderTemplateInfoList: FormArray;
+	contractFooterTemplateInfoList: FormArray;
 
 	businessEmpId : number[] = [];
+	
+
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
+	
+	minLengthTerm = 3;
+
+	// employeeLimit: number = 1000;
+	// employeeOffset: number = 0;
+	// employeeTotal: number = 0;
+	// employeeEnd: boolean = false;
+
+	// employerLimit: number = 1000;
+	// employerOffset: number = 0;
+	// employerTotal: number = 0;
+	// employerEnd: boolean = false;
+
+	businessEmployeeId:string
+	EmployeeId:string[]
 
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private router: ActivatedRoute,
+		
 	) {
+		this.businessEmployeeId=router.snapshot.paramMap.get('businessEmployeeId')
+		// this.EmployeeId=router.snapshot.paramMap.get('EmployeeId')
+		this.EmployeeId=router.snapshot.queryParamMap.getAll('EmployeeId')
+		// console.log(
+		// router.snapshot.queryParamMap.getAll('emId')	
+		// );
 
-
-
+console.log(this.businessEmployeeId);
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
-			business_id: ['', Validators.compose([Validators.required])],
+			business_id: [, Validators.compose([Validators.required])],
 			contract_condition_id: [''],
 			employee_ids: [[], Validators.compose([Validators.required])],
 			employer_ids: [[], Validators.compose([Validators.required])],
@@ -96,12 +163,16 @@ export class ContractAddComponent implements OnInit {
 			children_allowances: this.fb.array([]),
 			provisos: this.fb.array([]),
 			extra_fields: this.fb.array([]),
+			contract_header_template_info: this.fb.array([this.newContractHeaderTemplateInfoList()]),
+			contract_footer_template_info: this.fb.array([this.newContractFooterTemplateInfoList()]),
 
 		});
 
 		this.provisosList = this.contractsForm.get('provisos') as FormArray;
 		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
 		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
+		this.contractHeaderTemplateInfoList = this.contractsForm.get('contract_header_template_info') as FormArray;
+		this.contractFooterTemplateInfoList = this.contractsForm.get('contract_footer_template_info') as FormArray;
 
 
 	}
@@ -112,7 +183,7 @@ export class ContractAddComponent implements OnInit {
 			allowedContent: true,
 			extraPlugins: 'divarea',
 			forcePasteAsPlainText: true,
-			removePlugins: 'exportpdf',
+			removePlugins: 'exportpdf,font',
 			language: "fa",
 			font_defaultLabel: 'IRANSans'
 		};
@@ -132,6 +203,25 @@ export class ContractAddComponent implements OnInit {
 	}
 
 	/* ============================== All form arrays ===========================================*/
+	get contractHeaderTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_header_template_info') as FormArray;
+	}
+	get contractFooterTemplateInfoListGroup(): FormArray {
+		return this.contractsForm.get('contract_footer_template_info') as FormArray;
+	}
+
+	newContractHeaderTemplateInfoList(): FormGroup {
+		return this.fb.group({
+			contract_header_template_id: [],
+			header_text: [],
+		})
+	}
+	newContractFooterTemplateInfoList(): FormGroup {
+		return this.fb.group({
+			contract_footer_template_id: [],
+			footer_text: [],
+		})
+	}
 
 	provisos(id: number, text = ''): FormGroup {
 		return this.fb.group({
@@ -168,6 +258,48 @@ export class ContractAddComponent implements OnInit {
 
 	/* ============================== end All form arrays ===========================================*/
 
+		
+	loadBusiness() {
+		this.businesslist$ = concat(
+			of([]), // default items
+			this.businessInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.businessInputLoading = true)),
+				switchMap((term) => {
+					return this.getbusiness(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.businessInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getbusiness(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('business/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+
 	addCondition() {
 
 		// console.log(this.contractsForm.value.contract_condition_id)
@@ -193,9 +325,15 @@ export class ContractAddComponent implements OnInit {
 	getData() {
 		// const countries = this.global.httpGet('more/countries');
 
-		const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
-
+		// const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
+		if (this.businessEmployeeId) {
+			this.getBusinessById(this.businessEmployeeId);
+		} else {
+			this.loadBusiness()
+		}
 		const contractTheme = this.global.httpPost('contractTemplate/list',{ limit: 2000, offset: 0 });
+		const contractHeaderTheme = this.global.httpPost('contractHeaderTemplate/filteredList',{ limit: 2000, offset: 0 ,filtered_name:''});
+		const contractFooterTheme = this.global.httpPost('contractFooterTemplate/filteredList',{ limit: 2000, offset: 0,filtered_name:'' });
 
 		const contractCondition = this.global.httpPost('contractProvisoTemplate/list',{ limit: 2000, offset: 0 });
 
@@ -203,42 +341,99 @@ export class ContractAddComponent implements OnInit {
 
 		const severanceBaseCalculation = this.global.httpPost('salaryBaseInfo/severanceBaseCalculationFieldList',{ limit: 1000, offset: 0 });
 
-		this.global.parallelRequest([business, contractTheme, contractCondition, contractExtra, severanceBaseCalculation])
-		.subscribe(([businessRes, contractThemeRes = '', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
-			this.CreateBusiness(businessRes);
+		this.global.parallelRequest([ contractTheme,contractHeaderTheme,contractFooterTheme, contractCondition, contractExtra, severanceBaseCalculation])
+		.subscribe(([ contractThemeRes = '',contractHeaderThemeRes='',contractFooterThemeRes='', contractConditionRes = '', contractExtraRes = '', severanceBaseCRes = '']) => {
+			// this.CreateBusiness(businessRes);
 			this.CreatecontractTheme(contractThemeRes);
+			this.CreatecontractHeaderTheme(contractHeaderThemeRes);
+			this.CreatecontractFooterTheme(contractFooterThemeRes);
 			this.CreatecontractCondition(contractConditionRes);
 			this.CreatecontractExtra(contractExtraRes);
 			this.CountAllYear(severanceBaseCRes);
 		});
 	}
+	async getBusinessById(filtered_business_employee_id: string = null) {
+		await	this.global.showLoading()
+			console.log(filtered_business_employee_id);
+			this.global
+				.httpPost('business/filteredList', {
+					filtered_business_employee_id,
+					for_combo: true,
+					limit: 1000,
+					offset: 0,
+					
+				})
+				.subscribe(
+					async (res: any) => {
+						await this.global.dismisLoading()
+						console.log(of(res.list), res.list[0].id);
+						this.businesslist$ = of(res.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						})) ;
+					
+						this.contractsForm.get('business_id').setValue(res.list[0]?.id);
+						this.GetEmployee()
+					},
+					async (error: any) => {
+						await this.global.dismisLoading()
+	
+						this.global.showError(error)
+						console.log(error);
+					}
+				);
+		}
+
 
 	async GetEmployee() {
+		console.log("object");
+		if (this.contractsForm.value.business_id) {
+			
+			await this.global.showLoading('لطفا منتظر بمانید...');
+	
+			const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
+	
+			const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
+	
+			 this.global.parallelRequest([employerReq, employeeReq])
+			.subscribe(async ([employer = '', employee = '']) => {
+				await this.global.dismisLoading();
+				this.contractsForm.controls.employer_ids.setValue('')
+				this.contractsForm.controls.employee_ids.setValue('')
+				this.employeeLists(employee);
+				this.employerLists(employer);
+			});
+		}else{
+			this.contractsForm.controls.business_id.markAsTouched()
+			this.employeeList=[]
+			this.employerList=[]
+			// this.contractsForm.markAllAsTouched()
+			this.businesslist$=of([])
+			this.loadBusiness()
 
-		await this.global.showLoading('لطفا منتظر بمانید...');
+		}
 
-		const employerReq = this.global.httpPost('business/detail', {business_id: this.contractsForm.value.business_id});
-
-		const employeeReq = this.global.httpPost('employee/filteredList', {limit: 1000,offset: 0,business_id: this.contractsForm.value.business_id});
-
-		 this.global.parallelRequest([employerReq, employeeReq])
-		.subscribe(async ([employer = '', employee = '']) => {
-			await this.global.dismisLoading();
-			this.employeeLists(employee);
-			this.employerLists(employer);
-		});
 
 	}
 
-	CreateBusiness(data: any) {
-		this.businessList = data.list.map((item: any) => {
-			return new BusinessList().deserialize(item);
-		});
-	}
+	// CreateBusiness(data: any) {
+	// 	this.businessList = data.list.map((item: any) => {
+	// 		return new BusinessList().deserialize(item);
+	// 	});
+	// }
 
 	CreatecontractTheme(data: any) {
 		this.contractTemplatelist = data.list.map((item: any) => {
 			return new contractTemplate().deserialize(item);
+		});
+	}
+	CreatecontractHeaderTheme(data: any) {
+		this.contractHeaderTemplatelist = data.list.map((item: any) => {
+			return new contractHeaderTemplate().deserialize(item);
+		});
+	}
+	CreatecontractFooterTheme(data: any) {
+		this.contractFooterTemplatelist = data.list.map((item: any) => {
+			return new contractFooterTemplate().deserialize(item);
 		});
 	}
 
@@ -266,6 +461,7 @@ export class ContractAddComponent implements OnInit {
 
 	employerLists(data: any){
 		 console.log(data);
+		 
 
 		if(data.employers.length === 0){
 			this.employerList = [];
@@ -287,6 +483,14 @@ export class ContractAddComponent implements OnInit {
 			this.employeeList = data.list.map((item: any) => {
 				return new Employee().deserialize(item);
 			});
+			if (this.EmployeeId && this.EmployeeId.length) {
+				let domy:number[]=[]
+				this.EmployeeId.map((id)=>{
+					domy.push(Number(id)) 
+				})
+				this.contractsForm.get('employee_ids').setValue(domy);
+				
+			}
 		}
 
 	}
@@ -306,6 +510,38 @@ export class ContractAddComponent implements OnInit {
 		}
 	}
 
+	setHeaderContractTheme() {
+		
+		const id = 	this.contractHeaderTemplateInfoListGroup.value[0].contract_header_template_id;
+		this.contractHeaderTemplatelist.map((item) => {
+			if (item.id === id) {
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(item.template);
+			}else{
+				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
+	}
+	setFooterContractTheme() {
+		
+		const id = 	this.contractFooterTemplateInfoListGroup.value[0].contract_footer_template_id;
+		this.contractFooterTemplatelist.map((item) => {
+			if (item.id === id) {
+				// const text=	item.template+'<br>'+this.contractsForm.get('main_text').value
+			
+				// this.contractsForm.get('main_text').setValue(text);
+				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(item.template);
+			}else{
+				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+
+			}
+		});
+		// console.log(this.contractsForm.value.main_text);
+	}
 	setContractTheme() {
 		const id = this.contractsForm.value.contract_template_id;
 		this.contractTemplatelist.map((item) => {
@@ -439,5 +675,6 @@ export class ContractAddComponent implements OnInit {
 
 		}
 	}
+
 
 }

@@ -13,7 +13,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-back-button defaultHref="more/business-category" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				<ion-back-button defaultHref="users/role" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
 		</div>
@@ -59,12 +59,17 @@
 						</div>
 						<hr>
 						<div class="permsion-cat" *ngFor="let cat of permision" >
-							<h4>{{ cat.name }}</h4>
+							<section class=" row">
+
+								<ion-checkbox #check (ionChange)="selectAll(cat.permissions)" class="mt-15 ml-10"></ion-checkbox>
+								<h4>{{ cat.name }}</h4>
+							</section>
 							<div class="row">
 								<div class="col-lg-4 col-md-6" *ngFor="let item of cat.permissions" >
 									<ion-item lines="none">
 										<ion-label>{{item.name}}</ion-label>
-										<ion-toggle slot="start" (ionChange)="setCheck(item)" [value]="item.id"></ion-toggle>
+									
+										<ion-toggle (ionChange)="setCheck(item)"  slot="start"  [value]="item.id" [id]="item.id"></ion-toggle>
 									</ion-item>
 								</div>
 							</div>

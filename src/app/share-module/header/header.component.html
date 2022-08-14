@@ -1,16 +1,23 @@
 <ion-toolbar color="white">
 	<ion-buttons slot="start">
-		<ion-menu-toggle autoHide="false">
+		<ion-menu-toggle  class="d-lg-none d-block" >
 			<ion-button>
 				<ion-icon slot="icon-only" name="menu"></ion-icon>
 			</ion-button>
 		</ion-menu-toggle>
+		<ion-button (click)="toggleMenu()" class="d-lg-block d-none" expand="block" fill="clear" shape="round">
+			<ion-icon slot="icon-only" name="menu"></ion-icon>
+		</ion-button>
 	</ion-buttons>
 	<ion-title class="ion-hide-lg-up">{{ title }}</ion-title>
 	<ion-buttons slot="end">
-		<ion-button>
-			<ion-icon slot="icon-only" name="notifications"></ion-icon>
-		</ion-button>
+		<section class="notifications">
+
+			<ion-button [routerLink]="['/notification']">
+				<ion-icon slot="icon-only" name="notifications"></ion-icon>
+			</ion-button>
+			<ion-badge *ngIf="badges" mode="ios" color="success" slot="end">{{badges}}</ion-badge>
+		</section>
 		<ion-button>
 			<ion-icon slot="icon-only" name="search"></ion-icon>
 		</ion-button>

@@ -1,10 +1,11 @@
 <ion-app>
-	<ion-split-pane when="lg" contentId="mainContent" >
+	<ion-split-pane when="lg" contentId="mainContent" (ionSplitPaneVisible)="ionSplitPane($event)" >
 		<!-- sidebar -->
-		<ion-menu side="start" [disabled]="isLogin" contentId="mainContent">
+		<ion-menu [class.open-menu]="global?.menuState.value==='open'&&isLg" [class.close-menu]="global?.menuState.value==='close'&&isLg" [class.d-none]="isLogin"  [disabled]="isLogin" contentId="mainContent">
 			<app-sidebar></app-sidebar>
 		</ion-menu>
 		<!-- routeroutlet -->
 		<ion-router-outlet id="mainContent"></ion-router-outlet>
 	</ion-split-pane>
+	
 </ion-app>

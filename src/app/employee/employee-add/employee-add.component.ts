@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { asNativeElements, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
@@ -32,6 +33,7 @@ export class EmployeeAddComponent implements OnInit {
 	employeeImage: FormArray;
 	StaticData : StaticData;
 	pageTitle : string = "افزودن کارمند جدید";
+	businessId!:string
 
 	bankList:Bank[];
 	@ViewChild("popoverDatetime2") datetime: IonDatetime;
@@ -47,12 +49,18 @@ export class EmployeeAddComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController,
 		private cd: ChangeDetectorRef,
-		public modalController: ModalController
+		public modalController: ModalController,
+		public route: ActivatedRoute,
+		 private router: Router,
+
+
 
 	) {
 
 		// this.datetime.dayValues.toLocaleString()
 		// this.dateValue = format(new Date(), 'yyyy-MM-dd');
+		this.businessId=route.snapshot.paramMap.get('businessId')
+		console.log(this.businessId);
 		this.employeeForm =  this.fb.group({
 			first_name: [ '' , Validators.compose([Validators.required])],
 			last_name: [ '', Validators.compose([Validators.required])],
@@ -291,21 +299,36 @@ export class EmployeeAddComponent implements OnInit {
 
 	async onSubmit(AddAnOther : boolean = false) {
 
+
+		console.log(this.businessId,AddAnOther);
 		this.employeeForm.markAllAsTouched();
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('employee/add', this.employeeForm.value)
 				.subscribe(async (res: any) => {
 
+					console.log(res);
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.global.showToast('کارمند با نام ' + this.employeeForm.value.first_name + ' ' + this.employeeForm.value.last_name + ' ثبت شد .');
-					this.employeeForm.reset();
+				
 					if(!AddAnOther){
-					this.navCtrl.navigateForward('/employees');
+						if (this.businessId) {
+							this.router.navigate([`/businesses/add-employee/${this.businessId}`], { queryParams: {id:res.id} });
+						}else{
+
+							this.navCtrl.navigateForward('/employees');
+						}
 					}else{
-						location.reload();
+						if (this.businessId) {
+							this.navCtrl.navigateForward('/employees/add');
+
+						}else{
+
+							location.reload();
+						}
 					}
+					this.employeeForm.reset();
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

@@ -4,6 +4,7 @@ import { Media } from "./media.model";
 
 export class User implements Deserializable {
 	id ! : number;
+	is_employer! : boolean;
 	role_id !: string;
 	firstName ! : string;
 	lastName ! : string;
@@ -41,6 +42,16 @@ export class User implements Deserializable {
 				if(per.permissions && per.permissions.length){
 					 per.permissions.map((item:any)=>{
 						this.permissionsList.push(new permissionsDetail().deserialize(item));
+					})
+				}
+				if(per.children && per.children.length){
+					 per.children.map((item:any)=>{
+						 if (item.permissions&&item.permissions.length) {
+							item.permissions.map((childPermissin:any)=>{
+
+								this.permissionsList.push(new permissionsDetail().deserialize(childPermissin));
+							})
+						 }
 					})
 				}
 			})
@@ -90,6 +101,12 @@ export class permision implements Deserializable {
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		this.permissions = input.permissions;
+		
+		if(input.permissions && input.permissions.length){
+			this.permissions = input.permissions.map((permission: any) => {
+				return new permissionsDetail().deserialize(permission);
+			});
+		}
 		return this;
 	}
 }
@@ -101,10 +118,12 @@ export class permissionsDetail implements Deserializable {
 	is_checked : boolean = false;
 	access : boolean = false;
 	permission_category !: permision;
+	children !: permissionsDetail[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		if(input.permission_category){
 			this.permission_category = input.permission_category;
+			// if()
 		}
 		return this;
 	}

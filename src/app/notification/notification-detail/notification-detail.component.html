@@ -1,0 +1,60 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content *ngIf="dataList?.id">
+
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> جزییات اعلان #{{ dataList?.id }}</h1>
+					<p class="dsec">
+						<!-- <span>عنوان اعلان : {{ dataList?.subject }}</span> -->
+					</p>
+					<div class="dsec"><span class="status status-{{ dataList?.status }}"
+							[innerText]="dataList.status=='unread'?'خوانده نشده':'خوانده شده'"></span></div>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline" class="ml-3">
+					<ion-back-button defaultHref="/notification" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+		
+			<ion-card  >
+				<ion-card-header>
+					<ion-card-title> {{dataList.title}}</ion-card-title>
+					<!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+				</ion-card-header>
+				<ion-card-content>
+					<div class="row pr-2 justify-content-between ion-align-items-center">
+						<P [innerHTML]="dataList.description"></P>
+
+
+						<!-- <div class="date"> ارسال شده در : {{ dataList.createdAt }} ( {{setTypeName(dataList.type)}} ) </div> -->
+						<div *ngIf="dataList.type=='ticket_received'" class="col-2">
+
+							<ion-button 
+								[routerLink]="['/profile/support/detail',dataList.user_ticket_id]" expand="block" fill="clear"
+								shape="round">
+								رفتن به تیکت
+							</ion-button>
+
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+
+		</div>
+	</main>
+</ion-content>

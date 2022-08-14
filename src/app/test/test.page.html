@@ -13,9 +13,13 @@
            bindValue="id"
            placeholder="انتخاب کارمند"
            appendTo="body"
-		   (search)="searchFun($event)"
+           loadingText="لطفا صبر کنید ..."
+           notFoundText="مناسفانه کارمندی یافت نشد"
+           (search)="searchFun($event)"
            (scroll)="onScroll($event)"
-           (scrollToEnd)="onScrollToEnd()">
+           (scrollToEnd)="onScrollToEnd()"
+           
+           >
     <!-- <ng-template ng-header-tmp>
         <small class="form-text text-muted">Loaded {{photosBuffer.length}} of {{photos.length}}</small>
     </ng-template> -->
@@ -23,4 +27,23 @@
        	{{item.full_name}}
     </ng-template>
 </ng-select>
+<br>
+<hr>
+<br>
+<ng-select
+[items]="employeelist$ | async"
+placeholder="انتخاب کنید"
+[loading]="inputLoading"
+bindLabel="full_name"
+bindValue="id"
+typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+[typeahead]="employeeInput$"
+loadingText="لطفا صبر کنید ..."
+notFoundText="مناسفانه کارمندی یافت نشد"
+(scroll)="	this.loadEmployee()"
+(focus)="	this.getEmployee(null,true)"
+>
+<!-- formControlName="employee_id" -->
+</ng-select>
+
 </ion-content>

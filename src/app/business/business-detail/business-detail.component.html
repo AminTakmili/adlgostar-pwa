@@ -55,13 +55,13 @@
 			<div class="container">
 				<!-- title -->
 				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-4">
+					<div class="col-md-auto">
 						<div class="title-1">
 							<h2 class="title">کارمندان</h2>
 						</div>
 					</div>
 
-					<div class="col-lg-4 ion-text-left">
+					<div class="col-md-auto ion-text-left">
 						<!-- افزودن کارمند -->
 						<ion-button class="ml-3" shape="round" color="warning"
 							[routerLink]="['/businesses/import-employee',business?.id]"
@@ -73,10 +73,18 @@
 							[routerLink]="['/businesses/add-employee',business?.id]"
 							*ngIf="global.userPermision['business_add-employee']">
 							<ion-icon slot="start" name="add-circle"></ion-icon>
-							افزودن کارمند
+							افزودن کارمند به این کسب و کار
+						</ion-button>
+						<!-- افزودن کارمند جدید -->
+						<ion-button shape="round" color="success"
+							[routerLink]="['/employees/add',business?.id]"
+							*ngIf="global.userPermision['business_add-employee']&&global.userPermision['employees_add']">
+							<ion-icon slot="start" name="add-circle"></ion-icon>
+							 افزودن کارمند جدید
 						</ion-button>
 					</div>
-					<div class="col-lg-4">
+
+					<div class="col-md-auto">
 						<div class="search-input-2">
 							<ion-searchbar enterkeyhint="" type="text" (ionChange)="filterEmployee($event)" debounce="500" placeholder="جستجو در کارمندان">
 							</ion-searchbar>
@@ -89,7 +97,8 @@
 				<div class="row" *ngIf="business?.employees">
 					<div class="col-lg-6 mb-4" *ngFor="let item of businessEmployees ">
 						<app-employee-card (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item"
-							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id">
+							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id"
+							>
 						</app-employee-card>
 					</div>
 				</div>
@@ -103,51 +112,125 @@
 			</div>
 			<!-- end title -->
 		</section>
-		<hr class="d-none">
+		<hr >
 		<!-- قرار داد ها -->
-		<section class="d-none">
+		
+		<section >
 			<div class="container">
 				<!-- title -->
 				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<div class="title-1">
 							<h2 class="title">لیست قرار داد ها</h2>
 						</div>
 					</div>
+					<div class="col-md-3 ion-text-left">
+
+						<ion-button class="ml-3" shape="round" color="warning"
+						(click)="openAddContractModal()"
+						
+						*ngIf="global.userPermision['add_contract_request_via_ticket']&&is_employer">
+						<ion-icon slot="start" name="options"></ion-icon>
+					درخواست ثبت قرارداد
+					</ion-button>
+					</div>
 					<div class="col-md-4">
 						<div class="search-input-2">
-							<ion-searchbar enterkeyhint="" type="text" #SearchContarct placeholder="جستجو در قراردادها">
+							<ion-searchbar  (ionChange)="changeFilterContract($event)" [debounce]=750 enterkeyhint="" type="text" #SearchContarct placeholder="جستجو در عناوین قراردادها">
 							</ion-searchbar>
 						</div>
 					</div>
+				
 				</div>
 				<hr>
 				<!-- لیست قرار داد ها -->
 				<!-- table -->
-				<table class="width-100 theme-table mt-4">
+				<table *ngIf="dataList&&dataList.length!=0" class="width-100 theme-table ">
 					<thead class="thead-dark">
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">عنوان</th>
-							<th scope="col">دسته بندی</th>
+							<th scope="col">کسب و کار</th>
+							<th scope="col">کارمندان در قرار داد</th>
+							<th scope="col">شروع و پایان</th>
+							<th scope="col">مدت قرار داد</th>
 							<th scope="col">تاریخ ثبت</th>
 							<th class="ion-text-left" scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let item of [1,2,3,4,5,6]">
-							<th class="ion-text-center" scope="row">1</th>
-							<td><a href="#">شرکت ایده پردازان آترین سپر آریا</a></td>
-							<td>فناری اطلاعات و ارتباطاات</td>
-							<td>28 خرداد 1500</td>
+						<tr
+							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+							<td>
+								<a [routerLink]="['/contracts/detail',item.id]">{{ item.title }}</a>
+								<ion-chip mod="ios" color="success" *ngIf="!item.business_employee_id">
+									<ion-label class="font-size-10">گروهی</ion-label>
+								  </ion-chip>
+							</td>
+							<td class="py-1">
+								<p class="my-1 font-size-12" ><a [routerLink]="['/businesses/detail/',item.business_info.id ] "> <ion-icon name="business"></ion-icon> {{ item.business_info.name }}</a></p>
+							</td>
+							<td>
+								<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>
+							</td>
+							<td>
+								<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span> </p>
+								<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span> </p>
+							</td>
+							<td>
+								<span class="my-1 font-size-12"><span>{{ item.month_count }} ماه</span></span> ,
+								<span class="my-1 font-size-12"><span>{{ item.day_count }} روز</span></span>
+							</td>
+							<td>{{ item.createdAt }}</td>
 							<td class="ion-text-left">
-								<ion-button fill="clear" class="px-0 mx-0">
-									<ion-icon color="medium" slot="icon-only" name="chevron-forward-outline"></ion-icon>
-								</ion-button>
+								<ion-buttons class="justify-content-end">
+									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+										[id]="'hover-button-'+item.id">
+										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+										</ion-icon>
+									</ion-button> -->
+									<ion-button (click)="removeContractALert(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['contract_delete']">
+										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+										</ion-icon>
+									</ion-button>
+									<ion-button [routerLink]="['/contracts/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['contract_edit']">
+										<ion-icon size="small" color="medium" slot="icon-only" name="build">
+										</ion-icon>
+									</ion-button>
+									<ion-button [routerLink]="['/contracts/sentence',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حکم" *ngIf="global.userPermision['contract_sentence_list']">
+										<ion-icon size="small" color="medium" slot="icon-only" name="document-text">
+										</ion-icon>
+									</ion-button>
+									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+										<ion-icon size="small" color="medium" slot="icon-only" name="copy">
+										</ion-icon>
+									</ion-button> -->
+									<ion-button [routerLink]="['/contracts/detail',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزییات" *ngIf="global.userPermision['contract_detail']">
+										<ion-icon size="small" color="medium" slot="icon-only" name="search">
+										</ion-icon>
+									</ion-button>
+								</ion-buttons>
 							</td>
 						</tr>
 					</tbody>
+					<tfoot *ngIf="limit < total && dataList && dataList.length">
+						<tr>
+							<td colspan="8">
+								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChangeContract($event)"
+									[autoHide]="true">
+								</pagination-controls>
+							</td>
+						</tr>
+					</tfoot>
 				</table>
+				
+				<div *ngIf="dataList && dataList.length === 0" class="alert alert-warning my-3" role="alert">
+					<h4 class="title">  قرادادی برای نمایش یافت نشد .</h4>
+				</div>
+			
+
 			</div>
 		</section>
 		<hr class="d-none">

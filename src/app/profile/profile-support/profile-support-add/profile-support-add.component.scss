@@ -1,0 +1,26 @@
+.section-childern{
+    label{
+        width: 100%;
+    }
+    ion-radio-group{
+        // margin-inline-start: 0px;
+        width: 100%;
+        .chose-button{
+            
+            --background: none;
+        --background-hover: none;
+        --background-activated: none;
+        --background-focused	: none;
+        --ripple-color	:transparent;
+        //     margin: 0 5px;
+        //     display: flex;
+        //     flex-direction: row;
+        //     align-content: center;
+        //     justify-content: center;
+        //     flex-wrap: nowrap;
+            ion-label{
+                padding:0 5px;
+            }
+        }
+    }
+}

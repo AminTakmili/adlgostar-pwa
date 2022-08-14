@@ -484,9 +484,9 @@ hr {
 			margin-bottom: 10px;
 		}
 
-		&::before {
-			// z-index: 101;
-		}
+		// &::before {
+		// 	// z-index: 101;
+		// }
 	}
 }
 
@@ -719,3 +719,41 @@ ion-chip{
 .vertical-align-middle{
 	vertical-align: middle;
 }
+
+.input-clear-icon {
+	color: #999 !important;
+	fill: #999 !important;
+    width: 10px !important;
+    height: 10px !important;
+    background-size: 20px !important;
+    margin-inline: 5px !important;
+}
+// app-settlement{
+	.segment-button-indicator-background {
+	    background: #396ed6a3 !important;
+	}
+	div[part="indicator-background"]{
+		background: #396ed6a3 !important;
+
+	}
+// }
+
+table{
+	overflow-x: auto;
+}
+// table::-webkit-scrollbar-track
+// {
+// 	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+// 	background-color: #F5F5F5;
+// 	border-radius: 10px;
+// }
+
+// table::-webkit-scrollbar
+// {
+// 	width: 10px;
+// 	background-color: #F5F5F5;
+// }
+
+// table::-webkit-scrollbar-thumb
+// {
+// }

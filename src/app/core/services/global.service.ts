@@ -1,18 +1,20 @@
+import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
+import { BehaviorSubject, Observable, forkJoin } from "rxjs";
+import { DataSets, badges } from './../models/StaticData.model';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
-import { BehaviorSubject, forkJoin, Observable } from "rxjs";
-import { environment } from 'src/environments/environment'
-import { citiesClass } from "../classes/cities.class";
+import { User, UserRole, permissionsDetail } from "../models/user.model";
+
 import { Bank } from "../models/bank.model";
 import { BusinessList } from "../models/business.model";
-import { contract } from "../models/contractConstant.model";
 import { Employee } from "../models/employee.model";
 import { Employer } from "../models/employer.model";
+import { FormGroup } from "@angular/forms";
 import { StaticData } from "../models/StaticData.model";
-import { permissionsDetail, User, UserRole } from "../models/user.model";
 import { StorageService } from "./storage.service";
+import { citiesClass } from "../classes/cities.class";
+import { contract } from "../models/contractConstant.model";
+import { environment } from 'src/environments/environment'
 
 @Injectable({
 	providedIn: 'root'
@@ -23,10 +25,33 @@ export class GlobalService {
 	public login: boolean = false;
 	public _login = new BehaviorSubject<boolean>(this.login);
 	public baseData = new BehaviorSubject<StaticData>(null);
+	public badges = new BehaviorSubject<badges>(null);
+	public menuState = new BehaviorSubject<string>('open');
 	public user: User;
 	public _user =  new BehaviorSubject<User>(null);
 	public sitename: string = environment.sitename;
 	public userPermision  : LooseObject = {};
+	public monthList  : Array<{
+		name:string,
+		number:number
+	}> = [];
+	public	getMonthName:string[] =[
+		"",
+		"فروردین",
+		"اردیبهشت",
+		"خرداد",
+		"تیر",
+		"مرداد",
+		"شهریور",
+		"مهر",
+		"آبان",
+		"آذر",
+		"دی",
+		"بهمن",
+		"اسفند"
+	]
+	countClick:number=0
+
 	constructor(
 		private http: HttpClient,
 		private storage: StorageService,
@@ -37,7 +62,47 @@ export class GlobalService {
 		private toastController: ToastController,
 	) {
 		this.setUserInfo();
+		const monthNames=[
+			"فروردین",
+			"اردیبهشت",
+			"خرداد",
+			"تیر",
+			"مرداد",
+			"شهریور",
+			"مهر",
+			"آبان",
+			"آذر",
+			"دی",
+			"بهمن",
+			"اسفند"
+		]
+		monthNames.map((monthName,monthIndex)=>{
+			this.monthList.push(
+				{
+					name:monthName,
+					number:monthIndex+1
+				}
+			)
+		})
+	
+		
 	}
+	dbClick(url:[string,any]|string){
+		this.countClick++
+		// console.log(this.countClick);
+		if (this.countClick==2) {
+			// console.log("object");
+			this.navCtrl.navigateForward(url)
+			this.countClick=0
+		}else if(this.countClick>2){
+			this.countClick=0
+		}else{
+			setTimeout(() => {
+				this.countClick=0
+			}, 600);
+		}
+	}
+	
 
 
 	httpPost(url: string, params: object): Observable<any> {
@@ -193,8 +258,9 @@ export class GlobalService {
 			await alert.present();
 		}
 	}
+	// async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button? : any) {
 
-	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top', button?: any) {
+	async showToast(message: string, duration: number = 6000, position: 'top' | 'bottom' | 'middle' = 'top',color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'dark' | 'medium' | 'light' | string='dark',mode?:'ios'|'md', button?: any) {
 
 		const toast = await this.toastController.create({
 			message: message,
@@ -202,9 +268,11 @@ export class GlobalService {
 			position: position,
 			buttons: button,
 			animated: true,
-			mode: 'ios',
+		
 			keyboardClose: true,
-			color: 'dark'
+		
+			color:color,
+			mode:mode,
 		});
 		toast.present();
 	}
@@ -221,19 +289,23 @@ export class GlobalService {
 				this.user = new User().deserialize(val);
 				this._user.next(this.user);
 				this.setPermision(this.user.permissionsList);
-				console.log(this.user);
+				
 			}
 		});
 	}
 
 	setPermision(persmion : permissionsDetail[]){
+		// console.log("object");
 		// console.log(persmion);
 
-		persmion.map((item)=>{
+		persmion.map((item:permissionsDetail)=>{
 			this.userPermision[item.en_name] =  item.access;
+			// if(item.children && item.children.length){
+			// 	item.children.map((child:permissionsDetail)=>{
 
+			// 	})
+			// }
 		});
-		console.log(this.userPermision);
 	}
 
 	showAlert(
@@ -336,7 +408,9 @@ export class GlobalService {
 		if(accessDefault){
 			return true;
 		}
+		// console.log(this.user.permissionsList);
 		const permison = this.user.permissionsList.find(x => x.app_route === route);
+		// console.log(route,permison);
 		const access = permison !== undefined ? permison.access : false;
 		return access;
 	}

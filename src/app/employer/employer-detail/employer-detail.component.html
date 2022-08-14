@@ -40,6 +40,13 @@
 							<h2 class="title">لیست کارمندان </h2>
 						</div>
 					</div>
+					<div class="col-md-auto">
+						<ion-button shape="round" color="success" [routerLink]="['/employees/add']" *ngIf="global.userPermision['employers_add']">
+							<ion-icon slot="start" name="add-circle"></ion-icon>
+							افزودن کارمند جدید
+						</ion-button>
+
+					</div>
 				</div>
 				<!-- list of employer -->
 				<div class="table-responsive-md my-3">
@@ -67,6 +74,13 @@
 						<div class="title-1">
 							<h2 class="title">لیست کسب و کارها</h2>
 						</div>
+					</div>
+					<div class="col-md-auto">
+						<ion-button *ngIf="global.userPermision['business_add']" shape="round" color="success" [routerLink]="['/businesses/add']">
+							<ion-icon slot="start" name="add-circle"></ion-icon>
+							افزودن کسب و کار جدید
+						</ion-button>
+
 					</div>
 				</div>
 				<!-- list of employer -->
@@ -128,6 +142,13 @@
 						<div class="title-1">
 							<h2 class="title">لیست قرار داد ها</h2>
 						</div>
+					</div>
+					<div class="col-md-auto">
+						<ion-button *ngIf="global.userPermision['contract_add']" shape="round" color="success" [routerLink]="['/contracts/add']">
+							<ion-icon slot="start" name="add-circle"></ion-icon>
+							افزودن قرار داد جدید
+						</ion-button>
+
 					</div>
 				</div>
 				<!-- list of employer -->

@@ -9,12 +9,16 @@
 			<h2 class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
 			<p class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span></p>
 		</ion-label>
-		<ion-chip *ngIf="contractid" slot="end" color="primary"
+		<!-- <ion-chip *ngIf="contractid" slot="end" color="primary"
 			[routerLink]="['/contracts/print',contractid,employee?.id]">
 			<ion-icon name="print"></ion-icon>
 			<ion-label color="dark"> پرینت قرار داد</ion-label>
-		</ion-chip>
+		</ion-chip> -->
 		<ion-buttons *ngIf="businessId" class="justify-content-end">
+			<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/settlement/add',businessId]"  tooltip="تسویه حساب"  >
+				<ion-icon size="large" color="medium" slot="icon-only" src="/assets/svg/settlementIcon.svg">
+				</ion-icon>
+			</ion-button>
 			<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(deleteId)"  tooltip="حذف"  >
 				<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 				</ion-icon>
@@ -27,6 +31,27 @@
 				<ion-icon size="small" color="medium" slot="icon-only" name="search">
 				</ion-icon>
 			</ion-button>
+		</ion-buttons>
+		<ion-buttons *ngIf="contractid" class="justify-content-end">
+			<ion-button *ngIf="!isSentence&&!loadingDownload" fill="clear" class="px-0 mx-0 tooltip-show" (click)="download(contractid,employee?.id)"  tooltip="دانلود PDF" >
+				<ion-icon size="small" color="medium" slot="icon-only" name="download">
+				</ion-icon>
+			</ion-button>
+			<ion-spinner  color="medium" *ngIf="loadingDownload" name="lines-small"></ion-spinner>
+			<ion-button *ngIf="!isSentence" fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/contracts/print',contractid,employee?.id]" tooltip="چاپ" >
+				<ion-icon size="small" color="medium" slot="icon-only" name="print">
+				</ion-icon>
+			</ion-button>
+		
+			  <!-- *ngIf="!isSentence" -->
+			<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/contracts/sentence', contractid,'add']" [queryParams]="{singel: true,id:businessEmId}"  tooltip=" افزودن حکم تکی" >
+				<ion-icon size="small" color="medium" slot="icon-only" name="document-text">
+				</ion-icon>
+			</ion-button>
+			<!-- <ion-button  *ngIf="isSentence" fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/contracts/sentence/add/', contractid]"  tooltip=" افزودن حکم تکی" >
+				<ion-icon size="small" color="medium" slot="icon-only" name="document-text">
+				</ion-icon>
+			</ion-button> -->
 		</ion-buttons>
 	</ion-item>
 </ion-card>

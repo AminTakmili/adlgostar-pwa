@@ -1,0 +1,303 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن حکم جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک حکم جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="contracts/sentence/{{id}}" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<!-- انتخاب کسب و کار -->
+		<div class="col-md-12" *ngIf="businessList && businessList.length">
+			<div class="form-input mb-3">
+				<label> کسب کار</label>
+				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList" loadingText="لطفا صبر کنید ..."
+				notFoundText="مناسفانه کسب و کاری یافت نشد"
+					placeholder="انتخاب کنید" [readonly]="true" [(ngModel)]="businessId">
+				</ng-select>
+
+			</div>
+		</div>
+<!-- *ngIf="employerList && employerList.length" -->
+		<!-- انتحاب کارفرما -->
+		<div class="col-md-12" >
+			<div class="form-input mb-3">
+				<label> کارفرما</label>
+				<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"  [readonly]="true" [(ngModel)]="employerId"> loadingText="لطفا صبر کنید ..."
+					notFoundText="مناسفانه کارفرمایی یافت نشد"
+					<ng-option *ngFor="let item of employerList" [value]="item.id">
+						<div class="font-size-14">{{item.full_name}}</div>
+					</ng-option>
+				</ng-select>
+			
+			</div>
+		</div>
+
+		<form [formGroup]="sentenceForm" (ngSubmit)="onSubmit()">
+			<!--  -->
+			<div class="container mt-4">
+				<!-- step 0  -->
+				<div class="row mb-4" *ngIf=" step === 1 ">
+					<div class="col-12 my-4">
+						<div class="title-1">
+							<h2 class="title">تکمیل اطلاعات اولیه حکم</h2>
+							<p class="dsec">قسمت اول مشخص کردن افراد در حکم
+							</p>
+						</div>
+					</div>
+	<!-- انتحاب کارمندان -->
+	<!-- (add)="AddAlowences($event)"
+	(remove)="removeAlowences($event)"
+	(change)="calcChildrenAllowance();" -->
+	<div  *ngIf=" !employeeLoading" class="col-md-12">
+		<div class="form-input mb-3" *ngIf="employeeList && employeeList.length" >
+			<label>انتخاب کارمندان</label>
+			<ng-select
+			[clearable]="false"
+			placeholder="انتخاب کنید"
+			[multiple]="true"
+			formControlName="business_employee_ids"
+			loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کارمندی یافت نشد"
+			
+			>
+			<ng-option *ngFor="let item of employeeList" [value]="item.business_employee_id" >
+				<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
+				<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+					|  حقوق خالص : {{ item.business_employee_info[0].net_income }}
+					| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
+					| ساعت کاری در شب : {{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }} ساعت
+					| بیمه   {{ item.business_employee_info[0].has_insurance ? 'دارد' : 'ندارد' }}
+				</span>
+				</ng-option>
+			</ng-select>
+			<span class="error">
+				<app-validator #validation [control]="sentenceForm.controls['business_employee_ids']" [controlName]="'انتخاب کارمندان '"></app-validator>
+			</span>
+			<span class="hint">کارمندان در این حکم را اضافه کنید .</span>
+		</div>
+
+		
+	</div>
+	<div   *ngIf="employeeLoading" class="col-md-12">
+		<div class="ion-padding custom-skeleton employee-loading ">
+		
+		  <ion-skeleton-text class="title"  ></ion-skeleton-text>
+		  <ion-skeleton-text class="box" animated></ion-skeleton-text>
+		 
+		</div>
+	  </div>
+
+				
+					<div class="col-12">
+						<hr>
+					</div>
+				</div>
+				<!-- end step one -->
+				<!-- -------------------------------------------------------------- -->
+				<!-- step two -->
+				<div class="row align-items-start ">
+					<!-- options -->
+					<div class="col-md-6">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">فیلد های محاسباتی</h2>
+						</div>
+
+
+						<div class="form-input mb-3">
+							<label>زمان حکم </label>
+							<!-- (dateOnSelect)="CalculationField()" -->
+							<ng-persian-datepicker  [timeMeridian]="true"
+								[timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['date']"
+									[controlName]="'زمان حکم'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+
+						<!-- دستمزد روزانه -->
+						<div class="form-input mb-3">
+							<label>دستمزد روزانه <span>(ساعتی)</span></label>
+							<ion-input  type="number" step=".01"  autocomplete="new-pass" formControlName="wage"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['wage']"
+									[controlName]="'دستمزد روزانه'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+					
+						<!-- حق بن -->
+						<div class="form-input mb-3">
+							<label>حق بن <span *ngIf="sentenceForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input  type="number" step=".01" autocomplete="new-pass" formControlName="grocery_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['grocery_allowance']"
+									[controlName]="' حق بن'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق مسکن -->
+						<div class="form-input mb-3">
+							<label>حق مسکن <span *ngIf="sentenceForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input  type="number" step=".01" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['housing_allowance']"
+									[controlName]="'حق مسکن'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+
+
+						<!-- هزینه ی غذا -->
+						<div class="form-input mb-3">
+							<label>هزینه ی غذا</label>
+							<ion-input  type="number" step=".01" autocomplete="new-pass" formControlName="food_cost"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['food_cost']"
+									[controlName]="'هزینه غذا'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- هزینه پانسیون -->
+						<div class="form-input mb-3">
+							<label>هزینه پانسیون</label>
+							<ion-input  type="number" step=".01" autocomplete="new-pass" formControlName="pension_cost"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="sentenceForm.controls['pension_cost']"
+									[controlName]="'هزینه پانسیون '"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<hr>
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">حق اولاد ها</h2>
+						</div>
+						<!-- all children allowunce -->
+						<div formArrayName="count_children_allowances">
+						
+							
+							<div *ngFor="let item of CountChildrenAllowancesGroup.controls ; let i = index" [formGroupName]="i" class="form-input mb-3">
+						
+									<label *ngIf="sentenceForm.value['business_employee_ids']?.includes(item['value']['business_employee_id'])"  > تعداد حق اولاد<span> {{getNameEmployee(item['value']['business_employee_id'])?.full_name}}</span></label>
+									<ion-input *ngIf="sentenceForm.value['business_employee_ids']?.includes(item['value']['business_employee_id'])" type="number" step=".01" step="1" min="0" autocomplete="new-pass" formControlName="count_children_allowance"></ion-input>
+									<span *ngIf="sentenceForm.value['business_employee_ids']?.includes(item['value']['business_employee_id'])" class="error">
+										<app-validator #validation [control]="item.get('count_children_allowance')" [controlName]="' تعداد حق اولاد'"></app-validator>
+									</span>
+									<span *ngIf="sentenceForm.value['business_employee_ids']?.includes(item['value']['business_employee_id'])" class="hint">مبلغ به ریال است</span>
+							
+							</div>
+						</div>
+						<hr>
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">موارد اضافه حقوق</h2>
+						</div>
+						<!-- extra fileds -->
+							<div class="form-input mb-3">
+								<label>
+									<span>حق مسولیت</span>
+									<span > (ساعتی)</span>
+								</label>
+									<!-- (ionChange)="CalculationField()"  -->
+								<ion-input min="0" type="number" step=".01" autocomplete="new-pass"
+								 formControlName="trust_allowance"></ion-input>
+								<span class="error">
+									<app-validator #validation [control]="sentenceForm.controls['trust_allowance']" [controlName]="'حق مسولیت'"></app-validator>
+								</span>
+								<span class="hint">مبلغ به ریال است</span>
+							</div>
+					</div>
+					<div class="col-6 position-sticky top-15">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">عملگرهای حکم</h2>
+						</div>
+						<!--  -->
+
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
+								<ion-toggle color="success" 
+									formControlName="has_monthly_severance_pay" slot="start"></ion-toggle>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
+								<ion-toggle color="success" 
+									formControlName="has_monthly_bonus" slot="start"></ion-toggle>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
+								<ion-toggle color="success" 
+									formControlName="has_monthly_new_year_gift" slot="start"></ion-toggle>
+							</ion-item>
+						</ion-card>
+
+
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه مرخصی استفاده نشده</ion-label>
+								<ion-toggle color="success" formControlName="calc_unused_leave_monthly" slot="start">
+								</ion-toggle>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<ion-card class="mb-4 mx-0" mode="ios">
+							<ion-item color="white" mode="md" lines="none">
+								<ion-label>محاسبه مالیات بر حقوق</ion-label>
+								<ion-toggle color="success" formControlName="calc_payroll_tax" slot="start">
+								</ion-toggle>
+							</ion-item>
+						</ion-card>
+						<!--  -->
+						<!-- <ion-button *ngIf="!this.sentenceForm.get('is_manual').value" (click)="CalculationField()"
+							expand="block" color="primary" fill="outline">محاسبه مجدد</ion-button> -->
+
+					</div>
+				</div>
+				<div class="row mb-5">
+					<div class="col-12">
+						<hr>
+					</div>
+					<!-- next step  -->
+					<div class="col-lg-7 col-md-3"></div>
+					<div class="col-lg-2 col-md-4">
+						<!-- <ion-button expand="block" type="button" color="medium" shape="round"  fill="outline">پاک کردن فرم</ion-button> -->
+					</div>
+					<div class="col-lg-3 col-md-5">
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ثبت حکم
+						</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
+</ion-content>

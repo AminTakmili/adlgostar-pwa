@@ -12,3 +12,21 @@ ion-menu[contentId=mainContent] {
 		height: 100vh;
 	}
 }
+.open-menu{
+	display: flex;
+	animation: open .3s ease  ;
+	  animation-fill-mode: forwards;
+}
+.close-menu{
+	display: none;
+	animation: close .3s ease ;
+	  animation-fill-mode: forwards;
+}
+@keyframes close {
+	from {    transform: translateX(0);display: flex;}
+	to {transform: translateX(100%);	display: none !important;}
+  }
+@keyframes open {
+	from {    transform: translateX(100%);display: flex;}
+	to {transform: translateX(0);display: none;}
+  }

@@ -1,12 +1,12 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
-import { sideMenu } from 'src/app/core/classes/sideMenu.class';
-import { globalData } from 'src/app/core/data/global.data';
-import { User } from 'src/app/core/models/user.model';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { GlobalService } from 'src/app/core/services/global.service';
 import { StorageService } from 'src/app/core/services/storage.service';
-
+import { User } from 'src/app/core/models/user.model';
+import { globalData } from 'src/app/core/data/global.data';
+import { sideMenu } from 'src/app/core/classes/sideMenu.class';
 
 @Component({
 	selector: 'app-sidebar',
@@ -25,6 +25,18 @@ import { StorageService } from 'src/app/core/services/storage.service';
 			})),
 			transition('close <=> open', animate('300ms ease')),
 		]),
+		trigger('openSumIconAnimation', [
+			state('close', style({
+				transform: 'rotate(0deg)',
+				
+			})),
+			state('open', style({
+				transform: 'rotate(180deg)',
+				// color:'var(--ion-color-primary)'
+			})),
+			transition('close <=> open', animate('300ms ease')),
+		]),
+		
 	]
 })
 export class SidebarComponent implements OnInit {
@@ -41,6 +53,7 @@ export class SidebarComponent implements OnInit {
 	) { }
 
 	async ngOnInit() {
+		// console.log(this.global?.user);
 		this.userInfo = await this.global.getUserInfo();
 
 
@@ -53,11 +66,22 @@ export class SidebarComponent implements OnInit {
 
 						item.access = await this.global.checkPersmionByRoute(item.url,item.access);
 					}
+					// console.log(item);
 					if(item.submenu && item.submenu.length){
 						item.access = false;
 						item.submenu.map(async (sub)=>{
+							// console.log(sub);
 							sub.access = await this.global.checkPersmionByRoute(sub.url,sub.access);
 							if(sub.access) {item.access = true;}
+							if (sub.childeren&&sub.childeren.length) {
+								
+								sub?.childeren?.map(async (child)=>{
+									// console.log(child);
+									child.access = await this.global.checkPersmionByRoute(child.url,child.access);
+									if(child.access) {sub.access = true;}
+									
+								})
+							}
 						})
 					}
 				});
@@ -77,6 +101,7 @@ export class SidebarComponent implements OnInit {
 		}
 	}
 	showDetail(item: any) {
+		// console.log(item);
 		if (item.type) { }
 		if (item.url) {
 			this.navCtrl.navigateForward([item.url]);
@@ -116,13 +141,18 @@ export class SidebarComponent implements OnInit {
 		this.storage.clearAll();
 		this.navCtrl.navigateRoot(['/login'])
 	}
-	async onRouterLinkActive(evenet: any, index: number) {
+	async onRouterLinkActive(evenet: any, index: number,subIndex?:number,childIndex?:number,isChild:boolean=false) {
 		// console.log(evenet,index);
 
 		await this.Sidemenu.map(async (item) => { item.state = "close"; });
 
 		if (evenet) { this.Sidemenu[index].state = evenet ? "open" : "close"; }
 
+		if (isChild) {
+			if (evenet) { this.Sidemenu[index].submenu[subIndex].state = evenet ? "open" : "close"; }
+
+		}
+		
 	}
 
     async closeMenu() {

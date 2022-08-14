@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { IonModal, NavController } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core';
 import { Support } from 'src/app/core/models/supoort.model';
+import { User } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 
@@ -12,10 +14,13 @@ import { SeoService } from 'src/app/core/services/seo.service';
   styleUrls: ['./profile-support-detail.component.scss'],
 })
 export class ProfileSupportDetailComponent implements OnInit {
-
+	@ViewChild(IonModal) modal: IonModal;
 	pageTitle : string ;
 	dataList : Support = new Support();
 	ticketform : FormGroup;
+	referredform : FormGroup;
+	supportList!:any
+	users:User[]
 
 	constructor(
 		public global: GlobalService,
@@ -28,11 +33,17 @@ export class ProfileSupportDetailComponent implements OnInit {
 			id: [this.route.snapshot.paramMap.get('id'), Validators.compose([Validators.required])],
 			content: ['', Validators.compose([Validators.required])],
 		});
+		this.referredform = this.fb.group({
+			id: [this.route.snapshot.paramMap.get('id'), Validators.compose([Validators.required])],
+			section_id: ['', Validators.compose([Validators.required])],
+			receiver_id: [],
+		});
 	}
 
 	ngOnInit() {
 		this.setTitle();
 		this.getData(this.route.snapshot.paramMap.get('id'));
+		this.getEnumList()
 
 	}
 
@@ -52,6 +63,33 @@ export class ProfileSupportDetailComponent implements OnInit {
 			this.global.showError(error);
 		});
 	}
+
+	async getEnumList(){
+
+	
+		this.global.httpGet('more/enumList').subscribe(
+			async (res:any) => {
+			
+				this.supportList=res.sections
+			},
+			async (error:any) => {
+			
+
+				this.global.showError(error)
+			},
+		)
+	}
+	setSectionChildern(item:any){
+		let id=item.id
+		console.log(id);
+		this.users=[new User().deserialize( {full_name:`همه کارکنان بخش ${this.supportList?.find((item:any)=>item.id==id)?.name}`})]
+	
+		this.supportList?.find((item:any)=>item.id==id)?.users.map((item:User)=>{
+			this.users.push(new User().deserialize(item))
+		})
+	
+	}
+
 
 
 	setTitle() {
@@ -131,6 +169,38 @@ export class ProfileSupportDetailComponent implements OnInit {
 				}
 			});
 		});
+	}
+
+    async submitreferredForm(){
+		// console.log(this.referredform.value);
+		
+		this.referredform.markAllAsTouched();
+		if (this.referredform.valid) {
+			await this.global.showLoading('لطفا منتظر بمانید...');
+			this.global.httpPost('profile/userTicket/referredTo', this.referredform.value)
+			.subscribe(async (res: any) => {
+				
+				await this.global.dismisLoading();
+				
+				this.global.showToast('درخواست شماره ' + this.referredform.value.id + ' ارجاع داده شد .',500,'top','success','ios');
+				this.modal.dismiss(this.referredform.value, 'confirm');
+					this.referredform.reset();
+
+				}, async (error: any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				});
+		}
+		
+	}
+	onWillReferredModalDismiss(e:Event){
+		const ev = event as CustomEvent<OverlayEventDetail<string>>;
+		if (ev.detail.role === 'confirm') {
+			this.dataList=new Support()
+			this.getData(this.route.snapshot.paramMap.get('id'));
+		
+		}
+
 	}
 
 }
