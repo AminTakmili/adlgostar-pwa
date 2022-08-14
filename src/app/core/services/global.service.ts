@@ -295,8 +295,8 @@ export class GlobalService {
 	}
 
 	setPermision(persmion : permissionsDetail[]){
-		console.log("object");
-		console.log(persmion);
+		// console.log("object");
+		// console.log(persmion);
 
 		persmion.map((item:permissionsDetail)=>{
 			this.userPermision[item.en_name] =  item.access;

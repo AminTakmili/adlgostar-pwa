@@ -70,7 +70,7 @@ export class AppComponent {
 			if (event instanceof NavigationEnd) {
 				// Hide progress spinner or progress bar
 				// this.currentRoute = event.url;
-				console.log(event);
+				// console.log(event);
 				this.getUserBadges();
 			}
 
@@ -99,7 +99,7 @@ export class AppComponent {
 		this.global
 			.httpGet('user/getUserPermissions')
 			.subscribe(async (res: any) => {
-				console.log(res.permissions);
+				// console.log(res.permissions);
 				if (res.permissions && res.permissions.length) {
 					let permissionsList: permissionsDetail[] = [];
 					res.permissions.map((per: any) => {
@@ -136,9 +136,9 @@ export class AppComponent {
                         userStorge=val
                     })
                     userStorge.permissionsList=permissionsList
-                    console.log(userStorge);
+                    // console.log(userStorge);
                     this.global.user =userStorge;
-                    console.log(this.global.user);
+                    // console.log(this.global.user);
 					this.storage.set('user',this.global.user);
 					this.global._user.next(this.global.user);
 					this.global.setPermision(this.global.user.permissionsList);

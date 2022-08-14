@@ -33,17 +33,17 @@
 						<p class="dsec">لیست قرار دادها به شرح زیر است</p>
 					</div>
 				</div>
-
+			
 				<!--  -->
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
-						<label>جستجو در کسب کار</label>
+						<!-- <label>جستجو در کسب کار</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select> -->
 						<ng-select
 						[items]="businesslist$ | async"
-						placeholder="انتخاب کسب و کار"
+						placeholder="جستوجو در کسب و کارها"
 						[loading]="businessInputLoading"
 						bindLabel="name"
 						bindValue="id"
@@ -62,14 +62,14 @@
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
-						<label>جستجو در کارفرمایان</label>
+						<!-- <label>جستجو در کارفرمایان</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select> -->
 
 						<ng-select
 						[items]="employerlist$ | async"
-						placeholder="انتخاب کارفرما"
+						placeholder="جستوجو در کارفرمایان"
 						[loading]="employerInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -87,14 +87,14 @@
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
-						<label>جستجو در کارمندان</label>
+						<!-- <label>جستجو در کارمندان</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select> -->
 						
 						<ng-select
 						[items]="employeelist$ | async"
-						placeholder="انتخاب کارمند"
+						placeholder="جستوجو در کارمندان"
 						[loading]="employeeInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -108,6 +108,54 @@
 					></ng-select>
 					</div>
 				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<!-- <label>جستجو در افراد تاییدکننده</label> -->
+						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select> -->
+						<ng-select
+						[(ngModel)]="filtered_confirmer_id"
+						[items]="filtered_confirmer_list"
+						[clearable]="true"
+						placeholder="جستجو در افراد تاییدکنند"
+						bindLabel="full_name"
+						bindValue="id"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText=" چنین فردی تا به حال قراردادی را تایید نکرده"
+						(change)="pageChange(1)"
+						>
+						</ng-select>
+
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<!-- <label>جستجو در کارفرمایان</label> -->
+						<!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select> -->
+						<form [formGroup]="date" class="width-100 " >
+						
+							<ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="datepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input class="pr-2" type="text"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
+							 </ng-persian-datepicker>
+						</form>
+
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<!-- <label>جستجو در کارمندان</label> -->
+						<!-- <ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select> -->
+						
+						<ion-input [clearInput]="true" type="search" placeholder="جستوجو در عناوین" (ionChange)="pageChange(1)" [debounce]="750" [(ngModel)]="filtered_title"> </ion-input>
+
+					</div>
+				</div>
+				
 				<div class="col-12">
 					<hr>
 				</div>

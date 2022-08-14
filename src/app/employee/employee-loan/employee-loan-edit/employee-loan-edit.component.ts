@@ -160,16 +160,16 @@ async  getData(){
 		if (this.loanForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global
-				.httpPost('businessEmployee/loan/add', this.loanForm.value)
+				.httpPatch('businessEmployee/loan/edit', this.loanForm.value)
 				.subscribe(
 					async (res: any) => {
 						console.log(res.employee_id);
 						await this.global.dismisLoading();
 						// console.log(res:any);
 						this.global.showToast(
-							'وام جدید با تاریخ ' +
+							'وام با تاریخ ' +
 								this.loanForm.value.date +
-								' ثبت شد .'
+								' ویرایش شد .'
 						);
 						this.loanForm.reset();
 						if (!AddAnOther) {

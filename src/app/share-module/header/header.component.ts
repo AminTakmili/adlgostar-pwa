@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
         await this.global.badges.subscribe(value => {
 			if (value) {
 				// this.StaticData = value;
-				console.log(value.notifications);
+				// console.log(value.notifications);
                 this.badges=value.notifications
 			}
 		});
@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
     //     this.menu.open('end');
     // }
 	async toggleMenu(){
-		console.log(1234)
+		// console.log(1234)
 		await this.menu.open('mainContent');
 		this.menu.enable(true, 'mainContent');
         if (this.global?.menuState.value=='open') {

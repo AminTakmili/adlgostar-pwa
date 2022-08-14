@@ -1,27 +1,25 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AlertController, IonInput } from '@ionic/angular';
-
-import { BusinessList } from 'src/app/core/models/business.model';
-import { contract } from 'src/app/core/models/contractConstant.model';
-import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
-import { Employee } from 'src/app/core/models/employee.model';
-import { Employer } from 'src/app/core/models/employer.model';
-import { GlobalService } from 'src/app/core/services/global.service';
-import { SeoService } from 'src/app/core/services/seo.service';
-
-import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import { Component, OnInit, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, Subject, concat, of, throwError } from 'rxjs';
 import {
 	catchError,
 	debounceTime,
 	distinctUntilChanged,
+	filter,
+	map,
 	switchMap,
 	tap,
-	map,
-	filter,
 } from 'rxjs/operators';
 
-
+import { BusinessList } from 'src/app/core/models/business.model';
+import { Employee } from 'src/app/core/models/employee.model';
+import { Employer } from 'src/app/core/models/employer.model';
+import { GlobalService } from 'src/app/core/services/global.service';
+import { SeoService } from 'src/app/core/services/seo.service';
+import { User } from './../../core/models/user.model';
+import { contract } from 'src/app/core/models/contractConstant.model';
+import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 
 @Component({
 	selector: 'app-contract-list',
@@ -64,7 +62,13 @@ export class ContractListComponent implements OnInit {
 	businessInput$ = new Subject<string>();
 	selectedMovie: any;
 	minLengthTerm = 3;
-
+	
+	filtered_confirmer_id:number
+	filtered_title:string
+	// filtered_confirm_date:string
+	filtered_confirmer_list:User[]
+	datepickerIsChange:boolean=false
+	date:FormGroup
 
 	@ViewChildren('searchInp') Search: IonInput;
 
@@ -72,8 +76,12 @@ export class ContractListComponent implements OnInit {
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		public alertController: AlertController
-	) { }
+		public alertController: AlertController,
+	) {
+		this.date=fb.group({
+			filtered_confirm_date:[]
+		})
+	 }
 
 	ngOnInit() {
 		// set jalali curent year
@@ -90,6 +98,9 @@ export class ContractListComponent implements OnInit {
 	}
 
 	async getData() {
+		// console.log(this.filtered_confirm_date);
+		this.datepickerIsChange=true
+
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global.httpPost('contract/filteredList', {
 			limit: this.limit,
@@ -98,7 +109,12 @@ export class ContractListComponent implements OnInit {
 			filtered_employer_id: this.filtered_employer_id,
 			filtered_employee_id: this.filtered_employee_id,
 
+			filtered_title:this.filtered_title,
+			filtered_confirm_date:this.date.value.filtered_confirm_date,
+			filtered_confirmer_id:this.filtered_confirmer_id,
+
 		}).subscribe(async (res: any) => {
+					this.datepickerIsChange=false
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
 			this.dataList = res.list.map((item: any) => {
@@ -107,11 +123,19 @@ export class ContractListComponent implements OnInit {
 			console.log(this.dataList);
 
 		}, async (error: any) => {
+			this.datepickerIsChange=false
+
 			await this.global.dismisLoading();
 			this.global.showError(error);
 		});
 	}
 
+	datepickerChange(){
+		console.log("object");
+		if (!this.datepickerIsChange) {
+			this.changeFilter() 
+		}
+	}
 	getFilters() {
 		// const countries = this.global.httpGet('more/countries');
 		// const business = this.global.httpPost('business/filteredList',
@@ -137,6 +161,7 @@ export class ContractListComponent implements OnInit {
 			this.loadBusiness()
 			this.loadEmployer()
 			this.loadEmployee()
+			this.getConfirmData()
 	}
 	
 	
@@ -260,6 +285,20 @@ export class ContractListComponent implements OnInit {
 					}
 				})
 			);
+	}
+	getConfirmData(){
+		this.global.httpGet('contract/confirmerList').subscribe(
+			async (res:any) => {
+				console.log(res);
+				this.filtered_confirmer_list=res.map((confirmer:User)=>{
+					return new User().deserialize(confirmer)
+				})
+				console.log(this.filtered_confirmer_list);
+			},
+			async (error:any) => {
+				await this.global.showError(error)
+			},
+		)
 	}
 
 	changeFilter() {

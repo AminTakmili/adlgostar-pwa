@@ -35,15 +35,15 @@
 		<section>
 			<ion-toolbar class="container">
 				<ion-segment #segment value="contracts" color="primary" select-on-focus="true" mode="md" scrollable>
-					<ion-segment-button value="contracts">
+					<ion-segment-button *ngIf="global.userPermision['contract_list']" value="contracts">
 						<ion-icon name="document"></ion-icon>
 						قرارداد ها
 					</ion-segment-button>
-					<ion-segment-button value="leave">
+					<ion-segment-button value="leave" *ngIf="global.userPermision['employee_leave_list']">
 						<ion-icon name="calendar-clear"></ion-icon>
 						مرخصی ها
 					</ion-segment-button>
-					<ion-segment-button value="loan">
+					<ion-segment-button value="loan" *ngIf="global.userPermision['employee_loan_list']">
 						<ion-icon class="loan-icon" src="/assets/svg/icons8-loan-64.svg"></ion-icon>
 						وام ها
 					</ion-segment-button>
