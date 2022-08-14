@@ -13,19 +13,31 @@
 				<ion-item detail="false" button lines="none" *ngIf="item.access" [routerLink]="item.url" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: ( item.submenu !== undefined && item?.submenu?.length ? false : true )}" (click)="routerClickFun(item)" (isActiveChange)="onRouterLinkActive($event , i )" color="tertiary">
 					<ion-icon [name]="item.icon" slot="start"></ion-icon>
 					<ion-label >{{ item.name }}</ion-label>
-					<ion-icon  *ngIf="item.submenu && item.submenu.length" name="chevron-down" slot="end"></ion-icon>
+					<ion-icon [@openSumIconAnimation]='item.state' *ngIf="item.submenu && item.submenu.length" name="chevron-down" slot="end"></ion-icon>
 				</ion-item>
 				<div class="level-2" [@openAnimation]='item.state' *ngIf="item.submenu !== undefined && item.submenu.length">
-					<ng-template  ngFor let-subitem [ngForOf]="item.submenu" >
+					<ng-template  ngFor let-subitem [ngForOf]="item.submenu" let-subIndex="index"  >
 						<ion-item *ngIf="subitem.name && subitem.access" lines="none"  button [routerLink]="subitem.url"  (click)="routerClickFun(subitem)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event , i )" >
 							<ion-icon [src]="subitem.src" [name]="subitem.icon" slot="start"></ion-icon>
 							<ion-label >{{ subitem.name }}</ion-label>
-							
+							<ion-icon [@openSumIconAnimation]='subitem.state'  *ngIf="subitem.childeren && subitem.childeren.length" name="chevron-down" slot="end"></ion-icon>
 						</ion-item>
 
+						<div  class="level-3" [@openAnimation]='subitem.state' *ngIf="subitem.childeren !== undefined && subitem.childeren.length">
+							<ng-template  ngFor let-child [ngForOf]="subitem.childeren" let-childIndex="index" >
+								<ion-item *ngIf="child.name && child.access" lines="none"  button [routerLink]="child.url"  (click)="routerClickFun(child)" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: false}" (isActiveChange)="onRouterLinkActive($event ,i, subIndex,childIndex,true )" >
+									<ion-icon [src]="child.src" [name]="child.icon" slot="start"></ion-icon>
+									<ion-label >{{ child.name }}</ion-label>
+									
+								</ion-item>
+		
+								
+							</ng-template>
+						</div>
 						
 					</ng-template>
 				</div>
+				
 				<!-- <ng-template ngFor let-item [ngForOf]="item?.submenu"  let-i="index" >
 					<div class="level-2" [@openAnimation]='item.state' *ngIf="item.submenu !== undefined && item.submenu.length">
 						<ng-template  ngFor let-subitem [ngForOf]="item.submenu" >

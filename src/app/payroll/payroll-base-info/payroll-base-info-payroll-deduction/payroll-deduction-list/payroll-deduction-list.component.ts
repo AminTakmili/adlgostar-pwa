@@ -27,6 +27,7 @@ export class PayrollDeductionListComponent implements OnInit {
 
 	selectedMovie: any;
 	monthNumber!: number;
+	filtered_name!: string;
 
 	@ViewChildren('searchInp') Search: IonInput;
 
@@ -52,9 +53,11 @@ export class PayrollDeductionListComponent implements OnInit {
 	async getData() {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global
-			.httpPost('payrollDeduction/list', {
+			.httpPost('payrollDeduction/filteredList', {
 				limit: this.limit,
 				offset: this.offset,
+				filtered_name: this.filtered_name,
+				
 			})
 			.subscribe(
 				async (res: any) => {

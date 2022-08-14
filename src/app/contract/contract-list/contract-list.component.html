@@ -122,6 +122,7 @@
 						<th scope="col">عنوان</th>
 						<th scope="col">کسب و کار</th>
 						<th scope="col">کارمندان در قرار داد</th>
+						<th scope="col">نام تایید کننده</th>
 						<th scope="col">شروع و پایان</th>
 						<th scope="col">مدت قرار داد</th>
 						<th scope="col">تاریخ ثبت</th>
@@ -144,6 +145,10 @@
 						<td>
 							<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>
 						</td>
+						<td>
+							<span class="font-size-12 " > {{ item.confirmer_info.full_name?item.confirmer_info.full_name:'_'}} </span>
+						</td>
+						
 						<td>
 							<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span> </p>
 							<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span> </p>

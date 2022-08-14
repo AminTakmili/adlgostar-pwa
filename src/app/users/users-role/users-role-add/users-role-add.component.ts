@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserType, permision, permissionsDetail } from 'src/app/core/models/user.model';
+
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
 import { BusinessCategory } from 'src/app/core/models/business.model';
-import { permision, permissionsDetail, UserType } from 'src/app/core/models/user.model';
 import { GlobalService } from 'src/app/core/services/global.service';
+import { NavController } from '@ionic/angular';
 import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class UsersRoleAddComponent implements OnInit {
 	businessCatgeories : BusinessCategory[];
 	categoryId: number;
 	constructor(
+		private cdr: ChangeDetectorRef,
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
@@ -120,9 +122,23 @@ export class UsersRoleAddComponent implements OnInit {
 			this.global.showToast('یک یا چند فیلد خالی است');
 		}
 	}
-
 	setCheck(item : permissionsDetail){
+	
 		item.is_checked = !item.is_checked ;
+
+	}
+	selectAll(permisson:any){
+
+		// document.getElementById
+
+		
+		// console.log(permisson);
+		permisson.map((item:permissionsDetail)=>{
+			document.getElementById(item.id.toString()).click()
+		
+			
+		});
+		
 	}
 
 }

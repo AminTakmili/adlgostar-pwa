@@ -1,18 +1,15 @@
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-
-import { ProfileSupportPageRoutingModule } from './profile-support-routing.module';
-import { ProfileSupportAddComponent } from './profile-support-add/profile-support-add.component';
-import { ProfileSupportListComponent } from './profile-support-list/profile-support-list.component';
-import { ProfileSupportDetailComponent } from './profile-support-detail/profile-support-detail.component';
-import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
+import { NgModule } from '@angular/core';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
-
-
+import { ProfileSupportAddComponent } from './profile-support-add/profile-support-add.component';
+import { ProfileSupportDetailComponent } from './profile-support-detail/profile-support-detail.component';
+import { ProfileSupportListComponent } from './profile-support-list/profile-support-list.component';
+import { ProfileSupportPageRoutingModule } from './profile-support-routing.module';
+import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
 
 @NgModule({
 	imports: [
@@ -24,6 +21,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 		ReactiveFormsModule,
 		NgxPaginationModule,
 		NgSelectModule,
+		NgSelectModule,
+		NgxPaginationModule,
 	],
 	declarations: [
 		ProfileSupportAddComponent,

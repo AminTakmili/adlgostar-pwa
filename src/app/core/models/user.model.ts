@@ -4,6 +4,7 @@ import { Media } from "./media.model";
 
 export class User implements Deserializable {
 	id ! : number;
+	is_employer! : boolean;
 	role_id !: string;
 	firstName ! : string;
 	lastName ! : string;
@@ -100,6 +101,12 @@ export class permision implements Deserializable {
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		this.permissions = input.permissions;
+		
+		if(input.permissions && input.permissions.length){
+			this.permissions = input.permissions.map((permission: any) => {
+				return new permissionsDetail().deserialize(permission);
+			});
+		}
 		return this;
 	}
 }

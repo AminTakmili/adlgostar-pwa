@@ -36,12 +36,12 @@
 					</div>
 				</div>
 				<div class="col-md-4">
+					
 					<!-- search -->
 
-					<!-- <ng-select [(ngModel)]="yeraNumber"   [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
-          notFoundText="مناسفانه سال یافت نشد"
-            bindValue="year" placeholder="جستوجو در سال  " (change)="changeFilter()">
-          </ng-select> -->
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="changeFilter()" placeholder="جستجو نام"></ion-searchbar>
+					</div>
 				</div>
 			</div>
 
@@ -87,7 +87,7 @@
 									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 									</ion-icon>
 								</ion-button> -->
-								<ion-button (click)="removeTax(item)" fill="clear" class="px-0 mx-0 tooltip-show"
+								<ion-button (click)="removeAddition(item)" fill="clear" class="px-0 mx-0 tooltip-show"
 									tooltip="حذف"
 									*ngIf="global.userPermision['payroll_base_info_payroll_addition_delete']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
@@ -117,7 +117,7 @@
 				</tfoot>
 			</table>
 
-			<div *ngIf="dataList && dataList.length === 0 " class="alert alert-warning my-3" role="alert">
+			<div *ngIf="dataList && dataList.length === 0&& !(filtered_name) " class="alert alert-warning my-3" role="alert">
 				<h4 class="title">اضافات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
 				<p class="dsec"> شما تا کنون اضافات حقوق و دستمزد ثبت نکردید .
 					<span *ngIf="global.userPermision['payroll_base_info_payroll_addition_add']">
@@ -128,10 +128,10 @@
 				</p>
 			</div>
 			<!-- if search return empty cell -->
-			<!-- <div *ngIf="dataList && dataList.length === 0 && (yeraNumber)" class="alert alert-warning my-3" role="alert">
+			<div *ngIf="dataList && dataList.length === 0 && (filtered_name)" class="alert alert-warning my-3" role="alert">
 				<h4 class="title"> اضافات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
 				<p class="dsec">  اضافات حقوق و دستمزدی مطابق عبارت جستجو شده یافت نشد</p>
-			</div> -->
+			</div>
 
 		</div>
 	</main>

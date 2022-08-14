@@ -11,7 +11,9 @@ export class notificationType implements Deserializable {
 export class notification implements Deserializable {
  
         id !:number
+        user_ticket_id !:number
         type !:string 
+        title !:string 
         notifiable_type !:string
         notifiable_id !:string
         notification_info !:any[]       

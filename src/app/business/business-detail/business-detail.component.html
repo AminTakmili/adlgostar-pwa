@@ -97,7 +97,8 @@
 				<div class="row" *ngIf="business?.employees">
 					<div class="col-lg-6 mb-4" *ngFor="let item of businessEmployees ">
 						<app-employee-card (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item"
-							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id">
+							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id"
+							>
 						</app-employee-card>
 					</div>
 				</div>
@@ -128,7 +129,7 @@
 						<ion-button class="ml-3" shape="round" color="warning"
 						(click)="openAddContractModal()"
 						
-						*ngIf="global.userPermision['add_contract_request_via_ticket']">
+						*ngIf="global.userPermision['add_contract_request_via_ticket']&&is_employer">
 						<ion-icon slot="start" name="options"></ion-icon>
 					درخواست ثبت قرارداد
 					</ion-button>

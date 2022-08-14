@@ -30,68 +30,30 @@
 	</div>
 	<main>
 		<div class="container">
-			<!-- tiket list -->
-			<div class="ticket-list">
-				<div class="ticket-item user">
-					<div class="ticket-description">
-						<div class="dscription" [innerHTML]="dataList.description"></div>
-						<div class="row justify-content-between ion-align-items-center">
+		
+			<ion-card  >
+				<ion-card-header>
+					<ion-card-title> {{dataList.title}}</ion-card-title>
+					<!-- <ion-card-subtitle>Awesome Subtitle</ion-card-subtitle> -->
+				</ion-card-header>
+				<ion-card-content>
+					<div class="row pr-2 justify-content-between ion-align-items-center">
+						<P [innerHTML]="dataList.description"></P>
 
 
-							<div class="date"> ارسال شده در : {{ dataList.createdAt }} </div>
-							<div *ngIf="dataList.type=='ticket_received'" class="col-2">
+						<!-- <div class="date"> ارسال شده در : {{ dataList.createdAt }} ( {{setTypeName(dataList.type)}} ) </div> -->
+						<div *ngIf="dataList.type=='ticket_received'" class="col-2">
 
-								<ion-button *ngFor="let item of dataList.notification_info "
-									[routerLink]="['/profile/support/detail',item.id]" expand="block" fill="clear"
-									shape="round">
-									رفتن به تیکت
-								</ion-button>
-							</div>
+							<ion-button 
+								[routerLink]="['/profile/support/detail',dataList.user_ticket_id]" expand="block" fill="clear"
+								shape="round">
+								رفتن به تیکت
+							</ion-button>
+
 						</div>
 					</div>
-					<div class="ticket-info ">
-
-						<div class="col-lg-auto">
-
-							<p class="type">
-								( {{setTypeName(dataList.type)}} )
-							</p>
-							<div *ngFor="let item of dataList.notification_info " class="notification_info">
-
-								<div *ngIf="dataList.type=='ticket_received'" class="ticket_received">
-
-
-									<span>ارسال کننده پیام:</span>
-									<p>
-										{{item.sender_info.first_name}} {{item.sender_info.last_name}}
-									</p>
-									<span>متن تیکت:</span>
-									<p>{{item.content}} </p>
-								</div>
-
-
-							</div>
-						</div>
-						<!-- <div class="info">  {{ dataList.sender_info.first_name +' '+dataList.sender_info.last_name }} </div> -->
-
-
-					</div>
-				</div>
-				<!-- <div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.responder_info.id!==dataList.sender_info.id" [class.user]="item.responder_info.id===dataList.sender_info.id">
-					<div class="ticket-description">
-						<div class="dscription" [innerHTML]="item.content"></div>
-						<div class="date"> ارسال شده در : {{ item.createdAt }} </div>
-					</div>
-					<div class="ticket-info">
-						<ion-avatar>
-							<ion-img *ngIf="item.responder_info.id===dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/employee-img.png' "></ion-img>
-							<ion-img *ngIf="item.responder_info.id!==dataList.sender_info.id" [src]="item?.responder_info?.media  && item?.responder_info?.media.length ? item?.responder_info?.media[0]?.options?.subSizes['1x'] :  './assets/img/admin.png' "></ion-img>
-						</ion-avatar>
-						<div class="info">  {{ item.responder_info.first_name +' '+item.responder_info.last_name }} </div>
-					</div>
-				</div> -->
-			</div>
-			<!-- replay -->
+				</ion-card-content>
+			</ion-card>
 
 		</div>
 	</main>

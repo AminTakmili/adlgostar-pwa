@@ -16,7 +16,8 @@ const routes: Routes = [
   },
   {
     path: 'payroll_tax',
-    loadChildren: () => import('./payroll-base-info-payroll-tax/payroll-base-info-payroll-tax.module').then( m => m.PayrollBaseInfoPayrollTaxPageModule)
+    loadChildren: () => import('./payroll-base-info-payroll-tax/payroll-base-info-payroll-tax.module').then( m => m.PayrollBaseInfoPayrollTaxPageModule),
+    pathMatch:'prefix' 
   },
   {
     path: 'payroll_addition',

@@ -1,0 +1,103 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید مرخصی جدید تعریف کنید </p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' "
+					[icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			<form [formGroup]="addForm" (submit)="onSubmit()">
+				<div class="row my-4">
+
+					<!-- مربوط به سال -->
+					<div class="col-lg-12">
+						<div class="form-input mb-3">
+							<label>انتخاب سال</label>
+							<ng-select [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
+								formControlName="year" notFoundText="مناسفانه سال یافت نشد" bindValue="year"
+								placeholder="انتخاب کنید">
+							</ng-select>
+
+							<span class="error">
+								<app-validator [control]="addForm.controls['year']" [controlName]="'انتخاب سال '">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا سال 1401</span>
+						</div>
+					</div>
+
+					<!-- درصد افزایش نسبت به سال قبل -->
+					<div class="col-lg-12">
+						<div class="form-input mb-3">
+							<label>انتخاب ماه</label>
+							<ng-select [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
+								formControlName="month" notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
+								placeholder="انتخاب کنید">
+							</ng-select>
+
+							<span class="error">
+								<app-validator [control]="addForm.controls['month']" [controlName]="'انتخاب ماه'">
+								</app-validator>
+							</span>
+							<span class="hint">مثلا تیر</span>
+						</div>
+					</div>
+
+					<!--مبلغ پایه (ریال) -->
+					<div class="col-lg-12">
+						<div class="form-input mb-3">
+							<label>مدت زمان </label>
+							<ion-input type="number" min="0" step="1"  autocomplete="new-pass"
+								formControlName="amount"></ion-input>
+							<span class="error">
+								<app-validator [control]="addForm.controls['amount']"
+									[controlName]="' مدت زمان'"></app-validator>
+							</span>
+							<span class="hint">مثلا 4</span>
+						</div>
+					</div>
+
+					<!-- مقدار ثابت اضافه شونده (ریال)-->
+				
+					<div class="col-lg-12">
+						<hr>
+					</div>
+
+					<div class="col-lg-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-xl-2 col-lg-3">
+								<ion-button expand="block" color="medium" fill="outline" shape="round"
+									(click)="global.emptyFrom(addForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-xl-4 col-lg-5">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									{{ pageTitle }}
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+			</form>
+		</div>
+	</main>
+</ion-content>

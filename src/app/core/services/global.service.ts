@@ -1,5 +1,6 @@
 import { AlertButton, AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
 import { BehaviorSubject, Observable, forkJoin } from "rxjs";
+import { DataSets, badges } from './../models/StaticData.model';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, NgZone } from "@angular/core";
 import { User, UserRole, permissionsDetail } from "../models/user.model";
@@ -24,6 +25,7 @@ export class GlobalService {
 	public login: boolean = false;
 	public _login = new BehaviorSubject<boolean>(this.login);
 	public baseData = new BehaviorSubject<StaticData>(null);
+	public badges = new BehaviorSubject<badges>(null);
 	public menuState = new BehaviorSubject<string>('open');
 	public user: User;
 	public _user =  new BehaviorSubject<User>(null);
@@ -48,6 +50,7 @@ export class GlobalService {
 		"بهمن",
 		"اسفند"
 	]
+	countClick:number=0
 
 	constructor(
 		private http: HttpClient,
@@ -84,6 +87,22 @@ export class GlobalService {
 	
 		
 	}
+	dbClick(url:[string,any]|string){
+		this.countClick++
+		// console.log(this.countClick);
+		if (this.countClick==2) {
+			// console.log("object");
+			this.navCtrl.navigateForward(url)
+			this.countClick=0
+		}else if(this.countClick>2){
+			this.countClick=0
+		}else{
+			setTimeout(() => {
+				this.countClick=0
+			}, 600);
+		}
+	}
+	
 
 
 	httpPost(url: string, params: object): Observable<any> {
@@ -276,7 +295,8 @@ export class GlobalService {
 	}
 
 	setPermision(persmion : permissionsDetail[]){
-		
+		console.log("object");
+		console.log(persmion);
 
 		persmion.map((item:permissionsDetail)=>{
 			this.userPermision[item.en_name] =  item.access;
@@ -388,7 +408,9 @@ export class GlobalService {
 		if(accessDefault){
 			return true;
 		}
+		// console.log(this.user.permissionsList);
 		const permison = this.user.permissionsList.find(x => x.app_route === route);
+		// console.log(route,permison);
 		const access = permison !== undefined ? permison.access : false;
 		return access;
 	}

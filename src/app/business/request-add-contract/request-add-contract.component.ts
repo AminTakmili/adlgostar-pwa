@@ -1,8 +1,9 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { Employee } from 'src/app/core/models/employee.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { ModalController } from '@ionic/angular';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Employee } from 'src/app/core/models/employee.model';
-import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-request-add-contract',
@@ -11,6 +12,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RequestAddContractComponent implements OnInit {
 @Input('businessEmployees') businessEmployees: Employee[]
+@Input('contractDefinitionSectionId') contractDefinitionSectionId: number
   EmployeesList:Employee[]=[]
 addForm:FormGroup
   constructor(
@@ -27,11 +29,12 @@ addForm:FormGroup
 
   ngOnInit() {
     // this.businessEmployees=new Employee().deserialize( this.businessEmployees)
-    console.log(this.businessEmployees);
+    // console.log(this.businessEmployees);
     this.businessEmployees.map((item)=>{
       this.EmployeesList.push(new Employee().deserialize( item))
 
     })
+    
     
   }
   
@@ -48,7 +51,7 @@ addForm:FormGroup
         li=li+`<li>${item}</li>`
       })
       content=` <ul> لیست کارمندان :  ${li} </ul>  <hr>   <p> ${this.addForm.value.text} </p>`
-      let section_id:number=21
+      let section_id:number=this.contractDefinitionSectionId
      let  subject:string='تنظیم قرارداد'
     let is_add_contract_request=true
     

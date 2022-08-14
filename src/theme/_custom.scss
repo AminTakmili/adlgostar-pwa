@@ -728,6 +728,15 @@ ion-chip{
     background-size: 20px !important;
     margin-inline: 5px !important;
 }
+// app-settlement{
+	.segment-button-indicator-background {
+	    background: #396ed6a3 !important;
+	}
+	div[part="indicator-background"]{
+		background: #396ed6a3 !important;
+
+	}
+// }
 
 table{
 	overflow-x: auto;

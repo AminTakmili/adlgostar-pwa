@@ -1,12 +1,14 @@
-import { RequestAddContractComponent } from './../request-add-contract/request-add-contract.component';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
-import { NavController, AlertController, ModalController } from '@ionic/angular';
 import { Business } from 'src/app/core/models/business.model';
-import { contract } from 'src/app/core/models/contractConstant.model';
 import { Employee } from 'src/app/core/models/employee.model';
 import { GlobalService } from 'src/app/core/services/global.service';
+import { RequestAddContractComponent } from './../request-add-contract/request-add-contract.component';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { contract } from 'src/app/core/models/contractConstant.model';
 
 @Component({
 	selector: 'app-business-detail',
@@ -25,6 +27,8 @@ export class BusinessDetailComponent implements OnInit {
 	offset: number = 0;
 	total: number = 0;
 	CurrentPage: number = 1;
+	contractDefinitionSectionId!: number ;
+	is_employer!:boolean
 	constructor(
 		public global: GlobalService,
 		private seo: SeoService,
@@ -32,6 +36,8 @@ export class BusinessDetailComponent implements OnInit {
 		private route: ActivatedRoute,
 		public alertController: AlertController,
 		public modalController: ModalController,
+		private storage: StorageService,
+
 
 
 	) {
@@ -39,12 +45,21 @@ export class BusinessDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		
 
 
 	}
 	async ionViewWillEnter(){
 		this.getData();
 		this.getContractData()
+		this.storage.get('user').then((val) => {
+			if (Object.keys(val).length) {
+				// console.log(val);
+				// console.log(val.is_employer);
+				this.is_employer=val.is_employer
+				
+			}
+		});
 	}
 
 	async getData() {
@@ -56,6 +71,8 @@ export class BusinessDetailComponent implements OnInit {
 			this.business = new Business().deserialize(res);
 			this.businessEmployees = this.business.employees;
 			this.setTitle();
+			// console.log();
+			this.contractDefinitionSectionId=this.business.contract_definition_section_id
 
 		}, async (error:any) => {
 			await this.global.dismisLoading();
@@ -238,7 +255,8 @@ export class BusinessDetailComponent implements OnInit {
 		  mode:'ios',
 		  swipeToClose:true,
 		  componentProps: {
-			businessEmployees : this.businessEmployees
+			businessEmployees : this.businessEmployees,
+			contractDefinitionSectionId : this.contractDefinitionSectionId,
 		  }
 		});
 	

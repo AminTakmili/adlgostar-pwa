@@ -76,26 +76,7 @@
 								<span class="hint"> این قرارداد برای کدام  کسب کار است	</span>
 							</div>
 						</div>
-						<!-- انتحاب کارفرما -->
-						<div class="col-md-12" *ngIf="employerList && employerList.length">
-							<div class="form-input mb-3">
-								<label>انتخاب کارفرما</label>
-								<ng-select
-								[clearable]="false"
-								placeholder="انتخاب کنید"
-								[multiple]="true"
-								formControlName="employer_ids"
-								>
-									<ng-option *ngFor="let item of employerList" [value]="item.id">
-										<div class="font-size-14">{{item.full_name}}</div>
-									</ng-option>
-								</ng-select>
-								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارفرما '"></app-validator>
-								</span>
-								<span class="hint">کارفرمایان در این قرار داد را اضافه کنید .</span>
-							</div>
-						</div>
+					
 						<!-- انتحاب کارمندان -->
 						<div class="col-md-12" *ngIf="employeeList && employeeList.length">
 							<div class="form-input mb-3">
@@ -108,6 +89,7 @@
 								(remove)="removeAlowences($event)"
 								(change)="calcChildrenAllowance();"
 								formControlName="employee_ids"
+								
 								>
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
@@ -125,6 +107,26 @@
 									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارمندان '"></app-validator>
 								</span>
 								<span class="hint">کارمندان در این قرار داد را اضافه کنید .</span>
+							</div>
+						</div>
+							<!-- انتحاب کارفرما -->
+						<div class="col-md-12" *ngIf="employerList && employerList.length">
+							<div class="form-input mb-3">
+								<label>انتخاب کارفرما</label>
+								<ng-select
+								[clearable]="false"
+								placeholder="انتخاب کنید"
+								[multiple]="true"
+								formControlName="employer_ids"
+								>
+									<ng-option *ngFor="let item of employerList" [value]="item.id">
+										<div class="font-size-14">{{item.full_name}}</div>
+									</ng-option>
+								</ng-select>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارفرما '"></app-validator>
+								</span>
+								<span class="hint">کارفرمایان در این قرار داد را اضافه کنید .</span>
 							</div>
 						</div>
 						<!-- عنوان قرار داد -->

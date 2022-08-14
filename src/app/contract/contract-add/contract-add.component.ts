@@ -1,31 +1,52 @@
-import { contractHeaderTemplate, contractFooterTemplate } from './../../core/models/contractConstant.model';
-// import { sentenceTemplate } from './../../core/models/sentence.model';
+import * as _ from 'lodash';
+
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
-import { GlobalService } from 'src/app/core/services/global.service';
-import { SeoService } from 'src/app/core/services/seo.service';
-import { CKEditorComponent } from 'ng2-ckeditor';
-import { format } from 'date-fns-jalali'
-import { BusinessList } from 'src/app/core/models/business.model';
-import { Employee } from 'src/app/core/models/employee.model';
-import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
-import * as _ from 'lodash';
-import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
-import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
-import { Employer } from 'src/app/core/models/employer.model';
-import { async } from '@angular/core/testing';
-
-import { concat, Observable, of, Subject, throwError } from 'rxjs';
+import { Observable, Subject, concat, of, throwError } from 'rxjs';
 import {
 	catchError,
 	debounceTime,
 	distinctUntilChanged,
+	filter,
+	map,
 	switchMap,
 	tap,
-	map,
-	filter,
 } from 'rxjs/operators';
+import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
+import { contractFooterTemplate, contractHeaderTemplate } from './../../core/models/contractConstant.model';
+
+import { ActivatedRoute } from '@angular/router';
+import { BusinessList } from 'src/app/core/models/business.model';
+import { CKEditorComponent } from 'ng2-ckeditor';
+import { Employee } from 'src/app/core/models/employee.model';
+import { Employer } from 'src/app/core/models/employer.model';
+import { GlobalService } from 'src/app/core/services/global.service';
+import { SeoService } from 'src/app/core/services/seo.service';
+import { async } from '@angular/core/testing';
+import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
+import { format } from 'date-fns-jalali'
+import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
+
+// import { sentenceTemplate } from './../../core/models/sentence.model';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -88,16 +109,25 @@ export class ContractAddComponent implements OnInit {
 	// employerTotal: number = 0;
 	// employerEnd: boolean = false;
 
+	businessEmployeeId:string
+	EmployeeId:string[]
 
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private router: ActivatedRoute,
+		
 	) {
+		this.businessEmployeeId=router.snapshot.paramMap.get('businessEmployeeId')
+		// this.EmployeeId=router.snapshot.paramMap.get('EmployeeId')
+		this.EmployeeId=router.snapshot.queryParamMap.getAll('EmployeeId')
+		// console.log(
+		// router.snapshot.queryParamMap.getAll('emId')	
+		// );
 
-
-
+console.log(this.businessEmployeeId);
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			business_id: [, Validators.compose([Validators.required])],
@@ -296,7 +326,11 @@ export class ContractAddComponent implements OnInit {
 		// const countries = this.global.httpGet('more/countries');
 
 		// const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
-		this.loadBusiness()
+		if (this.businessEmployeeId) {
+			this.getBusinessById(this.businessEmployeeId);
+		} else {
+			this.loadBusiness()
+		}
 		const contractTheme = this.global.httpPost('contractTemplate/list',{ limit: 2000, offset: 0 });
 		const contractHeaderTheme = this.global.httpPost('contractHeaderTemplate/filteredList',{ limit: 2000, offset: 0 ,filtered_name:''});
 		const contractFooterTheme = this.global.httpPost('contractFooterTemplate/filteredList',{ limit: 2000, offset: 0,filtered_name:'' });
@@ -318,9 +352,40 @@ export class ContractAddComponent implements OnInit {
 			this.CountAllYear(severanceBaseCRes);
 		});
 	}
+	async getBusinessById(filtered_business_employee_id: string = null) {
+		await	this.global.showLoading()
+			console.log(filtered_business_employee_id);
+			this.global
+				.httpPost('business/filteredList', {
+					filtered_business_employee_id,
+					for_combo: true,
+					limit: 1000,
+					offset: 0,
+					
+				})
+				.subscribe(
+					async (res: any) => {
+						await this.global.dismisLoading()
+						console.log(of(res.list), res.list[0].id);
+						this.businesslist$ = of(res.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						})) ;
+					
+						this.contractsForm.get('business_id').setValue(res.list[0]?.id);
+						this.GetEmployee()
+					},
+					async (error: any) => {
+						await this.global.dismisLoading()
+	
+						this.global.showError(error)
+						console.log(error);
+					}
+				);
+		}
 
 
 	async GetEmployee() {
+		console.log("object");
 		if (this.contractsForm.value.business_id) {
 			
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -418,6 +483,14 @@ export class ContractAddComponent implements OnInit {
 			this.employeeList = data.list.map((item: any) => {
 				return new Employee().deserialize(item);
 			});
+			if (this.EmployeeId && this.EmployeeId.length) {
+				let domy:number[]=[]
+				this.EmployeeId.map((id)=>{
+					domy.push(Number(id)) 
+				})
+				this.contractsForm.get('employee_ids').setValue(domy);
+				
+			}
 		}
 
 	}

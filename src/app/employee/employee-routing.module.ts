@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 import { EmployeeAddComponent } from './employee-add/employee-add.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { EmployeeImporterComponent } from './employee-importer/employee-importer.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
@@ -31,6 +32,18 @@ const routes: Routes = [
     path: 'importer',
     component: EmployeeImporterComponent
   },
+  {
+    path: 'leave',
+    loadChildren: () => import('./employee-leave/employee-leave.module').then( m => m.EmployeeLeavePageModule)
+  },
+  {
+    path: 'loan',
+    loadChildren: () => import('./employee-loan/employee-loan.module').then( m => m.EmployeeLoanPageModule)
+  },
+
+
+ 
+
 ];
 
 @NgModule({

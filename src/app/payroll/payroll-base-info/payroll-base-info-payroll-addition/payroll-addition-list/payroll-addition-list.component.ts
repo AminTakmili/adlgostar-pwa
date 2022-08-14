@@ -28,6 +28,7 @@ export class PayrollAdditionListComponent implements OnInit {
 
 	selectedMovie: any;
 	monthNumber!: number;
+	filtered_name!:string
 
 	@ViewChildren('searchInp') Search: IonInput;
 
@@ -53,9 +54,10 @@ export class PayrollAdditionListComponent implements OnInit {
 	async getData() {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global
-			.httpPost('payrollAddition/list', {
+			.httpPost('payrollAddition/filteredList', {
 				limit: this.limit,
 				offset: this.offset,
+				filtered_name:this.filtered_name
 			})
 			.subscribe(
 				async (res: any) => {
@@ -92,12 +94,13 @@ export class PayrollAdditionListComponent implements OnInit {
 	}
 
 	pageChange($event: any) {
+		console.log($event);
 		this.CurrentPage = $event;
 		this.offset = this.limit * this.CurrentPage - this.limit;
 		this.getData();
 	}
 
-	removeTax(item: payrollAdditiLonist) {
+	removeAddition(item: payrollAdditiLonist) {
 		this.global
 			.showAlert('حذف ' + this.pageTitle, 'آیا برای حذف اطمینان دارید؟', [
 				{

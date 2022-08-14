@@ -37,11 +37,9 @@
 				</div>
 				<div class="col-md-4">
 					<!-- search -->
-				
-          <!-- <ng-select [(ngModel)]="yeraNumber"   [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
-          notFoundText="مناسفانه سال یافت نشد"
-            bindValue="year" placeholder="جستوجو در سال  " (change)="changeFilter()">
-          </ng-select> -->
+					<div class="search-input-2">
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" (ionChange)="changeFilter()" placeholder="جستجو نام"></ion-searchbar>
+					</div>
 				</div>
 			</div>
 
@@ -104,7 +102,7 @@
 				</tfoot>
 			</table>
 
-      <div *ngIf="dataList && dataList.length === 0" class="alert alert-warning my-3" role="alert">
+      <div *ngIf="dataList && dataList.length === 0&& !(filtered_name)" class="alert alert-warning my-3" role="alert">
 				<h4 class="title"> اضافات تسویه حسابی برای نمایش یافت نشد .</h4>
 				<p class="dsec"> 
 					شما تا کنون هیچ مورد اضافات تسویه حساب ثبت نکردید .
@@ -118,10 +116,10 @@
 				</p>
 			</div>
 			<!-- if search return empty cell -->
-			<!-- <div *ngIf="dataList && dataList.length === 0 && (yeraNumber)" class="alert alert-warning my-3" role="alert">
+			<div *ngIf="dataList && dataList.length === 0 && (filtered_name)" class="alert alert-warning my-3" role="alert">
 				<h4 class="title"> لیست اضافات تسویه حسابی برای نمایش یافت نشد .</h4>
 				<p class="dsec">  لیست اضافات تسویه حسابی مطابق عبارت جستجو شده یافت نشد</p>
-			</div> -->
+			</div>
 
 		</div>
 	</main>

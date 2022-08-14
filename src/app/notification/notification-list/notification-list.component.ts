@@ -1,7 +1,8 @@
+import { Component, OnInit } from '@angular/core';
+
+import { GlobalService } from 'src/app/core/services/global.service';
 import { notification } from './../../core/models/notification.model';
 import { notificationType } from 'src/app/core/models/notification.model';
-import { GlobalService } from 'src/app/core/services/global.service';
-import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-notification-list',
@@ -48,11 +49,11 @@ export class NotificationListComponent implements OnInit {
     ]
  
 
-    console.log( this.statusList);
-    this.getData()
-   
+    // console.log( this.statusList);
+    
   }
- async ionViewWillEnter() {
+  async ionViewWillEnter() {
+   this.getData()
       
 		await this.global.baseData.subscribe(value => {
 			if (value) {
@@ -69,8 +70,8 @@ export class NotificationListComponent implements OnInit {
     this.getData()
 
   }
-  getData(){
-  
+ async  getData(){
+  await this.global.showLoading()
   this.global.httpPost('notification/filteredList',
   {limit:this.limit,
     offset:this.offset,
@@ -78,10 +79,12 @@ export class NotificationListComponent implements OnInit {
     filtered_status:this.filtered_status
   }).subscribe(
     async (res:any) => {
+      this.global.dismisLoading()
       this.dataList=res.list.map((i:notification)=>{return new notification().deserialize(i)} ) 
       console.log(this.dataList);
      },
      async (error:any) => {
+       this.global.dismisLoading()
        this.global.showError(error)
      },
   )

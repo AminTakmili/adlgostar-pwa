@@ -1,8 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject, concat, of, throwError } from 'rxjs';
+import {
+	catchError,
+	debounceTime,
+	distinctUntilChanged,
+	filter,
+	map,
+	switchMap,
+	tap,
+} from 'rxjs/operators';
+
+import { DataSets } from './../../../core/models/StaticData.model';
+import { Employer } from 'src/app/core/models/employer.model';
 import { FormBuilder } from '@angular/forms';
-import { Support } from 'src/app/core/models/supoort.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { Support } from 'src/app/core/models/supoort.model';
 
 @Component({
 	selector: 'app-profile-support-list',
@@ -13,25 +26,25 @@ export class ProfileSupportListComponent implements OnInit {
 
 	pageTitle: string = 'پشتیبانی';
 
-	limitReceive: number = 10;
-	offsetReceive: number = 0;
-	totalReceive: number = 0;
-	CurrentPageReceive: number = 1;
-	endReceive = false;
+	
 
-	limitSend: number = 10;
-	offsetSend: number = 0;
-	totalSend: number = 0;
-	CurrentPageSend: number = 1;
-	endSend = false;
+	limit: number = 10;
+	offset: number = 0;
+	total: number = 0;
+	CurrentPage: number = 1;
+	end = false;
 	Searching = 0;
-	receiveDataList: Support[];
-	sendDataList: Support[];
+	dataList: Support[];
 	dataInSearch: boolean = false
 
-
-
-
+	employerlist$: Observable<Employer[]>;
+	employerInputLoading = false;
+	employerInput$ = new Subject<string>();
+	minLengthTerm = 3;
+	status:string='all'
+	statusList:DataSets[]
+	employer_id:string
+	
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -40,46 +53,88 @@ export class ProfileSupportListComponent implements OnInit {
 
 	}
 
-	ngOnInit() {
+	async	ngOnInit() {
 		this.setTitle();
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				// this.StaticData = value;
+				this.statusList=value.ticket_status
+				console.log(this.statusList);
+			}
+		});
+		this.loadEmployer()
+		
 	}
 	async ionViewWillEnter() {
 		this.getData();
 	}
+	loadEmployer() {
+		this.employerlist$ = concat(
+			of([]), // default items
+			this.employerInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employerInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployer(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employerInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getEmployer(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employer/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employer().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+
 	async getData(name: string = '') {
 
-		const receive=this.global.httpPost('profile/userTicket/filteredList', {
-			limit: this.limitReceive,
-			offset: this.offsetReceive,
-			filtered_type:'receive'
-		})
-		const send=this.global.httpPost('profile/userTicket/filteredList', {
-			limit: this.limitSend,
-			offset: this.offsetSend,
-			filtered_type:'send'
-		})
+	await	this.global.showLoading()
+	this.global.httpPost('profile/userTicket/filteredList', {
+			limit: this.limit,
+			offset: this.offset,
+			filtered_status : this.status,
+			filtered_employer_id : this.employer_id
+		}).subscribe(
+		async (res) => {
+			// console.log(res);
 		
-		this.dataInSearch = name ? true : false;
-		await this.global.showLoading('لطفا منتظر بمانید...');
-	this.global.parallelRequest([receive,send]).subscribe(
-		async ([ receiveRes  ='', sendRes ={totalRows:0,list:[]}]) => {
 			await this.global.dismisLoading();
-			console.log(sendRes,receiveRes);
-			this.totalSend = sendRes.totalRows;
-			this.totalReceive = receiveRes.totalRows;
-			this.receiveDataList = receiveRes.list.map((item: any) => {
+			
+			this.total = res.totalRows;
+			
+		
+			this.dataList = res.list.map((item: any) => {
 				return new Support().deserialize(item);
 			});
-			this.sendDataList = sendRes.list.map((item: any) => {
-				return new Support().deserialize(item);
-			});
-			console.log(this.sendDataList,'sendDataList');
-			console.log(this.receiveDataList,'receiveDataList');
-			// console.log(res:any);
-		}, async ([receiveError,sendError]) => {
+		
+		
+		}, async (error) => {
 			await this.global.dismisLoading();
-			this.global.showError(receiveError);
-			this.global.showError(sendError);
+			this.global.showError(error);
+		
 		});
 
 		
@@ -98,14 +153,11 @@ export class ProfileSupportListComponent implements OnInit {
 
 	}
 
-	pageChangeSend($event: any) {
-		this.CurrentPageSend = $event;
-		this.offsetSend = (this.limitSend * this.CurrentPageSend) - this.limitSend;
-		this.getData();
-	}
-	pageChangeReceive($event: any) {
-		this.CurrentPageReceive = $event;
-		this.offsetReceive = (this.limitReceive * this.CurrentPageReceive) - this.limitReceive;
+
+	pageChange($event: any) {
+		this.CurrentPage = $event;
+		this.offset = (this.limit * this.CurrentPage) - this.limit;
+		
 		this.getData();
 	}
 

@@ -1,5 +1,6 @@
-import { GlobalService } from 'src/app/core/services/global.service';
 import { Component, Input, OnInit } from '@angular/core';
+
+import { GlobalService } from 'src/app/core/services/global.service';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -10,9 +11,18 @@ import { MenuController } from '@ionic/angular';
 export class HeaderComponent implements OnInit {
 
 	@Input() title : string;
+    badges!:number
 	constructor(private menu: MenuController, public global:GlobalService) { }
 
-	ngOnInit() { }
+	async ngOnInit() { 
+        await this.global.badges.subscribe(value => {
+			if (value) {
+				// this.StaticData = value;
+				console.log(value.notifications);
+                this.badges=value.notifications
+			}
+		});
+    }
 
 	// openFirst() {
     //     this.menu.enable(true, 'mainContent');

@@ -35,7 +35,7 @@
 			<ion-item lines="none" class="confirm-item">
 				<ion-label  slot="start">
 					<h2 class="title">وضعیت قرار داد</h2>
-					<p class="posts"><span >{{dataList.is_confirmed==1?'تایید شده':'پیشنویس'}}</span></p>
+					<p class="posts"><span [innerHtml]="dataList.is_confirmed==1? '<strong> تایید شده </strong> توسط '+dataList.confirmer_info.full_name +' در تاریخ  ' + dataList.confirm_date :'پیشنویس'" ></span></p>
 				</ion-label>
 				<ion-button (click)="submitConfirm()" slot="end" shape="round" color="success" *ngIf="global.userPermision['contract_confirm']&&dataList.is_confirmed==0">
 					<ion-icon slot="start" name="checkmark"></ion-icon>
@@ -322,6 +322,7 @@
 				</ion-list>
 				<!--  -->
 
+				
 					<!-- footer -->
 					<ion-list>
 						<ion-list-header> پاورقی</ion-list-header>

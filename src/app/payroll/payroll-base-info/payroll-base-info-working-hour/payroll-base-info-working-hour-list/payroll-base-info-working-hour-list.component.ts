@@ -73,9 +73,11 @@ export class PayrollBaseInfoWorkingHourListComponent implements OnInit {
 	async getData() {
 		await this.global.showLoading('لطفا منتظر بمانید...');
 		this.global
-			.httpPost('workingHour/list', {
+			.httpPost('workingHour/filteredList', {
 				limit: this.limit,
 				offset: this.offset,
+				filtered_month:this.monthNumber,
+				filtered_year:this.yeraNumber
 			})
 			.subscribe(
 				async (res: any) => {

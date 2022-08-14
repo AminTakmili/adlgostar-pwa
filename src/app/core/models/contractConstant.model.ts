@@ -1,8 +1,8 @@
-
 import { BusinessList } from "./business.model";
 import { Deserializable } from "./deserializable.model";
 import { Employee } from "./employee.model";
 import { Employer } from "./employer.model";
+import { User } from 'src/app/core/models/user.model';
 
 export class contractConstant implements Deserializable {
 	id !: number;
@@ -75,6 +75,9 @@ export class contractFooterTemplate implements Deserializable {
 
 export class contract implements Deserializable {
 	id !: number;
+	is_confirmed !: number;
+	confirm_date !: string;
+	confirmer_info !: User;
 	business_id !: number;
 	contract_condition_id !: number;
 	business_employee_ids !: number[];
@@ -124,7 +127,7 @@ export class contract implements Deserializable {
 	createdAtEn !: string ;
 	updatedAt !: string ;
 	updatedAtEn !: string ;
-	is_confirmed!:number
+	// is_confirmed!:number
 	contract_header_template_info!:contractHeaderTemplate
 	contract_footer_template_info!:contractFooterTemplate
 	deserialize(input: any): this {
@@ -154,6 +157,9 @@ export class contract implements Deserializable {
 			this.employers_info = input.employers_info.map((column: any) => {
 				return new Employer().deserialize(column);
 			});
+		}
+		if(input.confirmer_info && input.confirmer_info.id){
+			this.confirmer_info=new User().deserialize(input.confirmer_info)
 		}
 
 		// this.employers_info = new Employer().deserialize(input.employer_info);

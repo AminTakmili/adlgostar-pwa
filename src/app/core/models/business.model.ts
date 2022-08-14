@@ -1,7 +1,7 @@
 import { Address } from "./address.model";
 import { Deserializable } from "./deserializable.model";
-import { Employer } from "./employer.model";
 import { Employee } from "./employee.model";
+import { Employer } from "./employer.model";
 
 export class BusinessCategory implements Deserializable {
 	id !: number;
@@ -45,6 +45,7 @@ export class BusinessList implements Deserializable {
 }
 export class Business implements Deserializable {
 	id !: number;
+	contract_definition_section_id !: number;
 	employer_ids !: number[];
 	name !: string;
 	employer_type !: string;
