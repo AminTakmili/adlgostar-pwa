@@ -194,7 +194,8 @@
 							<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>
 						</td>
 						<td>
-							<span class="font-size-12 " > {{ item.confirmer_info.full_name?item.confirmer_info.full_name:'_'}} </span>
+							<span class="font-size-12 " *ngIf="item.confirmer_info.full_name" > {{item.confirmer_info.full_name}} </span>
+							<ion-chip   *ngIf="!item.confirmer_info.full_name" color="danger" >تایید نشده</ion-chip>
 						</td>
 						
 						<td>

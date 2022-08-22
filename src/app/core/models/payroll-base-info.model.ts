@@ -41,12 +41,14 @@ export class payrollTaxList implements Deserializable {
 export class payrollAdditiLonist implements Deserializable {
     id: number
     name: string
+    en_name: string
     taxable: number
     createdAt: string
     createdAtEn: string
     updatedAt: string
     updatedAtEn:string
- 
+    isRequired!:boolean
+
 
 	deserialize(input: any): this {
 		Object.assign(this, input);
@@ -58,10 +60,12 @@ export class payrollAdditiLonist implements Deserializable {
 export class payrollDeductionLonist implements Deserializable {
     id: number
     name: string
+    en_name: string
     createdAt: string
     createdAtEn: string
     updatedAt: string
     updatedAtEn:string
+    isRequired!:boolean
  
 
 	deserialize(input: any): this {

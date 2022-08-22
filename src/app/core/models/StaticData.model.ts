@@ -12,6 +12,7 @@ export class StaticData implements Deserializable {
 	maritalStatus!: DataSets[];
 	military_status!: DataSets[];
 	years!: DataSets[];
+	working_shifts!:DataSets[];
 	ticket_status!: DataSets[];
 	notification_types!: notificationType[];
 	deserialize(input: any): this {

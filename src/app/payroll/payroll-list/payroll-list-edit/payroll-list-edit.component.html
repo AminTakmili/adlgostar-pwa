@@ -7,7 +7,7 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">افزودن فیش حقوقی جدید</h1>
+					<h1 class="title">ویرایش فیش حقوقی جدید</h1>
 					<p class="dsec">در این قسمت شما میتوانید یک فیش حقوقی جدید اضافه کنید
 					</p>
 				</div>
@@ -44,7 +44,7 @@
 							<label>انتخاب کارمند</label>
 
 							<!-- [(ngModel)]="filtered_employee_id"  -->
-							<ng-select formControlName="emId" [clearable]="false" (change)="changEemployee($event)"
+							<ng-select formControlName="emId" [clearable]="true" 	(focus)="employeeFocus()" (change)="changEemployee($event)"
 								[items]="employeelist$ | async" placeholder="انتخاب کنید"
 								[loading]="employeeInputLoading" bindLabel="full_name" bindValue="id"
 								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
@@ -150,7 +150,8 @@
 						<!-- working_deficit_hours-->
 						<div class="form-input mb-3">
 							<label> ساعت کسری کار</label>
-							<ion-input debounce="700" (ionChange)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
 								formControlName="working_deficit_hours"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="payrollForm.controls['working_deficit_hours']"
@@ -161,7 +162,8 @@
 						<!-- working_friday_hour_count -->
 						<div class="form-input mb-3">
 							<label>ساعت کار جمعه </label>
-							<ion-input debounce="700" (ionChange)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
 								formControlName="working_friday_hour_count"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="payrollForm.controls['working_friday_hour_count']"
@@ -172,7 +174,8 @@
 						<!-- outstation_day_count -->
 						<div class="form-input mb-3">
 							<label>تعداد روز ماموریت</label>
-							<ion-input debounce="700" (ionChange)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
 								formControlName="outstation_day_count"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="payrollForm.controls['outstation_day_count']"
@@ -183,7 +186,8 @@
 						<!-- working_night_hour_count -->
 						<div class="form-input mb-3">
 							<label>ساعت شب کاری</label>
-							<ion-input debounce="700" (ionChange)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
 								formControlName="working_night_hour_count"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="payrollForm.controls['working_night_hour_count']"
@@ -194,7 +198,8 @@
 						<!-- working_over_time_hour_count-->
 						<div class="form-input mb-3">
 							<label>ساعت اضافه کاری </label>
-							<ion-input  debounce="700" (ionChange)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+             
+							<ion-input  debounce="700"  (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
 								formControlName="working_over_time_hour_count"></ion-input>
 							<span class="error">
 								<app-validator #validation
@@ -262,7 +267,7 @@
 
 						</section>
 
-						<hr>
+						<!-- <hr> -->
 
 
 					</div>
@@ -279,7 +284,7 @@
 						<!-- <ion-button expand="block" type="button" color="medium" shape="round"  fill="outline">پاک کردن فرم</ion-button> -->
 					</div>
 					<div class="col-lg-3 col-md-5">
-						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ثبت فیش
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ویرایش فیش
 							حقوقی
 						</ion-button>
 					</div>

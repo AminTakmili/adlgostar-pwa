@@ -186,8 +186,8 @@ export const globalData = {
 					],
 				},
 				{
-					name: 'لیست حقوق و دستمزد',
-					url: '/payrolls/payroll',
+					name: 'فیش حقوقی',
+					url: '/payrolls/payroll/list',
 					icon: 'list',
 					function: 'showDetail',
 					access: true,

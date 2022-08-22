@@ -1,3 +1,5 @@
+import { PayrollListEditComponent } from './payroll-list-edit/payroll-list-edit.component';
+import { PayrollListListComponent } from './payroll-list-list/payroll-list-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CKEditorModule } from 'ng2-ckeditor';
@@ -31,6 +33,6 @@ import { ShareModulePageModule } from 'src/app/share-module/share-module.module'
 		PipeModule
     
   ],
-  declarations: [PayrollListAddComponent]
+  declarations: [PayrollListAddComponent,PayrollListListComponent,PayrollListEditComponent]
 })
 export class PayrollListPageModule {}
