@@ -1,8 +1,17 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { CKEditorModule } from 'ng2-ckeditor';
+import { ClipboardModule } from 'ngx-clipboard';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PayrollListAddComponent } from './payroll-list-add/payroll-list-add.component';
 import { PayrollListPageRoutingModule } from './payroll-routing.module';
+import { PipeModule } from './../../core/pipes/pipe.module';
+import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
 
 // import { PayrollListPage } from './payroll-list.page';
 
@@ -11,8 +20,17 @@ import { PayrollListPageRoutingModule } from './payroll-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    PayrollListPageRoutingModule
+    PayrollListPageRoutingModule,
+    ShareModulePageModule,
+		ReactiveFormsModule,
+		NgxPaginationModule,
+		NgSelectModule,
+		CKEditorModule,
+		NgPersianDatepickerModule,
+		ClipboardModule,
+		PipeModule
+    
   ],
-  // declarations: [PayrollListPage]
+  declarations: [PayrollListAddComponent]
 })
 export class PayrollListPageModule {}

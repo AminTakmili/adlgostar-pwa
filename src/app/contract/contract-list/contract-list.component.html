@@ -138,7 +138,7 @@
 						<form [formGroup]="date" class="width-100 " >
 						
 							<ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="datepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-								<input class="pr-2" type="text"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
+								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
 							 </ng-persian-datepicker>
 						</form>
 

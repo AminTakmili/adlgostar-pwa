@@ -7,7 +7,7 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PipeModule } from './../core/pipes/pipe.module';
-import { SettlementPage } from './settlement.page';
+import { SettlementAddComponent } from './settlement-add/settlement-add.component';
 import { SettlementPageRoutingModule } from './settlement-routing.module';
 import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
 
@@ -28,6 +28,6 @@ import { ShareModulePageModule } from 'src/app/share-module/share-module.module'
 		PipeModule
     
   ],
-  declarations: [SettlementPage]
+  declarations: [SettlementAddComponent]
 })
 export class SettlementPageModule {}

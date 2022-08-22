@@ -14,29 +14,22 @@ import {
 	switchMap,
 	tap,
 } from 'rxjs/operators';
-import { contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
-import { contractFooterTemplate, contractHeaderTemplate } from './../core/models/contractConstant.model';
 
-import { BusinessList } from 'src/app/core/models/business.model';
-import { CKEditorComponent } from 'ng2-ckeditor';
-import { Employee } from 'src/app/core/models/employee.model';
-import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { async } from '@angular/core/testing';
-import { businessEmployeeInfo } from './../core/models/employee.model';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { format } from 'date-fns-jalali'
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
 
 @Component({
-  selector: 'app-settlement',
-  templateUrl: './settlement.page.html',
-  styleUrls: ['./settlement.page.scss'],
+  selector: 'app-settlement-add',
+  templateUrl: './settlement-add.component.html',
+  styleUrls: ['./settlement-add.component.scss'],
 })
-export class SettlementPage implements OnInit {
+export class SettlementAddComponent implements OnInit {
 
-	@ViewChildren('validation') validation: QueryList<any>;
+  @ViewChildren('validation') validation: QueryList<any>;
 	pageTitle: string = "افزودن قرار داد";
 	contractsForm: FormGroup;
 	step: number = 1;
@@ -70,6 +63,18 @@ export class SettlementPage implements OnInit {
 
 
 		this.contractsForm = this.fb.group({
+			all_working_days: ['all_working_days', Validators.compose([Validators.required])],
+			new_year_gift_calc_type: ['all_working_days', Validators.compose([Validators.required])],
+			bonus_calc_type: ['all_working_days', Validators.compose([Validators.required])],
+			unused_leave_calc_type: ['all_working_days', Validators.compose([Validators.required])],
+			calc_wage_monthly: [true, Validators.compose([Validators.required])],
+			calc_grocery_allowance_monthly: [true, Validators.compose([Validators.required])],
+			calc_housing_allowance_monthly: [true, Validators.compose([Validators.required])],
+			calc_children_allowance_monthly: [true, Validators.compose([Validators.required])],
+			calc_severance_pay_monthly: [true, Validators.compose([Validators.required])],
+			calc_bonus_monthly: [true, Validators.compose([Validators.required])],
+      
+      
 			title: ['', Validators.compose([Validators.required])],
 			business_id: [, Validators.compose([Validators.required])],
 			contract_condition_id: [''],
@@ -94,8 +99,6 @@ export class SettlementPage implements OnInit {
 			calc_payroll_tax: ['all_working_days', Validators.compose([Validators.required])],
 			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
 			calc_severance_base: [true],
-			calc_severance_pay_monthly: [true],
-			calc_bonus_monthly: [true],
 			calc_new_year_gift_monthly: [true],
 			is_contract_for_future: [false],
 			is_hourly_contract: [false],
@@ -308,6 +311,7 @@ export class SettlementPage implements OnInit {
 
 		}
 	}
+
 
 
 }

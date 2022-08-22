@@ -1,0 +1,395 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن قرار داد جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک قرار داد جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="contracts/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<form [formGroup]="contractsForm" (ngSubmit)="onSubmit()">
+			<!--  -->
+			<div class="container mt-4">
+
+				<div class="row align-items-start ">
+					<!-- options -->
+					<div class="col-md-6">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">فیلد های محاسباتی</h2>
+						</div>
+
+						<!-- زمان شروع به کار -->
+						<!-- <div class="form-input mb-3">
+							<label>زمان شروع به کار</label>
+							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text"   formControlName="employee_start_date" />
+							 </ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['employee_start_date']" [controlName]="'زمان شروع به کار'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div> -->
+						<!-- زمان شروع به کار -->
+						<div class="form-input mb-3">
+							<label>زمان شروع قرارداد</label>
+							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true"
+								[timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="start_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['start_date']"
+									[controlName]="'زمان شروع قرار داد '"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- زمان شروع قرار داد -->
+						<div class="form-input mb-3">
+							<label>زمان پایان قرارداد</label>
+							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true"
+								[timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="end_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['end_date']"
+									[controlName]="' زمان پایان قرار داد'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- سال عقد قرار داد -->
+
+						<!-- دستمزد روزانه -->
+						<div class="form-input mb-3">
+							<label>دستمزد روزانه <span
+									*ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="wage"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['wage']"
+									[controlName]="'دستمزد روزانه'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق سنوات -->
+						<div class="form-input mb-3">
+							<label>حق سنوات</label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="severance_pay"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['severance_pay']"
+									[controlName]="'حق سنوات'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق بن -->
+						<div class="form-input mb-3">
+							<label>حق بن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="grocery_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['name']"
+									[controlName]="'نام شرکت'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق مسکن -->
+						<div class="form-input mb-3">
+							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="housing_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['housing_allowance']"
+									[controlName]="'حق مسکن'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق اولاد (برای یک فرزند) -->
+						<!-- <div class="form-input mb-3">
+							<label>حق اولاد (برای یک فرزند) <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div> -->
+						<!-- عیدی -->
+						<div class="form-input mb-3">
+							<label>عیدی</label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="new_year_gift"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['new_year_gift']"
+									[controlName]="'عیدی '"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- پاداش -->
+						<div class="form-input mb-3">
+							<label>پاداش</label>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass"
+								formControlName="bonus"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['bonus']"
+									[controlName]="'پاداش '"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- هزینه ی غذا -->
+						<div class="form-input mb-3">
+							<label>هزینه ی غذا</label>
+							<ion-input autocomplete="new-pass" formControlName="food_cost"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['food_cost']"
+									[controlName]="'هزینه غذا'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- هزینه پانسیون -->
+						<div class="form-input mb-3">
+							<label>هزینه پانسیون</label>
+							<ion-input autocomplete="new-pass" formControlName="pension_cost"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['pension_cost']"
+									[controlName]="'هزینه پانسیون '"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<hr>
+
+
+					</div>
+					<div class="col-6 position-sticky top-15">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">محاسبات تسویه حساب قرار داد</h2>
+						</div>
+						<!--  -->
+
+						<!-- calc type -->
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه حق سنوات </ion-label>
+
+							<ion-segment select-on-focus=true formControlName="all_working_days" class="mt-2"
+								color="white">
+								<ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="Only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه عیدی </ion-label>
+
+							<ion-segment select-on-focus=true formControlName="new_year_gift_calc_type" class="mt-2"
+								color="white">
+								<ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="Only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه پاداش </ion-label>
+
+							<ion-segment select-on-focus=true formControlName="bonus_calc_type" class="mt-2"
+								color="white">
+								<ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="Only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه مرخصی استفاده نشده </ion-label>
+
+							<ion-segment select-on-focus=true formControlName="unused_leave_calc_type" class="mt-2"
+								color="white">
+								<ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="Only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<!--  -->
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه دستمزد </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_wage_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_wage_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق بن  </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true formControlName="calc_grocery_allowance_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_grocery_allowance_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_grocery_allowance_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه دستمزد </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_wage_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_wage_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق مسکن </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_housing_allowance_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_housing_allowance_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_housing_allowance_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق اولاد </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_children_allowance_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_children_allowance_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_children_allowance_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق سنوات </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_severance_pay_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_severance_pay_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_severance_pay_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه عیدی </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_new_year_gift_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_new_year_gift_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_new_year_gift_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه پاداش </ion-label>
+
+							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_bonus_monthly" class="mt-2"
+								color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_bonus_monthly" [value]="true">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="!contractsForm.value.calc_bonus_monthly" [value]="false">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+
+
+					</div>
+				</div>
+				<div class="row mb-5">
+					<div class="col-12">
+						<hr>
+					</div>
+					<!-- next step  -->
+					<div class="col-lg-7 col-md-3"></div>
+					<div class="col-lg-2 col-md-4">
+						<!-- <ion-button expand="block" type="button" color="medium" shape="round"  fill="outline">پاک کردن فرم</ion-button> -->
+					</div>
+					<div class="col-lg-3 col-md-5">
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ثبت قرار داد
+						</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
+</ion-content>

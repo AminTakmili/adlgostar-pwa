@@ -1,5 +1,7 @@
+import { RouterModule, Routes } from '@angular/router';
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { PayrollListAddComponent } from './payroll-list-add/payroll-list-add.component';
 
 // import { PayrollListPage } from './payroll-list.page';
 
@@ -7,7 +9,12 @@ const routes: Routes = [
   {
     path: '',
     // component: PayrollListPage
-  }
+    redirectTo:'add'
+  },
+  {
+    path: 'add',
+    component: PayrollListAddComponent
+  },
 ];
 
 @NgModule({

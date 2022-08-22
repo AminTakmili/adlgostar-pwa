@@ -1,13 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { NgModule } from '@angular/core';
-import { SettlementPage } from './settlement.page';
+import { SettlementAddComponent } from './settlement-add/settlement-add.component';
 
 const routes: Routes = [
 
   {
     path: 'add/:businessEmId',
-    component: SettlementPage
+    component: SettlementAddComponent
   },
 ];
 
