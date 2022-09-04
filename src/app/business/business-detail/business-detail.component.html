@@ -97,6 +97,7 @@
 				<div class="row" *ngIf="business?.employees">
 					<div class="col-lg-6 mb-4" *ngFor="let item of businessEmployees ">
 						<app-employee-card (deleteEmployeeBussiness)="removeEmployee($event)" [employee]="item"
+						 [isCollaboration]="item.is_collaboration_ended" [settlementId]="item.settlement_id"
 							[businessId]="item.business_employee_id" [deleteId]="item.business_employee_id"
 							>
 						</app-employee-card>

@@ -13,6 +13,8 @@ export class EmployeeCardComponent implements OnInit {
 	@Output() deleteEmployeeBussiness = new EventEmitter<number>();
 
 	@Input() employee: Employee;
+	@Input() isCollaboration: number;
+	@Input() settlementId: number|string;
 	@Input() contractid: number = 0;
 	@Input() businessId: number = 0;
 	@Input() businessEmId: number = 0;
@@ -21,7 +23,7 @@ export class EmployeeCardComponent implements OnInit {
 
 	loadingDownload:boolean=false
 	constructor(
-		private global:GlobalService
+		public global:GlobalService
 	) { }
 
 	ngOnInit() { }

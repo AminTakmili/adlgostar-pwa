@@ -15,7 +15,11 @@
 			<ion-label color="dark"> پرینت قرار داد</ion-label>
 		</ion-chip> -->
 		<ion-buttons *ngIf="businessId" class="justify-content-end">
-			<ion-button fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/settlement/add',businessId]"  tooltip="تسویه حساب"  >
+			<ion-button fill="clear" *ngIf="global.userPermision['payroll_base_info_settlement_addition_add']&&!isCollaboration" class="px-0 mx-0 tooltip-show" [routerLink]="['/settlement/add',businessId]"  tooltip="تسویه حساب"  >
+				<ion-icon size="large" color="medium" slot="icon-only" src="/assets/svg/settlementIcon.svg">
+				</ion-icon>
+			</ion-button>
+			<ion-button  *ngIf="global.userPermision['payroll_base_info_settlement_addition_edit']&&isCollaboration&&settlementId"  fill="clear" class="px-0 mx-0 tooltip-show" [routerLink]="['/settlement/edit',businessId,settlementId]"  tooltip="ویرایش تسویه حساب"  >
 				<ion-icon size="large" color="medium" slot="icon-only" src="/assets/svg/settlementIcon.svg">
 				</ion-icon>
 			</ion-button>

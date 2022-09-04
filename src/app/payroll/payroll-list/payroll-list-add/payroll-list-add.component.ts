@@ -91,6 +91,7 @@ export class PayrollListAddComponent implements OnInit {
 		'working_deficit_amount',
 		'fund_reserve_yearly_repay',
 	];
+	datas:any=[]
 
 	constructor(
 		public global: GlobalService,
@@ -180,7 +181,7 @@ export class PayrollListAddComponent implements OnInit {
 			}
 		});
 
-		console.log(form);
+		// console.log(form);
 		return form;
 	}
 	newPayrollAdditions(additionList: payrollAdditiLonist[]): FormGroup {
@@ -444,60 +445,70 @@ async	calculatePrices() {
 		}
 	}
 
-	async onSubmit() {
-		console.log(this.payrollForm.value);
-		console.log(this.payrollForm.get('emId').valid);
-		console.log(this.payrollForm.get('bId')?.valid);
-		this.payrollForm.markAllAsTouched();
-		if (
-			(this.payrollForm.get('emId').valid &&
-				this.payrollForm.get('bId')?.valid) ||
-			(this.payrollForm.get('emId').valid &&
-				(!this.businessList || this.businessList.length == 1))
-		) {
-			// this.payrollForm.get('bId').d
-			this.payrollForm.removeControl('emId');
-			this.payrollForm.removeControl('bId');
-			console.log(this.payrollForm.value);
-			console.log(this.payrollForm.valid);
-			if (this.payrollForm.valid) {
-				await this.global.showLoading();
-				this.global
-					.httpPost('payroll/add', this.payrollForm.value)
-					.subscribe(
-						async (res: any) => {
-							await this.global.dismisLoading();
-							this.payrollForm.addControl(
-								'emId',
-								this.fb.control('', [Validators.required])
-							);
-							this.payrollForm.addControl(
-								'bId',
-								this.fb.control('', [Validators.required])
-							);
-							this.payrollForm.reset();
+	// async onSubmit() {
+	// 	console.log(this.payrollForm.value);
+	// 	console.log(this.payrollForm.get('emId').valid);
+	// 	console.log(this.payrollForm.get('bId')?.valid);
+	// 	this.payrollForm.markAllAsTouched();
+	// 	if (
+	// 		(this.payrollForm.get('emId').valid &&
+	// 			this.payrollForm.get('bId')?.valid) ||
+	// 		(this.payrollForm.get('emId').valid &&
+	// 			(!this.businessList || this.businessList.length == 1))
+	// 	) {
+	// 		// this.payrollForm.get('bId').d
+	// 		this.payrollForm.removeControl('emId');
+	// 		this.payrollForm.removeControl('bId');
+	// 		console.log(this.payrollForm.value);
+	// 		console.log(this.payrollForm.valid);
+	// 		if (this.payrollForm.valid) {
+	// 			await this.global.showLoading();
+	// 			this.global
+	// 				.httpPost('payroll/add', this.payrollForm.value)
+	// 				.subscribe(
+	// 					async (res: any) => {
+	// 						await this.global.dismisLoading();
+	// 						this.payrollForm.addControl(
+	// 							'emId',
+	// 							this.fb.control('', [Validators.required])
+	// 						);
+	// 						this.payrollForm.addControl(
+	// 							'bId',
+	// 							this.fb.control('', [Validators.required])
+	// 						);
+	// 						this.payrollForm.reset();
 						
-							this.global.showToast('فیش حقوقی با موفقیت ثبت شد' ,700,'top','success','ios')
-							this.navCtrl.navigateForward(
-								'/payrolls/payroll/list'
-							);
-							console.log(res);
-						},
-						async (error: any) => {
-							await this.global.dismisLoading();
-							await this.global.showError(error);
-							this.payrollForm.addControl(
-								'emId',
-								this.fb.control('', [Validators.required])
-							);
-							this.payrollForm.addControl(
-								'bId',
-								this.fb.control('', [Validators.required])
-							);
-							this.payrollForm.reset();
-						}
-					);
-			}
+	// 						this.global.showToast('فیش حقوقی با موفقیت ثبت شد' ,700,'top','success','ios')
+	// 						this.navCtrl.navigateForward(
+	// 							'/payrolls/payroll/list'
+	// 						);
+	// 						console.log(res);
+	// 					},
+	// 					async (error: any) => {
+	// 						await this.global.dismisLoading();
+	// 						await this.global.showError(error);
+	// 						this.payrollForm.addControl(
+	// 							'emId',
+	// 							this.fb.control('', [Validators.required])
+	// 						);
+	// 						this.payrollForm.addControl(
+	// 							'bId',
+	// 							this.fb.control('', [Validators.required])
+	// 						);
+	// 						this.payrollForm.reset();
+	// 					}
+	// 				);
+	// 		}
+	// 	}
+	// }
+	onSubmit(e:any){
+		let sendObj={
+			business_id:23,
+			month:2,
+			year:1400,
+			detail:e
 		}
+		console.log(sendObj);
 	}
+
 }

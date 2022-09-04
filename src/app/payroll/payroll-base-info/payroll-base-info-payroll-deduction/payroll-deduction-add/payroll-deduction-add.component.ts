@@ -22,6 +22,7 @@ export class PayrollDeductionAddComponent implements OnInit {
 	) {
 		this.addForm = this.fb.group({
 			name: ['', Validators.compose([Validators.required])],
+			calc_in_payroll_received:[false]
 		});
 	}
 

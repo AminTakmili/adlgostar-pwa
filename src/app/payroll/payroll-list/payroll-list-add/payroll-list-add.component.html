@@ -23,8 +23,8 @@
 		</div>
 	</div>
 	<main>
-
-		<form [formGroup]="payrollForm" (ngSubmit)="onSubmit()">
+ <!-- (ngSubmit)="onSubmit()" -->
+		<form [formGroup]="payrollForm">
 			<!--  -->
 			<div class="container mt-4">
 
@@ -286,5 +286,8 @@
 				</div>
 			</div>
 		</form>
+		
+<app-excel [list]="datas" (Data)="onSubmit($event)"></app-excel>
+
 	</main>
 </ion-content>

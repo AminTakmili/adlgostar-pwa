@@ -26,6 +26,7 @@ export class EmployerListComponent implements OnInit {
 	filtered_name: string;
 	filtered_national_code: string;
 	filtered_phone: string;
+	filtered_is_active: boolean;
 
 
 
@@ -53,6 +54,7 @@ export class EmployerListComponent implements OnInit {
 			filtered_name: this.filtered_name,
 			filtered_national_code: this.filtered_national_code,
 			filtered_phone: this.filtered_phone,
+			filtered_is_active: this.filtered_is_active,
 		}).subscribe(async (res:any) => {
 			await this.global.dismisLoading();
 			this.total = res.totalRows;
@@ -104,5 +106,39 @@ export class EmployerListComponent implements OnInit {
 			});
 		});
 	}
+	trigerBanItem(item : Employer){
+		this.global.showAlert(item.is_active?'غیر فعال کردن':'فعال کردن', `آیا برای ${item.is_active?'غیر فعال کردن':'فعال کردن'} ${item.full_name} اطمینان دارید؟`, [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpPost('employer/setActive', {
+						id: item.id,
+						is_active:!item.is_active
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+						this.pageChange(1);
+						this.global.showToast(`${item.full_name} ${item.is_active?'غیر فعال ':'فعال '}  شد`,750,'top','success','ios');
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
+	}
+
+
 
 }

@@ -17,10 +17,12 @@ export class settlementTemplate implements Deserializable {
 export class payrollAddition implements Deserializable {
     id: number
     name: string
+    en_name: string
     createdAt: string
     createdAtEn: string
     updatedAt: string
     updatedAtEn:string
+	isRequired!:boolean
  
 
 	deserialize(input: any): this {
@@ -32,10 +34,12 @@ export class payrollAddition implements Deserializable {
 export class payrollDeduction implements Deserializable {
     id: number
     name: string
+    en_name: string
     createdAt: string
     createdAtEn: string
     updatedAt: string
     updatedAtEn:string
+	isRequired!:boolean
  
 
 	deserialize(input: any): this {

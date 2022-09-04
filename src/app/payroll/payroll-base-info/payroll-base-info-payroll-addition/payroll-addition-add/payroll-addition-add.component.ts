@@ -23,6 +23,7 @@ export class PayrollAdditionAddComponent implements OnInit {
 		this.addForm = this.fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			taxable: [ false ],
+			calc_in_payroll_received: [ false ],
 		});
 	}
 

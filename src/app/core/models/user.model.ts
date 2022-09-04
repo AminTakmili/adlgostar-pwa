@@ -30,6 +30,7 @@ export class User implements Deserializable {
 	role !: UserRole;
 	media !: Media[];
 	permissionsCat  !: permision[];
+	permissions  !: permision[];
 	permissionsList : permissionsDetail[] = [];
 	deserialize(input: any): this {
 		Object.assign(this, input);
@@ -98,6 +99,7 @@ export class permision implements Deserializable {
 	id ! : number;
 	name ! : string;
 	permissions ! : permissionsDetail[];
+	children ! : permision[];
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		this.permissions = input.permissions;

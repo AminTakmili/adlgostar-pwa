@@ -237,6 +237,7 @@ export const globalData = {
 				},
 			],
 		},
+
 		{
 			name: 'بیشتر',
 			icon: 'ellipsis-vertical',
@@ -354,6 +355,7 @@ export const globalData = {
 				},
 			],
 		},
+		
 	
 	],
 };

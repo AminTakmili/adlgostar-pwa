@@ -135,6 +135,7 @@ export class AppComponent {
                    await this.storage.get('user').then((val) => {
                         userStorge=val
                     })
+                    userStorge.permissions=res.permissions
                     userStorge.permissionsList=permissionsList
                     // console.log(userStorge);
                     this.global.user =userStorge;

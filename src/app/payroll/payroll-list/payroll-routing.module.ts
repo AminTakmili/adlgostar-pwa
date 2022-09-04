@@ -1,3 +1,4 @@
+import { PayrollListNewAddComponent } from './payroll-list-new-add/payroll-list-new-add.component';
 import { PayrollListEditComponent } from './payroll-list-edit/payroll-list-edit.component';
 import { PayrollListListComponent } from './payroll-list-list/payroll-list-list.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -18,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'add',
-    component: PayrollListAddComponent
+    component: PayrollListNewAddComponent
   },
   {
     path: 'edit/:id',

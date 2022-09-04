@@ -1,3 +1,4 @@
+import { PayrollListNewAddComponent } from './payroll-list-new-add/payroll-list-new-add.component';
 import { PayrollListEditComponent } from './payroll-list-edit/payroll-list-edit.component';
 import { PayrollListListComponent } from './payroll-list-list/payroll-list-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,6 +34,6 @@ import { ShareModulePageModule } from 'src/app/share-module/share-module.module'
 		PipeModule
     
   ],
-  declarations: [PayrollListAddComponent,PayrollListListComponent,PayrollListEditComponent]
+  declarations: [PayrollListAddComponent,PayrollListListComponent,PayrollListEditComponent,PayrollListNewAddComponent]
 })
 export class PayrollListPageModule {}

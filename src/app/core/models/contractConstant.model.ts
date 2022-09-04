@@ -205,6 +205,7 @@ export class contractTemplateVariable implements Deserializable {
 export class contractFooterTemplateDetail implements Deserializable {
 
 	id !: number;
+	used_in_contract !: boolean;
 	template !: string;
 	name !: string;
 	createdAt !: string;
@@ -225,6 +226,7 @@ export class contractHeaderTemplateDetail implements Deserializable {
 	createdAtEn !: string;
 	updatedAt !: string;
 	updatedAtEn !: string;
+	used_in_contract !: boolean;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

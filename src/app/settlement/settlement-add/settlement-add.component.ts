@@ -1,7 +1,18 @@
+import {
+	payrollDeduction,
+	payrollAddition,
+} from './../../core/models/settlement.model';
+import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 // import { sentenceTemplate } from './../../core/models/sentence.model';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	QueryList,
+	ViewChild,
+	ViewChildren,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
 import { Observable, Subject, concat, of, throwError } from 'rxjs';
@@ -19,299 +30,357 @@ import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { async } from '@angular/core/testing';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
-import { format } from 'date-fns-jalali'
+import { format } from 'date-fns-jalali';
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
+import { settlementTemplate } from 'src/app/core/models/settlement.model';
 
 @Component({
-  selector: 'app-settlement-add',
-  templateUrl: './settlement-add.component.html',
-  styleUrls: ['./settlement-add.component.scss'],
+	selector: 'app-settlement-add',
+	templateUrl: './settlement-add.component.html',
+	styleUrls: ['./settlement-add.component.scss'],
 })
 export class SettlementAddComponent implements OnInit {
-
-  @ViewChildren('validation') validation: QueryList<any>;
-	pageTitle: string = "افزودن قرار داد";
+	pageTitle: string = 'افزودن تسویه حساب ';
 	contractsForm: FormGroup;
 	step: number = 1;
 	// public Editor = ClassicEditor;
 
-	editors = ['Classic', 'Inline'];
-
-	@ViewChild("popoverDatetime2", { static: true }) datetime: IonDatetime;
-
 	datePickerConfig = {
 		drops: 'up',
-		format: 'YY/M/D'
-	}
-	submitet: boolean = false;
-	
-	provisosList: FormArray;
-	extraFieldsList: FormArray;
-	childrenAllowancesList: FormArray;
-	contractHeaderTemplateInfoList: FormArray;
-	contractFooterTemplateInfoList: FormArray;
+		format: 'YY/M/D',
+	};
 
+	settlement_additions: FormArray;
+	settlement_deductions: FormArray;
 
+	settlementTemplateList: settlementTemplate[];
+	settlementTemplateText: string;
+	businessEmployeeId: string;
+	settlementAdditionList: payrollAddition[];
+	settlementDeductionList: payrollDeduction[];
 
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private rout: ActivatedRoute
 	) {
-
-
-
+		this.businessEmployeeId = rout.snapshot.paramMap.get('businessEmId');
 		this.contractsForm = this.fb.group({
-			all_working_days: ['all_working_days', Validators.compose([Validators.required])],
-			new_year_gift_calc_type: ['all_working_days', Validators.compose([Validators.required])],
-			bonus_calc_type: ['all_working_days', Validators.compose([Validators.required])],
-			unused_leave_calc_type: ['all_working_days', Validators.compose([Validators.required])],
-			calc_wage_monthly: [true, Validators.compose([Validators.required])],
-			calc_grocery_allowance_monthly: [true, Validators.compose([Validators.required])],
-			calc_housing_allowance_monthly: [true, Validators.compose([Validators.required])],
-			calc_children_allowance_monthly: [true, Validators.compose([Validators.required])],
-			calc_severance_pay_monthly: [true, Validators.compose([Validators.required])],
-			calc_bonus_monthly: [true, Validators.compose([Validators.required])],
-      
-      
-			title: ['', Validators.compose([Validators.required])],
-			business_id: [, Validators.compose([Validators.required])],
-			contract_condition_id: [''],
-			employee_ids: [[], Validators.compose([Validators.required])],
-			employer_ids: [[], Validators.compose([Validators.required])],
-			business_employee_ids: [[], Validators.compose([Validators.required])],
-			contract_template_id: ['', Validators.compose([Validators.required])],
-			main_text: ['', Validators.compose([Validators.required])],
-			end_text: [''],
-			// employee_start_date: ['', Validators.compose([Validators.required])],
-			start_date: ['', Validators.compose([Validators.required])],
-			end_date: ['', Validators.compose([Validators.required])],
-			contract_year: ['', Validators.compose([Validators.required])],
+			business_employee_id: [this.businessEmployeeId],
+			settlement_template_id: [
+				,
+				Validators.compose([Validators.required]),
+			],
+			leave_work_date: [, Validators.compose([Validators.required])],
+			new_year_gift_calc_type: [
+				'all_working_days',
+				Validators.compose([Validators.required]),
+			],
+			bonus_calc_type: [
+				'all_working_days',
+				Validators.compose([Validators.required]),
+			],
+			unused_leave_calc_type: [
+				'all_working_days',
+				Validators.compose([Validators.required]),
+			],
+			severance_pay_calc_type: [
+				'all_working_days',
+				Validators.compose([Validators.required]),
+			],
+
+			employee_start_date: [, Validators.compose([Validators.required])],
 			wage: [0, Validators.compose([Validators.required])],
-			severance_pay: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
-			new_year_gift: [0, Validators.compose([Validators.required])],
-			bonus: [0, Validators.compose([Validators.required])],
-			food_cost: [0, Validators.compose([Validators.required])],
-			pension_cost: [0, Validators.compose([Validators.required])],
-			calc_payroll_tax: ['all_working_days', Validators.compose([Validators.required])],
-			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
-			calc_severance_base: [true],
+			children_allowance: [0, Validators.compose([Validators.required])],
+
+			calc_wage_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
+			calc_grocery_allowance_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
+			calc_housing_allowance_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
+			calc_children_allowance_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
+			calc_severance_pay_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
 			calc_new_year_gift_monthly: [true],
-			is_contract_for_future: [false],
-			is_hourly_contract: [false],
-			is_manual: [false],
+			calc_bonus_monthly: [
+				true,
+				Validators.compose([Validators.required]),
+			],
 
-			children_allowances: this.fb.array([]),
-			provisos: this.fb.array([]),
-			extra_fields: this.fb.array([]),
-			contract_header_template_info: this.fb.array([this.newContractHeaderTemplateInfoList()]),
-			contract_footer_template_info: this.fb.array([this.newContractFooterTemplateInfoList()]),
-
+			settlement_additions: this.fb.array([]),
+			settlement_deductions: this.fb.array([]),
 		});
 
-		this.provisosList = this.contractsForm.get('provisos') as FormArray;
-		this.extraFieldsList = this.contractsForm.get('extra_fields') as FormArray;
-		this.childrenAllowancesList = this.contractsForm.get('children_allowances') as FormArray;
-		this.contractHeaderTemplateInfoList = this.contractsForm.get('contract_header_template_info') as FormArray;
-		this.contractFooterTemplateInfoList = this.contractsForm.get('contract_footer_template_info') as FormArray;
-
-
+		this.settlement_additions = this.contractsForm.get(
+			'settlement_additions'
+		) as FormArray;
+		this.settlement_deductions = this.contractsForm.get(
+			'settlement_deductions'
+		) as FormArray;
 	}
 
 	ngOnInit() {
 		this.setTitle();
-	
 	}
 
 	ionViewWillEnter() {
-
+		this.getDatas();
 	}
 
 	setTitle() {
 		this.seo.generateTags({
-			title: 'افزودن قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: "قرار داد جدی",
+			title: this.pageTitle,
+			description: this.pageTitle,
+			keywords: this.pageTitle,
 			isNoIndex: false,
 		});
 	}
 
 	/* ============================== All form arrays ===========================================*/
-	get contractHeaderTemplateInfoListGroup(): FormArray {
-		return this.contractsForm.get('contract_header_template_info') as FormArray;
+	get settlementDeductionsGroup(): FormArray {
+		return this.contractsForm.get('settlement_deductions') as FormArray;
 	}
-	get contractFooterTemplateInfoListGroup(): FormArray {
-		return this.contractsForm.get('contract_footer_template_info') as FormArray;
-	}
-
-	newContractHeaderTemplateInfoList(): FormGroup {
-		return this.fb.group({
-			contract_header_template_id: [],
-			header_text: [],
-		})
-	}
-	newContractFooterTemplateInfoList(): FormGroup {
-		return this.fb.group({
-			contract_footer_template_id: [],
-			footer_text: [],
-		})
+	get settlementAdditionsGroup(): FormArray {
+		return this.contractsForm.get('settlement_additions') as FormArray;
 	}
 
-	provisos(id: number, text = ''): FormGroup {
-		return this.fb.group({
-			contract_proviso_template_id: [id, Validators.compose([Validators.required])],
-			proviso_text: [text, Validators.compose([Validators.required])],
-		});
-	}
-	get provisosFormGroup(): FormArray {
-		return this.contractsForm.get('provisos') as FormArray;
-	}
-
-	extraFields(id: number): FormGroup {
-		return this.fb.group({
-			contract_extra_field_id: [id, Validators.compose([Validators.required])],
-			price: [0, Validators.compose([Validators.required])],
-		});
-	}
-
-	get extraFieldsFormGroup(): FormArray {
-		return this.contractsForm.get('extra_fields') as FormArray;
-	}
-
-	childrenAllowance(business_employee_id: number , employee_id : number): FormGroup {
-		return this.fb.group({
-			business_employee_id: [business_employee_id, Validators.compose([Validators.required])],
-			employee_id: [employee_id, Validators.compose([Validators.required])],
-			children_allowance: [0, Validators.compose([Validators.required])],
-		});
-	}
-
-	get childrenAllowanceFormGroup(): FormArray {
-		return this.contractsForm.get('children_allowances') as FormArray;
-	}
-
-	/* ============================== end All form arrays ===========================================*/
-
-
-
-
-
-	RemoveCondition(event: any) {
-		this.provisosFormGroup.controls.splice(event.index, 1);
-	}
-	
-
-	formatDate(value: string) {
-		// console.log(this.datetime.dayValues);
-		return format(new Date(value), 'yyyy-MM-dd');
-	}
-
-	async CalculationField() {
-
-		if (!this.submitet) {
-
-			if (this.contractsForm.value.contract_year === '') {
-				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
-				return;
+	newSettlementDeductions(deductions: payrollDeduction[]): FormGroup {
+		// console.log(deductions);
+		const form = this.fb.group({});
+		deductions.map((deduction: payrollDeduction) => {
+			// console.log(deduction.en_name);
+			if (deduction.en_name) {
+				form.addControl(
+					deduction.en_name,
+					this.fb.control(
+						'',
+						deduction.isRequired ? [Validators.required] : []
+					)
+					// this.fb.control('', [Validators.required])
+				);
 			}
+		});
 
-			if (!this.contractsForm.get('is_manual').value) {
-				this.submitet = true;
-				await this.global.showLoading('لطفا منتظر بمانید...');
-				this.global.httpPost('contract/calculatePrices', this.contractsForm.value).
-					subscribe(async (res: any) => {
-						this.submitet = false;
+		console.log(form);
+		return form;
+	}
+	newSettlementAdditions(additionList: payrollAddition[]): FormGroup {
+		// console.log(additionList);
+		const form = this.fb.group({});
+		additionList.map((addition: payrollAddition) => {
+			// console.log(addition.en_name);
+			if (addition.en_name) {
+				form.addControl(
+					addition.en_name,
+					this.fb.control(
+						'',
+						addition.isRequired ? [Validators.required] : []
+					)
+
+					// this.fb.control('')
+					// this.fb.control('', [Validators.required])
+				);
+			}
+		});
+
+		console.log(form);
+		return form;
+	}
+
+	async getDatas() {
+		await this.global.showLoading();
+		const limit = 3000;
+		const offset = 0;
+		const settlementAdditionApi = this.global.httpPost(
+			'settlementAddition/filteredList',
+			{ limit, offset }
+		);
+		const settlementDeductionApi = this.global.httpPost(
+			'settlementDeduction/filteredList',
+			{ limit, offset }
+		);
+		const settlementTemplateApi = this.global.httpPost(
+			'settlementTemplate/filteredList',
+			{ limit, offset }
+		);
+		this.global
+			.parallelRequest([
+				settlementAdditionApi,
+				settlementDeductionApi,
+				settlementTemplateApi,
+			])
+			.subscribe(
+				async ([
+					settlementAdditionRes,
+					settlementDeductionRes = '',
+					settlementTemplateRes = '',
+				]) => {
+					await this.global.dismisLoading();
+					this.setSettlementAddition(settlementAdditionRes);
+					this.setPayrollDeduction(settlementDeductionRes);
+					this.fillingSettlementTemplateList(settlementTemplateRes);
+				},
+				async () => {
+					await this.global.dismisLoading();
+				}
+			);
+	}
+
+	async calculatePrices(template: boolean = false) {
+		if (template) {
+			this.settlementTemplateText = '';
+		}
+		if (
+			this.contractsForm.get('business_employee_id').valid &&
+			this.contractsForm.get('settlement_template_id').valid &&
+			this.contractsForm.get('leave_work_date').valid &&
+			this.contractsForm.get('severance_pay_calc_type').valid &&
+			this.contractsForm.get('new_year_gift_calc_type').valid &&
+			this.contractsForm.get('bonus_calc_type').valid &&
+			this.contractsForm.get('unused_leave_calc_type').valid
+		) {
+			await this.global.showLoading();
+			console.log(this.contractsForm.value);
+			this.global
+				.httpPost(
+					'settlement/calculatePrices',
+					this.contractsForm.value
+				)
+				.subscribe(
+					async (res: any) => {
 						await this.global.dismisLoading();
-
-						this.contractsForm.get('bonus').setValue(res.bonus);
-						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
-						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
-						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);
-						this.contractsForm.get('severance_pay').setValue(res.severance_pay);
-						this.contractsForm.get('wage').setValue(res.wage);
-
+						console.log(res);
 						// console.log(res);
-
-					}, async (error: any) => {
-						this.submitet = false;
+						this.contractsForm.patchValue(res);
+						for (const key in res) {
+							console.log(key);
+							console.log(
+								this.settlementAdditionsGroup.controls[0].get(
+									key
+								)
+							);
+							if (
+								this.settlementAdditionsGroup.controls[0].get(
+									key
+								)
+							) {
+								this.settlementAdditionsGroup.controls[0]
+									.get(key)
+									.setValue(res[key]);
+							}
+							if (
+								this.settlementDeductionsGroup.controls[0].get(
+									key
+								)
+							) {
+								this.settlementDeductionsGroup.controls[0]
+									.get(key)
+									.setValue(res[key]);
+							}
+						}
+					},
+					async (error: any) => {
 						await this.global.dismisLoading();
-						this.global.showError(error);
-					});
-			}
-		}
-	}
-
-	
-	calcChildrenAllowance() {
-		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
-			// console.log('calcChildrenAllowance');
-			this.global.httpPost('contract/calculateChildrenAllowance', {
-				contract_year : this.contractsForm.value.contract_year,
-				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
-				employee_ids : this.contractsForm.value.employee_ids
-			}).subscribe(async (res: any) => {
-
-				this.childrenAllowanceFormGroup.controls.map((item:any)=>{
-					const  allowance = res.find((x:any) => x.employee_id === item.value.employee_id).children_allowance ;
-					item.get('children_allowance').setValue(allowance);
-				});
-
-				}, async (error: any) => {
-					this.global.showError(error);
-				});
-		} else {
-			// console.log('no-calcChildrenAllowance')
-		}
-	}
-
-	async onSubmit() {
-		// console.log('submit form');
-		this.contractsForm.markAllAsTouched();
-		// console.log(this.contractsForm)
-		if (this.contractsForm.valid) {
-			this.submitet = true;
-			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPost('contract/add', this.contractsForm.value)
-				.subscribe(async (res: any) => {
-
-					await this.global.dismisLoading();
-					this.navCtrl.navigateForward('/contracts/list');
-					this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
-					this.contractsForm.reset();
-
-				}, async (error: any) => {
-					await this.global.dismisLoading();
-					this.global.showError(error);
-					this.submitet = false;
-				});
-		} else {
-
-			let errors: string[] = [];
-			setTimeout(() => {
-				this.validation.forEach((elem: any) => {
-					if (elem.text) {
-						errors.push('<li class="font-size-14 color-danger">' + elem.text.el.innerText + '</li>');
+						await this.global.showError(error);
+						// console.log(error);
 					}
-				});
-				this.global.showAlert(
-					'خطا',
-					'<ul class="px-4 my-0">' + errors.join('') + '</ul>',
-					[{
-						text: 'متوجه شدم',
-						role: 'yes'
-					}],
-					'ابتدا موارد زیر را بررسی و سپس فرم را ثبت کنید'
-				).then((alert: any) => {
-					alert.present();
-				});
-			}, 100);
-
+				);
+		} else {
+			this.contractsForm.get('emId')?.markAllAsTouched();
+			this.contractsForm.get('bId')?.markAllAsTouched();
+			this.contractsForm.get('contract_id').markAllAsTouched();
+			this.contractsForm.get('year').markAllAsTouched();
+			this.contractsForm.get('month').markAllAsTouched();
+			this.contractsForm.get('working_hour_count').markAllAsTouched();
+			this.contractsForm.get('working_shift_id').markAllAsTouched();
 		}
 	}
 
-
-
+	fillingSettlementTemplateList(data: any) {
+		console.log(data);
+		this.settlementTemplateList = data.list.map(
+			(par: settlementTemplate): settlementTemplate => {
+				return new settlementTemplate().deserialize(par);
+			}
+		);
+		console.log(this.settlementTemplateList);
+	}
+	tagelttlementTemplateText() {
+		console.log(
+			this.contractsForm.controls['settlement_template_id'].value
+		);
+		if (!this.settlementTemplateText || this.settlementTemplateText == '') {
+			const template = this.settlementTemplateList.find(
+				(item: settlementTemplate) => {
+					return (
+						item.id ==
+						this.contractsForm.controls['settlement_template_id']
+							.value
+					);
+				}
+			);
+			console.log(template);
+			this.settlementTemplateText = template.template;
+		} else {
+			this.settlementTemplateText = '';
+		}
+	}
+	setSettlementAddition(settlementAdditionRes: any) {
+		console.log(settlementAdditionRes);
+		this.settlementAdditionList = settlementAdditionRes.list.map(
+			(category: any) => {
+				return new payrollAddition().deserialize(category);
+			}
+		);
+		console.log(this.settlementAdditionList);
+		this.settlement_additions.push(
+			this.newSettlementAdditions(this.settlementAdditionList)
+		);
+	}
+	setPayrollDeduction(settlementDeductionRes: any) {
+		// console.log(settlementDeductionRes);
+		this.settlementDeductionList = settlementDeductionRes.list.map(
+			(category: any) => {
+				return new payrollDeduction().deserialize(category);
+			}
+		);
+		// console.log(this.settlementDeductionList);
+		this.settlement_deductions.push(
+			this.newSettlementDeductions(this.settlementDeductionList)
+		);
+	}
+	async onSubmit(){
+		if (this.contractsForm.valid) {
+			await this.global.showLoading()
+			this.global.httpPost('settlement/add',this.contractsForm.value).subscribe(
+				async (res:any) => {
+					await this.global.dismisLoading()
+					console.log(res);
+					this.global.showToast('تسویه حساب با موفقیت ثبت شد')
+					this.navCtrl.navigateForward('/businesses/detail/'+res.business_id);
+				},
+				async (error:any) => {
+					await this.global.dismisLoading()
+					this.global.showError(error)
+					console.log(error);
+				}
+			)
+		}
+	}
 }

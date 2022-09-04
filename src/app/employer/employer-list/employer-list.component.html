@@ -39,21 +39,41 @@
 				</div>
 
 				<!-- جستجو بر اساس نام  -->
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="search-input-2">
 						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_name"  placeholder="نام کارفرما"></ion-searchbar>
 					</div>
 				</div>
 				<!-- جست جو بر اساس کد ملی -->
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="search-input-2">
 						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_national_code"  placeholder="کد ملی"></ion-searchbar>
 					</div>
 				</div>
 				<!-- جست جو بر اساس شماره همراه -->
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="search-input-2">
 						<ion-searchbar enterkeyhint="" debounce="1000" (ionChange)="getData(true)" [(ngModel)]="filtered_phone" type="phone"  placeholder="موبایل"></ion-searchbar>
+					</div>
+				</div>
+				<!--  filtered_is_active -->
+				<div class="col-md-3">
+					<div class="search-input-2">
+						<ng-select
+							[items]="[{name:'فعال',value:true},{name:'غیر فعال',value:false}]"
+							placeholder="وضعیت کارفرما"
+							(change)="getData(true)" [(ngModel)]="filtered_is_active" 
+							bindLabel="name"
+							bindValue="value"
+							
+							loadingText="لطفا صبر کنید ..."
+							notFoundText="مناسفانه وضعیت یافت نشد"
+						
+							[clearable]="true"
+							
+						>
+						</ng-select>
+						
 					</div>
 				</div>
 			</div>
@@ -65,6 +85,7 @@
 							<th class="ion-text-center">#</th>
 							<th scope="col">نام و نام خانوادگی</th>
 							<th scope="col">شماره همراه / کد کلی</th>
+							<th scope="col">وضعیت</th>
 							<th class="ion-text-left" scope="col"></th>
 						</tr>
 					</thead>
@@ -88,9 +109,22 @@
 								<span class="d-inline-flex flex-row ion-align-items-center ion-justify-content-between"> <ion-icon class="ml-2" name="call"></ion-icon> <span>{{ item.mobile }}</span></span> /
 								<span class="d-inline-flex flex-row ion-align-items-center ion-justify-content-between"> <ion-icon class="ml-2" name="card"></ion-icon> <span >{{ item.national_code }}</span></span>
 							</td>
+							<td>
+							{{item.is_active?'فعال ':'غیر فعال '}}
+							</td>
 							<!-- <td>فناری اطلاعات و ارتباطاات</td> -->
 							<td class="ion-text-left">
 								<ion-buttons class="justify-content-end">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="trigerBanItem(item)" *ngIf="global.userPermision['employer_set_active']&&item.is_active"
+										tooltip="غیر فعال کردن">
+										<ion-icon size="small" color="medium" slot="icon-only" name="ban">
+										</ion-icon>
+									</ion-button>
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="trigerBanItem(item)" *ngIf="global.userPermision['employer_set_active']&&!item.is_active"
+										tooltip=" فعال کردن">
+										<ion-icon size="small" color="medium" slot="icon-only" name="checkmark-circle">
+										</ion-icon>
+									</ion-button>
 									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['employers_delete']"
 										tooltip="حذف">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
