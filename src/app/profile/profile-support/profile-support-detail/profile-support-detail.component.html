@@ -41,7 +41,15 @@
 			<div class="ticket-list">
 				<div class="ticket-item user">
 					<div class="ticket-description">
-						<div class="dscription" [innerHTML]="dataList.content"></div>
+						<div class="row">
+							<div class="dscription"  [class.col-12]="!true" [class.col-7]="true" [innerHTML]="dataList.content|safeHtml"></div>
+							
+														<ion-button  class="col-3" *ngIf="global.userPermision['payrolls_payroll_add']&&true" shape="round" color="success" (click)="submitPayroll()">
+															<ion-icon slot="start" name="add-circle"></ion-icon>
+															فیش حقوقی
+														</ion-button>
+						</div>
+
 						<div class="date"> ارسال شده در : {{ dataList.createdAt }} </div>
 					</div>
 					<div class="ticket-info">
@@ -53,7 +61,7 @@
 				</div>
 				<div class="ticket-item"  *ngFor="let item of dataList?.details" [class.admin]="item.responder_info.id!==dataList.sender_info.id" [class.user]="item.responder_info.id===dataList.sender_info.id">
 					<div class="ticket-description">
-						<div class="dscription" [innerHTML]="item.content"></div>
+						<div class="dscription" [innerHTML]="item.content|safeHtml"></div>
 						<div class="date"> ارسال شده در : {{ item.createdAt }} </div>
 					</div>
 					<div class="ticket-info">

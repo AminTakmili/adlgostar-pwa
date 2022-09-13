@@ -192,8 +192,65 @@ export const globalData = {
 					function: 'showDetail',
 					access: true,
 				},
+				{
+					name: 'تسویه حساب',
+					url: 'payrolls/settlement/list',
+					src: '/assets/svg/settlementIcon.svg',
+					function: 'showDetail',
+					access: true,
+				},
 			],
 		},
+		// {
+		// 	name: ' تسویه حساب',
+		// 	icon: 'document-text',
+		// 	open: false,
+		// 	state: 'close',
+		// 	function: 'showDetail',
+		// 	access: true,
+		// 	submenu: [
+		// 		{
+		// 			name: 'اطلاعات پایه  تسویه حساب ',
+		// 			// url: '/payrolls/payroll_base_info',
+		// 			icon: 'document-text',
+		// 			function: 'showDetail',
+				
+		// 			open: false,
+		// 			state: 'close',
+		// 			childeren: [
+					
+		// 				{
+		// 					name: 'قالب های تسویه حساب ',
+		// 					url: '/payrolls/payroll_base_info/settlement/template/list',
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 				{
+		// 					name: ' اضافات تسویه حساب ',
+		// 					url: "/payrolls/payroll_base_info/settlement/addition/list",
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 				{
+		// 					name: ' کسورات تسویه حساب ',
+		// 					url: "/payrolls/payroll_base_info/settlement/deduction/list",
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 			],
+		// 		},
+		// 		{
+		// 			name: 'تسویه حساب',
+		// 			url: '/settlement/list',
+		// 			icon: 'list',
+		// 			function: 'showDetail',
+		// 			access: true,
+		// 		},
+		// 	],
+		// },
 		{
 			name: ' گزارشات',
 			icon: 'receipt',

@@ -100,6 +100,8 @@ export class ContractEditComponent implements OnInit {
 			pension_cost: [0, Validators.compose([Validators.required])],
 			calc_payroll_tax: [0, Validators.compose([Validators.required])],
 			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
+			calc_without_pay_leave_monthly: [0, Validators.compose([Validators.required])],
+
 			calc_severance_base: [true],
 			calc_severance_pay_monthly: [true],
 			calc_bonus_monthly: [true],
@@ -300,6 +302,7 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('is_manual').setValue(this.dataList.is_manual ? true : false);
 			this.contractsForm.get('calc_payroll_tax').setValue(this.dataList.calc_payroll_tax ? true : false);
 			this.contractsForm.get('calc_unused_leave_monthly').setValue(this.dataList.calc_unused_leave_monthly ? true : false);
+			this.contractsForm.get('calc_without_pay_leave_monthly').setValue(this.dataList.calc_without_pay_leave_monthly ? true : false);
 		
 			// this.dataList.children_allowances.map((item:any)=>{
 			// 	this.childrenAllowancesList.push(this.childrenAllowance(item.business_employee_id , item.employee_id , item.children_allowance ));

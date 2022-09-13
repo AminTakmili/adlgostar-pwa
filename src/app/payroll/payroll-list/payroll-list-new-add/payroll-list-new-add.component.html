@@ -54,6 +54,7 @@
 		loadingText="لطفا صبر کنید ..."
 		notFoundText="مناسفانه کسب و کاری یافت نشد"
 		(change)="getData()"
+		(focus)="businessChange()"
 	
 	>
 	</ng-select>
@@ -99,7 +100,7 @@
 			<div *ngIf="!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">اطلاعتی یافت نشد.</h4>
 				<p class="dsec">
-					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قراداد تایید شده ندارد.
+					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قرادادی ندارد.
 				</p>
 			</div>
 

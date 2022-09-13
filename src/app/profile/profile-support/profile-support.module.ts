@@ -1,3 +1,4 @@
+import { PipeModule } from './../../core/pipes/pipe.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
@@ -23,6 +24,7 @@ import { ShareModulePageModule } from 'src/app/share-module/share-module.module'
 		NgSelectModule,
 		NgSelectModule,
 		NgxPaginationModule,
+		PipeModule
 	],
 	declarations: [
 		ProfileSupportAddComponent,

@@ -14,6 +14,7 @@ export class StaticData implements Deserializable {
 	years!: DataSets[];
 	working_shifts!:DataSets[];
 	ticket_status!: DataSets[];
+	settlement_calc_type!: DataSets[];
 	notification_types!: notificationType[];
 	deserialize(input: any): this {
 		Object.assign(this, input);

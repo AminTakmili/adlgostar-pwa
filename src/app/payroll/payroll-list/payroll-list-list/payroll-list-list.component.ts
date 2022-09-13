@@ -254,7 +254,7 @@ export class PayrollListListComponent implements OnInit {
 		this.getData();
 	}
 
-	removeWorkingHour(item: payrollList) {
+	removePayrollHour(item: payrollList) {
 		this.global
 			.showAlert('حذف ' + this.pageTitle, 'آیا برای حذف اطمینان دارید؟', [
 				{
@@ -275,6 +275,49 @@ export class PayrollListListComponent implements OnInit {
 						await this.global.showLoading('لطفا منتظر بمانید...');
 						this.global
 							.httpDelete('payroll/delete', {
+								id: item.id,
+							})
+							.subscribe(
+								
+								async (res: any) => {
+									await this.global.dismisLoading();
+									this.offset = 0;
+									this.CurrentPage = 1;
+									this.getData();
+									this.global.showToast(res.msg);
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+								}
+							);
+					}
+				});
+			});
+	}
+
+	confirmedPayrollHour(item: payrollList) {
+		this.global
+			.showAlert('تایید  ' + this.pageTitle,			
+			 `آیا برای تایید فیش حقوقی ${this.global.getMonthName[item.month]} ماه سال ${item.year} ${item.contract_info.employee_info[0].first_name } ${item.contract_info.employee_info[0].last_name } اطمینان دارید؟`, [
+				{
+					text: 'بلی',
+					role: 'yes',
+					cssClass: 'dark',
+				},
+				{
+					text: 'خیر',
+					role: 'cancel',
+					cssClass: 'medium',
+				},
+			])
+			.then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						await this.global.showLoading('لطفا منتظر بمانید...');
+						this.global
+							.httpPost('payroll/confirm', {
 								id: item.id,
 							})
 							.subscribe(

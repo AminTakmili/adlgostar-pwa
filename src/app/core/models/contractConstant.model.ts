@@ -118,6 +118,8 @@ export class contract implements Deserializable {
 	is_manual !: boolean;
 	calc_payroll_tax !: boolean;
 	calc_unused_leave_monthly !: boolean;
+	calc_without_pay_leave_monthly !: boolean;
+
 	provisos !: ConditionInContract[];
 	extra_fields !: ContractExtraField[];
 	employers_info !:  Employer[];

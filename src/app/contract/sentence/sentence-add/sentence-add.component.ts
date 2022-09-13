@@ -91,6 +91,7 @@ export class SentenceAddComponent implements OnInit {
 			pension_cost: ['', Validators.compose([Validators.required,Validators.min(0)])],
 			calc_payroll_tax: [false, Validators.compose([Validators.required])],
 			calc_unused_leave_monthly: [false,Validators.compose([Validators.required])],
+			calc_without_pay_leave_monthly: [false,Validators.compose([Validators.required])],
 			has_monthly_severance_pay: [true,Validators.compose([Validators.required])],
 			has_monthly_new_year_gift: [true,Validators.compose([Validators.required])],
 			has_monthly_bonus: [true,Validators.compose([Validators.required])],

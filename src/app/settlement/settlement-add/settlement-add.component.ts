@@ -1,3 +1,5 @@
+import { Employee, businessEmployeeInfo } from './../../core/models/employee.model';
+import { DataSets } from 'src/app/core/models/StaticData.model';
 import {
 	payrollDeduction,
 	payrollAddition,
@@ -58,16 +60,29 @@ export class SettlementAddComponent implements OnInit {
 	businessEmployeeId: string;
 	settlementAdditionList: payrollAddition[];
 	settlementDeductionList: payrollDeduction[];
+	settlementCalcType!:DataSets[]
+	employeelist$: Observable<Employee[]>;
+	employeeInputLoading = false;
+	employeeInput$ = new Subject<string>();
+	minLengthTerm = 3;
+	businessList!: businessEmployeeInfo[];
 
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private rout: ActivatedRoute
+		private rout: ActivatedRoute,
+		
 	) {
+
+		// console.log(SettlementAddComponent);
+		// console.log(SettlementAddComponent.);
 		this.businessEmployeeId = rout.snapshot.paramMap.get('businessEmId');
+		
 		this.contractsForm = this.fb.group({
+			bId: [this.businessEmployeeId],
+			emId: [this.businessEmployeeId],
 			business_employee_id: [this.businessEmployeeId],
 			settlement_template_id: [
 				,
@@ -98,28 +113,28 @@ export class SettlementAddComponent implements OnInit {
 			children_allowance: [0, Validators.compose([Validators.required])],
 
 			calc_wage_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
 			calc_grocery_allowance_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
 			calc_housing_allowance_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
 			calc_children_allowance_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
 			calc_severance_pay_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
-			calc_new_year_gift_monthly: [true],
+			calc_new_year_gift_monthly: [1],
 			calc_bonus_monthly: [
-				true,
+				1,
 				Validators.compose([Validators.required]),
 			],
 
@@ -135,8 +150,15 @@ export class SettlementAddComponent implements OnInit {
 		) as FormArray;
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.setTitle();
+		await this.global.baseData.subscribe((value) => {
+			if (value) {
+				// console.log(value);
+				this.settlementCalcType = value.settlement_calc_type;
+			}
+		});
+		this.loadEmployee()
 	}
 
 	ionViewWillEnter() {
@@ -181,7 +203,7 @@ export class SettlementAddComponent implements OnInit {
 		return form;
 	}
 	newSettlementAdditions(additionList: payrollAddition[]): FormGroup {
-		// console.log(additionList);
+		console.log(additionList);
 		const form = this.fb.group({});
 		additionList.map((addition: payrollAddition) => {
 			// console.log(addition.en_name);
@@ -241,6 +263,98 @@ export class SettlementAddComponent implements OnInit {
 				}
 			);
 	}
+	clearEmployee(){
+		this.contractsForm.get('emId').setValue(null);
+		this.contractsForm.get('bId').setValue(null);
+		this.contractsForm.get('business_employee_id').setValue(null);
+		this.employeelist$ = of([]);
+		this.businessList = undefined;
+		this.loadEmployee();
+	}
+	
+	loadEmployee() {
+		this.employeelist$ = concat(
+			of([]), // default items
+			this.employeeInput$.pipe(
+				filter((res) => {
+					return res !== null && res.length >= this.minLengthTerm;
+				}),
+				distinctUntilChanged(),
+				debounceTime(800),
+				tap(() => (this.employeeInputLoading = true)),
+				switchMap((term) => {
+					return this.getEmployee(term).pipe(
+						catchError(() => of([])), // empty list on error
+						tap(() => (this.employeeInputLoading = false))
+					);
+				})
+			)
+		);
+	}
+
+	getEmployee(term: string = null): Observable<any> {
+		return this.global
+			.httpPost('employee/filteredList', {
+				filtered_name: term,
+				for_combo: true,
+				limit: 1000,
+				offset: 0,
+			})
+			.pipe(
+				map((resp) => {
+					if (resp.Error) {
+						throwError(resp.Error);
+					} else {
+						return resp.list.map((item: any) => {
+							return new Employee().deserialize(item);
+						});
+					}
+				})
+			);
+	}
+
+	changEemployee(employee: Employee) {
+		console.log(employee);
+		console.log(employee?.business_employee_info);
+		if (employee?.business_employee_info.length == 1) {
+			// this.getContract(employee.id);
+			this.businessList = undefined;
+			this.contractsForm
+				.get('business_employee_id')
+				.setValue(employee?.business_employee_info[0].id);
+				this.calculatePrices()
+			// console.log( this.contractsForm.get('business_employee_id').value);
+		} else if (employee?.business_employee_info.length > 1) {
+			this.businessList = employee?.business_employee_info;
+		} else {
+			this.businessList = undefined;
+
+			if (employee) {
+				this.global.showToast(
+					'متاسفانه این کارمند در هیچ کسب و کاری نیست',
+					1000,
+					'middle',
+					'danger',
+					'ios'
+				);
+				this.contractsForm.get('emId').setValue(null);
+				this.employeelist$ = of([]);
+				this.contractsForm.get('emId').markAsTouched();
+				this.loadEmployee();
+			}
+		}
+	}
+	changBusiness(busines: businessEmployeeInfo) {
+		// console.log(busines.business.id);
+		// console.log(this.contractsForm.get('emId').value);
+		// this.getContract(this.contractsForm.get('emId').value,busines.business.id);
+		if (busines) {
+			this.contractsForm.get('business_employee_id').setValue(busines?.id);
+
+			console.log(this.contractsForm.get('business_employee_id').value);
+			this.calculatePrices()
+		}
+	}
 
 	async calculatePrices(template: boolean = false) {
 		if (template) {
@@ -294,6 +408,8 @@ export class SettlementAddComponent implements OnInit {
 									.setValue(res[key]);
 							}
 						}
+						console.log(this.settlementAdditionsGroup.controls[0].value);
+						console.log(this.settlementDeductionsGroup.controls[0].value);
 					},
 					async (error: any) => {
 						await this.global.dismisLoading();
@@ -304,11 +420,11 @@ export class SettlementAddComponent implements OnInit {
 		} else {
 			this.contractsForm.get('emId')?.markAllAsTouched();
 			this.contractsForm.get('bId')?.markAllAsTouched();
-			this.contractsForm.get('contract_id').markAllAsTouched();
-			this.contractsForm.get('year').markAllAsTouched();
-			this.contractsForm.get('month').markAllAsTouched();
-			this.contractsForm.get('working_hour_count').markAllAsTouched();
-			this.contractsForm.get('working_shift_id').markAllAsTouched();
+			// this.contractsForm.get('contract_id').markAllAsTouched();
+			// this.contractsForm.get('year').markAllAsTouched();
+			// this.contractsForm.get('month').markAllAsTouched();
+			// this.contractsForm.get('working_hour_count').markAllAsTouched();
+			// this.contractsForm.get('working_shift_id').markAllAsTouched();
 		}
 	}
 
@@ -366,6 +482,7 @@ export class SettlementAddComponent implements OnInit {
 		);
 	}
 	async onSubmit(){
+		console.log(this.contractsForm.value);
 		if (this.contractsForm.valid) {
 			await this.global.showLoading()
 			this.global.httpPost('settlement/add',this.contractsForm.value).subscribe(
@@ -373,7 +490,8 @@ export class SettlementAddComponent implements OnInit {
 					await this.global.dismisLoading()
 					console.log(res);
 					this.global.showToast('تسویه حساب با موفقیت ثبت شد')
-					this.navCtrl.navigateForward('/businesses/detail/'+res.business_id);
+					this.navCtrl.back();
+					// this.navCtrl.navigateForward('/businesses/detail/'+res.business_id);
 				},
 				async (error:any) => {
 					await this.global.dismisLoading()

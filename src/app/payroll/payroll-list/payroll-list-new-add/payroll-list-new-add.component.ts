@@ -1,3 +1,5 @@
+import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { BusinessList } from 'src/app/core/models/business.model';
 import { SeoService } from 'src/app/core/services/seo.service';
 import { DataSets } from 'src/app/core/models/StaticData.model';
@@ -14,7 +16,7 @@ import {
 	tap,
 } from 'rxjs/operators';
 import { payroll } from 'src/app/core/models/payroll-base-info.model';
-
+import * as moment from 'jalali-moment';
 @Component({
 	selector: 'app-payroll-list-new-add',
 	templateUrl: './payroll-list-new-add.component.html',
@@ -39,14 +41,34 @@ export class PayrollListNewAddComponent implements OnInit {
 	minLengthTerm = 3;
 	business_id: number;
 	loading: boolean = false;
+	businessId: string;
 
-	constructor(public global: GlobalService, private seo: SeoService) {}
+	constructor(
+		private navCtrl: NavController,
+		public global: GlobalService,
+		private seo: SeoService,
+		public route: ActivatedRoute
+	) {
+
+	}
 
 	ngOnInit() {
 		// this.getData()
-		this.loadBusiness();
 	}
+
 	async ionViewWillEnter() {
+		this.businessId = this.route.snapshot.queryParamMap.get('business_id');
+		this.monthNumber = Number(  this.route.snapshot.queryParamMap.get('month'));
+		this.yeraNumber = Number(this.route.snapshot.queryParamMap.get('year'));
+
+
+		console.log(
+			moment(new Date(), 'YYYY-M-D HH:mm:ss')
+				.locale('fa')
+				.format('YYYY/M/D HH:mm:ss')
+		);
+
+		console.log(moment(new Date(), 'jYYYY/jM/jD'));
 		// console.log(this.global.baseData);
 		await this.global.baseData.subscribe((value) => {
 			if (value) {
@@ -55,9 +77,33 @@ export class PayrollListNewAddComponent implements OnInit {
 		});
 		this.monthList = this.global.monthList;
 
-		// console.log(this.monthList,	this.yearsList);
-		// this.getData();
 		this.setTitle();
+		if (!this.route.snapshot.queryParamMap.get('year')) {
+
+			this.yeraNumber = Number(
+				moment(new Date(), 'YYYY-M-D HH:mm:ss').locale('fa').format('YYYY')
+			);
+			
+		}
+		if ( !this.route.snapshot.queryParamMap.get('month')) {
+			
+			this.monthNumber = Number(
+				moment(new Date(), 'YYYY-M-D HH:mm:ss').locale('fa').format('M')
+			);
+		}
+		// this.yeraNumber = Number(
+		// 	moment(new Date(), 'YYYY-M-D HH:mm:ss').locale('fa').format('YYYY')
+		// );
+
+		
+		console.log(this.businessId);
+		if (this.businessId) {
+		console.log("object");
+			this.getBusinessById(this.businessId);
+		} else {
+			// this.loadbusiness();
+			this.loadBusiness();
+		}
 	}
 	setTitle() {
 		this.seo.generateTags({
@@ -105,6 +151,42 @@ export class PayrollListNewAddComponent implements OnInit {
 		}
 		// console.log( this.datasList);
 	}
+	businessChange() {
+		if (this.businessId) {
+			this.loadBusiness();
+		}
+	}
+	async getBusinessById(filtered_business_id: string = null) {
+		await this.global.showLoading();
+		console.log(filtered_business_id);
+		this.global
+			.httpPost('business/filteredList', {
+				filtered_business_id,
+				
+				limit: 1000,
+				offset: 0,
+			})
+			.subscribe(
+				async (res: any) => {
+					await this.global.dismisLoading();
+					console.log(of(res.list), res.list[0].id);
+					this.businesslist$ = of(
+						res.list.map((item: any) => {
+							return new BusinessList().deserialize(item);
+						})
+					);
+
+					this.business_id = res.list[0]?.id;
+					this.getData();
+				},
+				async (error: any) => {
+					await this.global.dismisLoading();
+
+					this.global.showError(error);
+					console.log(error);
+				}
+			);
+	}
 	loadBusiness() {
 		this.businesslist$ = concat(
 			of([]), // default items
@@ -151,21 +233,28 @@ export class PayrollListNewAddComponent implements OnInit {
 			business_id: this.business_id,
 			month: this.monthNumber,
 			year: this.yeraNumber,
-			detail: e,
+			list: e,
 		};
-		console.log(sendObj);
+		// console.log(sendObj);
 		await this.global.showLoading();
 		await this.global
 			.httpPost('payroll/addBusinessPayrollList', sendObj)
 			.subscribe(
 				async (res: any) => {
 					await this.global.dismisLoading();
-					console.log(res);
+					// console.log(res);
+					this.global.showToast(
+						'فیش حقوقی ثبت شد',
+						800,
+						'top',
+						'success'
+					);
+					this.navCtrl.navigateForward('/payrolls/payroll/list');
 				},
 				async (error: any) => {
 					await this.global.dismisLoading();
 					await this.global.showError(error);
-					console.log(error);
+					// console.log(error);
 				}
 			);
 	}

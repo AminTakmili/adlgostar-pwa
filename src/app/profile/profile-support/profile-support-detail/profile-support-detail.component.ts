@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IonModal, NavController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
 import { Support } from 'src/app/core/models/supoort.model';
@@ -27,6 +27,7 @@ export class ProfileSupportDetailComponent implements OnInit {
 		private seo: SeoService,
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
+		private router: Router,
 		private fb: FormBuilder,
 	) {
 		this.ticketform = this.fb.group({
@@ -201,6 +202,21 @@ export class ProfileSupportDetailComponent implements OnInit {
 		
 		}
 
+	}
+	submitPayroll(){
+		let businessId =document.getElementById('businessId').innerText
+		let month =document.getElementById('month').innerText
+		let year =document.getElementById('year').innerText
+		console.log(month,businessId);
+
+		let navigationExtras: NavigationExtras = {
+			queryParams: { 'business_id': businessId,'month': month,year:year },
+			// fragment: 'anchor'
+		  };
+		//   [routerLink]="['/payrolls/payroll/add']" [queryParams]="{business_id: 3,year:1401,month:6}"
+		  
+		  // Navigate to the login page with extras
+		  this.router.navigate(['/payrolls/payroll/add'], navigationExtras);
 	}
 
 }

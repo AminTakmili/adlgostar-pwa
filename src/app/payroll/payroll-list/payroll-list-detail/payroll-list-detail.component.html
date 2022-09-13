@@ -1,0 +1,41 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">جزیات فیش حقوقی جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید جزیات فیش حقوقی را ببینید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+`		
+			<ion-button shape="round" color="success" (click)="printContract('preview')">
+				<ion-icon slot="start" name="print"></ion-icon>
+				پرینت کن
+			</ion-button>
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="/payrolls/payroll" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+				
+				</ion-button>
+
+			</div>
+		</div>
+	</div>
+  <main>
+	<div class="container">
+		<div class="raper">
+
+			<app-preview-payroll *ngIf="dataObject" #previewPayroll [list]="dataObject"></app-preview-payroll>
+		</div>
+
+	</div>
+
+  </main>
+
+</ion-content>

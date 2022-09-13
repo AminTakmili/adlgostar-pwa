@@ -1,3 +1,4 @@
+import { PreviewPayrollComponent } from './preview-payroll/preview-payroll.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { PayrollPageRoutingModule } from './payroll-routing.module';
     IonicModule,
     PayrollPageRoutingModule
   ],
-  // declarations: [PayrollPage]
+  // exports:[PreviewPayrollComponent],
+  // declarations: [PreviewPayrollComponent]
 })
 export class PayrollPageModule {}

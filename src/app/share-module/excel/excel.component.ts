@@ -73,7 +73,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		working_night_hour_count: 'ساعت شب کاری',
 
-		working_night_price: 'مقدار شب کاری',
+		working_night_price: 'مبلغ شب کاری',
 
 		unused_leave_amount: 'مبلغ مرخصی استفاده نشده',
 
@@ -93,9 +93,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		remaining_cumulative_leave: 'مانده مرخصی تجمیعی',
 
-		commission: 'کمسیون',
+		commission: 'پورسانت',
 
-		car_fuel: 'حق سوخت',
+		car_fuel: 'هزینه سوخت خودرو',
 
 		attract_allowance: 'حق جذب',
 
@@ -113,7 +113,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		insurance_wage: 'مبلغ دستمزد روزانه حق بیمه',
 
-		insurance_allowance: '70% حق بیمه',
+		insurance_allowance: '7% حق بیمه',
 
 		employer_insurance_allowance: 'حق بیمه سهم کارفرما',
 
@@ -123,21 +123,21 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		working_deficit_amount: 'مقدار کسر کار',
 
-		loan_installment_amount: 'کسر وام',
+		loan_installment_amount: 'کسر قسط وام',
 
 		advance_money: 'کسر مساعده',
 
 		purchase_invoice_from_company: 'خرید از شرکت',
 
-		food_cost: 'حق غذا',
+		food_cost: 'هزینه استفاده از غذای پرسنلی ',
 
-		pension_cost: 'هزینه پانسیون',
+		pension_cost: 'هزینه اجاره پانسیون ',
 
 		//  اضافه اکسل
 
-		delay_penalty: 'جریمه تاخیر',
+		// delay_penalty: 'جریمه تاخیر',
 
-		absence_penalty: 'جریمه غیبت',
+		// absence_penalty: 'جریمه غیبت',
 
 		fund_reserve: 'ذخیره صندوق',
 
@@ -156,6 +156,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 		without_pay_leave: 'تعداد مرخصی بدون حقوق',
 
 		without_pay_leave_amount: 'مبلغ مرخصی بدون حقوق',
+		calc_unused_leave_monthly: ' مرخصی استفاده نشده محاسبه میشود؟',
+		calc_payroll_tax: 'مالیات محاسبه میشود؟',
 	};
 
 	calcparametr: string[] = [
@@ -238,7 +240,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		console.log(this.allDataInpu);
 		this.gridRows = this.allDataInpu.length;
-		this.gridColumns = Object.keys(this.allDataInpu[0]).length;
+		// * +1 for checkbox 
+		
+		this.gridColumns = Object.keys(this.allDataInpu[0]).length +1;
 		// console.log(this.gridColumns,this.gridRows);
 		this.creatAlfab(this.gridColumns);
 		// this.gridColumns=Object.keys(this.excelBaceColumnsTitle).length;
@@ -268,11 +272,13 @@ export class ExcelComponent implements OnInit, OnChanges {
 	newexcelCell(employee: any): FormGroup {
 		// console.log(employee, employee.employee_id);
 		return this.fb.group({
+			isWant: [true],
+			id: [employee.id],
 			contract_id: [employee.contract_id],
 			business_employee_id: [employee.business_employee_id],
 			employee_id: [employee.employee_id],
 			full_name: [employee.full_name],
-			working_shift_id: [employee.working_shift_id],
+			working_shift_id: [employee.working_shift_id?employee.working_shift_id:' '],
 			working_day_count: [employee.working_day_count],
 			working_hour_count: [employee.working_hour_count],
 			addition_hour_friday_or_holiday: [
@@ -328,8 +334,10 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 			food_cost: [employee.food_cost],
 			pension_cost: [employee.pension_cost],
+			// حذف شدن
 			delay_penalty: [employee.delay_penalty],
 			absence_penalty: [employee.absence_penalty],
+			// 
 			fund_reserve: [employee.fund_reserve],
 			fund_reserve_yearly_repay: [employee.fund_reserve_yearly_repay],
 			sum_payroll_deductions: [employee.sum_payroll_deductions],
@@ -341,6 +349,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 			without_pay_leave: [employee.without_pay_leave],
 			without_pay_leave_amount: [employee.without_pay_leave_amount],
+			calc_unused_leave_monthly: [ employee.calc_unused_leave_monthly==0?'خیر':employee.calc_unused_leave_monthly==1?'بله':employee.calc_unused_leave_monthly],
+			calc_payroll_tax: [ employee.calc_payroll_tax==0?'خیر':employee.calc_payroll_tax==1?'بله':employee.calc_payroll_tax],
+			// calc_payroll_tax: [employee.calc_payroll_tax==0?'خیر':'بله'],
 		});
 	}
 	//
@@ -449,7 +460,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		if (
 			item.controls.business_employee_id.value&&
 			item.controls.contract_id.value &&
-			item.controls.working_shift_id.value&&
+			// item.controls.working_shift_id.value&&
 			item.controls.working_hour_count.value&&
 			item.controls.insurance_day_count.value&&
 			item.controls.insurance_wage.value&&
@@ -492,10 +503,48 @@ export class ExcelComponent implements OnInit, OnChanges {
 		}
 
 	}
+	checkAll(i:number){
 
-	submit() {
+		if (i==0) {
+			// console.log(e);
+			this.excelForm.value.excelCell.map((item:any,index:string)=>{
+				console.log(item.isWant);
+				
+				if (index) {
+					
+					// console.log(this.excelForm.value.excelCell[0].isWant);
+					// item.isWant=this.excelForm.value.excelCell[0].isWant
+					document.getElementById(index).click()
+					// console.log(	);
+					
+					
+				}
+			})
+			console.log(	this.excelForm.value.excelCell);
+		}
+	}
+
+async	submit() {
+		// console.log(this.excelForm.value.excelCell[0].isWant);
+		let domyList:any[]=[]
 		this.excelForm.value.excelCell.shift()
-		this.Data.emit(this.excelForm.value.excelCell);
+	console.log(this.excelForm.value.excelCell);
+	this.excelForm.value.excelCell.map((item:any)=>{
+		console.log(item.isWant);
+		if (item.isWant) {
+			domyList.push(item)
+		}
+	})
+
+	console.log(domyList);
+	if (domyList&&domyList.length) {
+		this.Data.emit(domyList);
+		
+	}else{
+		this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle)
+		this.global.showToast('لطفا حداقل یک کارمند را انتخاب کنید',800,'top','danger','ios')
+	}
+	
 		// this.excelForm.reset()
 			// this.allDataInpu = [this.excelBaceColumnsTitle];
 			
