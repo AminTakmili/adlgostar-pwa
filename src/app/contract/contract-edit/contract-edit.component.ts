@@ -1,19 +1,21 @@
-import { contractFooterTemplate, contractHeaderTemplate } from './../../core/models/contractConstant.model';
+import * as _ from 'lodash';
+
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, NavController } from '@ionic/angular';
+import { contract, contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
+import { contractFooterTemplate, contractHeaderTemplate } from './../../core/models/contractConstant.model';
+
+import { ActivatedRoute } from '@angular/router';
+import { BusinessList } from 'src/app/core/models/business.model';
+import { CKEditorComponent } from 'ng2-ckeditor';
+import { Employee } from 'src/app/core/models/employee.model';
+import { Employer } from 'src/app/core/models/employer.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
-import { CKEditorComponent } from 'ng2-ckeditor';
-import { format } from 'date-fns-jalali'
-import { BusinessList } from 'src/app/core/models/business.model';
-import { Employee } from 'src/app/core/models/employee.model';
-import { contract, contractConditions, contractTemplate } from 'src/app/core/models/contractConstant.model';
-import * as _ from 'lodash';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
+import { format } from 'date-fns-jalali'
 import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalculation.model';
-import { ActivatedRoute } from '@angular/router';
-import { Employer } from 'src/app/core/models/employer.model';
 
 @Component({
 	selector: 'app-contract-edit',
@@ -98,6 +100,8 @@ export class ContractEditComponent implements OnInit {
 			pension_cost: [0, Validators.compose([Validators.required])],
 			calc_payroll_tax: [0, Validators.compose([Validators.required])],
 			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
+			calc_without_pay_leave_monthly: [0, Validators.compose([Validators.required])],
+
 			calc_severance_base: [true],
 			calc_severance_pay_monthly: [true],
 			calc_bonus_monthly: [true],
@@ -298,9 +302,11 @@ export class ContractEditComponent implements OnInit {
 			this.contractsForm.get('is_manual').setValue(this.dataList.is_manual ? true : false);
 			this.contractsForm.get('calc_payroll_tax').setValue(this.dataList.calc_payroll_tax ? true : false);
 			this.contractsForm.get('calc_unused_leave_monthly').setValue(this.dataList.calc_unused_leave_monthly ? true : false);
-			this.dataList.children_allowances.map((item:any)=>{
-				this.childrenAllowancesList.push(this.childrenAllowance(item.business_employee_id , item.employee_id , item.children_allowance ));
-			});
+			this.contractsForm.get('calc_without_pay_leave_monthly').setValue(this.dataList.calc_without_pay_leave_monthly ? true : false);
+		
+			// this.dataList.children_allowances.map((item:any)=>{
+			// 	this.childrenAllowancesList.push(this.childrenAllowance(item.business_employee_id , item.employee_id , item.children_allowance ));
+			// });
 			console.log(this.childrenAllowancesList);
 
 			const employeeList = this.dataList.employee_info.map((item: any) => {return new Employee().deserialize(item);});
@@ -469,6 +475,13 @@ export class ContractEditComponent implements OnInit {
 		this.employeeList = data.list.map((item: any) => {
 			return new Employee().deserialize(item);
 		});
+		const employeeList = this.dataList.employee_info.map((item: any) => {return new Employee().deserialize(item);});
+
+		const employee_id : number[] = employeeList.map((item:any)=>{return item.id;});
+
+		this.AddAlowences(employee_id[0])
+
+		
    }
 
 	async CalculationField() {
@@ -507,6 +520,7 @@ export class ContractEditComponent implements OnInit {
 	}
 
 	AddAlowences(event: any) {
+		console.log('addddddddddddddddddddddd',event);
 		const data = this.employeeList.find(x=> x.id === event);
 		this.businessEmpId.push(data.business_employee_info[0].id);
 		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
@@ -517,10 +531,21 @@ export class ContractEditComponent implements OnInit {
 
 	removeAlowences(event: any) {
 		// console.log("removeAlowences",event);
-		this.businessEmpId.splice(event.index, 1);
-		this.childrenAllowancesList.controls.splice(event.index, 1);
+		
+		const data = this.employeeList.find(x=> x.id === event.value);
+	
+		// console.log(data.business_employee_id,this.businessEmpId);
+		this.businessEmpId.splice(this.businessEmpId.indexOf(data.business_employee_id), 1);
+		// console.log("removeeeeeeee\nthis.businessEmpId\t",this.businessEmpId,'\nevent\t',event,'\nevent.index\t',event.index);
+		const index=this.childrenAllowancesList.controls.indexOf(
+			this.childrenAllowancesList.controls.find((item)=>{
+				return item.get('business_employee_id').value ==data.business_employee_id
+			})
+		)
+	
+		this.childrenAllowancesList.controls.splice(index, 1);
 		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
-		console.log(this.contractsForm.value.business_employee_ids);
+		// console.log(this.contractsForm.value.business_employee_ids);
 	}
 
 	calcChildrenAllowance() {
@@ -532,8 +557,10 @@ export class ContractEditComponent implements OnInit {
 				employee_ids : this.contractsForm.value.employee_ids
 			}).subscribe(async (res: any) => {
 
+				console.log(res);
 				this.childrenAllowanceFormGroup.controls.map((item:any)=>{
-					const  allowance = res.find((x:any) => x.employee_id === item.value.business_employee_id).children_allowance ;
+					console.log(item.value);
+					const  allowance = res.find((x:any) => x.employee_id === item.value.employee_id).children_allowance ;
 					item.get('children_allowance').setValue(allowance);
 				});
 

@@ -130,6 +130,21 @@
 						</div>
 						<div *ngFor="let item of postsFormGroup.controls ; let i = index"
 							[formGroupName]="i">
+							<div class="row justify-content-between align-items-center">
+								<div class="col-12" *ngIf="i"><hr></div>
+								<div class="col-9">
+									<div class="title-1">
+										<h2 class="title"> پست  شماره  {{ i + 1 }} کارمند</h2>
+									</div>
+								</div>
+								<div class="col-auto" *ngIf="i">
+									<ion-buttons>
+										<ion-button (click)="removePost(i)" color="danger">
+											<ion-icon slot="icon-only" name="trash"></ion-icon>
+										</ion-button>
+									</ion-buttons>
+								</div>
+							</div>
 							<div class="form-input mb-3">
 								<label>انتخاب پست</label>
 								<ng-select [items]="postList" placeholder="انتخاب کنید" bindLabel="name"
@@ -154,6 +169,7 @@
 									افزودن پست دیگر
 								</ion-button>
 							</div>
+							
 						</div>
 					</div>
 					<div class="col-md-12">

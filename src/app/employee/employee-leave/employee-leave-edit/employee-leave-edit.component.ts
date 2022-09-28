@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataSets } from './../../../core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
-import { NavController } from '@ionic/angular';
+import { NavController, PickerController } from '@ionic/angular';
 import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
@@ -22,6 +22,9 @@ export class EmployeeLeaveEditComponent implements OnInit {
 		number: number;
 	}>;
 	id: string;
+	date:any
+	hoursOptions:{value:number,text:string}[]=[]
+	minutesOptions:{value:number,text:string}[]=[]
 	business_employee_id: string;
   employee_id: string;
 
@@ -30,7 +33,9 @@ export class EmployeeLeaveEditComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private pickerCtrl: PickerController
+
 	) {
 		this.id = route.snapshot.paramMap.get('id');
 		this.business_employee_id = route.snapshot.paramMap.get('business_employee_id');
@@ -52,6 +57,8 @@ export class EmployeeLeaveEditComponent implements OnInit {
 			}
 		});
 		this.monthList = this.global.monthList;
+		this.makeOptionsPicker()
+
 		this.getData();
 	}
 
@@ -82,6 +89,55 @@ export class EmployeeLeaveEditComponent implements OnInit {
 			}
 		);
 	}
+	async openPicker() {
+		const picker = await this.pickerCtrl.create({
+		  columns: [
+			{
+			  name: 'hours',
+			  options:this.hoursOptions
+			},
+			{
+			  name: 'minutes',
+			  options: this.minutesOptions
+			},
+			
+		  ],
+		  buttons: [
+			{
+			  text: 'انصراف',
+			  role: 'cancel',
+			},
+			{
+			  text: 'تایید',
+			  handler: (value) => {
+				const val=value.hours.value+':'+value.minutes.value
+				console.log(value);
+				console.log(val);
+				this.editForm.get('amount').setValue(val)
+				this.date=value.hours.value+' ساعت و '+value.minutes.value+' دقیقه '
+				// window.alert(`You selected a ${value.crust.text} pizza with ${value.meat.text} and ${value.veggies.text}`);
+			  },
+			},
+		  ],
+		  htmlAttributes: { dir: 'rtl'},
+		  cssClass:'add-leave-picker',
+		});
+	
+		await picker.present();
+	  }
+	  makeOptionsPicker(){
+		for (let i = 0; i <= 200; i++) {
+			this.hoursOptions.push({value:i,text:` ${i} ساعت   `})
+			
+		}
+		for (let i = 0; i < 60; i++) {
+			this.minutesOptions.push({value:i,text: i+' دقیقه '})
+			
+		}
+		console.log(this.hoursOptions);
+		console.log(this.minutesOptions);
+
+	  }
 
 	async onSubmit() {
 		this.editForm.markAllAsTouched();

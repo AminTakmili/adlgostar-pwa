@@ -13,14 +13,15 @@
 					</p> -->
 				</div>
 			</div>
-			<div class="col-lg-auto">
+			<!-- add -->
+			<!-- <div class="col-lg-auto">
         
 
 				<ion-button *ngIf="global.userPermision['payroll_base_info_settlement_addition_add']" shape="round" color="success" [routerLink]="['/payrolls/payroll_base_info/settlement/addition/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن اضافات تسویه حساب جدید
 				</ion-button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- top bar content -->
@@ -80,10 +81,10 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button [routerLink]="['/payrolls/payroll_base_info/settlement/addition/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_settlement_addition_edit']">
+								<!-- <ion-button [routerLink]="['/payrolls/payroll_base_info/settlement/addition/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_settlement_addition_edit']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
-								</ion-button>
+								</ion-button> -->
 							
 							
 							</ion-buttons>
@@ -106,12 +107,12 @@
 				<h4 class="title"> اضافات تسویه حسابی برای نمایش یافت نشد .</h4>
 				<p class="dsec"> 
 					شما تا کنون هیچ مورد اضافات تسویه حساب ثبت نکردید .
-					<span *ngIf="global.userPermision['payroll_base_info_settlement_addition_add']">
+					<!-- <span *ngIf="global.userPermision['payroll_base_info_settlement_addition_add']">
 
 						برای اضافه کردن لیست اضافات تسویه حساب بر روی دکمه 
 						<a [routerLink]="['/payrolls/payroll_base_info/settlement/addition/add']"> افزودن اضافات تسویه حساب جدید</a>
 					   کلیک کنید
-					</span>
+					</span> -->
 				
 				</p>
 			</div>

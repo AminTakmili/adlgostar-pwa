@@ -24,6 +24,7 @@ export class sentence implements Deserializable {
    has_monthly_bonus!: number;
    calc_payroll_tax!: number;
    calc_unused_leave_monthly!: number;
+   calc_without_pay_leave_monthly!: number;
    createdAt!:string;
    createdAtEn !:string;
    updatedAt!:string;

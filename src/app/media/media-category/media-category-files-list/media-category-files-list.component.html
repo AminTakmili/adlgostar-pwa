@@ -1,0 +1,88 @@
+<ion-header >
+	<app-header [title]="pageTitle"></app-header>
+  
+</ion-header>
+
+<ion-content >
+  <div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">لیست {{ pageTitle }}</h1>
+					<p class="dsec">در این صفحه لیست {{ pageTitle }} را مشاهده میکنید یا {{ pageTitle }} جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<!-- <ion-button shape="round" color="warning" class="ml-3" [routerLink]="['importer']" *ngIf="global.userPermision['employer_import']">
+					<ion-icon slot="start" name="push" ></ion-icon>
+					افزودن {{ pageTitle }} با اکسل
+				</ion-button> --> 
+        <!-- *ngIf="global.userPermision['employers_add']" -->
+         <!-- (click)="presentAlert()"  -->
+				<ion-button shape="round" color="success" >
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					افزودن {{ pageTitle }} جدید
+				</ion-button>
+			</div>
+		</div>
+	</div>
+  <main class="container">
+    <div class="row mt-4">
+      <div class="col-md-8">
+        <div class="title-1">
+          <h2 class="title">لیست دسته بندی ها</h2>
+          <p class="dsec">لیست دسته بندی ها به شرح زیر است</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <!-- search -->
+        <div class="search-input-2">
+           <!-- (ionChange)="getData()" -->
+          <ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در دسته بندی ها"></ion-searchbar>
+        </div>
+      </div>
+    </div>
+    <div class="folders pt-15 col-12 row">
+
+      <section class="col-2 folder" *ngFor="let item of dataList;let i=index" (click)="download(item.downloadUrl,item.title)" >
+  
+      
+
+    <div class="rapImg">
+      <div class="icons">
+        <!-- <ion-button class="tooltip-show"    color="light" fill="clear"  tooltip="تسویه حساب"> -->
+       
+          <ion-icon   color="light"  class="mx-1 " id="contextMenuLabel2" slot="start" name="create"  ></ion-icon>
+        <!-- </ion-button> -->
+
+        <ion-icon color="light" class="mx-1" id="contextMenuLabel1" slot="start" name="trash-bin"></ion-icon>
+
+      
+      </div>
+      <p class="d-none">
+      {{item.sizeText}}
+      
+      </p>
+      <ion-img [src]="item.srcFile"></ion-img>
+
+    </div>
+          <span > {{item.title}} </span>
+          <!-- <ion-input #nameInput [id]="'input-'+item.id" [readonly]="!item.editable" type="text"[value]="item.name"></ion-input> -->
+        <!-- </> -->
+  
+      </section>
+     
+
+      
+<!-- [style.right]="menuTopLeftPosition.x" 
+[style.bottom]="menuTopLeftPosition.y"  -->
+
+
+
+</div>
+  
+
+  </main>
+
+</ion-content>

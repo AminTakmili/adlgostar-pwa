@@ -1,0 +1,59 @@
+<ion-header mode="md" class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>ارسال درخواست ثبت قرارا داد برای کارمندان</ion-title>
+  </ion-toolbar>
+  </ion-header>
+  <ion-content mode="md">
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()" class="pt-15">
+      <div class="col-md-12" *ngIf="businessId">
+        <div class="form-input mb-3">
+          <label>انتخاب سال</label>
+        	<ng-select   formControlName="year"  [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه سال یافت نشد"
+							bindValue="year" placeholder="انتخاب کنید">
+						</ng-select>
+          <span class="error">
+            <app-validator #validation [control]="addForm.controls['year']" [controlName]="'انتخاب سال '"></app-validator>
+          </span>
+          <span class="hint">سال که درخواست ثبت فیش حقوقی برای ان دارید را وارد کنید  .</span>
+        </div>
+        <div class="form-input mb-3">
+          <label>انتخاب ماه</label>
+        	<ng-select   formControlName="month" [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه ماه یافت نشد"
+							bindValue="number" placeholder="انتخاب کنید" >
+						</ng-select>
+          <span class="error">
+            <app-validator #validation [control]="addForm.controls['month']" [controlName]="'انتخاب ماه '"></app-validator>
+          </span>
+          <span class="hint">ماهی که درخواست ثبت فیش حقوقی برای ان دارید را وارد کنید .</span>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="businessId">
+        <div class="form-input mb-3">
+          <label>متن </label>
+     
+          <ion-textarea class="px-15" cols=4 rows=4 wrap="soft" placeholder="متن مور نظر را بنویسید"  formControlName="text"></ion-textarea>
+        
+          <span class="hint">در صورت تمایل متن برای این درخواست بنویسید .</span>
+        </div>
+      </div>
+    
+    
+      <ion-item lines="none" >
+        <ion-button type="submit" id="open-referred-modal" shape="round" color="secondary" >
+          <ion-icon slot="start" name="checkmark"></ion-icon>
+          ثبت درخواست
+        </ion-button>
+        
+      </ion-item>
+   
+    </form>
+   
+  
+  </ion-content>

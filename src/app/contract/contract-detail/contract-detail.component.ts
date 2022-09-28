@@ -1,12 +1,15 @@
+import { error } from 'src/app/core/models/other.models';
+import { ContractExtendModalComponent } from './../contract-extend-modal/contract-extend-modal.component';
 import { sentence } from './../../core/models/sentence.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { contract } from 'src/app/core/models/contractConstant.model';
 import { contractExtraField } from 'src/app/core/models/contractExtraField.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { Post } from 'src/app/core/models/post.model';
 
 @Component({
 	selector: 'app-contract-detail',
@@ -29,7 +32,8 @@ export class ContractDetailComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		public route: ActivatedRoute
+		public route: ActivatedRoute,
+		public modalController: ModalController
 	) {}
 
 	ngOnInit() {}
@@ -67,9 +71,6 @@ export class ContractDetailComponent implements OnInit {
 					this.dataList = new contract().deserialize(res);
 					this.pageTitle = this.dataList.title;
 					this.setTitle();
-
-					// console.log(this.dataList);
-					// console.log(res:any);
 				},
 				async (error: any) => {
 					await this.global.dismisLoading();
@@ -93,7 +94,6 @@ export class ContractDetailComponent implements OnInit {
 		this.contractExtraFieldList = data.map((item: any) => {
 			return new contractExtraField().deserialize(item);
 		});
-		console.log(this.contractExtraFieldList);
 	}
 
 	returnNameExtraField(id: number) {
@@ -110,7 +110,6 @@ export class ContractDetailComponent implements OnInit {
 			.subscribe(
 				async (res: any) => {
 					// await this.global.dismisLoading();
-					console.log(res);
 					this.total = res.totalRows;
 					// let domyList:[sentence]=[new sentence().deserialize( res.list[0])]
 					this.SentenceList = res.list.map(
@@ -118,11 +117,6 @@ export class ContractDetailComponent implements OnInit {
 							return new sentence().deserialize(item);
 						}
 					);
-
-					//  console.log(this.dataList?.contract_info.employee_info);
-					//  console.log(this.dataList?.contract_info.employers_info);
-
-					// console.log(res:any);
 				},
 				async (error: any) => {
 					// await this.global.dismisLoading();
@@ -185,43 +179,248 @@ export class ContractDetailComponent implements OnInit {
 				// });
 			});
 	}
-	removeContract(id:number,date:string){
-		this.global.showAlert('حذف حکم تاریخ  '+ date , 'آیا برای حذف اطمینان دارید؟', [
-			{
-				text: 'بلی',
-				role: 'yes',
-				cssClass: 'dark',
-			},
-			{
-				text: 'خیر',
-				role: 'cancel',
-				cssClass: 'medium',
-			}
-		]).then((alert) => {
-			alert.present();
-			alert.onDidDismiss().then(async ( e : any) => {
-				if (e.role === 'yes') {
+	removeContract(id: number, date: string) {
+		this.global
+			.showAlert(
+				'حذف حکم تاریخ  ' + date,
+				'آیا برای حذف اطمینان دارید؟',
+				[
+					{
+						text: 'بلی',
+						role: 'yes',
+						cssClass: 'dark',
+					},
+					{
+						text: 'خیر',
+						role: 'cancel',
+						cssClass: 'medium',
+					},
+				]
+			)
+			.then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						await this.global.showLoading('لطفا منتظر بمانید...');
+						this.global
+							.httpDelete('contractSentence/delete', {
+								id,
+							})
+							.subscribe(
+								async (res: any) => {
+									await this.global.dismisLoading();
 
+									this.offset = 0;
+									this.CurrentPage = 1;
+									this.getData(
+										this.route.snapshot.paramMap.get('id')
+									);
 
-					await this.global.showLoading('لطفا منتظر بمانید...');
-					this.global.httpDelete('contractSentence/delete', {
-						id
-					}).subscribe(async (res:any) => {
-
-						await this.global.dismisLoading();
-
-						this.offset = 0;
-						this.CurrentPage = 1;
-						this.getData(this.route.snapshot.paramMap.get('id'));
-
-						this.global.showToast(res.msg);
-
-					}, async (error:any) => {
-						await this.global.dismisLoading();
-						this.global.showError(error);
-					});
-				}
+									this.global.showToast(res.msg);
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+								}
+							);
+					}
+				});
 			});
+	}
+
+	async openExtendModal(type: string) {
+		// await this.global.showLoading('لطفا منتظر بمانید...');
+
+		const modal = await this.modalController.create({
+			component: ContractExtendModalComponent,
+			cssClass: 'my-custom-class',
+			mode: 'ios',
+			//   presentingElement:this.routerOutlet.nativeEl,
+			swipeToClose: true,
+			componentProps: {
+				employeeList: this.dataList.employee_info,
+				type,
+			},
 		});
+
+		modal.onWillDismiss().then(async (res) => {
+			if (res.data && res.data.dismissed) {
+				// console.log(res.data.city['id'])
+				console.log(res);
+				if (type == 'requestExtend') {
+					this.requestExtend(res.data.list, res.data.postList);
+				} else if (type == 'sendExtend') {
+					this.sendExtend(res.data.list);
+				}
+				// console.log(id)
+				// await this.global.dismisLoading();
+				// if (id==='Origin') {
+				//   this.OriginInputValue=res.data.city.name
+				//   this.OriginCityId=res.data.city['id']
+				//   if (res.data.loctionAdress) {
+				// 	// console.log(res.data.loctionAdress);
+				// 	this.OriginLoctionAdress=res.data.loctionAdress
+				//   }
+
+				// }
+				// if (id==='destination') {
+				//   this.destinationInputValue=res.data.city.name
+				//   this.destinationCityId=res.data.city['id']
+				//   if (res.data.loctionAdress) {
+				// 	// console.log(res.data.loctionAdress);
+				// 	this.destinationLoctionAdress=res.data.loctionAdress
+				//   }
+
+				// }
+			}
+		});
+		// 	modal.present().then(async(res) => {
+		// 		// console.log(res);
+		// 		// console.log("res");
+		// 		await this.global.dismisLoading();
+
+		//   });
+		return await modal.present();
+	}
+	async sendExtend(data: any) {
+		console.log(data);
+		let senObj = data;
+		senObj['contract_id'] = this.id;
+		await this.global.showLoading();
+		this.global.httpPost('contract/extendContract', senObj).subscribe(
+			async (res: any) => {
+				await this.global.dismisLoading();
+				console.log(res);
+				this.global.showToast(
+					' تمدید قراداد با موفقیت ثبت شد ',
+					700,
+					'top',
+					'success',
+					'ios'
+				);
+				this.pageChange(1);
+			},
+			async (error: any) => {
+				await this.global.dismisLoading();
+
+				await this.global.showError(error);
+			}
+		);
+	}
+	async requestExtend(data: any, postList: Post[]) {
+		console.log(data);
+		console.log(postList);
+		// let senObj=data
+		// senObj['contract_id']=	this.id
+		console.log(data, 'req');
+		let postUl: string[] = [];
+		let postContent: string = '';
+		let content: string = '';
+
+		if (
+			data.business_employee_new_posts &&
+			data.business_employee_new_posts
+		) {
+			data.business_employee_new_posts.map((item: any, index: number) => {
+				let pUi: string = '';
+
+				item.posts.map((post: any, indexPost: number) => {
+					if (indexPost) {
+						pUi +=
+							'<li>' +
+							postList?.find((postItem: Post) => {
+								return postItem.id == post.post_id;
+							})?.name +
+							'</li>';
+					} else {
+						pUi =
+							'<li>' +
+							postList?.find((postItem: Post) => {
+								return postItem.id == post.post_id;
+							})?.name +
+							'</li>';
+					}
+				});
+				pUi = '<ul>' + pUi + '</ul>';
+				pUi =
+					'<ul><li>نام کارمند ' +
+					Number(index + 1) +
+					' : ' +
+					this.dataList.employee_info.find((employee: any) => {
+						return (
+							employee?.business_employee_info?.id ==
+							item.business_employee_id
+						);
+					})?.full_name +
+					'</li>' +
+					'<li> پست ها: ' +
+					pUi +
+					'</li></ul><hr >';
+				postUl.push(pUi);
+				// postUl=''
+			});
+			console.log(postUl);
+			postContent =
+				postUl && postUl.length
+					? '<li><span> تغیر پست ها : </span>' +
+					  postUl.join('') +
+					  '</li> '
+					: '';
+		}
+		content = `	<section>
+		<ul>
+			<li>نام قرارداد: ${this.dataList.title} </li>
+			<li> شناسه قرارداد: <span> ${this.id} </span> </li>
+			<li> تاریخ جدید پایان قرارداد : ${data.extend_date} </li>
+			<li> دستمزد جدید: ${data.new_wage} </li>
+			<li> نام کسب و کار : ${this.dataList.business_info.name} </li>
+			${postContent}
+			
+
+		</ul>
+		${postContent ? '' : '<p class="mx-10" >* پست کارمندی تغییر نکرده است!</p>'}
+		${postContent ? '' : '<hr>'}
+			
+		
+		<p class="mx-10" >
+		${data.text}
+		</p>
+
+
+
+	</section>
+	`;
+
+		console.log(postContent);
+		document.getElementById('a').innerHTML = content;
+		let subject = 'درخواست تمدید قرارداد';
+		// let section_id =this.dataList.section_id
+		let section_id = 3;
+		let is_extend_contract_request = true;
+		await this.global.showLoading()
+		this.global
+			.httpPost('profile/userTicket/add', {
+				content,
+				subject,
+				section_id,
+				is_extend_contract_request,
+			})
+			.subscribe(
+				async (res: any) => {
+					await this.global.dismisLoading()
+					this.global.showToast(
+						' درخواست تمدید قراداد با موفقیت ثبت شد ',
+						700,
+						'top',
+						'success',
+						'ios'
+					);
+
+				},
+				async (error: any) => {
+					await this.global.dismisLoading()
+					this.global.showError(error)
+				}
+			);
 	}
 }

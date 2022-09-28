@@ -114,9 +114,14 @@ export class GlobalService {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
-				devicePixelRatio: '1024'
+				devicePixelRatio: '1024',
+				// responseType:responseType?responseType:''
 				// 'atriashop-user-id': this.getUserInfo().id.toString()
-			})
+			}),
+			// observe:'"events"',
+			// responseType: '"blob"'
+			// responseType: 'text'
+			// responseType:responseType
 		};
 		return this.http.post<any>(this.getAppUrl(url), JSON.stringify(params), httpOptions);
 	}
@@ -146,6 +151,8 @@ export class GlobalService {
 
 			})
 		};
+		// but this does NOT work
+
 		return this.http.get<any>(this.getAppUrl(url), httpOptions);
 
 	}

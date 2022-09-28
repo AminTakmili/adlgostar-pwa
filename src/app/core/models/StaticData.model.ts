@@ -4,6 +4,8 @@ import { notificationType } from 'src/app/core/models/notification.model';
 export class StaticData implements Deserializable {
 	contract_template_type!: DataSets[];
 	settlement_type!: DataSets[];
+	definition_section_type!: DataSets[];
+	ticket_type!: DataSets[];
 	badges!: DataSets;
 	degree!: DataSets[];
 	employee_status!: DataSets[];
@@ -12,7 +14,9 @@ export class StaticData implements Deserializable {
 	maritalStatus!: DataSets[];
 	military_status!: DataSets[];
 	years!: DataSets[];
+	working_shifts!:DataSets[];
 	ticket_status!: DataSets[];
+	settlement_calc_type!: DataSets[];
 	notification_types!: notificationType[];
 	deserialize(input: any): this {
 		Object.assign(this, input);

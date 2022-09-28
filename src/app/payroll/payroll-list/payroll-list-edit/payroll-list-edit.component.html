@@ -1,0 +1,295 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">ویرایش فیش حقوقی جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک فیش حقوقی جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="/payrolls/payroll" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+
+		<form [formGroup]="payrollForm" (ngSubmit)="onSubmit()">
+			<!--  -->
+			<div class="container mt-4">
+
+				<div class="row align-items-start ">
+
+					<!-- options -->
+					<div class="position-sticky top-15 col-md-6">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">اطلاعات پایه و عملگر های فیش حقوقی</h2>
+							<p class="dsec">در این قسمت شما میتوانید با وارد کردن اطلاعات مقادیر محاسباتی را حساب کنید 
+							</p>
+						</div>
+
+
+						<div class="form-input mb-3">
+							<label>انتخاب کارمند</label>
+
+							<!-- [(ngModel)]="filtered_employee_id"  -->
+							<ng-select formControlName="emId" [clearable]="true" 	(focus)="employeeFocus()" (change)="changEemployee($event)"
+								[items]="employeelist$ | async" placeholder="انتخاب کنید"
+								[loading]="employeeInputLoading" bindLabel="full_name" bindValue="id"
+								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+								[typeahead]="employeeInput$" loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کارمندی یافت نشد"></ng-select>
+							<!-- </div> -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['emId']"
+									[controlName]="'انتخاب کارمند'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						<!-- if have tow business -->
+						<div *ngIf="businessList&&businessList?.length>1" class="form-input mb-3">
+							<label>انتخاب کسب و کار</label>
+
+							<!-- [(ngModel)]="filtered_employee_id"  -->
+							<ng-select formControlName="bId" (change)="changBusiness($event)" [items]="businessList"
+								placeholder="انتخاب کنید" bindLabel="business.name" bindValue="id" [clearable]="true"
+								loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب کاری یافت نشد"></ng-select>
+							<!-- </div> -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['bId']"
+									[controlName]="' انتخاب کسب و کار کارمند'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+
+						<div *ngIf="payrollForm.controls['emId']?.valid" class="form-input mb-3">
+							<label>انتخاب قرارداد</label>
+
+							<!-- [(ngModel)]="filtered_employee_id"  -->
+							<ng-select (change)="calculatePrices()" formControlName="contract_id" [items]=" contractList" placeholder="انتخاب کنید"
+								bindLabel="title" bindValue="id" [clearable]="true" loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه قراردادی یافت نشد"></ng-select>
+							<!-- </div> -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['contract_id']"
+									[controlName]="' انتخاب قرارداد'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+						<div class="form-input mb-3">
+							<label>شیفت کاری </label>
+
+							<ng-select (change)="calculatePrices()" formControlName="working_shift_id" [items]="workingShiftList" bindLabel="name"
+								loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه شیفت کاری یافت نشد" bindValue="id"
+								placeholder="انتخاب کنید">
+							</ng-select>
+							<!-- (change)="changeFilter()" -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['working_shift_id']"
+									[controlName]=" 'انتخاب شیفت کاری '"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+
+						<!-- زمان شروع فیش حقوقی -->
+						<div class="form-input mb-3">
+							<label> سال</label>
+							<!-- (dateOnSelect)="CalculationField()" -->
+
+							<ng-select (change)="calculatePrices()" formControlName="year" [items]="yearsList" bindLabel="year"
+								loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه سال یافت نشد" bindValue="year"
+								placeholder="انتخاب کنید">
+							</ng-select>
+							<!-- (change)="changeFilter()" -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['year']"
+									[controlName]="' سال'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					
+						<div class="form-input mb-3">
+							<label>ماه </label>
+
+							<ng-select (change)="calculatePrices()" formControlName="month" [items]="monthList" bindLabel="name"
+								loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
+								placeholder="انتخاب کنید">
+							</ng-select>
+							<!-- (change)="changeFilter()" -->
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['month']"
+									[controlName]=" 'انتخاب ماه '"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+						<!--working_hour_count-->
+						<div class="form-input mb-3">
+							<label> تعداد ساعت کار </label>
+							<ion-input  debounce="700" (ionChange)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+								formControlName="working_hour_count">
+							</ion-input>
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['working_hour_count']"
+									[controlName]="'تعداد ساعت کار '"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+
+						
+						<!-- working_deficit_hours-->
+						<div class="form-input mb-3">
+							<label> ساعت کسری کار</label>
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
+								formControlName="working_deficit_hours"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['working_deficit_hours']"
+									[controlName]="'ساعت کسری کار'"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+						<!-- working_friday_hour_count -->
+						<div class="form-input mb-3">
+							<label>ساعت کار جمعه </label>
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()"  type="number" min="0" autocomplete="new-pass"
+								formControlName="working_friday_hour_count"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['working_friday_hour_count']"
+									[controlName]="'ساعت کار جمعه'"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+						<!-- outstation_day_count -->
+						<div class="form-input mb-3">
+							<label>تعداد روز ماموریت</label>
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+								formControlName="outstation_day_count"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['outstation_day_count']"
+									[controlName]="'تعداد روز ماموریت '"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- working_night_hour_count -->
+						<div class="form-input mb-3">
+							<label>ساعت شب کاری</label>
+              <!-- (ionChange)="calculatePrices()" -->
+							<ion-input debounce="700" (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+								formControlName="working_night_hour_count"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="payrollForm.controls['working_night_hour_count']"
+									[controlName]="'ساعت شب کاری '"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+						<!-- working_over_time_hour_count-->
+						<div class="form-input mb-3">
+							<label>ساعت اضافه کاری </label>
+             
+							<ion-input  debounce="700"  (ionInput)="calculatePrices()" type="number" min="0" autocomplete="new-pass"
+								formControlName="working_over_time_hour_count"></ion-input>
+							<span class="error">
+								<app-validator #validation
+									[control]="payrollForm.controls['working_over_time_hour_count']"
+									[controlName]="'ساعت اضافه کاری '"></app-validator>
+							</span>
+							<!-- <span class="hint">مبلغ به ریال است</span> -->
+						</div>
+
+
+
+					</div>
+					<div class="col-md-6">
+						<!-- [readonly]="!this.payrollForm.get('is_manual').value" -->
+
+						<!-- دستمزد روزانه -->
+						<section formArrayName="payroll_additions">
+							<div class="title-1 mb-4">
+								<h2 class="title">اضافات فیش حقوقی</h2>
+							</div>
+
+							<section id="" *ngFor="let item of  payrollAdditionsGroup.controls ; let i = index"
+								[formGroupName]="i">
+
+								<div  *ngFor="let addition of payrollAdditionList" >
+								<section *ngIf="!payrollForm.controls[addition.en_name]" class="form-input mb-3">
+									<label>{{addition.name}}</label>
+									<ion-input [readonly]="calcparametr.indexOf(addition.en_name)!=-1" autocomplete="new-pass" [formControlName]="addition.en_name"></ion-input>
+									<span class="error">
+										<app-validator #validation [control]="item.get(addition.en_name)"
+											[controlName]="addition.name"></app-validator>
+									</span>
+								</section>
+									<!-- <span class="hint">مبلغ به ریال است</span> -->
+								</div>
+
+							</section>
+							<!-- deductions -->
+							
+
+						</section>
+													<!-- deductions -->
+
+						<section formArrayName="payroll_deductions">
+							<div class="title-1 mb-4">
+								<h2 class="title">کسورات فیش حقوقی</h2>
+							</div>
+							<section id="deductions" *ngFor="let item of  payrollDeductionsGroup.controls ; let i = index"
+							[formGroupName]="i">
+
+							<div  *ngFor="let deductions of payrollDeductionList" >
+							<section *ngIf="!payrollForm.controls[deductions.en_name]" class="form-input mb-3">
+								<label>{{deductions.name}}</label>
+								<ion-input [readonly]="calcparametr.indexOf(deductions.en_name)!=-1" autocomplete="new-pass" [formControlName]="deductions.en_name"></ion-input>
+								<span class="error">
+									<app-validator #validation [control]="item.get(deductions.en_name)"
+										[controlName]="deductions.name"></app-validator>
+								</span>
+							</section>
+								<!-- <span class="hint">مبلغ به ریال است</span> -->
+							</div>
+
+						</section>
+							
+
+						</section>
+
+						<!-- <hr> -->
+
+
+					</div>
+
+
+				</div>
+				<div class="row mb-5">
+					<div class="col-12">
+						<hr>
+					</div>
+					<!-- next step  -->
+					<div class="col-lg-7 col-md-3"></div>
+					<div class="col-lg-2 col-md-4">
+						<!-- <ion-button expand="block" type="button" color="medium" shape="round"  fill="outline">پاک کردن فرم</ion-button> -->
+					</div>
+					<div class="col-lg-3 col-md-5">
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ویرایش فیش
+							حقوقی
+						</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
+</ion-content>

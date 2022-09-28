@@ -131,22 +131,52 @@ export class FooterTemplateEditComponent implements OnInit {
 	async onSubmit() {
 		this.editForm.markAllAsTouched();
 		if (this.editForm.valid) {
-			await this.global.showLoading('لطفا منتظر بمانید...');
-			this.global.httpPatch('contractFooterTemplate/edit', this.editForm.value)
-				.subscribe(async (res:any) => {
 
-					await this.global.dismisLoading();
-					// console.log(res:any);
-					this.global.showToast('قالب قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
-					this.navCtrl.navigateForward('/contracts/footer/template/list');
-					this.editForm.reset();
-				}, async (error:any) => {
-					await this.global.dismisLoading();
-					this.global.showError(error);
+			if (this.setcontractFooterTemplateDetailObj.used_in_contract) {
+				this.global.showAlert(' ویرایش پاورقی استفاده شده ! ',
+				'این قالب پاورقی در قرارداد های قبلی استفاده شده است و با ویرایش فقط قرارداد های آتی تغییر میکند.',
+				[
+					{
+						text: 'انصراف',
+						role: 'cancel'
+					},
+					{
+						text: ' ویرایش',
+						role: 'yes'
+					}
+				]).then((alert) => {
+					alert.present();
+					alert.onDidDismiss().then(async (e: any) => {
+						if (e.role === 'yes') {
+							this.sendForm()
+						}
+					});
 				});
+			}else{
+				this.sendForm()
+			}
+
+
+
 		}
 	}
+	async sendForm(){
+		
+		await this.global.showLoading('لطفا منتظر بمانید...');
+		this.global.httpPatch('contractFooterTemplate/edit', this.editForm.value)
+			.subscribe(async (res:any) => {
 
+				await this.global.dismisLoading();
+				// console.log(res:any);
+				this.global.showToast('قالب قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
+				this.navCtrl.navigateForward('/contracts/footer/template/list');
+				this.editForm.reset();
+			}, async (error:any) => {
+				await this.global.dismisLoading();
+				this.global.showError(error);
+			});
+
+	}
 	async ChangeBusinessCat(){
 		const business_category_ids = this.editForm.value.business_categories;
 		await this.global.showLoading('لطفا منتظر بمانید...');

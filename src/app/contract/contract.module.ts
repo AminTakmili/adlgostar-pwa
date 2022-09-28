@@ -1,3 +1,4 @@
+import { ContractExtendModalComponent } from './contract-extend-modal/contract-extend-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ import { ContractConditionsEditComponent } from './contract-conditions-edit/cont
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { ContractPrintComponent } from './contract-print/contract-print.component';
 import { PipeModule } from '../core/pipes/pipe.module';
+import { ContractExtendModalNewPostModalComponent } from './contract-extend-modal/contract-extend-modal-new-post-modal/contract-extend-modal-new-post-modal.component';
 
 
 
@@ -55,7 +57,9 @@ import { PipeModule } from '../core/pipes/pipe.module';
 		ContractConditionsListComponent,
 		ContractConditionsAddComponent,
 		ContractConditionsEditComponent,
-		ContractPrintComponent
+		ContractPrintComponent,
+		ContractExtendModalComponent,
+		ContractExtendModalNewPostModalComponent
 	]
 })
 export class ContractPageModule { }

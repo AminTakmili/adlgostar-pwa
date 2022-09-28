@@ -1,0 +1,367 @@
+
+    <section id="preview" >
+
+    
+    <div class="base-frame" >
+        <div class="title-frame" >
+            <b class="title-text">
+                فیش حقوقی
+            </b>
+        </div>
+        <div class="business-frame" >
+            <span class="business-text">
+              {{list?.business_name}}
+            </span>
+        </div>
+        <!-- personal-information -->
+        <div class="personal-information-frame" >
+            <span class="personal-information-title">
+             مشخصات فردی
+            </span>
+            <table dir="rtl" class="personal-information-table">
+                <thead class="personal-information-table-header">
+                    <tr class="personal-information-table-header-tr">
+                      <th   class="personal-information-table-header-tr-th">نام نام خانوادگی</th>
+                      <th  class="personal-information-table-header-tr-th">کد کارمند</th>
+                      <th  class="personal-information-table-header-tr-th">ماه</th>
+                      <th  class="personal-information-table-header-tr-th">سال</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="personal-information-table-body-tr">
+                        <th   class="personal-information-table-body-tr-th">  {{list?.full_name}}</th>
+                        <th  class="personal-information-table-body-tr-th">{{list?.employee_id}}</th>
+                        <th  class="personal-information-table-body-tr-th">{{global.getMonthName[list?.month] }} </th>
+                        <th  class="personal-information-table-body-tr-th">{{list?.year}} </th>
+                      </tr>
+                  </tbody>
+              </table>
+              
+        </div>
+        <!-- detail -->
+        <div class="detail-frame" >
+          
+            <table dir="rtl" class="detail-table">
+                <thead class="detail-table-header">
+                    <tr class="detail-table-header-tr">
+                      <th   class="detail-table-header-tr-th">کارکرد ماهانه</th>
+                      <th  class="detail-table-header-tr-th">حقوق و مزایا</th>
+                      <th  class="detail-table-header-tr-th">کسورات</th>
+                    
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="detail-table-body-tr">
+                        <th   class="detail-table-body-tr-th"> 
+                           
+                            <div class="detail-table-body-tr-th-cat">
+                                <span  >شرح</span>
+                                <span >تعداد/روز/ساعت</span>
+                            </div>
+                        </th>
+                        <th  class="detail-table-body-tr-th">   
+                            <div class="detail-table-body-tr-th-cat">
+                                <span  >شرح</span>
+                                <span >مبلغ/ریال</span>
+                            </div>
+                        </th>
+                        <th  class="detail-table-body-tr-th">
+                              
+                            <div class="detail-table-body-tr-th-cat">
+                                <span  >شرح</span>
+                                <span >مبلغ/ریال</span>
+                            </div>
+                        </th>
+                      </tr>
+                      <tr class="detail-table-body-tr-detail-frame-tr">
+                        <th   class="detail-table-body-tr-detail-frame"> 
+                            <section class="detail-table-body-tr-th-cat-detail-section">
+                                <div class="detail-table-body-tr-th-cat-detail" >
+                                    <span *ngIf="list?.working_hour_count">  ساعت کارکرد</span>
+                                    <span *ngIf="list?.working_day_count">  روز کارکرد</span>
+                                    <span *ngIf="list?.sum_working_hours"> جمع کارکرد</span>
+                                    <span *ngIf="list?.working_deficit_hours"> ساعت کسری کار
+                                    </span>
+                                    <span *ngIf="list?.working_over_time_hour_count"> ساعت اضافه کاری
+                                    </span>
+                                    <span *ngIf="list?.outstation_day_count">تعداد روز ماموریت
+
+
+                                    </span>
+                                      <span *ngIf="list?.working_night_hour_count"> ساعت شبکاری
+
+                                    </span>
+                                    <span *ngIf="list?.working_friday_hour_count"> ساعت جمعه کاری
+
+                                    </span>
+                                    <span *ngIf="list?.addition_hour_friday_or_holiday">  ساعت  تعطیل و جمعه کاری
+
+
+                                    </span>
+                                  
+                                    
+                                    <span *ngIf="list?.used_leave"> مرخصی استفاده شده</span>
+                                    <span *ngIf="list?.unused_leave"> مرخصی استفاده نشده</span>
+                                    <span *ngIf="list?.without_pay_leave"> تعداد مرخصی بدون حقوق</span>
+                                </div>
+                                <div class="detail-table-body-tr-th-cat-detail">
+                                  <span *ngIf="list?.working_hour_count"> {{list?.working_hour_count}}</span>
+                                  <span *ngIf="list?.working_day_count"> {{list?.working_day_count}}</span>
+                                  <span *ngIf="list?.sum_working_hours"> {{list?.sum_working_hours}}</span>
+                                  <span *ngIf="list?.working_deficit_hours"> {{list?.working_deficit_hours}}  </span>
+                                  <span *ngIf="list?.working_over_time_hour_count"> {{list?.working_over_time_hour_count}} </span>
+                                  <span *ngIf="list?.outstation_day_count"> {{list?.outstation_day_count}} </span>
+                                  <span *ngIf="list?.working_night_hour_count"> {{list?.working_night_hour_count}} </span>
+                                  <span *ngIf="list?.working_friday_hour_count"> {{list?.working_friday_hour_count}} </span>
+                                  <span *ngIf="list?.addition_hour_friday_or_holiday"> {{list?.addition_hour_friday_or_holiday}} </span>
+                                 
+                                  <span *ngIf="list?.used_leave"> {{list?.used_leave}} </span>
+                                  <span *ngIf="list?.unused_leave"> {{list?.unused_leave}} </span>
+                                  <span *ngIf="list?.without_pay_leave"> {{list?.unused_leave}} </span>
+                                </div>
+                            </section>
+                        </th>
+                        <th   class="detail-table-body-tr-detail-frame"> 
+                              <section class="detail-table-body-tr-th-cat-detail-section">
+                                <div class="detail-table-body-tr-th-cat-detail" >
+                                    <span *ngIf="list?.daily_or_hourly_wage" >حقوق ثابت</span>
+                                    <span  *ngIf="list?.grocery_allowance"> حق بن</span>
+                                    <span  *ngIf="list?.housing_allowance"> حق مسکن </span>
+                                    <span *ngIf="list?.children_allowance"> حق اولاد </span>
+                                    <span *ngIf="list?.new_year_gift"> عیدی</span>
+                                    <span *ngIf="list?.bonus"> پاداش</span>
+                                    <span *ngIf="list?.severance_pay"> حق سنوات
+                                    </span>
+                                    <span *ngIf="list?.working_over_time_price"> اضافه کاری
+                                    </span>
+                                    <span *ngIf="list?.working_friday_price"> جمعه کاری
+
+                                    </span>
+                                    <span *ngIf="list?.working_night_price"> شب کاری
+
+                                    </span>
+                                    <span *ngIf="list?.working_night_price"> حق ماموریت
+
+                                    </span>
+                                    <span *ngIf="list?.operation_bonus"> پاداش عملکرد
+
+                                    </span>
+                                    <span *ngIf="list?.working_shift_price">  شیفت کاری
+                                    </span>
+                                    <span *ngIf="list?.commission">  پورسانت
+                                    </span>
+                                    <span *ngIf="list?.car_fuel">  هزینه سوخت خودرو
+                                    </span>
+                                    <span *ngIf="list?.attract_allowance">  حق جذب
+                                    </span>
+                                    <span *ngIf="list?.trust_allowance"> حق مسئولیت
+                                    </span>
+                                    <span *ngIf="list?.hardship_allowance"> حق سختی کار
+                                    </span>
+                                    <span *ngIf="list?.transportation_price"> هزینه ایاب و ذهاب
+                                    </span>
+                                    <span *ngIf="list?.loan_received_amount">  وام دریافتی
+
+                                    </span>
+                                    <span *ngIf="list?.sum_over_night_friday_amounts">  اضافه کاری و شبکاری و جمعه کاری
+
+                                    </span>
+                                </div>
+                                <div class="detail-table-body-tr-th-cat-detail">
+                                  <span  *ngIf="list?.daily_or_hourly_wage">     
+                                    {{list?.daily_or_hourly_wage}}                          
+                                </span>
+                                <span  *ngIf="list?.grocery_allowance">     
+                                  {{list?.grocery_allowance}}                          
+                              </span>
+                                  <span  *ngIf="list?.housing_allowance">     
+                                    {{list?.housing_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.children_allowance">     
+                                    {{list?.children_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.new_year_gift">     
+                                    {{list?.new_year_gift}}                          
+                                </span>
+                                
+                                  <span  *ngIf="list?.bonus">     
+                                    {{list?.bonus}}                          
+                                </span>
+                                
+                                  <span  *ngIf="list?.severance_pay">     
+                                    {{list?.severance_pay}}                          
+                                </span>
+                                  <span  *ngIf="list?.working_over_time_price">     
+                                    {{list?.working_over_time_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.working_friday_price">     
+                                    {{list?.working_friday_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.working_night_price">     
+                                    {{list?.working_night_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.outstation_allowance_price">     
+                                    {{list?.outstation_allowance_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.operation_bonus">     
+                                    {{list?.operation_bonus}}                          
+                                </span>
+                                  <span  *ngIf="list?.working_shift_price">     
+                                    {{list?.working_shift_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.commission">     
+                                    {{list?.commission}}                          
+                                </span>
+                                  <span  *ngIf="list?.car_fuel">     
+                                    {{list?.car_fuel}}                          
+                                </span>
+                                  <span  *ngIf="list?.attract_allowance">     
+                                    {{list?.attract_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.trust_allowance">     
+                                    {{list?.trust_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.hardship_allowance">     
+                                    {{list?.hardship_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.transportation_price">     
+                                    {{list?.transportation_price}}                          
+                                </span>
+                                  <span  *ngIf="list?.loan_received_amount">     
+                                    {{list?.loan_received_amount}}                          
+                                </span>
+                                  <span  *ngIf="list?.loan_received_amount">     
+                                    {{list?.loan_received_amount}}                          
+                                </span>
+                                  <span  *ngIf="list?.sum_over_night_friday_amounts">     
+                                    {{list?.sum_over_night_friday_amounts}}                          
+                                </span>
+                                
+                                </div>
+                            </section>
+                        </th>
+                        <th   class="detail-table-body-tr-detail-frame"> 
+                              <section class="detail-table-body-tr-th-cat-detail-section">
+                                <div class="detail-table-body-tr-th-cat-detail" >
+                                    <span *ngIf="list?.insurance_allowance">  حق بیمه سهم کارگر </span>
+                                    <span *ngIf="list?.payroll_tax"> مالیات بر حقوق
+                                    </span>
+                                    <span  *ngIf="list?.working_deficit_amount">  کسری کار</span>
+                                    <span  *ngIf="list?.loan_installment_amount">کسر قسط وام  </span>
+                                    <span  *ngIf="list?.advance_money">کسر  مساعده  </span>
+                                    <span  *ngIf="list?.advance_money">خرید از شرکت</span>
+                                    <span  *ngIf="list?.food_cost"> هزینه استفاده غذای پرسنلی
+                                    </span>
+                                    <span  *ngIf="list?.pension_cost"> هزینه اجاره پانسیون
+
+                                    </span>
+                                    <span  *ngIf="list?.fund_reserve"> ذخیره صندوق
+                                    </span>
+                                    <span  *ngIf="list?.without_pay_leave_amount"> مبلغ مرخصی بدون حقوق
+                                    </span>
+
+                                </div>
+                                <div class="detail-table-body-tr-th-cat-detail">
+                                  <span  *ngIf="list?.insurance_allowance">     
+                                    {{list?.insurance_allowance}}                          
+                                </span>
+                                  <span  *ngIf="list?.payroll_tax">     
+                                    {{list?.payroll_tax}}                          
+                                </span>
+                                <span  *ngIf="list?.working_deficit_amount">     
+                                  {{list?.working_deficit_amount}}                          
+                              </span>
+                              <span  *ngIf="list?.loan_installment_amount">     
+                                {{list?.loan_installment_amount}}                          
+                            </span>
+                              <span  *ngIf="list?.advance_money">     
+                                {{list?.advance_money}}                          
+                            </span>
+                              <span  *ngIf="list?.purchase_invoice_from_company">     
+                                {{list?.purchase_invoice_from_company}}                          
+                            </span>
+                              <span  *ngIf="list?.food_cost">     
+                                {{list?.food_cost}}                          
+                            </span>
+                              <span  *ngIf="list?.pension_cost">     
+                                {{list?.pension_cost}}                          
+                            </span>
+                              <span  *ngIf="list?.fund_reserve">     
+                                {{list?.fund_reserve}}                          
+                            </span>
+                              <span  *ngIf="list?.without_pay_leave_amount">     
+                                {{list?.without_pay_leave_amount}}                          
+                            </span>
+
+                                </div>
+                            </section>
+                        </th>
+                      </tr>
+                  </tbody>
+              </table>
+              
+        </div>
+         <!-- sum -->
+         <div class="sum-frame" >
+           
+            <table dir="rtl" class="sum-table">
+                <thead class="sum-table-header">
+                    <tr class="sum-table-header-tr">
+                      <th  class="sum-table-header-tr-th">جمع</th>
+                      <th  class="sum-table-header-tr-th"> {{list?.sum_payroll_additions}} </th>
+                      <th  class="sum-table-header-tr-th">  {{list?.sum_payroll_deductions}}  </th>
+                    </tr>
+                  </thead>
+                 
+              </table>
+              
+        </div>
+         <!-- sum -->
+         <div class="net-frame" >
+           
+            <table dir="rtl" class="net-table">
+                <thead class="net-table-header">
+                    <tr class="net-table-header-tr">
+                      <th  class="net-table-header-tr-th">خالص حقوق دریافتی</th>
+                      <th  class="net-table-header-tr-th">  {{list?.payroll_received}} </th>
+                      
+                    </tr>
+                  </thead>
+                 
+              </table>
+              
+        </div>
+        <!-- footer -->
+        <section class="footer-frame">
+
+            <p>
+                مبلغ مذکور به شماره حساب 
+                <span>{{list.account_number?list.account_number:'------------------------------------'}}</span>
+                / شماره کارت
+                <span>{{list.card_number?list.card_number:'------------------------------------'}}</span>
+                  / شماره شبا 
+                <span>{{list.iban_number?list.iban_number:'------------------------------------'}}</span>
+          
+                به نام 
+                <span  *ngIf="list?.employee_gender">     
+                  {{list?.employee_gender}}                          
+              </span>
+              <span  *ngIf="list?.full_name">     
+                {{list?.full_name}}                          
+            </span>
+                در تاریخ 
+                <span  *ngIf="list?.payment_date">     
+                  {{list?.payment_date}}                          
+              </span>              
+                واریز شد
+            </p>
+
+            <div>
+                <span class="Signature">
+                    امضا و اثر انگشت کارگر
+                </span>
+                 
+            </div>
+        </section>
+    </div>
+</section>

@@ -13,8 +13,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' "
-					[icon]="'arrow-back-outline'">
+				<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
 		</div>
@@ -62,18 +61,24 @@
 					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>مدت زمان </label>
-							<ion-input type="number" min="0" step="1"  autocomplete="new-pass"
-								formControlName="amount"></ion-input>
-							<span class="error">
-								<app-validator [control]="addForm.controls['amount']"
-									[controlName]="' مدت زمان'"></app-validator>
+
+<!-- <!--  -->
+							<ion-input readonly="true" (click)="openPicker()"   [value]="date"  >
+							</ion-input>
+							<!--  -->
+
+								 <span class="error">
+								<app-validator [control]="addForm.controls['amount']" [controlName]="' مدت زمان'">
+								</app-validator>
 							</span>
-							<span class="hint">مثلا 4</span>
+							<span class="hint">مقدار مرخصی را بر حسب ساعت و دقیقه وارد کنید</span>
+
+							<!-- <span class="hint">مثلا 4</span> -->
 						</div>
 					</div>
 
 					<!-- مقدار ثابت اضافه شونده (ریال)-->
-				
+
 					<div class="col-lg-12">
 						<hr>
 					</div>

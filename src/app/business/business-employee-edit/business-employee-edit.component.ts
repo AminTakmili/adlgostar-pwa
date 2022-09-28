@@ -85,19 +85,21 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		})
 	}
 
+
+	
 	removePost(index: number) {
-		this.global.showAlert('حذف پست',
-			'آیا برای حذف پست اطمینان دارید ؟ ',
-			[
+		this.global
+			.showAlert('حذف پست', 'آیا برای حذف پست اطمینان دارید ؟ ', [
 				{
 					text: 'خیر',
-					role: 'cancel'
+					role: 'cancel',
 				},
 				{
 					text: 'بلی',
-					role: 'yes'
-				}
-			]).then((alert) => {
+					role: 'yes',
+				},
+			])
+			.then((alert) => {
 				alert.present();
 				alert.onDidDismiss().then(async (e: any) => {
 					if (e.role === 'yes') {

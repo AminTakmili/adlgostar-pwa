@@ -13,14 +13,15 @@
 					</p> -->
 				</div>
 			</div>
-			<div class="col-lg-auto">
+			<!-- add -->
+			<!-- <div class="col-lg-auto">
 
 				<ion-button *ngIf="global.userPermision['payroll_base_info_payroll_addition_add']" shape="round"
 					color="success" [routerLink]="['/payrolls/payroll_base_info/payroll_addition/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					اضافات حقوق و دستمزد جدید
 				</ion-button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- top bar content -->
@@ -93,12 +94,13 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button [routerLink]="['/payrolls/payroll_base_info/payroll_addition/edit',item.id]"
+								<!-- edit -->
+								<!-- <ion-button [routerLink]="['/payrolls/payroll_base_info/payroll_addition/edit',item.id]"
 									fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
 									*ngIf="global.userPermision['payroll_base_info_payroll_addition_edit']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
-								</ion-button>
+								</ion-button> -->
 
 
 							</ion-buttons>
@@ -120,11 +122,11 @@
 			<div *ngIf="dataList && dataList.length === 0&& !(filtered_name) " class="alert alert-warning my-3" role="alert">
 				<h4 class="title">اضافات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
 				<p class="dsec"> شما تا کنون اضافات حقوق و دستمزد ثبت نکردید .
-					<span *ngIf="global.userPermision['payroll_base_info_payroll_addition_add']">
+					<!-- <span *ngIf="global.userPermision['payroll_base_info_payroll_addition_add']">
 					برای اضافه کردن اضافات حقوق و دستمزد بر روی دکمه <a
 						[routerLink]="['/payrolls/payroll_base_info/payroll_addition/add']"> اضافات حقوق و دستمزد
 						جدید</a>
-					کلیک کنید</span>
+					کلیک کنید</span> -->
 				</p>
 			</div>
 			<!-- if search return empty cell -->

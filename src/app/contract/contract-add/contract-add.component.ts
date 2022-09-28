@@ -91,6 +91,7 @@ export class ContractAddComponent implements OnInit {
 	contractFooterTemplateInfoList: FormArray;
 
 	businessEmpId : number[] = [];
+	businessId :string;
 	
 
 	businesslist$: Observable<BusinessList[]>;
@@ -123,11 +124,13 @@ export class ContractAddComponent implements OnInit {
 		this.businessEmployeeId=router.snapshot.paramMap.get('businessEmployeeId')
 		// this.EmployeeId=router.snapshot.paramMap.get('EmployeeId')
 		this.EmployeeId=router.snapshot.queryParamMap.getAll('EmployeeId')
+		this.businessId=router.snapshot.queryParamMap.get('business_id')
 		// console.log(
 		// router.snapshot.queryParamMap.getAll('emId')	
 		// );
+		console.log(this.businessId);
 
-console.log(this.businessEmployeeId);
+// console.log(this.businessEmployeeId);
 		this.contractsForm = this.fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			business_id: [, Validators.compose([Validators.required])],
@@ -152,6 +155,7 @@ console.log(this.businessEmployeeId);
 			pension_cost: [0, Validators.compose([Validators.required])],
 			calc_payroll_tax: [0, Validators.compose([Validators.required])],
 			calc_unused_leave_monthly: [0, Validators.compose([Validators.required])],
+			calc_without_pay_leave_monthly: [0, Validators.compose([Validators.required])],
 			calc_severance_base: [true],
 			calc_severance_pay_monthly: [true],
 			calc_bonus_monthly: [true],
@@ -326,8 +330,8 @@ console.log(this.businessEmployeeId);
 		// const countries = this.global.httpGet('more/countries');
 
 		// const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
-		if (this.businessEmployeeId) {
-			this.getBusinessById(this.businessEmployeeId);
+		if (this.businessEmployeeId||this.businessId) {
+			this.getBusinessById(this.businessEmployeeId,this.businessId);
 		} else {
 			this.loadBusiness()
 		}
@@ -352,13 +356,14 @@ console.log(this.businessEmployeeId);
 			this.CountAllYear(severanceBaseCRes);
 		});
 	}
-	async getBusinessById(filtered_business_employee_id: string = null) {
+	async getBusinessById(filtered_business_employee_id: string = null,filtered_business_id: string = null) {
 		await	this.global.showLoading()
 			console.log(filtered_business_employee_id);
 			this.global
 				.httpPost('business/filteredList', {
 					filtered_business_employee_id,
-					for_combo: true,
+					filtered_business_id,
+					// for_combo: true,
 					limit: 1000,
 					offset: 0,
 					
@@ -487,8 +492,11 @@ console.log(this.businessEmployeeId);
 				let domy:number[]=[]
 				this.EmployeeId.map((id)=>{
 					domy.push(Number(id)) 
+					this.AddAlowences(Number(id))
 				})
 				this.contractsForm.get('employee_ids').setValue(domy);
+				console.log(domy);
+				// this.calcChildrenAllowance()
 				
 			}
 		}
@@ -520,7 +528,11 @@ console.log(this.businessEmployeeId);
 				// this.contractsForm.get('main_text').setValue(text);
 				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue(item.template);
 			}else{
-				this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+				console.log(id);
+				if (!id) {
+					
+					this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').setValue('');
+				}
 
 			}
 		});
@@ -536,7 +548,10 @@ console.log(this.businessEmployeeId);
 				// this.contractsForm.get('main_text').setValue(text);
 				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue(item.template);
 			}else{
-				this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+				if (!id) {
+					
+					this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').setValue('');
+				}
 
 			}
 		});
@@ -593,6 +608,8 @@ console.log(this.businessEmployeeId);
 	}
 
 	AddAlowences(event: any) {
+		console.log(event);
+		console.log(this.businessEmpId);
 		const data = this.employeeList.find(x=> x.id === event);
 		this.businessEmpId.push(data.business_employee_info[0].id);
 		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
@@ -602,6 +619,7 @@ console.log(this.businessEmployeeId);
 	}
 
 	removeAlowences(event: any) {
+
 		// console.log("removeAlowences",event);
 		this.businessEmpId.splice(event.index, 1);
 		this.childrenAllowancesList.controls.splice(event.index, 1);
@@ -610,6 +628,7 @@ console.log(this.businessEmployeeId);
 	}
 
 	calcChildrenAllowance() {
+		console.log('this.contractsForm.value.business_employee_ids.length',this.contractsForm.value.business_employee_ids.length);
 		if (this.contractsForm.value.contract_year !== '' && this.contractsForm.value.business_employee_ids.length) {
 			// console.log('calcChildrenAllowance');
 			this.global.httpPost('contract/calculateChildrenAllowance', {

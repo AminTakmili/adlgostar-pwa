@@ -46,4 +46,6 @@ notFoundText="مناسفانه کارمندی یافت نشد"
 <!-- formControlName="employee_id" -->
 </ng-select>
 
+<app-excel [list]="datas" (Data)="onSubmit($event)"></app-excel>
+
 </ion-content>

@@ -13,14 +13,14 @@
 					</p> -->
 				</div>
 			</div>
-			<div class="col-lg-auto">
+			<!-- <div class="col-lg-auto">
         
 
 				<ion-button *ngIf="global.userPermision['payroll_base_info_payroll_deduction_add']" shape="round" color="success" [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					کسورات حقوق و دستمزد جدید
 				</ion-button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- top bar content -->
@@ -81,10 +81,11 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_payroll_deduction_edit']">
+								<!-- edit -->
+								<!-- <ion-button [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/edit',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payroll_base_info_payroll_deduction_edit']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
-								</ion-button>
+								</ion-button> -->
 							
 							
 							</ion-buttons>
@@ -107,11 +108,11 @@
 				<h4 class="title">کسورات حقوق و دستمزدی برای نمایش یافت نشد .</h4>
 				<p class="dsec">
 					 شما تا کنون کسورات حقوق و دستمزد ثبت نکردید .
-					 <span  *ngIf="global.userPermision['payroll_base_info_payroll_deduction_add']">
+					 <!-- <span  *ngIf="global.userPermision['payroll_base_info_payroll_deduction_add']">
 
 					  برای اضافه کردن کسورات حقوق و دستمزد بر روی دکمه <a [routerLink]="['/payrolls/payroll_base_info/payroll_deduction/add']"> کسورات حقوق و دستمزد جدید</a>
 					کلیک کنید
-				 </span>
+				 </span> -->
 				</p>
 			</div>
 			<!-- if search return empty cell -->

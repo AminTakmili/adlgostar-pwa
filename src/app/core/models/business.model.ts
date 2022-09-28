@@ -46,6 +46,8 @@ export class BusinessList implements Deserializable {
 export class Business implements Deserializable {
 	id !: number;
 	contract_definition_section_id !: number;
+	settlement_definition_section_id !: number;
+	payroll_definition_section_id !: number;
 	employer_ids !: number[];
 	name !: string;
 	employer_type !: string;

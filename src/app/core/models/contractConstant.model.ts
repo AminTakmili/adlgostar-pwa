@@ -118,6 +118,8 @@ export class contract implements Deserializable {
 	is_manual !: boolean;
 	calc_payroll_tax !: boolean;
 	calc_unused_leave_monthly !: boolean;
+	calc_without_pay_leave_monthly !: boolean;
+
 	provisos !: ConditionInContract[];
 	extra_fields !: ContractExtraField[];
 	employers_info !:  Employer[];
@@ -205,6 +207,7 @@ export class contractTemplateVariable implements Deserializable {
 export class contractFooterTemplateDetail implements Deserializable {
 
 	id !: number;
+	used_in_contract !: boolean;
 	template !: string;
 	name !: string;
 	createdAt !: string;
@@ -225,6 +228,7 @@ export class contractHeaderTemplateDetail implements Deserializable {
 	createdAtEn !: string;
 	updatedAt !: string;
 	updatedAtEn !: string;
+	used_in_contract !: boolean;
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;

@@ -29,6 +29,7 @@ export class PayrollAdditionListComponent implements OnInit {
 	selectedMovie: any;
 	monthNumber!: number;
 	filtered_name!:string
+	
 
 	@ViewChildren('searchInp') Search: IonInput;
 

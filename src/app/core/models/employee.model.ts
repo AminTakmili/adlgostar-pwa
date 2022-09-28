@@ -37,6 +37,9 @@ export class Employee implements Deserializable {
 	militaryInformation !: military_information;
 	bankInformation !: bank_information;
 	packDetail!:string
+	is_collaboration_ended!:number
+	settlement_id!:number|string
+
 	deserialize(input: any): this {
 		Object.assign(this, input);
 

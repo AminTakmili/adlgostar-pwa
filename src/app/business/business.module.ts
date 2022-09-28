@@ -18,6 +18,7 @@ import { BusinessImporterComponent } from './business-importer/business-importer
 import { BusinessEmployeeEditComponent } from './business-employee-edit/business-employee-edit.component';
 import { BusinessEmployeeImporterComponent } from './business-employee-importer/business-employee-importer.component';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { RequestAddPayrollComponent } from './request-add-payroll/request-add-payroll.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 		BusinessImporterComponent,
 		BusinessEmployeeEditComponent,
 		BusinessEmployeeImporterComponent,
-		RequestAddContractComponent
+		RequestAddContractComponent,
+		RequestAddPayrollComponent
 
 	]
 })

@@ -186,14 +186,71 @@ export const globalData = {
 					],
 				},
 				{
-					name: 'لیست حقوق و دستمزد',
-					url: '/payrolls/payroll',
+					name: 'فیش حقوقی',
+					url: '/payrolls/payroll/list',
 					icon: 'list',
+					function: 'showDetail',
+					access: true,
+				},
+				{
+					name: 'تسویه حساب',
+					url: 'payrolls/settlement/list',
+					src: '/assets/svg/settlementIcon.svg',
 					function: 'showDetail',
 					access: true,
 				},
 			],
 		},
+		// {
+		// 	name: ' تسویه حساب',
+		// 	icon: 'document-text',
+		// 	open: false,
+		// 	state: 'close',
+		// 	function: 'showDetail',
+		// 	access: true,
+		// 	submenu: [
+		// 		{
+		// 			name: 'اطلاعات پایه  تسویه حساب ',
+		// 			// url: '/payrolls/payroll_base_info',
+		// 			icon: 'document-text',
+		// 			function: 'showDetail',
+				
+		// 			open: false,
+		// 			state: 'close',
+		// 			childeren: [
+					
+		// 				{
+		// 					name: 'قالب های تسویه حساب ',
+		// 					url: '/payrolls/payroll_base_info/settlement/template/list',
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 				{
+		// 					name: ' اضافات تسویه حساب ',
+		// 					url: "/payrolls/payroll_base_info/settlement/addition/list",
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 				{
+		// 					name: ' کسورات تسویه حساب ',
+		// 					url: "/payrolls/payroll_base_info/settlement/deduction/list",
+		// 					icon: 'ellipse',
+		// 					function: 'showDetail',
+						
+		// 				},
+		// 			],
+		// 		},
+		// 		{
+		// 			name: 'تسویه حساب',
+		// 			url: '/settlement/list',
+		// 			icon: 'list',
+		// 			function: 'showDetail',
+		// 			access: true,
+		// 		},
+		// 	],
+		// },
 		{
 			name: ' گزارشات',
 			icon: 'receipt',
@@ -237,6 +294,7 @@ export const globalData = {
 				},
 			],
 		},
+
 		{
 			name: 'بیشتر',
 			icon: 'ellipsis-vertical',
@@ -304,8 +362,9 @@ export const globalData = {
 			submenu: [
 			
 				{
-					name: 'بخش تنظیم قرارداد',
-					url: '/setting/contract_definition_section',
+					access: true,
+					name: ' تنظیم بخش های درخوست ها',
+					url: '/setting/contract_add_section',
 					icon: 'reader',
 					function: 'showDetail',
 				},
@@ -354,6 +413,7 @@ export const globalData = {
 				},
 			],
 		},
+		
 	
 	],
 };

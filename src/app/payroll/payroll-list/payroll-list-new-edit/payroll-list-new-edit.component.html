@@ -1,0 +1,115 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">ویرایش فیش حقوقی </h1>
+					<p class="dsec">در این قسمت شما میتوانید فیش حقوقی را ویرایش کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="/payrolls/payroll" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<div class="container mt-4">
+
+			<div class="col-12 my-4">
+				<div class="title-1">
+					<h2  class="title"> اطلاعات اولیه فیش حقوقی</h2>
+					<p class="dsec">
+						ابتدا نام کسب وکار و سال و ماهی که میخواهید برای آن فیش حقوقی تنظیم کنید وارد کنید
+					</p>
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>  کسب وکار </label>
+		 <!-- (change)="changeFilter()" -->
+		 
+		<ng-select
+		[items]="businesslist$ | async"
+		placeholder="جستوجو در کسب و کارها"
+		[loading]="businessInputLoading"
+		bindLabel="name"
+		bindValue="id"
+		typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+		[typeahead]="businessInput$"
+		[(ngModel)]="business_id"
+		[clearable]="true"
+		loadingText="لطفا صبر کنید ..."
+		notFoundText="مناسفانه کسب و کاری یافت نشد"
+		(change)="getData()"
+	
+    [readonly]="true"
+	
+	>
+	</ng-select>
+			
+	
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>  ماه </label>
+						<ng-select [(ngModel)]="monthNumber" (change)="getData()"  [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه ماه یافت نشد"
+							bindValue="number" placeholder="انتخاب کنید"
+              [readonly]="true"
+              >
+						</ng-select>
+			
+	
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<label>  سال</label>
+		  
+						<ng-select [(ngModel)]="yearNumber" (change)="getData()"  [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه سال یافت نشد"
+							bindValue="year" placeholder="انتخاب کنید"
+              [readonly]="true" 
+              >
+						</ng-select>
+	 <!-- (change)="changeFilter()" -->
+					
+	
+					</div>
+				</div>
+			</div>
+		
+			<div class="col-12">
+				<hr>
+			</div>
+
+
+
+			<app-excel *ngIf="!loading&&datasList&&datasList.length&&yearNumber&&monthNumber&&business_id" [list]="datasList" [year]="yearNumber" [month]="monthNumber" (Data)="onSubmit($event)"></app-excel>
+
+
+			<div *ngIf="!loading&&datasList&&datasList.length==0&&yearNumber&&monthNumber&&business_id" class="alert alert-warning my-3" role="alert">
+				<h4 class="title">اطلاعتی یافت نشد.</h4>
+				<p class="dsec">
+					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yearNumber}} با این کسب وکار قراداد تایید شده ندارد.
+				</p>
+			</div>
+
+		</div>
+
+	</main>
+</ion-content>

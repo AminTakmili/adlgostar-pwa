@@ -1,0 +1,510 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن تسویه حساب جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید تسوه حساب جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<!-- <ion-button shape="round" color="medium" fill="outline"> -->
+				<!-- <ion-back-button defaultHref="contracts/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button> -->
+				<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				<!-- </ion-button> -->
+			</div>
+		</div>
+	</div>
+	<main>
+
+		<form [formGroup]="contractsForm" (ngSubmit)="onSubmit()">
+			<!--  -->
+			<div class="container mt-4">
+				<div *ngIf="!businessEmployeeId" class="mb-35 ">
+					<!-- title -->
+					<div class="title-1 mb-4">
+						<h2 class="title">مشخصات فرد تسویه شونده</h2>
+					</div>
+					<div class="row align-items-start d-flex ">
+						<div class="col-md-12 form-input mb-3 px-0">
+							<label>انتخاب کارمند</label>
+							<ng-select formControlName="emId" [clearable]="true" (change)="changEemployee($event)"
+							[items]="employeelist$ | async" placeholder="انتخاب کنید"
+							[loading]="employeeInputLoading" bindLabel="full_name" bindValue="id"
+							typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+							[typeahead]="employeeInput$" loadingText="لطفا صبر کنید ..."
+							notFoundText="مناسفانه کارمندی یافت نشد"
+							(clear)="clearEmployee()"
+	
+							></ng-select>
+									<span class="error">
+										<app-validator #validation [control]="contractsForm.controls['business_employee_id']" [controlName]="'انتخاب کارمندان '"></app-validator>
+									</span>
+									<span class="hint">کارمند مورد نظر را برای تسویه حساب انتخاب کنید .</span>
+						<!-- </div> -->
+					
+						</div>
+					<div *ngIf="businessList&&businessList.length" class="col-md-12 form-input mb-3 px-0">
+						<label>انتخاب کسب کار</label>
+						<!-- <ng-select
+						bindLabel="name"
+						bindValue="id"
+						[clearable]="false"
+						[items]="businessList"
+						placeholder="انتخاب کنید"
+						(change)="GetEmployee()"
+						formControlName="business_id"
+						>
+						</ng-select> -->
+						<ng-select formControlName="bId" (change)="changBusiness($event)" [items]="businessList"
+						placeholder="انتخاب کنید" bindLabel="business.name" bindValue="id" [clearable]="true"
+						loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب کاری یافت نشد"></ng-select>
+					
+
+						<span class="error">
+							<app-validator #validation [control]="contractsForm.controls['business_id']" [controlName]="'انتخاب کسب و کار '"></app-validator>
+						</span>
+						<span class="hint"> این تسویه حساب برای کدام  کسب کار است	</span>
+					</div>
+					</div>
+
+				</div>
+				<div class="row align-items-start d-flex ">
+					<div class="col-6 position-sticky top-15">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">عملگر های تسویه حساب </h2>
+						</div>
+						<!--  -->
+						<!-- settlement_template_id -->
+						<div *ngIf="settlementTemplateList&&settlementTemplateList.length" class="form-input mb-3">
+							<label>انتخاب قالب تسویه حساب <span
+									*ngIf="contractsForm.controls['settlement_template_id'].valid"
+									(click)="tagelttlementTemplateText()" class="mx-3 py-4">( <a>
+										{{settlementTemplateText&&settlementTemplateText!=''?'پنهان کردن':'نمایش'}} متن
+										قالب </a> ) </span>
+							</label>
+
+							<!-- [(ngModel)]="filtered_employee_id"  -->
+							<ng-select (change)="calculatePrices(true)" formControlName="settlement_template_id"
+								[items]=" settlementTemplateList" placeholder="انتخاب کنید" bindLabel="name"
+								bindValue="id" [clearable]="true" loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه قالبی  یافت نشد"></ng-select>
+							<!-- </div> -->
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['settlement_template_id']"
+									[controlName]="' انتخاب قالب تسویه حساب'"></app-validator>
+							</span>
+							<span class="hint"></span>
+							<section class=" width-100"
+								*ngIf="settlementTemplateText&&settlementTemplateText!=''&&contractsForm.controls['settlement_template_id'].valid">
+								<label>متن قالب تسویه حساب </label>
+								<ion-card [innerHTML]="settlementTemplateText" color="white"
+									class=" my-1 mx-0 width-100 px-2 " mode="ios">
+								</ion-card>
+							</section>
+
+						</div>
+						<div class="form-input mb-3">
+							<label>زمان ترک کار</label>
+
+							<ng-persian-datepicker (dateOnSelect)="calculatePrices()" [timeMeridian]="true"
+								[timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="leave_work_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['leave_work_date']"
+									[controlName]="'زمان ترک کار '"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+
+						<!-- calc type -->
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه حق سنوات </ion-label>
+
+							<ion-segment (ionChange)="calculatePrices()" select-on-focus=true
+								formControlName="severance_pay_calc_type" class="mt-2" color="white">
+								<ion-segment-button *ngFor="let item of settlementCalcType" [value]="item.value">
+									<ion-label> {{item.name}} </ion-label>
+								</ion-segment-button>
+								<!-- <ion-segment-button value="only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button> -->
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه عیدی </ion-label>
+
+							<ion-segment (ionChange)="calculatePrices()" select-on-focus=true
+								formControlName="new_year_gift_calc_type" class="mt-2" color="white">
+								<!-- <ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button> -->
+								<ion-segment-button *ngFor="let item of settlementCalcType" [value]="item.value">
+									<ion-label> {{item.name}} </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه پاداش </ion-label>
+
+							<ion-segment (ionChange)="calculatePrices()" select-on-focus=true
+								formControlName="bonus_calc_type" class="mt-2" color="white">
+								<!-- <ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button> -->
+								<ion-segment-button *ngFor="let item of settlementCalcType" [value]="item.value">
+									<ion-label> {{item.name}} </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">نوع محاسبه مرخصی استفاده نشده </ion-label>
+
+							<ion-segment (ionChange)="calculatePrices()" select-on-focus=true
+								formControlName="unused_leave_calc_type" class="mt-2" color="white">
+								<!-- <ion-segment-button value="all_working_days">
+									<ion-label>همه روز های کاری </ion-label>
+								</ion-segment-button>
+								<ion-segment-button value="only_current_year">
+									<ion-label>فقط سال جاری</ion-label>
+								</ion-segment-button> -->
+								<ion-segment-button *ngFor="let item of settlementCalcType" [value]="item.value">
+									<ion-label> {{item.name}} </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<!--  -->
+
+
+
+					</div>
+					<!-- options -->
+					<div class="col-md-6">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">اطلاعات پایه تسویه حساب</h2>
+						</div>
+						<div class="form-input mb-3">
+							<label>زمان شروع کار</label>
+
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
+								dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="employee_start_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['employee_start_date']"
+									[controlName]="'زمان شروع کار کارمند'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه دستمزد </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true formControlName="calc_wage_monthly"
+								class="mt-2" color="white">
+
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق بن </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true
+								formControlName="calc_grocery_allowance_monthly" class="mt-2" color="white">
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_grocery_allowance_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_grocery_allowance_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه دستمزد </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true formControlName="calc_wage_monthly"
+								class="mt-2" color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_wage_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق مسکن </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true
+								formControlName="calc_housing_allowance_monthly" class="mt-2" color="white">
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_housing_allowance_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_housing_allowance_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق اولاد </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true
+								formControlName="calc_children_allowance_monthly" class="mt-2" color="white">
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_children_allowance_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_children_allowance_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه حق سنوات </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true
+								formControlName="calc_severance_pay_monthly" class="mt-2" color="white">
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_severance_pay_monthly==1" [value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_severance_pay_monthly==0" [value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه عیدی </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true
+								formControlName="calc_new_year_gift_monthly" class="mt-2" color="white">
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_new_year_gift_monthly==1" [value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button
+									[class.disabledSeg]="contractsForm.value.calc_new_year_gift_monthly==0" [value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+							<ion-label class="px-1">محاسبه پاداش </ion-label>
+
+							<ion-segment [disabled]="true" select-on-focus=true formControlName="calc_bonus_monthly"
+								class="mt-2" color="white">
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_bonus_monthly==1"
+									[value]="1">
+									<ion-label>ماهانه</ion-label>
+								</ion-segment-button>
+								<ion-segment-button [class.disabledSeg]="contractsForm.value.calc_bonus_monthly==0"
+									[value]="0">
+									<ion-label> سالانه </ion-label>
+								</ion-segment-button>
+
+							</ion-segment>
+
+						</ion-card>
+
+						<!-- دستمزد روزانه -->
+						<div class="form-input mb-3">
+							<label>دستمزد روزانه </label>
+							<ion-input [readonly]="true" formControlName="wage"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['wage']"
+									[controlName]="'دستمزد روزانه'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<div class="form-input mb-3">
+							<label>حق اولاد </label>
+							<ion-input [readonly]="true" formControlName="children_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['children_allowance']"
+									[controlName]="'حق اولاد'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق سنوات -->
+
+						<!-- حق بن -->
+						<div class="form-input mb-3">
+							<label>حق بن </label>
+							<ion-input [readonly]="true" formControlName="grocery_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['grocery_allowance']"
+									[controlName]="'حق بن'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<!-- حق مسکن -->
+						<div class="form-input mb-3">
+							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="true" formControlName="housing_allowance"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['housing_allowance']"
+									[controlName]="'حق مسکن'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+
+						<!-- <hr> -->
+
+					</div>
+					<div class="col-12">
+						<hr>
+					</div>
+
+				</div>
+				<div class="row align-items-start d-flex ">
+					<div class="col-md-6 ">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">اضافات تسویه حساب</h2>
+						</div>
+
+						<section formArrayName="settlement_additions">
+							<section id="" *ngFor="let item of  settlementAdditionsGroup.controls ; let i = index"
+								[formGroupName]="i">
+
+								<div *ngFor="let addition of settlementAdditionList">
+									<section *ngIf="!contractsForm.controls[addition.en_name]" class="form-input mb-3">
+										<label>{{addition.name}}</label>
+										<!-- [readonly]="calcparametr.indexOf(addition.en_name)!=-1" -->
+										<ion-input
+											[readonly]="addition.en_name=='yearly_new_year_gift'||addition.en_name=='yearly_bonus'||addition.en_name=='yearly_severance_pay'"
+											autocomplete="new-pass" [formControlName]="addition.en_name"></ion-input>
+										<span class="error">
+											<app-validator #validation [control]="item.get(addition.en_name)"
+												[controlName]="addition.name"></app-validator>
+										</span>
+									</section>
+									<!-- <span class="hint">مبلغ به ریال است</span> -->
+								</div>
+
+							</section>
+							<!-- deductions -->
+
+
+						</section>
+					</div>
+					<!-- options -->
+					<div class="col-md-6">
+						<!-- title -->
+						<div class="title-1 mb-4">
+							<h2 class="title">کسورات تسویه حساب</h2>
+						</div>
+						<section formArrayName="settlement_deductions">
+
+							<section id="deductions"
+								*ngFor="let item of  settlementDeductionsGroup.controls ; let i = index"
+								[formGroupName]="i">
+
+								<div *ngFor="let deductions of settlementDeductionList">
+									<section *ngIf="!contractsForm.controls[deductions.en_name]"
+										class="form-input mb-3">
+										<label>{{deductions.name}}</label>
+										<!-- [readonly]="calcparametr.indexOf(deductions.en_name)!=-1" -->
+										<ion-input [readonly]="deductions.en_name=='loan_installment_amount'"
+											autocomplete="new-pass" [formControlName]="deductions.en_name"></ion-input>
+										<span class="error">
+											<app-validator #validation [control]="item.get(deductions.en_name)"
+												[controlName]="deductions.name"></app-validator>
+										</span>
+									</section>
+									<!-- <span class="hint">مبلغ به ریال است</span> -->
+								</div>
+
+							</section>
+
+
+						</section>
+
+					</div>
+
+
+				</div>
+				<div class="row mb-5 align-items-end">
+					<div class="col-12">
+						<hr>
+					</div>
+					<!-- next step  -->
+					<div class="col-lg-7 col-md-3"></div>
+					<div class="col-lg-2 col-md-4">
+						<!-- <ion-button expand="block" type="button" color="medium" shape="round"  fill="outline">پاک کردن فرم</ion-button> -->
+					</div>
+					<div class="col-lg-3 col-md-5">
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ثبت تسویه
+							حساب
+						</ion-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
+</ion-content>

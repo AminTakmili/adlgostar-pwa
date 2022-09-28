@@ -7,9 +7,9 @@ ion-card{
 			}
 		}
 		ion-label{
-			.title{
+			// .title{
 
-			}
+			// }
 			.posts{
 				span{
 					color:var(--ion-color-step-700);
@@ -31,8 +31,36 @@ ion-card{
 			}
 		}
 	}
+	ion-chip {
+		cursor: auto;
+		min-width: 200px;
+	}
 
 }
 .overfow-visible{
 	overflow: visible;
+}
+.settlement:after
+{
+
+		content: "تسویه حساب شده";
+		position: absolute;
+		top: 18px;
+		left: 35%;
+		z-index: 1;
+		font-family: Arial, sans-serif;
+		transform: rotate(-30deg);
+		font-size: 16px;
+		color: #c00;
+		background: #fff;
+		border: solid 4px #c00;
+		padding: 5px;
+		border-radius: 5px;
+		zoom: 1;
+		filter: alpha(opacity=20);
+		opacity: 0.3;
+		-webkit-text-shadow: 0 0 2px #c00;
+		text-shadow: 0 0 2px #c00;
+		box-shadow: 0 0 2px #c00;
+	
 }

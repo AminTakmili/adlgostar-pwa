@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SettingContractDefinitionSectionComponent } from './setting-contract-definition-section/setting-contract-definition-section.component';
+import { SettingAddSectionComponent } from './setting-add-section/setting-add-section.component';
 import { SettingsPageRoutingModule } from './settings-routing.module';
 import { ShareModulePageModule } from 'src/app/share-module/share-module.module';
 
@@ -20,6 +20,6 @@ import { ShareModulePageModule } from 'src/app/share-module/share-module.module'
 		NgxPaginationModule,
 		NgSelectModule,
   ],
-  declarations: [SettingContractDefinitionSectionComponent]
+  declarations: [SettingAddSectionComponent]
 })
 export class SettingsPageModule {}

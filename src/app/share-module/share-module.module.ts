@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { EmployerCardComponent } from './employer-card/employer-card.component';
 import { ImporterListComponent } from './importer-list/importer-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PipeModule } from '../core/pipes/pipe.module';
+import { ExcelComponent } from './excel/excel.component';
 
 
 
@@ -26,7 +28,8 @@ import { PipeModule } from '../core/pipes/pipe.module';
 		RouterModule,
 		ReactiveFormsModule,
 		NgxPaginationModule,
-		PipeModule
+		PipeModule,
+		NgSelectModule
 	],
 	declarations: [
 		SidebarComponent,
@@ -36,7 +39,8 @@ import { PipeModule } from '../core/pipes/pipe.module';
 		EmployeeCardComponent,
 		EmployerCardComponent,
 		ImagePipe,
-		ImporterListComponent
+		ImporterListComponent,
+		ExcelComponent
 	],
 	exports : [
 		SidebarComponent,
@@ -46,7 +50,8 @@ import { PipeModule } from '../core/pipes/pipe.module';
 		EmployeeCardComponent,
 		EmployerCardComponent,
 		ImagePipe,
-		ImporterListComponent
+		ImporterListComponent,
+		ExcelComponent
 	]
 
 })

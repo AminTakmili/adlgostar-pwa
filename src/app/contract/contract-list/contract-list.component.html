@@ -138,7 +138,7 @@
 						<form [formGroup]="date" class="width-100 " >
 						
 							<ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="datepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-								<input class="pr-2" type="text"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
+								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
 							 </ng-persian-datepicker>
 						</form>
 
@@ -194,7 +194,8 @@
 							<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }} </span>
 						</td>
 						<td>
-							<span class="font-size-12 " > {{ item.confirmer_info.full_name?item.confirmer_info.full_name:'_'}} </span>
+							<span class="font-size-12 " *ngIf="item.confirmer_info.full_name" > {{item.confirmer_info.full_name}} </span>
+							<ion-chip   *ngIf="!item.confirmer_info.full_name" color="danger" >تایید نشده</ion-chip>
 						</td>
 						
 						<td>
