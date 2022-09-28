@@ -757,3 +757,9 @@ table{
 // table::-webkit-scrollbar-thumb
 // {
 // }
+
+.add-leave-picker{
+	.picker-columns{
+		direction: rtl !important;
+	}
+}

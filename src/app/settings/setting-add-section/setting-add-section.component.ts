@@ -1,5 +1,6 @@
+import { DataSets } from 'src/app/core/models/StaticData.model';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -10,11 +11,11 @@ import { UserType } from 'src/app/core/models/user.model';
 import { error } from 'src/app/core/models/other.models';
 
 @Component({
-	selector: 'app-setting-contract-definition-section',
-	templateUrl: './setting-contract-definition-section.component.html',
-	styleUrls: ['./setting-contract-definition-section.component.scss'],
+	selector: 'app-setting-add-section',
+	templateUrl: './setting-add-section.component.html',
+	styleUrls: ['./setting-add-section.component.scss'],
 })
-export class SettingContractDefinitionSectionComponent implements OnInit {
+export class SettingAddSectionComponent implements OnInit {
 	pageTitle: string = 'انتخاب پست جدید برای افزودن قرارداد ';
 	addForm: FormGroup;
 	limit: number = 100;
@@ -23,8 +24,42 @@ export class SettingContractDefinitionSectionComponent implements OnInit {
 	loading = false;
 	end: boolean = false;
 	// searchVal : string;
+	ticketTypeObj:any={}
 
 	dataList: UserType[] = [];
+	sections: FormArray;
+	// api:any={
+
+	// 	"sections" : [
+	
+	// 		{
+	
+	// 			"section_id" : "1",
+	
+	// 			"section_type" : "contract_definition_section" 
+	
+	// 		},
+	
+	// 		{
+	
+	// 			"section_id" : "2",
+	
+	// 			"section_type" : "payroll_definition_section" 
+	
+	// 		},
+	
+	// 		{
+	
+	// 			"section_id" : "3",
+	
+	// 			"section_type" : "settlement_definition_section" 
+	
+	// 		}
+	
+	// 	]    
+	
+	// }
+
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -32,12 +67,66 @@ export class SettingContractDefinitionSectionComponent implements OnInit {
 		private navCtrl: NavController
 	) {
 		this.addForm = this.fb.group({
-			section_id: ['', Validators.compose([Validators.required])],
+			// section_id: ['', Validators.compose([Validators.required])],
+			// section_type: ['', Validators.compose([Validators.required])],
+			sections: this.fb.array([]),
+
 		});
+		this.sections = this.addForm.get(
+			'sections'
+		) as FormArray;
 	}
 
 	async ngOnInit() {
+		this.ticketTypeObj= new Object();
+		await this.global.baseData.subscribe(value => {
+			if (value) {
+				console.log(value.definition_section_type);
+				 value.definition_section_type.map((item:{value:string,name:string})=>{
+					// console.log(item.value);
+					// console.log( Object.create({}, { p: { value: item.value } }));
+					this.ticketTypeObj[item.value]=item.name
+				})
+			
+				console.log(this.ticketTypeObj);
+			}
+		});
 		
+	}
+	
+
+	// 
+	get payrollAdditionsGroup(): FormArray {
+		return this.addForm.get('sections') as FormArray;
+	}
+	newPayrollAdditions(sections:any): FormGroup {
+		// // console.log(sections);
+		// const form = this.fb.group({});
+		// sections.map((addition:any) => {
+		// 	console.log(addition.en_name);
+		// 	console.log(addition.section_id);
+			
+		// 	if (addition.en_name) {
+		// 		form.addControl(
+		// 			addition.en_name,
+		// 			this.fb.control(
+		// 				addition.section_id,
+						
+		// 				[Validators.required] 
+		// 			)
+
+		// 			// this.fb.control('')
+		// 			// this.fb.control('', [Validators.required])
+		// 		);
+		// 	}
+		// });
+
+		// console.log(form);
+		// return form;
+		return this.fb.group({
+			section_type: [sections?.section_type, Validators.compose([Validators.required])],
+			section_id: [Number(sections?.section_id) , Validators.compose([Validators.required])],
+		}) ;
 	}
 
 	async getData() {
@@ -52,6 +141,8 @@ export class SettingContractDefinitionSectionComponent implements OnInit {
 			})
 			.subscribe(
 				async (res: any) => {
+				
+					
 					console.log(res);
 					this.total = res.totalRows;
 					this.loading = false;
@@ -107,14 +198,22 @@ async	ionViewWillEnter() {
 		await this.getData();
 		await this.global.showLoading()
 		this.global
-			.httpGet('setting/getContractDefinitionSection')
+			.httpGet('setting/getDefinitionSections')
 			.subscribe(
 				async (res: any) => {
 					await this.global.dismisLoading()
-				if (res && res.section_id) {
-					this.addForm
-						.get('section_id')
-						.setValue(Number(res.section_id));
+					console.log(res);
+				if (res) {
+					console.log(res);
+					res.sections.map((item:any)=>{
+						
+						
+						this.sections.push(this.newPayrollAdditions(item))
+
+					})
+					// this.addForm.patchValue(res)
+						// .get('section_id')
+						// .setValue(Number(res.section_id));
 				}
 				},
 				async (error: any) => {
@@ -122,6 +221,18 @@ async	ionViewWillEnter() {
 					await this.global.dismisLoading()
 				}
 			);
+	}
+	ionViewDidLeave(){
+		this.remove()
+		this.remove()
+	}
+	remove(){
+		// this.sections=new FormArray([])
+		for (let index = 0; index <this.sections.length; index++) {
+			this.sections.removeAt(index);
+
+		}
+
 	}
 
 	setTitle() {
@@ -134,14 +245,14 @@ async	ionViewWillEnter() {
 	}
 
 	async onSubmit() {
-		console.log(this.addForm.value.section_id);
-		console.log(this.dataList.find((item)=>{return item.id==this.addForm.value.section_id}).name);
+		console.log(this.addForm.value);
+		// console.log(this.dataList.find((item)=>{return item.id==this.addForm.value.section_id}).name);
 		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global
 				.httpPost(
-					'setting/setContractDefinitionSection',
+					'setting/setDefinitionSections',
 					this.addForm.value
 				)
 				.subscribe(
@@ -150,9 +261,7 @@ async	ionViewWillEnter() {
 						// console.log(res:any);
 						
 						this.global.showToast(
-							' درخواست ثبت قرارداد از طریق تیکت به بخش ' +
-							this.dataList.find((item)=>{return item.id==this.addForm.value.section_id}).name +
-								' محول شد .',
+							'بخش های مربوطه با موفقیت ثبت شد',
 								1700,
 								'top',
 								'success',

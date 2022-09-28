@@ -362,8 +362,9 @@ export const globalData = {
 			submenu: [
 			
 				{
-					name: 'بخش تنظیم قرارداد',
-					url: '/setting/contract_definition_section',
+					access: true,
+					name: ' تنظیم بخش های درخوست ها',
+					url: '/setting/contract_add_section',
 					icon: 'reader',
 					function: 'showDetail',
 				},

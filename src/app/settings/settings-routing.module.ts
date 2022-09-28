@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { NgModule } from '@angular/core';
-import { SettingContractDefinitionSectionComponent } from './setting-contract-definition-section/setting-contract-definition-section.component';
+import { SettingAddSectionComponent } from './setting-add-section/setting-add-section.component';
 
 const routes: Routes = [
 	{
@@ -9,8 +9,8 @@ const routes: Routes = [
 		redirectTo: 'contract_definition_section',
 	},
 	{
-		path: 'contract_definition_section',
-		component: SettingContractDefinitionSectionComponent,
+		path: 'contract_add_section',
+		component: SettingAddSectionComponent,
 	},
 ];
 

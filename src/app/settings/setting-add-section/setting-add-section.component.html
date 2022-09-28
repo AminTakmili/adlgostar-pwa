@@ -1,0 +1,100 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> {{ pageTitle }}</h1>
+					<p class="dsec">در این قسمت میتوانید پست جدید برای افزودن قرارداد از طریق تیکت انتخاب کنید</p>
+				</div>
+			</div>
+			<!-- <div class="col-lg-auto">
+
+				<ion-back-button defaultHref="more/employee-posts" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div> -->
+		</div>
+	</div>
+	<main>
+		<div class="container">
+			
+		
+
+			<form [formGroup]="addForm" (submit)="onSubmit()">
+				<div class="row my-4">
+					<div class="col-lg-12">
+						<div formArrayName="sections">
+							<div class="business-address"
+								*ngFor="let item of  payrollAdditionsGroup.controls ; let i = index" [formGroupName]="i">
+								<!-- <div class="row mb-3 justify-content-between align-items-center" *ngIf="i > 0">
+									<div class="col-12">
+										<hr>
+									</div>
+								
+								</div> -->
+
+								<!-- <div *ngFor="let i of ticketType" class="col-12"> -->
+	
+									<div class="col-md-12">
+										<div class="title-1">
+											<h2 class="title">{{ticketTypeObj[item.value.section_type]}}</h2>
+											<p class="dsec"> پست مربوط به {{ticketTypeObj[item.value.section_type]}} را مشخص کنید</p>
+										</div>
+									</div>
+			
+									<div class="form-input pt-3">
+										<label>عنوان پست</label>
+			
+										<ng-select [items]="dataList" [virtualScroll]="true" [loading]="loading"
+											formControlName="section_id" bindLabel="name" bindValue="id" placeholder="انتخاب کنید"
+											appendTo="body" loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه پستی یافت نشد"
+											[clearable]=false (scroll)="onScroll($event)" (scrollToEnd)="onScrollToEnd()">
+										
+											<ng-template ng-option-tmp let-item="item" let-index="index">
+												{{item.name}}
+											</ng-template>
+										</ng-select>
+										<span class="error">
+											<app-validator [control]="addForm.controls['section_id']" [controlName]="'پست'">
+											</app-validator>
+										</span>
+										<span class="hint">مثلا کارشناس</span>
+									</div>
+									<hr>
+								<!-- </div> -->
+								
+								
+							</div>
+						</div>
+					</div>
+
+
+					<!-- درصد افزایش نسبت به سال قبل -->
+					<!-- <div class="col-12">
+						<hr>
+					</div> -->
+					<div class="col-12">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+								<ion-button expand="block" color="medium" fill="outline" shape="round"
+									(click)="global.emptyFrom(addForm)">
+									پاک کردن فرم
+								</ion-button>
+							</div>
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ویرایش پست
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+	</main>
+</ion-content>

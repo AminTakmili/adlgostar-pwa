@@ -6,7 +6,7 @@ import { DataSets } from './../../../core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { NavController } from '@ionic/angular';
 import { SeoService } from 'src/app/core/services/seo.service';
-
+import { PickerController } from '@ionic/angular';
 @Component({
   selector: 'app-employee-leave-add',
   templateUrl: './employee-leave-add.component.html',
@@ -22,13 +22,17 @@ export class EmployeeLeaveAddComponent implements OnInit {
 	}>;
 
   id:string
+  date:any
+  hoursOptions:{value:number,text:string}[]=[]
+  minutesOptions:{value:number,text:string}[]=[]
+//   private selectedAnimal: string;
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-    private route: ActivatedRoute
-
+    private route: ActivatedRoute,
+	private pickerCtrl: PickerController
 	) {
     this.id = route.snapshot.paramMap.get('id');
 
@@ -49,6 +53,7 @@ export class EmployeeLeaveAddComponent implements OnInit {
 			}
 		});
 		this.monthList = this.global.monthList;
+		this.makeOptionsPicker()
 	}
 
 	setTitle() {
@@ -59,8 +64,58 @@ export class EmployeeLeaveAddComponent implements OnInit {
 			isNoIndex: false,
 		});
 	}
+	async openPicker() {
+		const picker = await this.pickerCtrl.create({
+		  columns: [
+			{
+			  name: 'hours',
+			  options:this.hoursOptions
+			},
+			{
+			  name: 'minutes',
+			  options: this.minutesOptions
+			},
+			
+		  ],
+		  buttons: [
+			{
+			  text: 'انصراف',
+			  role: 'cancel',
+			},
+			{
+			  text: 'تایید',
+			  handler: (value) => {
+				const val=value.hours.value+':'+value.minutes.value
+				console.log(value);
+				console.log(val);
+				this.addForm.get('amount').setValue(val)
+				this.date=value.hours.value+' ساعت و '+value.minutes.value+' دقیقه '
+				// window.alert(`You selected a ${value.crust.text} pizza with ${value.meat.text} and ${value.veggies.text}`);
+			  },
+			},
+		  ],
+		  htmlAttributes: { dir: 'rtl'},
+		  cssClass:'add-leave-picker',
+		});
+	
+		await picker.present();
+	  }
+	  makeOptionsPicker(){
+		for (let i = 0; i <= 200; i++) {
+			this.hoursOptions.push({value:i,text:` ${i} ساعت   `})
+			
+		}
+		for (let i = 0; i < 60; i++) {
+			this.minutesOptions.push({value:i,text: i+' دقیقه '})
+			
+		}
+		console.log(this.hoursOptions);
+		console.log(this.minutesOptions);
+
+	  }
 
 	async onSubmit() {
+		console.log(this.addForm.value);
 		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -71,7 +126,7 @@ export class EmployeeLeaveAddComponent implements OnInit {
 						await this.global.dismisLoading();
 						// console.log(res:any);
 						this.navCtrl.navigateForward(
-							'/employees'
+							'/employees/detail/'+res.employee_id
 						);
 						this.global.showToast(' مرخصی جدید ثبت شد');
 						this.addForm.reset();

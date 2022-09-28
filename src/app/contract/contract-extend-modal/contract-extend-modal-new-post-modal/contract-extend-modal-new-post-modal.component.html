@@ -1,0 +1,83 @@
+<ion-header mode="md" class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>ثبت پست جدید</ion-title>
+  </ion-toolbar>
+  </ion-header>
+<ion-content class="ion-padding">
+  <form (submit)="setNewPost()" [formGroup]="postForm">
+    <div class="col-md-12 mb-4">
+      <div class="form-input mb-3">
+        <label> نام کارمند</label>
+        <ng-select formControlName="business_employee_id"
+          placeholder="انتخاب کنید"
+          [items]="employeeList"
+          bindLabel="full_name"
+          bindValue="business_employee_info.id"
+          (change)="employeeChange()"
+         >
+        </ng-select>
+        <span class="error">
+          <app-validator [control]="postForm.controls['business_employee_id']" [controlName]="'نام کارمند'">
+          </app-validator>
+        </span>
+        <span class="hint">نام کارمند که میخواهید پست آن را تغییر دهید وارد کنید</span>
+      </div>
+    </div>
+
+    <div *ngIf="postForm.controls['business_employee_id'].value" formArrayName="posts" class="col-md-12">
+      <div *ngFor="let item of postsFormGroup?.controls ; let i = index"
+      [formGroupName]="i">
+        <!-- title -->
+        <div class="row justify-content-between align-items-center">
+          <div class="col-12" *ngIf="i"><hr></div>
+          <div class="col-9">
+            <div class="title-1">
+              <h2 class="title"> پست  شماره  {{ i + 1 }} کارمند</h2>
+            </div>
+          </div>
+          <div class="col-auto" *ngIf="i">
+            <ion-buttons>
+              <ion-button (click)="removePost(i)" color="danger">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </div>
+        </div>
+        <div class="form-input mb-3">
+          <label>انتخاب پست</label>
+          <ng-select [items]="postList" placeholder="انتخاب کنید" bindLabel="name"
+            bindValue="id" formControlName="post_id">
+          </ng-select>
+          <span class="error">
+            <app-validator [control]="item.get('post_id')"
+              [controlName]="'انتخاب پست'">
+            </app-validator>
+          </span>
+          <span class="hint">مثلا حسابدار</span>
+        </div>
+      </div>
+      <!-- add another post -->
+      <div class="row ion-justify-content-between ion-align-items-center">
+        <div class="col-auto">
+          <p> آیا کارمند پست دیگری دارد</p>
+        </div>
+        <div class="col-auto">
+          <ion-button color="dark" fill="outline" shape="round" (click)="addAnotherPost()">
+            <ion-icon slot="start" name="add"></ion-icon>
+            افزودن پست دیگر
+          </ion-button>
+        </div>
+      </div>
+    </div>
+    <ion-button class=" mt-20" type="submit"  expand="block" color="success" shape="round">
+    ثبت پست
+    </ion-button>
+
+  </form>
+
+</ion-content>

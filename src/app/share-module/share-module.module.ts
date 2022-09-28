@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +28,8 @@ import { ExcelComponent } from './excel/excel.component';
 		RouterModule,
 		ReactiveFormsModule,
 		NgxPaginationModule,
-		PipeModule
+		PipeModule,
+		NgSelectModule
 	],
 	declarations: [
 		SidebarComponent,

@@ -16,6 +16,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { contract } from 'src/app/core/models/contractConstant.model';
 import { payrollInfo } from 'src/app/core/models/payroll-list.model';
 import { sortBy } from 'lodash';
+import { settlementList } from 'src/app/core/models/settlement.model';
 @Component({
 	selector: 'app-business-detail',
 	templateUrl: './business-detail.component.html',
@@ -32,10 +33,21 @@ export class BusinessDetailComponent implements OnInit {
 	offset: number = 0;
 	total: number = 0;
 	CurrentPage: number = 1;
+
 	PayrollLimit: number = 12;
 	PayrollOffset: number = 0;
 	PayrollTotal: number = 0;
 	PayrollCurrentPage: number = 1;
+
+	settlementLimit: number = 10;
+	settlementOffset: number = 0;
+	settlementTotal: number = 0;
+	settlementCurrentPage: number = 1;
+	settlementdataList:settlementList[] ;
+
+
+
+
 	contractDefinitionSectionId!: number;
 	settlementDefinitionSectionId!: number;
 	payrollDefinitionSectionId!: number;
@@ -59,6 +71,7 @@ export class BusinessDetailComponent implements OnInit {
 
 		this.getPayrollData();
 		this.getContractData();
+		this.getSettlementData();
 		this.storage.get('user').then((val) => {
 			if (Object.keys(val).length) {
 				// console.log(val);
@@ -425,5 +438,118 @@ export class BusinessDetailComponent implements OnInit {
 					}
 				});
 			});
+	}
+
+
+	async getSettlementData() {
+		// await this.global.showLoading('لطفا منتظر بمانید...');
+		this.global
+			.httpPost('settlement/filteredList', {
+				limit: this.limit,
+				offset: this.offset,
+				
+				filtered_business_id:	this.businessId ,
+      			// filtered_is_confirmed:this.filtered_is_confirmed
+			})
+			.subscribe(
+				async (res: any) => {
+					// await this.global.dismisLoading();
+					this.settlementTotal = res.totalRows;
+					this.settlementdataList = res.list.map((item: settlementList) => {
+						return new settlementList().deserialize(item);
+					});
+
+					console.log(this.settlementdataList);
+				},
+				async (error: any) => {
+					// await this.global.dismisLoading();
+					this.global.showError(error);
+				}
+			);
+	}
+
+	// changeSettlementFilter() {
+	// 	this.settlementCurrentPage = 1;
+	// 	this.settlementOffset = 0;
+	// 	this.getSettlementData();
+	// }
+	pageSettlementChange($event: any) {
+		this.CurrentPage = $event;
+		this.offset = this.limit * this.CurrentPage - this.limit;
+		this.getSettlementData();
+	}
+
+	confirmedSettlement(item:settlementList ) {
+		this.global
+			.showAlert('تایید تسویه حساب' ,			
+			 `آیا برای تایید تسویه حساب  ${item.employee_name } اطمینان دارید؟`, [
+				{
+					text: 'بلی',
+					role: 'yes',
+					cssClass: 'dark',
+				},
+				{
+					text: 'خیر',
+					role: 'cancel',
+					cssClass: 'medium',
+				},
+			])
+			.then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						await this.global.showLoading('لطفا منتظر بمانید...');
+						this.global
+							.httpPost('payroll/confirm', {
+								id: item.id,
+							})
+							.subscribe(
+								
+								async (res: any) => {
+									await this.global.dismisLoading();
+									this.settlementOffset = 0;
+									this.settlementCurrentPage = 1;
+									this.getSettlementData();
+									this.global.showToast(res.msg);
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+								}
+							);
+					}
+				});
+			});
+	}
+  async removeSettlementItem(item:settlementList){
+		this.global.showAlert('حذف  تسویه حساب',`آیا برای حذف تسویه حساب ${item.employee_name} اطمینان دارید؟`, [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert : any) => {
+			alert.present();
+			alert.onDidDismiss().then(async ( e : any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpDelete('settlement/delete', {
+						id:item.id	,
+					}).subscribe(async (res:any) => {
+
+						await this.global.dismisLoading();
+						this.global.showToast('تسویه حساب با موفقیت حذف شد')
+				this.pageSettlementChange(1) 
+
+					}, async (error:any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
 	}
 }

@@ -77,13 +77,13 @@ footer {
 	}
 }
 
-.title {
-	background: $green;
-	text-align: center;
-	display: grid;
-	place-content: center;
-	color: #fff;
-}
+// .title {
+// 	background: $green;
+// 	text-align: center;
+// 	display: grid;
+// 	place-content: center;
+// 	color: #fff;
+// }
 
 .menu-bar {
 	display: grid;
@@ -491,3 +491,23 @@ footer {
 	
 
 }
+.header{
+	ion-list{
+		background: transparent;
+		ion-item{
+			--background: transparent;
+			ion-button{
+				font-size: 16.1px;
+			}
+
+		}
+	}
+
+}
+
+::ng-deep  ion-input .native-input:read-only  {
+	cursor: not-allowed;
+  }
+  .disabled-cell{
+	opacity: 0.7;
+  }

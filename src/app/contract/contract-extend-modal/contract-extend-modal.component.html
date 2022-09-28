@@ -1,0 +1,84 @@
+<ion-header mode="md" class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="type=='sendExtend'"> ثبت تمدید قرارا داد</ion-title>
+    <ion-title *ngIf="type=='requestExtend'">ارسال درخواست تمدید قرارا داد </ion-title>
+  </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <form [formGroup]="addForm"  (submit)="submit()">
+      <div class="row">
+
+        <div class="col-6">
+
+          <div class="form-input mb-3 ">
+            <label>دستمزد روزانه جدید </label>
+            <ion-input type="number" min="0" autocomplete="new-pass" formControlName="new_wage"></ion-input>
+            <span class="error">
+              <app-validator #validation [control]="addForm.controls['new_wage']" [controlName]="'دستمزد روزانه جدید'"></app-validator>
+            </span>
+            <span class="hint">مبلغ به ریال است</span>
+          </div>
+        </div>
+        <div class="col-6">
+
+          <div class="form-input mb-3 ">
+            <label>زمان جدید پایان قرارداد </label>
+            <ng-persian-datepicker  [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+              <input type="text" formControlName="extend_date" />
+             </ng-persian-datepicker>
+            <span class="error">
+              <app-validator #validation [control]="addForm.controls['extend_date']" [controlName]="' زمان جدید پایان قرارداد '"></app-validator>
+            </span>
+            <span class="hint"></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="type=='requestExtend'" class="form-input mb-3">
+        <label>متن </label>
+   
+        <ion-textarea class="px-15" cols=4 rows=4 wrap="soft" placeholder="متن مور نظر را بنویسید"  formControlName="text"></ion-textarea>
+      
+        <span class="hint">در صورت تمایل متن برای این درخواست بنویسید .</span>
+      </div>
+      <hr class="col-12">
+      <section>
+        <div class="title-1 mb-4">
+          <h2 class="title">تغییر پست</h2>
+          <p class="dsec">
+            اگر پست کارمندی تغییر کرده بر روی دکمه ثبت پست جدید کلیک کنید
+            <ion-button id="open-modal" (click)="openNewPostModal()" color="warning"> ثبت پست جدید </ion-button>
+          </p>
+        </div>
+        <ion-list *ngIf="this.business_employee_new_posts.value&&this.business_employee_new_posts.value.length">
+          <ion-list-header>
+            <h4> پست های تغییر یافته</h4>
+        
+          </ion-list-header>
+          <ion-item [lines]="isLast?'none':''" *ngFor="let item of this.business_employee_new_posts.value; last as isLast">
+            <ion-label>  {{ getemployName(item.business_employee_id) }} </ion-label>
+            <ul>
+              <li *ngFor="let post of item.posts" >{{getPostName(post.post_id) }}</li>
+            </ul>
+          </ion-item>
+        </ion-list>
+      
+         
+
+
+
+        <hr>
+
+      </section>
+      <ion-button class=" mt-20" type="submit"  expand="block" color="success" shape="round">
+        ثبت 
+        </ion-button>
+    
+    </form>
+   
+   
+  </ion-content>

@@ -1,3 +1,4 @@
+import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
@@ -22,6 +23,8 @@ import { ShareModulePageModule } from './../../share-module/share-module.module'
 		NgxPaginationModule,
 		NgSelectModule,
 		ShareModulePageModule,
+		NgPersianDatepickerModule,
+
 	],
 	declarations: [EmployeeLeaveAddComponent, EmployeeLeaveEditComponent],
 })

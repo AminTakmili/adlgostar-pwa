@@ -62,8 +62,10 @@
 					<div class="col-lg-12">
 						<div class="form-input mb-3">
 							<label>مدت زمان </label>
-							<ion-input type="number" min="0" step="1" [clearInput]="true" autocomplete="new-pass"
-								formControlName="amount"></ion-input>
+							<!-- <ion-input type="number" min="0" step="1" [clearInput]="true" autocomplete="new-pass"
+								formControlName="amount"></ion-input> -->
+								<ion-input readonly="true" (click)="openPicker()"   [value]="date"  >
+								</ion-input>
 							<span class="error">
 								<app-validator [control]="editForm.controls['amount']"
 									[controlName]="' مدت زمان'"></app-validator>

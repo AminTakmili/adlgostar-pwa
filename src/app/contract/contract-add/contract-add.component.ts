@@ -91,6 +91,7 @@ export class ContractAddComponent implements OnInit {
 	contractFooterTemplateInfoList: FormArray;
 
 	businessEmpId : number[] = [];
+	businessId :string;
 	
 
 	businesslist$: Observable<BusinessList[]>;
@@ -123,9 +124,11 @@ export class ContractAddComponent implements OnInit {
 		this.businessEmployeeId=router.snapshot.paramMap.get('businessEmployeeId')
 		// this.EmployeeId=router.snapshot.paramMap.get('EmployeeId')
 		this.EmployeeId=router.snapshot.queryParamMap.getAll('EmployeeId')
+		this.businessId=router.snapshot.queryParamMap.get('business_id')
 		// console.log(
 		// router.snapshot.queryParamMap.getAll('emId')	
 		// );
+		console.log(this.businessId);
 
 // console.log(this.businessEmployeeId);
 		this.contractsForm = this.fb.group({
@@ -327,8 +330,8 @@ export class ContractAddComponent implements OnInit {
 		// const countries = this.global.httpGet('more/countries');
 
 		// const business = this.global.httpPost('business/filteredList',{ limit: 2000, offset: 0 });
-		if (this.businessEmployeeId) {
-			this.getBusinessById(this.businessEmployeeId);
+		if (this.businessEmployeeId||this.businessId) {
+			this.getBusinessById(this.businessEmployeeId,this.businessId);
 		} else {
 			this.loadBusiness()
 		}
@@ -353,13 +356,14 @@ export class ContractAddComponent implements OnInit {
 			this.CountAllYear(severanceBaseCRes);
 		});
 	}
-	async getBusinessById(filtered_business_employee_id: string = null) {
+	async getBusinessById(filtered_business_employee_id: string = null,filtered_business_id: string = null) {
 		await	this.global.showLoading()
 			console.log(filtered_business_employee_id);
 			this.global
 				.httpPost('business/filteredList', {
 					filtered_business_employee_id,
-					for_combo: true,
+					filtered_business_id,
+					// for_combo: true,
 					limit: 1000,
 					offset: 0,
 					

@@ -16,11 +16,11 @@
 			<div class="col-lg-auto">
 
 
-				<ion-button *ngIf="global.userPermision['payroll_base_info_settlement_deduction_add']" shape="round"
+				<!-- <ion-button *ngIf="global.userPermision['payroll_base_info_settlement_deduction_add']" shape="round"
 					color="success" [routerLink]="['/payrolls/payroll_base_info/settlement/deduction/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن کسورات تسویه حساب جدید
-				</ion-button>
+				</ion-button> -->
 			</div>
 		</div>
 	</div>
@@ -82,13 +82,13 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 									</ion-icon>
 								</ion-button>
-								<ion-button
+								<!-- <ion-button
 									[routerLink]="['/payrolls/payroll_base_info/settlement/deduction/edit',item.id]"
 									fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
 									*ngIf="global.userPermision['payroll_base_info_settlement_deduction_edit']">
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
-								</ion-button>
+								</ion-button> -->
 
 
 							</ion-buttons>
@@ -112,13 +112,13 @@
 				<p class="dsec"> 
 					شما تا کنون هیچ مورد کسورات تسویه حساب ثبت نکردید .
 
-					<span *ngIf="global.userPermision['payroll_base_info_settlement_deduction_add']">
+					<!-- <span *ngIf="global.userPermision['payroll_base_info_settlement_deduction_add']">
 
 						برای کسر کردن لیست کسورات تسویه حساب بر روی دکمه <a
 							[routerLink]="['/payrolls/payroll_base_info/settlement/deduction/add']"> افزودن کسورات تسویه
 							حساب جدید</a>
 						کلیک کنید
-					</span>
+					</span> -->
 				</p>
 			</div>
 			<!-- if search return empty cell -->

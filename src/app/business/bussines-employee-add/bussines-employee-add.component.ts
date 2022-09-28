@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { concat, Observable, of, Subject, throwError } from 'rxjs';
@@ -50,7 +50,9 @@ export class BussinesEmployeeAddComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
-		public route: ActivatedRoute
+		public route: ActivatedRoute,
+		private router: Router,
+
 	) {
 		this.addForm = this.fb.group({
 			business_id: [
@@ -399,6 +401,7 @@ export class BussinesEmployeeAddComponent implements OnInit {
 
 	ionViewWillEnter() {
 		this.getData();
+		
 	}
 
 	setTitle() {
@@ -438,6 +441,50 @@ export class BussinesEmployeeAddComponent implements OnInit {
 			return new Post().deserialize(item);
 		});
 	}
+
+
+	addContract(EmployeeId:any,businessEmployeeId:any) {
+		this.global
+			.showAlert(
+				'افزودن قرارداد',
+				'آیا میخواهید برای این کارمند قرارداد جدید ثبت کنی ؟ ',
+				[
+					{
+						text: 'خیر',
+						role: 'cancel',
+					},
+					{
+						text: 'بلی',
+						role: 'yes',
+					},
+				]
+			)
+			.then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.navCtrl.navigateForward(
+							'/businesses/detail/' + this.businessId
+						);
+
+						
+		let navigationExtras: NavigationExtras = {
+			queryParams: { EmployeeId},
+			// fragment: 'anchor'
+		  };
+		//   [routerLink]="['/payrolls/payroll/add']" [queryParams]="{business_id: 3,year:1401,month:6}"		  
+		  this.router.navigate(['/contracts/add',businessEmployeeId], navigationExtras);
+
+					}
+					if (e.role === 'cancel') {
+						this.navCtrl.navigateForward(
+							'/businesses/detail/' + this.businessId
+						);
+					}
+				});
+			});
+	}
+
 	async onSubmit(AddAnOther: boolean = false) {
 		this.addForm.markAllAsTouched();
 		if (this.addForm.valid) {
@@ -449,9 +496,10 @@ export class BussinesEmployeeAddComponent implements OnInit {
 						await this.global.dismisLoading();
 						// console.log(res:any);
 						if (!AddAnOther) {
-							this.navCtrl.navigateForward(
-								'/businesses/detail/' + this.businessId
-							);
+							this.addContract(res.employee_id,res.id)
+							// this.navCtrl.navigateForward(
+							// 	'/businesses/detail/' + this.businessId
+							// );
 						}
 						this.global.showToast('کارمند با موفقیت اضافه شد');
 						this.addForm.reset();

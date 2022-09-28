@@ -1,0 +1,96 @@
+ion-content{
+    .folders{
+        transition-duration: .3;
+        .folder{
+        
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                align-items: center;
+                flex-wrap: nowrap;
+                justify-content: center;
+                margin-block: 20px;
+                margin-inline:5px ;
+
+                cursor:pointer;
+
+                .rapImg{
+                    height: 100%;
+                    width: 100%;
+                    position: relative;
+                    .icons{
+                        transition-duration: 3.3;
+                        width: 35px;
+                        height: 80%;
+                        position: absolute;
+                        z-index: 5;
+                        background-color: #030303cc;
+                        display: none;
+                        max-height: 90px;
+                        // opacity: 0;
+                        cursor:auto;
+                        border-radius: 5px;
+                        ion-icon{
+                            font-size: 22px;
+                            margin-block: 5px;
+                            padding: 2px;
+                            margin-inline:5px ;
+                            cursor:pointer
+                        }
+                    }
+                    // .icons:hover{
+                    //     // background-color: white;
+                    //     ion-icon{
+                    //         // background-color: #030303cc;
+                    //         // --background: #030303cc;
+                    //         transform: scale(1.1);
+
+                    //     }
+
+                    // }
+                }
+               
+            
+        }
+        .folder:hover{
+
+            .rapImg{
+               
+                .icons{
+                   display: block;
+                   animation: menuAnimation 0.4s 0s both;
+                }
+                
+            }
+            p{
+                position: absolute;
+                display: inline-block !important;
+                top: -10%;
+                right: 45%;
+                color: white;
+                border-radius: 5px;
+                background: #111728;
+                padding: 5px;
+                transform: rotate(-45deg);
+
+                }
+
+        }
+    }
+}
+
+@keyframes menuAnimation {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  
+    100% {
+    //   height: 150px;
+      opacity: 1;
+    //   border-radius: 8px;
+      transform: scale(1);
+    }
+  }
+  
+

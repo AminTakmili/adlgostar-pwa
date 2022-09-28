@@ -339,11 +339,9 @@
                 <span>{{list.account_number?list.account_number:'------------------------------------'}}</span>
                 / شماره کارت
                 <span>{{list.card_number?list.card_number:'------------------------------------'}}</span>
+                  / شماره شبا 
+                <span>{{list.iban_number?list.iban_number:'------------------------------------'}}</span>
           
-                <span *ngIf="list?.iban_number" >
-                  با شماره شبا {{list?.iban_number}}
-                </span>
-
                 به نام 
                 <span  *ngIf="list?.employee_gender">     
                   {{list?.employee_gender}}                          

@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { DataSets } from 'src/app/core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -28,7 +29,12 @@ export class ExcelComponent implements OnInit, OnChanges {
 	gridColumns: number = 55;
 	gridRows: number = 50;
 	excelForm: FormGroup;
+	// form: FormGroup[]=[];
 	excelCell: FormArray;
+	custom_additions: FormArray[] = [];
+	default_custom_additions:Array<object> = [];
+	custom_deductions: FormArray[] = [];
+	default_custom_deductions:Array<object> = [];
 	alfaArray: any;
 
 	excelBaceColumnsTitle: any = {
@@ -49,7 +55,6 @@ export class ExcelComponent implements OnInit, OnChanges {
 		daily_or_hourly_wage: 'حقوق ثابت ',
 		monthly_wage: 'حقوق ماهانه ',
 
-
 		grocery_allowance: 'حق بن',
 
 		housing_allowance: 'حق مسکن',
@@ -69,7 +74,6 @@ export class ExcelComponent implements OnInit, OnChanges {
 		working_friday_hour_count: 'ساعت جمعه کاری',
 
 		working_friday_price: 'مبلغ جمعه کاری',
-
 
 		working_night_hour_count: 'ساعت شب کاری',
 
@@ -196,10 +200,10 @@ export class ExcelComponent implements OnInit, OnChanges {
 	workingShiftsList: DataSets[];
 
 	allDataInpu: any;
+	typeColumn: string;
+	titleColumn: string;
 	// outputData: any = [];
-	constructor(private fb: FormBuilder, private global: GlobalService) {
-	
-	}
+	constructor(private fb: FormBuilder, private global: GlobalService) {}
 
 	async ngOnInit() {
 		await this.global.baseData.subscribe((value) => {
@@ -216,43 +220,157 @@ export class ExcelComponent implements OnInit, OnChanges {
 		this.excelCell = this.excelForm.get('excelCell') as FormArray;
 		// console.log(this.excelForm.controls);
 		// console.log(this.excelCell);
-		if (this.excelCellGroup.controls&&this.excelCellGroup.controls.length) {
+		if (
+			this.excelCellGroup.controls &&
+			this.excelCellGroup.controls.length
+		) {
 			// for (let index =1; index <=this.excelCellGroup.controls.length; index++) {
 			// 	console.log(this.excelCellGroup.controls[index]);
 			// 	// console.log(this.excelCell.controls[index]);
 			// 	this.excelCell.removeAt(index)
-				
 			// }
-			
 			// this.excelForm.reset()
 		}
 		// console.log(this.excelCell);
-		this.allDataInpu = []
+		this.allDataInpu = [];
 
-		console.log(changes);
+		// console.log(changes);
 		this.allDataInpu = [
 			this.excelBaceColumnsTitle,
 			...changes?.list?.currentValue,
 		];
 		// this.outputData = this.allDataInpu;
 		// console.log(changes.list.currentValue);
-		
 
 		console.log(this.allDataInpu);
 		this.gridRows = this.allDataInpu.length;
-		// * +1 for checkbox 
-		
-		this.gridColumns = Object.keys(this.allDataInpu[0]).length +1;
+		// * +1 for checkbox
+
+		this.gridColumns = Object.keys(this.allDataInpu[0]).length + 1;
 		// console.log(this.gridColumns,this.gridRows);
 		this.creatAlfab(this.gridColumns);
 		// this.gridColumns=Object.keys(this.excelBaceColumnsTitle).length;
 		// console.log(this.gridRows, this.gridColumns);
-		this.allDataInpu.map((item: object[]) => {
-			// console.log(item);
+		this.allDataInpu.map((item: any) => {
 			this.excelCell.push(this.newexcelCell(item));
+			console.log(item);
+			if(item.custom_additions&&item.custom_additions.length){
+				// console.log(item.custom_additions);
+				item.custom_additions.map((addition:any)=>{
+					
+					if (!this.default_custom_additions.find((item:any)=>{return item.name==addition.name})) {
+						this.default_custom_additions.push(addition)
+						
+					}
+					
+					
+				})
+			
+
+			}
+			if(item.custom_deductions&&item.custom_deductions.length){
+				// console.log(item.custom_additions);
+			
+				item.custom_deductions.map((deduction:any)=>{
+					console.log("object");
+					console.log(deduction);
+					if (!this.default_custom_deductions.find((item:any)=>{return item.name==deduction.name})) {
+						this.default_custom_deductions.push(deduction)
+						
+					}
+					
+					
+				})
+
+			}
+
 		});
+		console.log(	this.default_custom_additions,	this.default_custom_deductions);
 		// console.log(this.excelCell);
+		if (this.default_custom_additions) {
+			this.default_custom_additions.map((item:any)=>{
+			
+				// console.log(item);
+			this.gridColumns++
+				this.creatAlfab(this.gridColumns);
+
+				// console.log(this.custom_additions);
+				this.custom_additions.map(async(custom_addition: any, index: number) => {
+				var amountInAllDataInpu=await	this.allDataInpu.find((findItem:any,indexItem:number)=>{
+						
+						if (indexItem==index) {
+							return findItem?.custom_additions?.find((findAdditionItem:any)=>{
+								console.log(findAdditionItem.amount);
+								return (findAdditionItem.name==item.name)
+							})?.amount
+							
+							
+						}else{
+							return false
+						}
+					})
+					console.log(amountInAllDataInpu);
+					var amount= await amountInAllDataInpu?.custom_additions?.find((amountItem:any)=>{return amountItem.name==item.name})?.amount
+					console.log(amount);
+					custom_addition.push(
+						this.newCustomAdditions({
+							amount: amount?amount:0,
+							name: item.name,
+							index: index,
+						})
+					);
+					
+					this.typeColumn = null;
+					this.titleColumn = null;
+				});
+
+
+			})
+		}
+		if (this.default_custom_deductions) {
+			this.default_custom_deductions.map((item:any)=>{
+			
+				// console.log(item);
+			this.gridColumns++
+				this.creatAlfab(this.gridColumns);
+
+				// console.log(this.custom_deductions);
+				this.custom_deductions.map(async(custom_addition: any, index: number) => {
+				var amountInAllDataInpu=await	this.allDataInpu.find((findItem:any,indexItem:number)=>{
+						
+						if (indexItem==index) {
+							return findItem?.custom_deductions?.find((findAdditionItem:any)=>{
+								console.log(findAdditionItem.amount);
+								return (findAdditionItem.name==item.name)
+							})?.amount
+							
+							
+						}else{
+							return false
+						}
+					})
+					console.log(amountInAllDataInpu);
+					var amount= await amountInAllDataInpu?.custom_deductions?.find((amountItem:any)=>{return amountItem.name==item.name})?.amount
+					console.log(amount);
+					custom_addition.push(
+						this.newCustomDeductions({
+							amount: amount?amount:0,
+							name: item.name,
+							index: index,
+						})
+					);
+					
+					this.typeColumn = null;
+					this.titleColumn = null;
+				});
+
+
+			})
+		}
+
 	}
+	
+	  
 
 	// coment html
 	setCellClickValue(e: any) {
@@ -260,7 +378,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// console.log(e.path[0].value);
 		if (e.detail.value) {
 			this.cellClickValue = e.detail.value;
-			console.log(e.detail.value);
+			// console.log(e.detail.value);
 		}
 	}
 
@@ -271,14 +389,16 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 	newexcelCell(employee: any): FormGroup {
 		// console.log(employee, employee.employee_id);
-		return this.fb.group({
+		let forme = this.fb.group({
 			isWant: [true],
 			id: [employee.id],
 			contract_id: [employee.contract_id],
 			business_employee_id: [employee.business_employee_id],
 			employee_id: [employee.employee_id],
 			full_name: [employee.full_name],
-			working_shift_id: [employee.working_shift_id?employee.working_shift_id:' '],
+			working_shift_id: [
+				employee.working_shift_id ? employee.working_shift_id : ' ',
+			],
 			working_day_count: [employee.working_day_count],
 			working_hour_count: [employee.working_hour_count],
 			addition_hour_friday_or_holiday: [
@@ -299,7 +419,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			working_over_time_price: [employee.working_over_time_price],
 			working_friday_hour_count: [employee.working_friday_hour_count],
 			working_friday_price: [employee.working_friday_price],
-		
+
 			working_night_hour_count: [employee.working_night_hour_count],
 			working_night_price: [employee.working_night_price],
 			unused_leave_amount: [employee.unused_leave_amount],
@@ -337,7 +457,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			// حذف شدن
 			delay_penalty: [employee.delay_penalty],
 			absence_penalty: [employee.absence_penalty],
-			// 
+			//
 			fund_reserve: [employee.fund_reserve],
 			fund_reserve_yearly_repay: [employee.fund_reserve_yearly_repay],
 			sum_payroll_deductions: [employee.sum_payroll_deductions],
@@ -349,11 +469,62 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 			without_pay_leave: [employee.without_pay_leave],
 			without_pay_leave_amount: [employee.without_pay_leave_amount],
-			calc_unused_leave_monthly: [ employee.calc_unused_leave_monthly==0?'خیر':employee.calc_unused_leave_monthly==1?'بله':employee.calc_unused_leave_monthly],
-			calc_payroll_tax: [ employee.calc_payroll_tax==0?'خیر':employee.calc_payroll_tax==1?'بله':employee.calc_payroll_tax],
+			calc_unused_leave_monthly: [
+				employee.calc_unused_leave_monthly == 0
+					? 'خیر'
+					: employee.calc_unused_leave_monthly == 1
+					? 'بله'
+					: employee.calc_unused_leave_monthly,
+			],
+			calc_payroll_tax: [
+				employee.calc_payroll_tax == 0
+					? 'خیر'
+					: employee.calc_payroll_tax == 1
+					? 'بله'
+					: employee.calc_payroll_tax,
+			],
 			// calc_payroll_tax: [employee.calc_payroll_tax==0?'خیر':'بله'],
+			custom_additions: this.fb.array([]),
+			custom_deductions: this.fb.array([]),
+		});
+		// console.log(forme.get('custom_additions'));
+		// console.log(this.excelCellGroup);
+		this.custom_additions.push(forme.get('custom_additions') as FormArray);
+		this.custom_deductions.push(
+			forme.get('custom_deductions') as FormArray
+		);
+		// console.log(this.custom_additions, this.custom_deductions);
+		// this.custom_additions = this.excelForm.get('custom_additions') as FormArray;
+		// this.custom_deductions = this.excelForm.get('custom_deductions') as FormArray;
+		// this.form.push(forme)
+
+		return forme;
+	}
+	get customAdditions(): FormArray[] {
+		let domy: FormArray[] = [];
+		this.excelCellGroup.controls.map((item) => {
+			domy.push(item.get('custom_additions') as FormArray);
+		});
+		return domy;
+	}
+	// {name:string,amount:number|null,index?:number}
+	newCustomAdditions(addition?: any): FormGroup {
+		// Validators.compose([Validators.required])
+		return this.fb.group({
+			name: [addition?.name],
+			amount: [addition?.index == 0 ? addition?.name : addition?.amount],
 		});
 	}
+	newCustomDeductions(deductions?: any): FormGroup {
+		// Validators.compose([Validators.required])
+		return this.fb.group({
+			name: [deductions?.name],
+			amount: [
+				deductions?.index == 0 ? deductions?.name : deductions?.amount,
+			],
+		});
+	}
+
 	//
 	creatAlfab(count: number) {
 		let alfaArr = [
@@ -456,97 +627,287 @@ export class ExcelComponent implements OnInit, OnChanges {
 	// 	console.log(this.outputData);
 	// }
 
- async	clac(item:FormGroup){
+	addColumn() {
+		// console.log(this.custom_additions);
+		// console.log(this.form);
+		// console.log(this.customAdditions);
+		// console.log(this.excelCellGroup);
+		// console.log(this.typeColumn,this.titleColumn);
+		let domy = this.titleColumn;
+		if (this.titleColumn) {
+			if (this.typeColumn == 'custom_additions') {
+				// console.log('object');
+				this.gridColumns++
+				this.creatAlfab(this.gridColumns);
+
+				this.custom_additions.map((item: any, index: number) => {
+					item.push(
+						this.newCustomAdditions({
+							amount: '',
+							name: domy,
+							index: index,
+						})
+					);
+					// console.log(item);
+					// console.log(this.gridColumns);
+					// this.gridColumns++
+					// console.log(
+					// 	this.custom_additions[0]?.value?.length +
+					// 		this.custom_deductions[0]?.value?.length
+					// );
+					// console.log(
+					// 	this.custom_additions[0]?.value?.length,
+					// 	this.custom_deductions[0]?.value?.length
+					// );
+					// this.creatAlfab(this.gridColumns-this.custom_additions[0]?.value?.length*2);
+					// this.creatAlfab(this.gridColumns-((this.custom_additions[0]?.value?.length+this.custom_deductions[0]?.value?.length)*2));
+
+					this.typeColumn = null;
+					this.titleColumn = null;
+				});
+			} else if (this.typeColumn == 'custom_deductions') {
+				this.gridColumns++;
+
+				this.creatAlfab( this.gridColumns);
+					// -
+					// 	(this.custom_additions[0]?.value?.length +
+					// 		this.custom_deductions[0]?.value?.length) *
+					// 		2
+
+				this.custom_deductions.map((item: any, index: number) => {
+					item.push(
+						this.newCustomDeductions({
+							amount: '',
+							name: domy,
+							index: index,
+						})
+					);
+					// console.log(item);
+					// this.gridColumns++
+					// this.creatAlfab(this.gridColumns-2);
+					// this.gridColumns++
+
+					// this.creatAlfab(this.gridColumns-((this.custom_additions[0]?.value?.length+this.custom_deductions[0]?.value?.length)*2));
+
+					this.typeColumn = null;
+					this.titleColumn = null;
+				});
+			} else {
+				this.global.showToast(
+					'لطفا نوع را انتخاب کنید',
+					900,
+					'top',
+					'danger',
+					'ios'
+				);
+			}
+		} else {
+			this.global.showToast(
+				'لطفا عنوان را بنویسید',
+				900,
+				'top',
+				'danger',
+				'ios'
+			);
+		}
+	}
+
+	async clac(item: FormGroup) {
 		if (
-			item.controls.business_employee_id.value&&
+			item.controls.business_employee_id.value &&
 			item.controls.contract_id.value &&
 			// item.controls.working_shift_id.value&&
-			item.controls.working_hour_count.value&&
-			item.controls.insurance_day_count.value&&
-			item.controls.insurance_wage.value&&
-			this.month&&
+			item.controls.working_hour_count.value &&
+			item.controls.insurance_day_count.value &&
+			item.controls.insurance_wage.value &&
+			this.month &&
 			this.year
-			
-			) {
-				await this.global.showLoading()
-				this.global.httpPost('payroll/calculatePrices',
-				{
-					contract_id : item.controls.contract_id.value,
-					business_employee_id : item.controls.business_employee_id.value,        
-					year : this.year,
-					month : this.month,    
-					working_shift_id : item.controls.working_shift_id.value,
-					insurance_day_count : item.controls.insurance_day_count.value,
-					insurance_wage : item.controls.insurance_wage.value,
-					working_hour_count : item.controls.working_hour_count.value,
-					working_deficit_hours : item.controls.working_deficit_hours.value,
-					working_friday_hour_count :item.controls.working_friday_hour_count.value ,    
-					outstation_day_count :item.controls.outstation_day_count.value ,    
-					working_night_hour_count : item.controls.working_night_hour_count.value,
-					working_over_time_hour_count :  item.controls.working_over_time_hour_count.value   
-				}
-				).subscribe(
-					async (res:any) => {
-						await this.global.dismisLoading()
-						console.log(res);
-						item.patchValue(res)
-
+		) {
+			await this.global.showLoading();
+			this.global
+				.httpPost('payroll/calculatePrices', {
+					contract_id: item.controls.contract_id.value,
+					business_employee_id:
+						item.controls.business_employee_id.value,
+					year: this.year,
+					month: this.month,
+					working_shift_id: item.controls.working_shift_id.value,
+					insurance_day_count:
+						item.controls.insurance_day_count.value,
+					insurance_wage: item.controls.insurance_wage.value,
+					working_hour_count: item.controls.working_hour_count.value,
+					working_deficit_hours:
+						item.controls.working_deficit_hours.value,
+					working_friday_hour_count:
+						item.controls.working_friday_hour_count.value,
+					outstation_day_count:
+						item.controls.outstation_day_count.value,
+					working_night_hour_count:
+						item.controls.working_night_hour_count.value,
+					working_over_time_hour_count:
+						item.controls.working_over_time_hour_count.value,
+					custom_additions: item.controls.custom_additions.value,
+					custom_deductions: item.controls.custom_deductions.value,
+				})
+				.subscribe(
+					async (res: any) => {
+						await this.global.dismisLoading();
+						// console.log(res);
+						item.patchValue(res);
 					},
-					async (error:any) => {
-						await this.global.dismisLoading()
-						this.global.showError(error)
+					async (error: any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
 					}
-				)
-
-				
-			
+				);
 		}
-
 	}
-	checkAll(i:number){
-
-		if (i==0) {
+	checkAll(i: number) {
+		if (i == 0) {
 			// console.log(e);
-			this.excelForm.value.excelCell.map((item:any,index:string)=>{
-				console.log(item.isWant);
-				
+			this.excelForm.value.excelCell.map((item: any, index: string) => {
+				// console.log(item.isWant);
+
 				if (index) {
-					
 					// console.log(this.excelForm.value.excelCell[0].isWant);
 					// item.isWant=this.excelForm.value.excelCell[0].isWant
-					document.getElementById(index).click()
+					document.getElementById(index).click();
 					// console.log(	);
-					
-					
 				}
-			})
-			console.log(	this.excelForm.value.excelCell);
+			});
+			// console.log(this.excelForm.value.excelCell);
 		}
 	}
+	setAddition(addition: any, event: any, item: any) {
+		// console.log(addition, addition.amount, event.detail.value);
+		addition.amount = event?.detail?.value;
+		// if (event?.detail?.value) {
+		this.clac(item);
+		// }
+	}
+	setDeduction(deductions: any, event: any, item: any) {
+		// console.log(deductions, deductions.amount, event.detail.value);
+		deductions.amount = event?.detail?.value;
+		// if (event?.detail?.value) {
+		this.clac(item);
+		// }
+	}
+	deleteAdditionAlert(index: number, item: any) {
+		// console.log(index);
+		this.global
+			.showAlert(
+				'حذف ستون اضافات',
+				`آیا برای حذف ستون اضافات با نام ${item.name} اطمینان دارید؟`,
+				[
+					{
+						text: 'بلی',
+						role: 'yes',
+					},
+					{
+						text: 'خیر',
+						role: 'cancel',
+					},
+				]
+			)
+			.then((alert: any) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						this.clac(item)
+						this.deleteAddition(index,item);
+					}
+				});
+			});
+	}
+	deleteAddition(index: number,itemAddition:any) {
+		this.gridColumns--;
 
-async	submit() {
+		// this.creatAlfab(this.gridColumns-this.custom_additions[0]?.value?.length*2);
+		this.creatAlfab(
+			this.gridColumns 
+		);
+		this.custom_additions.map( async(item: any) => {
+			// item.push(this.newCustomAdditions({amount:'',name:domy,index:index}))
+			// console.log(item);
+			await item.removeAt(index);
+			this.clac(itemAddition)
+		});
+	}
+	deleteDeductionsAlert(index: number, item: any) {
+		// console.log(index);
+		this.global
+			.showAlert(
+				'حذف ستون کسورات',
+				`آیا برای حذف ستون کسورات با نام ${item.name} اطمینان دارید؟`,
+				[
+					{
+						text: 'بلی',
+						role: 'yes',
+					},
+					{
+						text: 'خیر',
+						role: 'cancel',
+					},
+				]
+			)
+			.then((alert: any) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+					
+						this.deleteDeductions(index,item);
+					}
+				});
+			});
+	}
+	deleteDeductions(index: number,itemDeduction:any) {
+		this.gridColumns--;
+		this.creatAlfab(
+			this.gridColumns
+		);
+		this.custom_deductions.map(async (item: any) => {
+			// item.push(this.newCustomAdditions({amount:'',name:domy,index:index}))
+			// console.log(item);
+		await	item.removeAt(index);
+		this.clac(itemDeduction)
+
+			// this.creatAlfab(this.gridColumns-this.custom_additions[0]?.value?.length*2);
+		});
+	}
+
+	async submit() {
+		// console.log(this.custom_additions);
+		// this.custom_additions[1].value.map((item: any) => {
+		// 	console.log(item);
+		// 	console.log(item.value);
+		// });
+		// console.log(this.excelForm.value);
 		// console.log(this.excelForm.value.excelCell[0].isWant);
-		let domyList:any[]=[]
-		this.excelForm.value.excelCell.shift()
-	console.log(this.excelForm.value.excelCell);
-	this.excelForm.value.excelCell.map((item:any)=>{
-		console.log(item.isWant);
-		if (item.isWant) {
-			domyList.push(item)
-		}
-	})
+		let domyList: any[] = [];
+		this.excelForm.value.excelCell.shift();
+		// console.log(this.excelForm.value.excelCell);
+		this.excelForm.value.excelCell.map((item: any) => {
+			// console.log(item.isWant);
+			if (item.isWant) {
+				domyList.push(item);
+			}
+		});
 
-	console.log(domyList);
-	if (domyList&&domyList.length) {
-		this.Data.emit(domyList);
-		
-	}else{
-		this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle)
-		this.global.showToast('لطفا حداقل یک کارمند را انتخاب کنید',800,'top','danger','ios')
-	}
-	
+		// console.log(domyList);
+		if (domyList && domyList.length) {
+			this.Data.emit(domyList);
+		} else {
+			this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle);
+			this.global.showToast(
+				'لطفا حداقل یک کارمند را انتخاب کنید',
+				800,
+				'top',
+				'danger',
+				'ios'
+			);
+		}
+
 		// this.excelForm.reset()
-			// this.allDataInpu = [this.excelBaceColumnsTitle];
-			
+		// this.allDataInpu = [this.excelBaceColumnsTitle];
 	}
 }

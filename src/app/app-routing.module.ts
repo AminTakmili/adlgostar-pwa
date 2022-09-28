@@ -83,6 +83,13 @@ const routes: Routes = [
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule),
 		canActivate: [LoginGuard],
   },
+  {
+    path: 'media',
+    loadChildren: () => import('./media/media.module').then( m => m.MediaPageModule),
+	canActivate: [LoginGuard],
+
+  },
+
 
  
 
