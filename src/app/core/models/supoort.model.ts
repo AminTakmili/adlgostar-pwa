@@ -4,6 +4,7 @@ import { User } from './user.model';
 export class Support implements Deserializable {
 	id!: number;
 	subject!: string;
+	type!: string;
 	content!: string;
 	status!: string;
 	updatedAt!: string;

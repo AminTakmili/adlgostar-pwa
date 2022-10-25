@@ -121,11 +121,12 @@ export class SentenceAddComponent implements OnInit {
 		this.getContract(this.id);
 	}
 
+
 	setTitle() {
 		this.seo.generateTags({
-			title: 'افزودن قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: 'قرار داد جدی',
+			title: 'افزودن حکم جدید',
+			description: 'حکم جدید ',
+			keywords: 'حکم جدید',
 			isNoIndex: false,
 		});
 	}
@@ -226,7 +227,8 @@ export class SentenceAddComponent implements OnInit {
 						this.sentenceForm.get('is_group_sentence').setValue(true)
 
 					}
-					this.GetEmployee();			
+					this.GetEmployee();		
+					this.CalculationField()	
 				},
 				async (error: any) => {
 					await this.global.dismisLoading();
@@ -325,52 +327,50 @@ export class SentenceAddComponent implements OnInit {
 	// }
 
 	// !؟
-	// async CalculationField() {
-	// 	if (!this.submitet) {
-	// 		if (this.sentenceForm.value.contract_year === '') {
-	// 			this.global.showToast('سال عقد قرار داد را انتخاب کنید');
-	// 			return;
-	// 		}
+	async CalculationField() {
+		console.log("object",this.submitet);
+		// if (!this.submitet) {
+		
 
-	// 		if (!this.sentenceForm.get('is_manual').value) {
-	// 			this.submitet = true;
-	// 			await this.global.showLoading('لطفا منتظر بمانید...');
-	// 			this.global
-	// 				.httpPost(
-	// 					'contract/calculatePrices',
-	// 					this.sentenceForm.value
-	// 				)
-	// 				.subscribe(
-	// 					async (res: any) => {
-	// 						this.submitet = false;
-	// 						await this.global.dismisLoading();
+			// if (!this.sentenceForm.get('is_manual').value) {
+				this.submitet = true;
+				await this.global.showLoading('لطفا منتظر بمانید...');
+				this.global
+					.httpPost('contractSentence/calculatePrices',
+						this.sentenceForm.value
+					)
+					.subscribe(
+						async (res: any) => {
+							this.submitet = false;
+							await this.global.dismisLoading();
+							
 
-	// 						this.sentenceForm.get('bonus').setValue(res.bonus);
-	// 						this.sentenceForm
-	// 							.get('grocery_allowance')
-	// 							.setValue(res.grocery_allowance);
-	// 						this.sentenceForm
-	// 							.get('housing_allowance')
-	// 							.setValue(res.housing_allowance);
-	// 						this.sentenceForm
-	// 							.get('new_year_gift')
-	// 							.setValue(res.new_year_gift);
-	// 						this.sentenceForm
-	// 							.get('severance_pay')
-	// 							.setValue(res.severance_pay);
-	// 						this.sentenceForm.get('wage').setValue(res.wage);
+							// this.sentenceForm.get('bonus').setValue(res.bonus);
+							this.sentenceForm
+								.get('grocery_allowance')
+								.setValue(res.grocery_allowance);
+							this.sentenceForm
+								.get('housing_allowance')
+								.setValue(res.housing_allowance);
+							// this.sentenceForm
+							// 	.get('new_year_gift')
+							// 	.setValue(res.new_year_gift);
+							// this.sentenceForm
+							// 	.get('severance_pay')
+							// 	.setValue(res.severance_pay);
+							this.sentenceForm.get('wage').setValue(res.wage);
 
-	// 						// console.log(res);
-	// 					},
-	// 					async (error: any) => {
-	// 						this.submitet = false;
-	// 						await this.global.dismisLoading();
-	// 						this.global.showError(error);
-	// 					}
-	// 				);
-	// 		}
-	// 	}
-	// }
+							// console.log(res);
+						},
+						async (error: any) => {
+							this.submitet = false;
+							await this.global.dismisLoading();
+							this.global.showError(error);
+						}
+					);
+			// }
+		// }
+	}
 
 	// AddAlowences(event: any) {
 	// 	const data = this.employeeList.find((x) => x.id === event);

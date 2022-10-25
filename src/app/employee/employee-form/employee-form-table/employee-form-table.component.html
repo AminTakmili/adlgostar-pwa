@@ -1,0 +1,81 @@
+<table *ngIf="!loaded&&dataList&&dataList.length" class="width-100 theme-table ">
+	<thead class="thead-dark">
+		<tr class="ion-text-center">
+			<th class="ion-text-center">#</th>
+
+			<th scope="col">تاریخ فرم</th>
+			<th scope="col">قالب فرم</th>
+			<th scope="col">تاریخ اخرین ویرایش</th>
+			<th scope="col">تاریخ ثبت</th>
+			<th class="ion-text-left" scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			*ngFor="let item of dataList[0] | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+			<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+      <td>
+				<p class="my-1 font-size-12">
+					{{item.form_date}}
+				</p>
+			</td>
+			<td class="py-1">
+				<p class="my-1 font-size-12">
+				{{formTempeletObj[item.form_template_id] }}
+				</p>
+			</td>
+			<td>
+				<p class="my-1 font-size-12">
+			{{item.updatedAt}}
+				</p>
+			</td>
+		
+			<td>	<p class="my-1 font-size-12"> {{ item.createdAt }} </p></td>
+			<td class="ion-text-left">
+				<ion-buttons class="justify-content-end">
+					<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+            [id]="'hover-button-'+item.id">
+            <ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+            </ion-icon>
+          </ion-button> -->
+					<ion-button (click)="removeform(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف"
+						*ngIf="global.userPermision['contract_delete']">
+						<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+						</ion-icon>
+					</ion-button>
+					<ion-button [routerLink]="['/employees/form/edit',businessEmployeeId,item.id]" fill="clear" class="px-0 mx-0 tooltip-show"
+						tooltip="ویرایش" *ngIf="global.userPermision['employee_form_edit']">
+						<ion-icon size="small" color="medium" slot="icon-only" name="build">
+						</ion-icon>
+					</ion-button>
+			
+				</ion-buttons>
+			</td>
+      
+		</tr>
+	</tbody>
+	<tfoot *ngIf="limit < total && dataList && dataList.length">
+		<tr>
+			<td colspan="8">
+				<pagination-controls *ngIf="limit < total && dataList && dataList.length" [previousLabel]="'قبلی'"
+					[nextLabel]="'بعدی'" (pageChange)="pageChange($event)" [autoHide]="true">
+				</pagination-controls>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+
+  <ion-list *ngIf="loaded">
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+
+  </ion-list>
+  
+
+<div *ngIf="!loaded">
+	<div class="alert alert-warning my-3"*ngIf="!dataList||!dataList.length"
+		role="alert">
+		<h6 class="title"> فرمی برای نمایش یافت نشد </h6>
+	</div>
+</div>

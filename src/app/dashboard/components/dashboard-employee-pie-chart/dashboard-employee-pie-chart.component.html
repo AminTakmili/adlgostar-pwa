@@ -1,0 +1,10 @@
+<!-- *ngIf="dataList && dataList.length" -->
+<ion-card class="counter-item m-0 mb-4" mode="ios" color="white" >
+  <ion-card-header> تعداد کارمندان به تفکیک </ion-card-header>
+	<ion-card-content>
+    <highcharts-chart  [Highcharts]="PieHighcharts" [options]="pieChartOptions" *ngIf="plotShow"
+    >
+    </highcharts-chart>
+		
+	</ion-card-content>
+</ion-card>

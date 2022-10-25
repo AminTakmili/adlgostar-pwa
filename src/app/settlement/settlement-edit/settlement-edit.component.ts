@@ -61,6 +61,9 @@ export class SettlementEditComponent implements OnInit {
 	settlementDeductionList: payrollDeduction[];
 	settlementCalcType!:DataSets[]
   businessEmployeeId!:string
+  custom_additions: FormArray;
+	custom_deductions: FormArray;
+
 
 	constructor(
 		public global: GlobalService,
@@ -75,11 +78,13 @@ export class SettlementEditComponent implements OnInit {
 		this.contractsForm = this.fb.group({
 		id: [this.settlementId],
 		business_employee_id:[],
+		description: [],
 
 			settlement_template_id: [
 				,
 				Validators.compose([Validators.required]),
 			],
+			settlement_received: [, Validators.compose([Validators.required])],
 			leave_work_date: [, Validators.compose([Validators.required])],
 			new_year_gift_calc_type: [
 				'all_working_days',
@@ -132,6 +137,9 @@ export class SettlementEditComponent implements OnInit {
 
 			settlement_additions: this.fb.array([]),
 			settlement_deductions: this.fb.array([]),
+			custom_additions: this.fb.array([]),
+			custom_deductions: this.fb.array([]),
+			
 		});
 
 		this.settlement_additions = this.contractsForm.get(
@@ -139,6 +147,12 @@ export class SettlementEditComponent implements OnInit {
 		) as FormArray;
 		this.settlement_deductions = this.contractsForm.get(
 			'settlement_deductions'
+		) as FormArray;
+		this.custom_additions = this.contractsForm.get(
+			'custom_additions'
+		) as FormArray;
+		this.custom_deductions = this.contractsForm.get(
+			'custom_deductions'
 		) as FormArray;
 	}
 
@@ -175,6 +189,13 @@ export class SettlementEditComponent implements OnInit {
 	get settlementAdditionsGroup(): FormArray {
 		return this.contractsForm.get('settlement_additions') as FormArray;
 	}
+	get customDeductionsGroup(): FormArray {
+		return this.contractsForm.get('custom_deductions') as FormArray;
+	}
+	get customAdditionsGroup(): FormArray {
+		return this.contractsForm.get('custom_additions') as FormArray;
+	}
+
 
 	newSettlementDeductions(deductions: payrollDeduction[]): FormGroup {
 		// console.log(deductions);
@@ -218,6 +239,22 @@ export class SettlementEditComponent implements OnInit {
 		console.log(form);
 		return form;
 	}
+		
+	newCustomDeductions(customDeductions?:any): FormGroup {
+		return this.fb.group({
+			name: [customDeductions?.name?customDeductions.name:'', Validators.compose([Validators.required])],
+			amount: [customDeductions?.amount?customDeductions.amount:'', Validators.compose([Validators.required])],
+			
+		}) ;
+	}
+	newCustomAdditions(customAdditions?:any): FormGroup {
+		return this.fb.group({
+			name: [customAdditions?.name?customAdditions.name:'', Validators.compose([Validators.required])],
+			amount: [customAdditions?.amount?customAdditions.amount:'', Validators.compose([Validators.required])],
+			
+		}) ;
+	}
+
 
 	async getDatas() {
 		await this.global.showLoading();
@@ -266,7 +303,7 @@ export class SettlementEditComponent implements OnInit {
 //   this.global.httpPost('settlement/detail',{id:this.settlementId }).subscribe(
 //     async (res:any) => {
       console.log(res);
-      // this.contractsForm.patchValue(res)
+    //   this.contractsForm.patchValue(res)
 	//   setTimeout(() => {
 		  this.contractsForm.get('calc_bonus_monthly').setValue(res.calc_bonus_monthly)
 		  this.contractsForm.get('calc_new_year_gift_monthly').setValue(res.calc_new_year_gift_monthly)
@@ -318,6 +355,14 @@ export class SettlementEditComponent implements OnInit {
 				.setValue(res[key]? 1 : 0);
 			}
 		  }
+		  res?.custom_additions?.map((item:any)=>{
+
+			this.custom_additions.push(this.newCustomAdditions(item))
+		  })
+		  res?.custom_deductions?.map((item:any)=>{
+
+			this.custom_deductions.push(this.newCustomDeductions(item))
+		  })
 		  this.businessEmployeeId=res.business_employee_id
 		  this.contractsForm.get('business_employee_id').setValue(res.business_employee_id)
 
@@ -522,6 +567,65 @@ export class SettlementEditComponent implements OnInit {
 			});
 		});
 	}
+
+	removeCustomAdditions(index: number) {
+
+		this.global.showAlert('حذف اضافات',
+		'آیا برای حذف اضافه اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					
+					this.custom_additions.removeAt(index);
+				}
+			});
+		});
+	}
+	removeCustomDeductions(index: number) {
+
+		this.global.showAlert('حذف کسورات',
+		'آیا برای حذف کسر اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					
+					this.custom_deductions.removeAt(index);
+				}
+			});
+		});
+	}
+	
+	addAnotherCustomAdditions() {
+		// this.businessAddress.push(this.businessAddress.length + 1);
+		this.custom_additions.push(this.newCustomAdditions());
+		// console.log(this.addressFormGroup);
+	}
+	addAnotherCustomDeductions() {
+		// this.businessAddress.push(this.businessAddress.length + 1);
+		this.custom_deductions.push(this.newCustomDeductions());
+		// console.log(this.addressFormGroup);
+	}
+
 	async onSubmit(){
 		if (this.contractsForm.valid) {
 			await this.global.showLoading()

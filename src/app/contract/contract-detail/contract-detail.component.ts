@@ -1,3 +1,4 @@
+import { StorageService } from './../../core/services/storage.service';
 import { error } from 'src/app/core/models/other.models';
 import { ContractExtendModalComponent } from './../contract-extend-modal/contract-extend-modal.component';
 import { sentence } from './../../core/models/sentence.model';
@@ -27,16 +28,28 @@ export class ContractDetailComponent implements OnInit {
 	total: number = 0;
 	CurrentPage: number = 1;
 	id!: string;
+	is_employer!: boolean;
+
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
 		public route: ActivatedRoute,
-		public modalController: ModalController
+		public modalController: ModalController,
+		private storage: StorageService
+
 	) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.storage.get('user').then((val) => {
+			if (Object.keys(val).length) {
+				// console.log(val);
+				// console.log(val.is_employer);
+				this.is_employer = val.is_employer;
+			}
+		});
+	}
 
 	setTitle() {
 		this.seo.generateTags({
@@ -392,18 +405,18 @@ export class ContractDetailComponent implements OnInit {
 	`;
 
 		console.log(postContent);
-		document.getElementById('a').innerHTML = content;
+		// document.getElementById('a').innerHTML = content;
 		let subject = 'درخواست تمدید قرارداد';
 		// let section_id =this.dataList.section_id
-		let section_id = 3;
-		let is_extend_contract_request = true;
+		let section_id = this.dataList.extend_contract_section_id;
+		let type = 'extend_contract_request';
 		await this.global.showLoading()
 		this.global
 			.httpPost('profile/userTicket/add', {
 				content,
 				subject,
 				section_id,
-				is_extend_contract_request,
+				type,
 			})
 			.subscribe(
 				async (res: any) => {

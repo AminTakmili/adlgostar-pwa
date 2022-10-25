@@ -1,0 +1,71 @@
+<table *ngIf="!loaded&&dataList&&dataList.length" class="width-100 theme-table ">
+	<thead class="thead-dark">
+		<tr class="ion-text-center">
+			<th class="ion-text-center">#</th>
+
+			<th scope="col">سال</th>
+			<th scope="col"> ماه </th>
+			<th scope="col">عیدی معوقه</th>
+			<th scope="col">پاداش معوقه</th>
+			<th scope="col"> نام قرارداد </th>
+			<th scope="col"> نوع قرارداد </th>
+			<th scope="col"> کارمندان در قرارداد </th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+			<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+      <td>
+				<p class="my-1 font-size-12">
+					{{item.year}}
+				</p>
+			</td>
+			<td class="py-1">
+				<p class="my-1 font-size-12">
+				{{global.getMonthName[item.month] }}
+				</p>
+			</td>
+			<td>
+				<p class="my-1 font-size-12">
+			{{item.back_new_year_gift}}
+				</p>
+			</td>
+		
+			<td>	<p class="my-1 font-size-12"> {{ item.back_bonus }} </p></td>
+			<td>	<p class="my-1 font-size-12"> {{ item.contract_info.title }} </p></td>
+			<td>	<p class="my-1 font-size-12"> {{ item.contract_info.is_hourly_contract?'ساعتی':'تمام وقت' }} </p></td>
+			<!-- <td>	<p class="my-1 font-size-12"> {{ item.contract_info.title }} </p></td> -->
+      <td>
+        <span class="font-size-12 " *ngFor="let emp of item.contract_info.employee_info ;last as isLast"> {{ emp.first_name }} {{ emp.last_name }} {{!isLast?',':''}} </span>
+      </td>
+			
+      
+		</tr>
+	</tbody>
+	<tfoot *ngIf="limit < total && dataList && dataList.length">
+		<tr>
+			<td colspan="8">
+				<pagination-controls *ngIf="limit < total && dataList && dataList.length" [previousLabel]="'قبلی'"
+					[nextLabel]="'بعدی'" (pageChange)="pageChange($event)" [autoHide]="true">
+				</pagination-controls>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+
+  <ion-list *ngIf="loaded">
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+	<ion-skeleton-text [animated]="true" style="height: 45px;"></ion-skeleton-text>
+
+  </ion-list>
+  
+
+<div *ngIf="!loaded">
+	<div class="alert alert-warning my-3"*ngIf="!dataList||!dataList.length"
+		role="alert">
+		<h6 class="title"> عیدی و پاداش معوقه ای برای نمایش یافت نشد </h6>
+	</div>
+</div>

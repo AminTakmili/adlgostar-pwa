@@ -1,10 +1,13 @@
+import { MediaEditModalComponent } from './media-edit-modal/media-edit-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { MediaPageRoutingModule } from './media-routing.module';
+import { MediaAddModalComponent } from './media-add-modal/media-add-modal.component';
+import { ShareModulePageModule } from '../share-module/share-module.module';
 
 
 @NgModule({
@@ -12,8 +15,10 @@ import { MediaPageRoutingModule } from './media-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    MediaPageRoutingModule
+    MediaPageRoutingModule,
+    ShareModulePageModule,
+    ReactiveFormsModule
   ],
-  declarations: []
+  declarations: [MediaAddModalComponent,MediaEditModalComponent]
 })
 export class MediaPageModule {}

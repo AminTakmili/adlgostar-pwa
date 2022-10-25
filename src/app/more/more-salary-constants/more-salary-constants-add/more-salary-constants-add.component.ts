@@ -42,6 +42,21 @@ export class MoreSalaryConstantsAddComponent implements OnInit {
 			isNoIndex: false,
 		});
 	}
+	async getConstantMaxValues(){
+		await this.global.showLoading('لطفا منتظر بمانید...')
+		this.global.httpPost('salaryBaseInfo/getConstantMaxValues',{year:this.addForm.value.year}).subscribe(
+			async (res:any) => {
+			await	this.global.dismisLoading()
+			
+				this.addForm.patchValue(res)
+			},
+			async (error:any) => {
+				await	this.global.dismisLoading()
+				this.global.showError(error)
+				
+			},
+		)
+	}
 
 	async onSubmit() {
 

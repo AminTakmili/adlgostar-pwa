@@ -15,7 +15,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class UsersAllEditComponent implements OnInit {
 
-	pageTitle: string = "ویرایش کابر";
+	pageTitle: string = "ویرایش کاربر";
 	editForm: FormGroup;
 	address: FormArray;
 	gender: any = globalData.gender;

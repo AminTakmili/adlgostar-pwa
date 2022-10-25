@@ -1,3 +1,4 @@
+import { StorageService } from './../../core/services/storage.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { dashboard } from 'src/app/core/models/other.models';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -16,12 +17,23 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 	subscription: Subscription;
 	rxTime = new Date();
 	intervalId : any;
+	is_expert!: boolean;
 
 
 
 	constructor(
-		public global: GlobalService
-	) { }
+		public global: GlobalService,
+		private storage: StorageService
+
+	) {
+		this.storage.get('user').then((val) => {
+			if (Object.keys(val).length) {
+				console.log(val);
+				console.log(val.is_expert);
+				this.is_expert = val.is_expert;
+			}
+		});
+	 }
 
 	ngOnInit() {
 		this.getData();
@@ -41,7 +53,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
 	async getData() {
 
 		// await this.global.showLoading('لطفا منتظر بمانید...');
-		this.global.httpGet('dashboard/getCounts').subscribe(async (res: any) => {
+		this.global.httpGet('employerDashboard/getCounts').subscribe(async (res: any) => {
 
 			this.data = new dashboard().deserialize(res);
 

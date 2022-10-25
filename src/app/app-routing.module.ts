@@ -89,6 +89,25 @@ const routes: Routes = [
 	canActivate: [LoginGuard],
 
   },
+  {
+    path: 'recognizance',
+    loadChildren: () => import('./recognizance/recognizance.module').then( m => m.RecognizancePageModule),
+	canActivate: [LoginGuard],
+
+  },
+  {
+    path: 'form',
+   redirectTo:'form/template'
+
+  },
+  {
+    path: 'form/template',
+    loadChildren: () => import('./form-template/form-template.module').then( m => m.FormTemplatePageModule),
+	canActivate: [LoginGuard],
+
+  },
+ 
+
 
 
  

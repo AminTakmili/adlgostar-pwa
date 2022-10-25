@@ -38,7 +38,8 @@ async  getData(){
   await this.global.showLoading()
     this.global.httpPost('uploadedFileCategory/filteredList',{
      limit: this.limit,
-     offset: this.offset
+     offset: this.offset,
+     filtered_name:this.filtered_name
   }).subscribe(
    async (res:any) => {
     await this.global.dismisLoading()
@@ -95,6 +96,7 @@ async  getData(){
     //   ( item:any=>{
     //     ru
     //   }))
+    
     console.log("object",this.editId);
     let obj= this.dataList.find((item:any)=>item.id==this.editId)
     console.log(obj);
@@ -265,6 +267,57 @@ async  getData(){
 
     await alert.present();
   }
+  
+	removeFile() {
+    let obj= this.dataList.find((item:any)=>item.id==this.editId)
+    console.log(obj);
+    // obj.editable=true
+    
+		this.global
+    .showAlert(
+				'حذف فایل',
+			`آیا برای حذف پوشه ${obj.name} اطمینان دارید؟`,
+      [
+        {
+          text: 'بلی',
+          role: 'yes',
+					},
+					{
+            text: 'خیر',
+						role: 'cancel',
+					},
+				]
+        )
+        .then((alert: any) => {
+          alert.present();
+          alert.onDidDismiss().then(async (e: any) => {
+            if (e.role === 'yes') {
+              await this.global.showLoading('لطفا منتظر بمانید...');
+              this.global
+							.httpDelete('uploadedFileCategory/delete', {
+								id: this.editId,
+							})
+							.subscribe(
+                async (res: any) => {
+									await this.global.dismisLoading();
+                  this.contextMenuIsOpen=false
+
+									this.global.showToast(res.msg);
+                  this.getData()
+
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+                  this.contextMenuIsOpen=false
+
+								}
+							);
+					}
+				});
+			});
+	}
+
   
 
 }

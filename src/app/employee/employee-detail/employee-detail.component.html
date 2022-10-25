@@ -47,6 +47,10 @@
 						<ion-icon class="loan-icon" src="/assets/svg/icons8-loan-64.svg"></ion-icon>
 						وام ها
 					</ion-segment-button>
+					<ion-segment-button value="form" *ngIf="global.userPermision['employee_form_list']">
+						<ion-icon class="loan-icon"name="file-tray-stacked"></ion-icon>
+						فرم ها
+					</ion-segment-button>
 				</ion-segment>
 			</ion-toolbar>
 			<div *ngIf="segment.value=='contracts'" class="container">
@@ -294,6 +298,43 @@
 									<h6 class="title"> وامی برای نمایش یافت نشد </h6>
 								</div>
 							</div>
+							<hr>
+						</div>
+					</div>
+				</ng-template>
+				<!-- (ionChange)="segmentChanged($event)" -->
+
+			</div>
+			<div *ngIf="segment.value=='form'" class="container">
+				<!-- <div class="row align-items-center justify-content-between mt-4">
+					<div class="col-md-auto">
+						<div class="title-1">
+							<h2 class="title">لیست قرار داد ها</h2>
+						</div>
+					</div>
+				</div> -->
+				<!-- list of employee -->
+
+				<ng-template ngFor let-businessemployee [ngForOf]="Employee.business_employee_info">
+
+					<div class="table-responsive-md my-3">
+						<div>
+							<!-- <h5 class="mt-4 mb-2"></h5> -->
+
+							<section class="col-md-auto mb-1  d-flex row justify-content-between">
+								<h5 class=" mb-2 title-1 col-7 ">فرم ها با {{ businessemployee.business.name}}</h5>
+
+								<ion-button *ngIf="global.userPermision['employee_loan_add']" shape="round" color="success"
+									[routerLink]="['/employees/form/add',businessemployee.id]"
+									class="col-3 mt-1 width-50">
+									<ion-icon slot="start" name="add-circle"></ion-icon>
+									فرم جدید
+								</ion-button>
+							</section>
+
+							<!-- table -->
+						<app-employee-form-table [businessEmployeeId]="businessemployee.id" ></app-employee-form-table>
+						
 							<hr>
 						</div>
 					</div>

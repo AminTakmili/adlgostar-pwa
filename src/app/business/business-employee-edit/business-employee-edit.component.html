@@ -63,6 +63,19 @@
 							<span class="hint">مثلا آشپز</span>
 						</div>
 					</div>
+						<!-- >کد پرسنلی-->
+						<div class="col-lg-6">
+							<div class="form-input mb-3">
+								<label>کد پرسنلی</label>
+								<ion-input type="text" autocomplete="new-pass" formControlName="employee_code">
+								</ion-input>
+								<!-- <span class="error">
+									<app-validator [control]="addForm.controls['employee_code']" [controlName]="'مهارت'">
+									</app-validator>
+								</span> -->
+								<span class="hint">در صورت دلخواه کدی به عنوان کد پرسنلی وارد کنید</span>
+							</div>
+						</div>
 					<!--مبلغ پایه (ریال) -->
 					<div class="col-md-6">
 						<div class="form-input mb-3">
@@ -102,7 +115,7 @@
 						</div>
 					</div>
 					<!-- مقدار ثابت اضافه شونده (ریال)-->
-					<div class="col-md-6">
+					<div class="col-md-12">
 						<div class="form-input mb-3">
 							<label>مکان کار</label>
 							<ion-input type="text" autocomplete="new-pass" formControlName="work_place"></ion-input>
@@ -113,7 +126,7 @@
 							<span class="hint">مثلا : قدوسی</span>
 						</div>
 					</div>
-					<div class="col-lg-6 ">
+					<div class="col-lg-12 ">
 						<ion-item lines="none">
 							<ion-label> بیمه دارد </ion-label>
 							<ion-checkbox type="string" slot="start" formControlName="has_insurance">

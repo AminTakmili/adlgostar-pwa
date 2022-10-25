@@ -5,15 +5,15 @@
 				[src]=" employee?.media?.employee_image?.options.subSizes['1x'] ? employee?.media?.employee_image?.options?.subSizes['1x'] :  './assets/img/employee-img.png' ">
 			</ion-img>
 		</ion-thumbnail>
-		<ion-label [routerLink]="['/employees/detail',employee?.id]">
+		<ion-label>
 			<div class="d-inline-flex">
-				<h2 class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
-				<ion-chip *ngIf="this.settlementId&&!isCollaboration" color="danger" mode="ios" outline="true">
+				<h2  [routerLink]="['/employees/detail',employee?.id]"class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
+				<ion-chip [routerLink]="[ '/settlement/edit',settlementId]"  *ngIf="this.settlementId&&!isCollaboration" color="danger" mode="ios" outline="true">
 					<ion-label>در انتظار تایید تسویه حساب...</ion-label>
 				</ion-chip>
 				
 			</div>
-			<p class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span></p>
+			<p [routerLink]="['/employees/detail',employee?.id]" class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span></p>
 		</ion-label>
 		<!-- <ion-chip *ngIf="contractid" slot="end" color="primary"
 			[routerLink]="['/contracts/print',contractid,employee?.id]">

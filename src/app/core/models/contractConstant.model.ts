@@ -77,6 +77,7 @@ export class contract implements Deserializable {
 	id !: number;
 	is_confirmed !: number;
 	confirm_date !: string;
+	extend_contract_section_id !: string;
 	confirmer_info !: User;
 	business_id !: number;
 	contract_condition_id !: number;
@@ -129,6 +130,8 @@ export class contract implements Deserializable {
 	createdAtEn !: string ;
 	updatedAt !: string ;
 	updatedAtEn !: string ;
+	is_expired !: boolean ;
+
 	// is_confirmed!:number
 	contract_header_template_info!:contractHeaderTemplate
 	contract_footer_template_info!:contractFooterTemplate

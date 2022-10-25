@@ -1,3 +1,6 @@
+import { MediaEditModalComponent } from './../../media-edit-modal/media-edit-modal.component';
+import { MediaAddModalComponent } from './../../media-add-modal/media-add-modal.component';
+import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { mediafile } from './../../../core/models/media.model';
 import { GlobalService } from 'src/app/core/services/global.service';
@@ -19,7 +22,9 @@ export class MediaCategoryFilesListComponent implements OnInit {
   filtered_category_id:string
   constructor(
     public global:GlobalService,
-    private rout:ActivatedRoute
+    private rout:ActivatedRoute,
+    public modalController: ModalController
+
   ) { 
     this.filtered_category_id=rout.snapshot.paramMap.get('id')
   }
@@ -109,4 +114,113 @@ async  getData(){
     
 
   }
+  async openAddModal() {
+		// await this.global.showLoading('لطفا منتظر بمانید...');
+
+		const modal = await this.modalController.create({
+			component: MediaAddModalComponent,
+			cssClass: 'my-custom-class',
+			mode: 'ios',
+			//   presentingElement:this.routerOutlet.nativeEl,
+			swipeToClose: true,
+			componentProps: {
+			
+			id:this.filtered_category_id
+			},
+		});
+
+		modal.onWillDismiss().then(async (res) => {
+			if (res.data && res.data.dismissed) {
+				// console.log(res.data.city['id'])
+				console.log(res);
+        this.limit=24000
+       this. offset=0
+       this.getData()
+		
+			}
+		});
+		// 	modal.present().then(async(res) => {
+		// 		// console.log(res);
+		// 		// console.log("res");
+		// 		await this.global.dismisLoading();
+
+		//   });
+		return await modal.present();
+	}
+  
+	removeFile(item: any) {
+		this.global
+			.showAlert(
+				'حذف فایل',
+			`آیا برای حذف فایل ${item.title} اطمینان دارید؟`,
+				[
+					{
+						text: 'بلی',
+						role: 'yes',
+					},
+					{
+						text: 'خیر',
+						role: 'cancel',
+					},
+				]
+			)
+			.then((alert: any) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						await this.global.showLoading('لطفا منتظر بمانید...');
+						this.global
+							.httpDelete('uploadedFile/delete', {
+								id: item.id,
+							})
+							.subscribe(
+								async (res: any) => {
+									await this.global.dismisLoading();
+
+									this.global.showToast(res.msg);
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+								}
+							);
+					}
+				});
+			});
+	}
+
+  async openEditModal(item:mediafile) {
+		// await this.global.showLoading('لطفا منتظر بمانید...');
+
+		const modal = await this.modalController.create({
+			component: MediaEditModalComponent,
+			cssClass: 'my-custom-class',
+			mode: 'ios',
+			//   presentingElement:this.routerOutlet.nativeEl,
+			swipeToClose: true,
+			componentProps: {
+			
+        category_id:this.filtered_category_id,
+        item
+			},
+		});
+
+		modal.onWillDismiss().then(async (res) => {
+			if (res.data && res.data.dismissed) {
+				// console.log(res.data.city['id'])
+				console.log(res);
+        this.limit=24000
+       this. offset=0
+       this.getData()
+		
+			}
+		});
+		// 	modal.present().then(async(res) => {
+		// 		// console.log(res);
+		// 		// console.log("res");
+		// 		await this.global.dismisLoading();
+
+		//   });
+		return await modal.present();
+	}
 }

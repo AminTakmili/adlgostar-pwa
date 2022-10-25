@@ -1,3 +1,4 @@
+import { EmployeeFormPageModule } from './employee-form/employee-form.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +29,7 @@ import { EmployeeImporterComponent } from './employee-importer/employee-importer
 		NgSelectModule,
 		NgxPaginationModule,
 		NgPersianDatepickerModule,
+		EmployeeFormPageModule
 	],
 	declarations: [
 		EmployeeListComponent,

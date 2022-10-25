@@ -1,4 +1,5 @@
-<div class="main-content" (click)="setCellClickValue($event)">
+ <!-- (click)="setCellClickValue($event)" -->
+<div class="main-content">
 	<div  *ngIf="false"  class="title">Book1 - Excel</div>
 	<div  *ngIf="false" dir="ltr" class="menu-bar">
 		<div><span>File</span></div>
@@ -255,7 +256,7 @@
 	  </div>
 
   </div>
-  <form [formGroup]="excelForm"  (submit)="submit()">
+  <form [formGroup]="excelForm" id="form"  (submit)="submit()">
 	  
 		<!-- <div class="col-lg-auto">
 		  <div class="page-info">
@@ -265,7 +266,8 @@
 		  </div>
 	  </div> -->
 	  <!-- -((this.custom_additions[0]?.value?.length+this.custom_deductions[0]?.value?.length)*2) -->
-	<div formArrayName="excelCell"  class="cells"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px 35px 80px 222px repeat('+(gridColumns-3) + ',max(100%/'+(gridColumns-3)+', 170px))'" >
+	  
+	<div formArrayName="excelCell"  class="cells"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px  35px 80px 222px 105px repeat('+(gridColumns-4) + ',max(100%/'+(gridColumns-4)+', 170px))'" >
 		<div class="cells__spacer"></div>
 		<div class="cells__alphabet" *ngFor="let dummy of  this.alfaArray ;let i = index" >{{ this.alfaArray[i]}}</div>
 			<!-- *for form array or all data araay (arr1) -->
@@ -297,8 +299,36 @@
 				</div>
 				<ion-input   [class.title-cell]="i==0" 	readonly="true"  formControlName="employee_id"  type="text"  class="cells__input first-col-cell"></ion-input>
 				<ion-input   [class.title-cell]="i==0" 	readonly="true"  formControlName="full_name"  type="text"  class="cells__input"></ion-input>
-				
-				<ion-input [debounce]="750" (ionChange)="clac(item)"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_hour_count')!=-1?true:false"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
+				<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="is_inverse"  type="text"  class="cells__input"></ion-input>
+				<select (change)="clacInverse(item)" *ngIf="i!=0"  formControlName="is_inverse"   class="cells__input" >
+						<option [value]="true"> بله </option>
+						<option [value]="false"> خیر </option>
+				</select>
+				<ion-input  [debounce]="850"  (ionChange)="clacInverse(item)"   [class.title-cell]="i==0" [readonly]="item.value.is_inverse=='true'?false:true"   formControlName="inverse_payroll_received"  type="text"  class="cells__input"></ion-input>
+
+				<ion-input  [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_over_time"  type="text"  class="cells__input"></ion-input>
+
+			<select  (change)="clacInverse(item)"  *ngIf="i!=0"   formControlName="has_working_over_time"   class="cells__input" >
+				<option [value]="1" [disabled]="item.value.is_inverse=='true'?false:true" > بله </option>
+				<option [value]="0" [disabled]="item.value.is_inverse=='true'?false:true"> خیر </option>
+		</select>
+		<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_friday"  type="text"  class="cells__input"></ion-input>
+
+		<select  (change)="clacInverse(item)"  *ngIf="i!=0"  formControlName="has_working_friday"   class="cells__input" >
+				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="1"> بله </option>
+				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="0"> خیر </option>
+		</select>
+		<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_night"  type="text"  class="cells__input"></ion-input>
+
+		<select  *ngIf="i!=0"  formControlName="has_working_night"  (change)="clacInverse(item)"  class="cells__input" >
+				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="1"> بله </option>
+				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="0"> خیر </option>
+		</select>
+		
+
+				<!-- {{(item.value.is_inverse)=='true'?false:true}} -->
+				<!-- [readonly]="i==0||calcparametr.indexOf('working_hour_count')!=-1?true:false" -->
+				<ion-input [debounce]="750" (ionChange)="clac(item)"  [class.title-cell]="i==0" readonly="true"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
 				<ion-input   [debounce]="750"  (ionChange)="clac(item)"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_wage')!=-1?true:false"  formControlName="insurance_wage"  type="text"  class="cells__input"></ion-input>
 				<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_day_count')!=-1?true:false"  formControlName="insurance_day_count"  type="text"  class="cells__input"></ion-input>
 				<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="working_shift_id"  type="text"  class="cells__input"></ion-input>
@@ -314,7 +344,8 @@
 			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('outstation_day_count')!=-1?true:false"  formControlName="outstation_day_count"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_over_time_hour_count')!=-1?true:false"  formControlName="working_over_time_hour_count"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [debounce]="750"  (ionChange)="clac(item)"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_night_hour_count')!=-1?true:false"  formControlName="working_night_hour_count"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_day_count')!=-1?true:false"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
+			<!-- [readonly]="i==0||calcparametr.indexOf('working_day_count')!=-1?(item.value.is_inverse=='true'?false:true):false" -->
+			<ion-input  [debounce]="750"  (ionChange)="clacInverse(item)"  [class.title-cell]="i==0"  readonly="true"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('addition_hour_friday_or_holiday')!=-1?true:false"  formControlName="addition_hour_friday_or_holiday"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_working_hours')!=-1?true:false"  formControlName="sum_working_hours"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('daily_or_hourly_wage')!=-1?true:false"  formControlName="daily_or_hourly_wage"  type="text"  class="cells__input"></ion-input>
@@ -359,16 +390,27 @@
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_payroll_deductions')!=-1?true:false"  formControlName="sum_payroll_deductions"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('payroll_received')!=-1?true:false"  formControlName="payroll_received"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('payment_date')!=-1?true:false"  formControlName="payment_date"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('inverse_payroll_received')!=-1?true:false"  formControlName="inverse_payroll_received"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_over_night_friday_amounts')!=-1?true:false"  formControlName="sum_over_night_friday_amounts"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_leave')!=-1?true:false"  formControlName="without_pay_leave"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_leave_amount')!=-1?true:false"  formControlName="without_pay_leave_amount"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_cumulative_leave')!=-1?true:false"  formControlName="without_pay_cumulative_leave"  type="text"  class="cells__input"></ion-input>
 			
 			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="calc_payroll_tax"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="calc_unused_leave_monthly"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="is_hourly_contract"  type="text"  class="cells__input"></ion-input>
 			
+			
+			<!-- <ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="calc_unused_leave_monthly"  type="text"  class="cells__input"></ion-input>
+
+		<select  *ngIf="i!=0"  formControlName="calc_unused_leave_monthly" readonly="true"   class="cells__input" >
+				<option [value]="1"> بله </option>
+				<option [value]="0"> خیر </option>
+		</select> -->
 			<ion-input *ngFor="let addition of this.custom_additions[i].value;let additionIndex = index"    [debounce]="750"  (ionChange)="setAddition(addition,$event,item)" [class.title-cell]="i==0" [readonly]="i==0?true:false" [value]="addition.amount"  [type]="i==0?'text':'number'"  class="cells__input"></ion-input>
 			<ion-input *ngFor="let deductions of this.custom_deductions[i].value;let deductionsIndex = index"    [debounce]="750"  (ionChange)="setDeduction(deductions,$event,item)"  [class.title-cell]="i==0" [readonly]="i==0?true:false" [value]="deductions.amount"   [type]="i==0?'text':'number'" class="cells__input"></ion-input>
+			
+
+
 			<!-- formArrayName="custom_additions"   -->
 			<!-- <ng-container     [ngTemplateOutlet]="additionTemplate"    formArrayName='custom_additions'  [ngTemplateOutletContext]="{i:i,item:item}"   >
 

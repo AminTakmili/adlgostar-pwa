@@ -606,6 +606,41 @@ export class ContractAddComponent implements OnInit {
 			}
 		}
 	}
+	async manualCalculatePrices() {
+console.log('this.manualCalculatePrices');
+		if (!this.submitet) {
+			if (this.contractsForm.get('is_manual').value) {
+			if (this.contractsForm.value.contract_year === '') {
+				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				return;
+			}
+
+			else {
+				this.submitet = true;
+				await this.global.showLoading('لطفا منتظر بمانید...');
+				this.global.httpPost('contract/manualCalculatePrices', this.contractsForm.value).
+					subscribe(async (res: any) => {
+						this.submitet = false;
+						await this.global.dismisLoading();
+
+						this.contractsForm.get('bonus').setValue(res.bonus);
+						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
+						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
+						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);
+						this.contractsForm.get('severance_pay').setValue(res.severance_pay);
+						this.contractsForm.get('wage').setValue(res.wage);
+
+						// console.log(res);
+
+					}, async (error: any) => {
+						this.submitet = false;
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+			}
+		}
+		}
+	}
 
 	AddAlowences(event: any) {
 		console.log(event);

@@ -20,7 +20,6 @@ import { ShareModulePageModule } from './../../share-module/share-module.module'
     ShareModulePageModule,
 		NgSelectModule,
 		ReactiveFormsModule,
-
 		NgPersianDatepickerModule,
     NgxPaginationModule
   ],

@@ -22,7 +22,7 @@
 		<div class="container">
 			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<!-- مربوط به سال -->
 						<div class="form-input mb-3">
 							<label>انتخاب کارمند</label>
@@ -47,6 +47,19 @@
 								</app-validator>
 							</span>
 							<span class="hint">مثلا حمید رضا ثابت</span>
+						</div>
+					</div>
+					<!-- >کد پرسنلی-->
+					<div class="col-lg-6">
+						<div class="form-input mb-3">
+							<label>کد پرسنلی</label>
+							<ion-input type="text" autocomplete="new-pass" formControlName="employee_code">
+							</ion-input>
+							<!-- <span class="error">
+								<app-validator [control]="addForm.controls['employee_code']" [controlName]="'مهارت'">
+								</app-validator>
+							</span> -->
+							<span class="hint">در صورت دلخواه کدی به عنوان کد پرسنلی وارد کنید</span>
 						</div>
 					</div>
 					<!-- زمان شروع به کار -->

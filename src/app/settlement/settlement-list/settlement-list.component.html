@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button *ngIf="global.userPermision['payrolls_payroll_add']" shape="round" color="success" [routerLink]="['/settlement/add']">
+				<ion-button *ngIf="global.userPermision['payrolls_settlement_add']" shape="round" color="success" [routerLink]="['/settlement/add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					تسویه حساب جدید
 				</ion-button>
@@ -178,8 +178,8 @@
 			<div *ngIf="dataList && dataList.length === 0 && !(businessId||employeeId)" class="alert alert-warning my-3" role="alert">
 				<h4 class="title">تسویه حساب برای نمایش یافت نشد .</h4>
 				<p class="dsec"> شما تا کنون تسویه حساب ثبت نکردید .
-					<span *ngIf="global.userPermision['payrolls_payroll_add']">
-					 برای اضافه کردن تسویه حساب بر روی دکمه <a *ngIf="global.userPermision['payrolls_payroll_add']" [routerLink]="['/payrolls/payroll/add']">  تسویه حساب جدید </a> 
+					<span *ngIf="global.userPermision['payrolls_settlement_add']">
+					 برای اضافه کردن تسویه حساب بر روی دکمه <a *ngIf="global.userPermision['payrolls_settlement_add']" [routerLink]="['/settlement/add']">  تسویه حساب جدید </a> 
 					</span>
 					 کلیک کنید</p>
 			</div>

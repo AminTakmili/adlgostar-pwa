@@ -14,7 +14,7 @@
 			</div>
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="medium" fill="outline">
-					<ion-back-button defaultHref="contracts/sentence/{{id}}" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					<ion-back-button defaultHref="contracts/sentence/{{contractId}}" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 					</ion-back-button>
 					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت -->
@@ -224,7 +224,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_severance_pay" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -232,7 +232,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_bonus" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -240,7 +240,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_new_year_gift" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>

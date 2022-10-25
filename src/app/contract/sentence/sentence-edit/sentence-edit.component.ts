@@ -53,6 +53,7 @@ export class SentenceEditComponent implements OnInit {
 	businessId: number;
 	employerId: number[];
 	employeeId: number[]=[];
+	contractId:number
 
 	constructor(
 		public global: GlobalService,
@@ -67,6 +68,7 @@ export class SentenceEditComponent implements OnInit {
 		this.sentenceForm = this.fb.group({
 			// is_group_sentence:[false],
 			id:[this.id],
+			contract_id:[],
 			business_employee_ids: ['', Validators.compose([Validators.required])],
 			date: ['', Validators.compose([Validators.required])],
 			wage: ['', Validators.compose([Validators.required,Validators.min(0)])],
@@ -205,6 +207,8 @@ export class SentenceEditComponent implements OnInit {
 					 this.sentenceForm.get('calc_unused_leave_monthly').setValue(this.dataList.calc_unused_leave_monthly)
 					 this.sentenceForm.get('calc_without_pay_leave_monthly').setValue(this.dataList.calc_without_pay_leave_monthly)
 					 this.sentenceForm.get('calc_payroll_tax').setValue(this.dataList.calc_payroll_tax)
+					 this.sentenceForm.get('contract_id').setValue(this.dataList.contract_id)
+					 this.contractId=this.dataList.contract_id
 					
 					 this.dataList.children_allowance_info.map((item)=>{
 						this.countChildrenAllowances.push(this.newCountChildrenAllowances(item.business_employee_id,item.count_children_allowance));
@@ -295,6 +299,53 @@ export class SentenceEditComponent implements OnInit {
 		return	this.employeeList?.find(item=>item.business_employee_id===id)
 		}
 	}
+
+	async CalculationField() {
+		console.log("object",this.submitet);
+		// if (!this.submitet) {
+		
+
+			// if (!this.sentenceForm.get('is_manual').value) {
+				this.submitet = true;
+				await this.global.showLoading('لطفا منتظر بمانید...');
+				this.global
+					.httpPost('contractSentence/calculatePrices',
+						this.sentenceForm.value
+					)
+					.subscribe(
+						async (res: any) => {
+							this.submitet = false;
+							await this.global.dismisLoading();
+							
+
+							// this.sentenceForm.get('bonus').setValue(res.bonus);
+							this.sentenceForm
+								.get('grocery_allowance')
+								.setValue(res.grocery_allowance);
+							this.sentenceForm
+								.get('housing_allowance')
+								.setValue(res.housing_allowance);
+							// this.sentenceForm
+							// 	.get('new_year_gift')
+							// 	.setValue(res.new_year_gift);
+							// this.sentenceForm
+							// 	.get('severance_pay')
+							// 	.setValue(res.severance_pay);
+							this.sentenceForm.get('wage').setValue(res.wage);
+
+							// console.log(res);
+						},
+						async (error: any) => {
+							this.submitet = false;
+							await this.global.dismisLoading();
+							this.global.showError(error);
+						}
+					);
+			// }
+		// }
+	}
+
+
 
 	async onSubmit() {
 		// console.log('submit form');

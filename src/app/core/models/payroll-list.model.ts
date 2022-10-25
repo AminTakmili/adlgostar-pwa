@@ -12,8 +12,11 @@ export class payrollList implements Deserializable {
     year!: number
     month!: number
     is_confirmed!: number
-    contract_info!: contract
+    // contract_info!: contract
+    full_name:string
+    business_name:string
     createdAt: string
+    payment_date: string
     createdAtEn: string
     payroll_deductions!:object
     payroll_additions!:object
@@ -22,9 +25,9 @@ export class payrollList implements Deserializable {
 
 	deserialize(input: any): this {
 		Object.assign(this, input);
-        if (input.contract_info) {
-            this.contract_info=new contract().deserialize(input.contract_info) 
-        }
+        // if (input.contract_info) {
+        //     this.contract_info=new contract().deserialize(input.contract_info) 
+        // }
 		return this;
 	}
 }
@@ -123,6 +126,8 @@ export class payrolDetail implements Deserializable {
         sum_over_night_friday_amounts:number;
         without_pay_leave:number;
         without_pay_leave_amount:number
+        custom_deductions:Array<custom>
+        custom_additions:Array<custom>
     
    
  
@@ -141,5 +146,10 @@ export class payrolDetail implements Deserializable {
 
 		return this;
 	}
+}
+interface custom{
+    readonly   name:string,
+    readonly    amount:string
+
 }
 

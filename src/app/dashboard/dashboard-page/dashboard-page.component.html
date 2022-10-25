@@ -18,7 +18,7 @@
 	<!-- main -->
 	<main class="mb-5">
 		<!-- آمار و ارقام -->
-		<div class="container">
+		<div class="container" *ngIf="!is_expert">
 			<div class="mt-4">
 				<ion-card class="counter-item m-0" mode="ios" color="white">
 					<ion-card-content>
@@ -68,7 +68,7 @@
 					</ion-card>
 				</div>
 				<!--  -->
-				<div class="col-lg-3 col-md-6 my-4">
+				<!-- <div class="col-lg-3 col-md-6 my-4">
 					<ion-card class="counter-item m-0" mode="ios" color="white">
 						<ion-card-content>
 							<div class="counter">
@@ -82,7 +82,7 @@
 							<p class="title ion-text-center">تعداد کل کارمندان</p>
 						</ion-card-content>
 					</ion-card>
-				</div>
+				</div> -->
 
 				<!--  -->
 				<div class="col-lg-3 col-md-6 my-4">
@@ -100,11 +100,53 @@
 						</ion-card-content>
 					</ion-card>
 				</div>
+					<!-- تعداد کل فیش های حقوقی -->
+					<div class="col-lg-3 col-md-6 my-4">
+						<ion-card class="counter-item m-0" mode="ios" color="white">
+							<ion-card-content>
+								<div class="counter">
+									<div class="value red">
+										<ion-text color="success">{{ data?.payroll_count }}</ion-text>
+									</div>
+									<span class="unit">
+										<ion-text color="success">فیش حقوقی</ion-text>
+									</span>
+								</div>
+								<p class="title ion-text-center">تعداد کل فیش های حقوقی</p>
+							</ion-card-content>
+						</ion-card>
+					</div>
 			</div>
 		</div>
 		<!--  -->
-		<div class="container">
-			<app-dashboard-nearest-birthday></app-dashboard-nearest-birthday>
+		<div class="container"*ngIf="!is_expert">
+			<div class="row">
+
+				<div class="col-lg-6 col-md-12 my-4">
+					<app-dashboard-nearest-birthday></app-dashboard-nearest-birthday>
+
+				</div>
+				<!-- d-sm-block d-none  -->
+				<div class="col-lg-3 col-md-6 my-4 ">
+					<ion-card class="counter-item m-0 employee_count-card" mode="ios" color="white">
+						<ion-card-content>
+							<div class="counter">
+								<div class="value red">
+									<ion-text color="primary">{{ data?.employee_separately_count.total_count }}</ion-text>
+								</div>
+								<span class="unit">
+									<ion-text color="primary">نفر</ion-text>
+								</span>
+							</div>
+							<p class="title ion-text-center">تعداد کل کارمندان</p>
+						</ion-card-content>
+					</ion-card>
+				</div>
+				<div class="col-lg-3 col-md-6 my-4">
+					<app-dashboard-employee-pie-chart *ngIf="data?.employee_separately_count&&data" [employee_separately_count]="data?.employee_separately_count"></app-dashboard-employee-pie-chart>
+
+				</div>
+			</div>
 		</div>
 		<!--  -->
 		<div class="container">
@@ -137,6 +179,23 @@
 							<app-dashboard-nocontract-employee></app-dashboard-nocontract-employee>
 						</ion-card>
 					</div>
+				</div>
+				<!-- نوت پد -->
+				<div class="col-lg-6 mb-4">
+					<div class="listItem">
+						<ion-card class="counter-item m-0" mode="ios" color="white">
+							<app-dashboard-unconfirmed-contracts></app-dashboard-unconfirmed-contracts>
+						</ion-card>
+					</div>
+
+				</div>
+				<div class="col-lg-6 mb-4">
+					<div class="listItem">
+						<ion-card class="counter-item m-0" mode="ios" color="white">
+							<app-dashboard-unconfirmed-payrolls></app-dashboard-unconfirmed-payrolls>
+						</ion-card>
+					</div>
+
 				</div>
 			</div>
 		</div>

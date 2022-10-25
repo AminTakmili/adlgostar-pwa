@@ -74,8 +74,8 @@ export class BusinessDetailComponent implements OnInit {
 		this.getSettlementData();
 		this.storage.get('user').then((val) => {
 			if (Object.keys(val).length) {
-				// console.log(val);
-				// console.log(val.is_employer);
+				console.log(val);
+				console.log(val.is_employer);
 				this.is_employer = val.is_employer;
 			}
 		});

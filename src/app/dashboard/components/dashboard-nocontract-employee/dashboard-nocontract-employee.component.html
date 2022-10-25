@@ -7,7 +7,7 @@
 <ion-content>
 	<div *ngIf="!loading && !dataList.length" class="empty-item">
 		<ion-icon name="person"></ion-icon>
-		<p>کارمند بدون قرداد یافت نشد </p>
+		<p>کارمند بدون قرارداد یافت نشد </p>
 	</div>
 	<div *ngIf="loading || dataList.length" class="listItem">
 		<ion-item color="white" lines="full" *ngFor="let item of dataList" [routerLink]="['/employees/detail/',item.id]" detail>
