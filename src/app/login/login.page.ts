@@ -15,6 +15,7 @@ export class LoginPage implements OnInit {
 
 	loginForm: FormGroup;
 	verifyForm: FormGroup;
+	passwordForm: FormGroup;
 	mobile: string;
 	timer = '02:00';
 	private interval: any;
@@ -32,6 +33,10 @@ export class LoginPage implements OnInit {
 			mobile: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])]
 		});
 
+		this.passwordForm = this.fb.group({
+			password: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9$@$!%*/?&#^-_. +]+$')])]
+		});
+
 		this.verifyForm = this.fb.group({
 			verifycode: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])]
 		});
@@ -46,7 +51,55 @@ export class LoginPage implements OnInit {
 			isNoIndex: false,
 		});
 	}
+	saveMobile(){
+
+		this.loginForm.markAllAsTouched()
+		if (this.loginForm.valid) {
+				// console.log(res:any);
+				this.mobile = this.loginForm.value.mobile;
+				this.regStatus = 1;
+		}
+	}
+
+
+	async confirmLoginPassword() {
+		this.passwordForm.markAllAsTouched()
+		if (this.passwordForm.valid) {
+
+			await this.global.showLoading('لطفا منتظر بمانید...');
+			this.global.httpPost('user/confirmLoginPassword', {
+				mobile: this.mobile,
+				password:this.passwordForm.value.mobile,
+
+			}).subscribe(async (res:any) => {
+
+
+				await this.global.dismisLoading();
+				
+				this.global.user = new User().deserialize(res);
+				this.storage.set('user',this.global.user);
+				this.global._user.next(this.global.user);
+				this.global.setPermision(this.global.user.permissionsList);
+				this.global.changeLogin(true);
+				this.global.showToast('کاربر گرامی , ' + this.global.user.first_name + ' خوش آمدید .');
+				this.navCtrl.navigateRoot(['/']);
+
+				await this.global.dismisLoading();
+
+				clearInterval(this.interval);
+				this.regStatus = 0;
+				this.verifyForm.reset();
+
+				
+
+			}, async (error:any) => {
+				await this.global.dismisLoading();
+				this.global.showError(error);
+			});
+		}
+	}
 	async onLogin() {
+		this.loginForm.markAllAsTouched()
 		if (this.loginForm.valid) {
 
 			await this.global.showLoading('لطفا منتظر بمانید...');
@@ -55,10 +108,8 @@ export class LoginPage implements OnInit {
 			}).subscribe(async (res:any) => {
 
 
-				// console.log(res:any);
-				this.mobile = this.loginForm.value.mobile;
 				await this.global.dismisLoading();
-				this.regStatus = 1;
+				this.regStatus = 2;
 				clearInterval(this.interval);
 				this.countdown();
 
@@ -68,6 +119,7 @@ export class LoginPage implements OnInit {
 			});
 		}
 	}
+
 
 	countdown(){
 		let countDownDate: any = new Date();
@@ -92,6 +144,7 @@ export class LoginPage implements OnInit {
 	}
 
 	async onVerify() {
+		this.verifyForm.markAllAsTouched()
 		if (this.verifyForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/confirmLoginCode', {
@@ -143,6 +196,7 @@ export class LoginPage implements OnInit {
 		this.regStatus = 0;
 		this.loginForm.reset();
 		this.verifyForm.reset();
+		this.passwordForm.reset();
 		clearInterval(this.interval);
 	}
 	cleareTimmer(){

@@ -463,9 +463,17 @@ footer {
 .first-col-cell{
     background: var(--ion-color-step-350) !important;
     color: white;
+	transition: ease .3s;
 
 
 }
+.first-col-cell:hover{
+    background: white !important;
+    color: var(--ion-color-step-350);
+
+
+}
+
 .title-cell{
     background: var(--ion-color-step-450) !important;
     color: white;
@@ -527,6 +535,10 @@ footer {
     animation: pop 1s reverse forwards; // required
   }
 }
+
+// select {
+// outline: none;
+// }
 
 // animation for particle fly away from the cursor
 @keyframes pop {

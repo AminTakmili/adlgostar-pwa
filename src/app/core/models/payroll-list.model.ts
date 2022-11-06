@@ -66,6 +66,7 @@ export class payrolDetail implements Deserializable {
         iban_number: number;
         account_number: number;
         employee_id: number;
+        employee_code: number;
         employee_gender: string;
         full_name: string;
         working_shift_id: number;

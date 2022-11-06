@@ -1,5 +1,6 @@
+import { BusinessReportListModalComponent } from './../business-report/business-report-list-modal/business-report-list-modal.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInput, NavController } from '@ionic/angular';
+import { IonInput, NavController, ModalController } from '@ionic/angular';
 import { debounceTime, map } from 'rxjs/operators';
 
 import { BusinessList } from 'src/app/core/models/business.model';
@@ -34,6 +35,8 @@ export class BusinessListComponent implements OnInit {
 		private fb: FormBuilder,
 		private seo: SeoService,
 		private navCtrl: NavController,
+		public modalController: ModalController,
+
 	) {
 
 	}
@@ -113,6 +116,19 @@ export class BusinessListComponent implements OnInit {
 				}
 			});
 		});
+	}
+	async openAddContractModal(id:number) {
+		const modal = await this.modalController.create({
+			component: BusinessReportListModalComponent,
+			cssClass: 'my-custom-class',
+			mode: 'ios',
+			swipeToClose: true,
+			componentProps: {
+			id
+			},
+		});
+
+		return await modal.present();
 	}
 
 

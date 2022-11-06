@@ -302,7 +302,7 @@ export class SentenceEditComponent implements OnInit {
 
 	async CalculationField() {
 		console.log("object",this.submitet);
-		// if (!this.submitet) {
+		if (!this.submitet) {
 		
 
 			// if (!this.sentenceForm.get('is_manual').value) {
@@ -342,7 +342,7 @@ export class SentenceEditComponent implements OnInit {
 						}
 					);
 			// }
-		// }
+		}
 	}
 
 

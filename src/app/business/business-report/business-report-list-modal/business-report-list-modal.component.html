@@ -1,0 +1,31 @@
+<ion-header mode="md" class="ion-no-border">
+	<ion-toolbar color="secondary">
+		<ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+			<ion-button>
+				<ion-icon slot="start" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>گزارشات</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item  [routerLink]="['/businesses/report/loan',id] " (click)=" this.modalController.dismiss('loan', 'cancel');"detail="true" button="true">
+      <ion-label> گزارشات وام </ion-label>
+    </ion-item>
+    <ion-item [routerLink]="['/businesses/report/leave',id] " (click)=" this.modalController.dismiss('leave', 'cancel');" detail="true" button="true">
+      <ion-label> گزارشات مرخصی </ion-label>
+    </ion-item>
+    <ion-item detail="true" button="true">
+      <ion-label>Awesome Label</ion-label>
+    </ion-item>
+    <ion-item detail="true" button="true">
+      <ion-label>Awesome Label</ion-label>
+    </ion-item>
+   
+  </ion-list>
+
+
+</ion-content>

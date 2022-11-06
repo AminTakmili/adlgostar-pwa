@@ -4,7 +4,7 @@
 			<!-- login -->
 			<div *ngIf="regStatus === 0" class="row justify-content-center">
 				<div class="col-lg-4 col-md-6">
-					<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
+					<form class="login-form" [formGroup]="loginForm"  (ngSubmit)="saveMobile()" autocomplete="off">
 
 						<ion-img class="logo" [src]="'../assets/img/logo.png'"></ion-img>
 						<h1 class="title">ورود کاربران</h1>
@@ -20,7 +20,51 @@
 							</span>
 							<span class="hint">مثلا : 09173052222</span>
 						</div>
-						<ion-button class="my-3" type="submit"expand="block" size="large" shape="round" fill="solid">ورود به پنل</ion-button>
+						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid">
+							ورود به پنل</ion-button>
+						<!-- end custom input -->
+
+					</form>
+					<!-- verify -->
+				</div>
+			</div>
+
+			<!-- passwordForm -->
+			<div *ngIf="regStatus === 1" class="row justify-content-center">
+				<div class="col-lg-4 col-md-6">
+					<form class="login-form" [formGroup]="passwordForm" (ngSubmit)="onVerify()" autocomplete="off">
+
+						<ion-img class="logo" [src]="'../assets/img/logo.png'"></ion-img>
+						<h1 class="title">رمز عبور </h1>
+						<p class="desc">رمز عبور متعلق به {{ mobile }} را وارد کنید</p>
+						<!-- custom input -->
+						<div class="form-input ">
+							<label>رمز عبور</label>
+							<ion-input formControlName="password" autofocus="true" autocomplete="new-pass">
+							</ion-input>
+							<!-- <ion-progress-bar value=".25"></ion-progress-bar> -->
+							<span class="error">
+								<!-- <app-validator [control]="passwordForm.controls['verifycode']"
+									[controlName]="'کد 5 رقمی'"></app-validator> -->
+							</span>
+							<a (click)="onLogin()" class="d-flex ion-align-items-center mt-20"><span>ورود با کد یکبار مصرف</span>
+								<ion-icon slot="start" name="chevron-forward-outline" ></ion-icon>
+							</a>
+							<div class="hint">
+
+								<hr>
+								<!-- href="/login/forgetpassword" -->
+								<p>رمز عبور خود را فراموش کرده ام !! <a>فراموشی رمز عبور</a>
+								</p>
+							</div>
+						</div>
+						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid">
+							بررسی و ورود </ion-button>
+
+
+						<ion-button class="my-3 " type="button" expand="block" size="large" shape="round" fill="outline"
+							color="medium" (click)="changeNumber()"> تغییر شماره همراه </ion-button>
+
 						<!-- end custom input -->
 
 					</form>
@@ -29,25 +73,30 @@
 			</div>
 
 			<!-- register -->
-			<div *ngIf="regStatus === 1" class="row justify-content-center">
+			<div *ngIf="regStatus === 2" class="row justify-content-center">
 				<div class="col-lg-4 col-md-6">
 					<form class="login-form" [formGroup]="verifyForm" (ngSubmit)="onVerify()" autocomplete="off">
 
 						<ion-img class="logo" [src]="'../assets/img/logo.png'"></ion-img>
 						<h1 class="title">احراز هویت شماره همراه</h1>
-						<p class="desc">یک کد 5 رقمی به شماره همراه {{ mobile }} ارسال شده . این کد را در باکس زیر وارد کنید و بر روی ادامه بزنید .</p>
+						<p class="desc">یک کد 5 رقمی به شماره همراه {{ mobile }} ارسال شده . این کد را در باکس زیر وارد
+							کنید و بر روی ادامه بزنید .</p>
 						<!-- custom input -->
 						<div class="form-input ">
 							<label>کد پنج رقمی</label>
-							<ion-input (keypress)="global.justNumber($event)" formControlName="verifycode" autofocus="true"
-								autocomplete="new-pass"></ion-input>
+							<ion-input (keypress)="global.justNumber($event)" formControlName="verifycode"
+								autofocus="true" autocomplete="new-pass"></ion-input>
 							<span class="error">
-								<app-validator [control]="verifyForm.controls['verifycode']" [controlName]="'کد 5 رقمی'"></app-validator>
+								<app-validator [control]="verifyForm.controls['verifycode']"
+									[controlName]="'کد 5 رقمی'"></app-validator>
 							</span>
-							<span class="hint"> <span *ngIf="timer != '00:00' " class="time" color="primary"> {{timer}} تا ارسال مجدد </span></span>
+							<span class="hint"> <span *ngIf="timer != '00:00' " class="time" color="primary"> {{timer}}
+									تا ارسال مجدد </span></span>
 						</div>
-						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid"> بررسی و ورود </ion-button>
-						<ion-button class="my-3" type="button" expand="block" size="large" shape="round" fill="outline" color="medium"  (click)="changeNumber()"> تغییر شماره همراه </ion-button>
+						<ion-button class="my-3" type="submit" expand="block" size="large" shape="round" fill="solid">
+							بررسی و ورود </ion-button>
+						<ion-button class="my-3" type="button" expand="block" size="large" shape="round" fill="outline"
+							color="medium" (click)="changeNumber()"> تغییر شماره همراه </ion-button>
 						<!-- end custom input -->
 
 					</form>

@@ -365,7 +365,7 @@
 						<!-- دستمزد روزانه -->
 						<div class="form-input mb-3">
 							<label>دستمزد روزانه <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="wage" (ionChange)="manualCalculatePrices()" ></ion-input>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="wage" (ionChange)="manualCalculatePrices()"debounce="1000" ></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['wage']" [controlName]="'دستمزد روزانه'"></app-validator>
 							</span>
@@ -383,7 +383,7 @@
 						<!-- حق بن -->
 						<div class="form-input mb-3">
 							<label>حق بن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="grocery_allowance" (ionChange)="manualCalculatePrices()"></ion-input>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="grocery_allowance" (ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator>
 							</span>
@@ -392,7 +392,7 @@
 						<!-- حق مسکن -->
 						<div class="form-input mb-3">
 							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="housing_allowance" (ionChange)="manualCalculatePrices()"></ion-input>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="housing_allowance" (ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
 							</span>
@@ -474,7 +474,7 @@
 									<span [innerText]="returnNameExtraField(item['value']['contract_extra_field_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
 								</label>
-								<ion-input min="0" type="number" autocomplete="new-pass" (ionChange)="CalculationField();manualCalculatePrices()" debounce="500"  formControlName="price"></ion-input>
+								<ion-input min="0" type="number" autocomplete="new-pass" (ionChange)="CalculationField();manualCalculatePrices()" debounce="1000"  formControlName="price"></ion-input>
 								<span class="error">
 									<!-- <app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 								</span>
@@ -533,7 +533,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>توقف محاسبات و وارد کردن دستی</ion-label>
-								<ion-toggle color="success" formControlName="is_manual" (ionChange)="CalculationField();manualCalculatePrices()"  slot="start"></ion-toggle>
+								<ion-toggle color="success" formControlName="is_manual" (ionChange)="CalculationField();manualCalculatePrices()"debounce="800"  slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->

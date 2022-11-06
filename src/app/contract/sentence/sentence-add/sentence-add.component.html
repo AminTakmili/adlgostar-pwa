@@ -25,8 +25,16 @@
 	</div>
 	<main>
 		<!-- انتخاب کسب و کار -->
-		<div class="col-md-12" *ngIf="businessList && businessList.length">
-			<div class="form-input mb-3">
+		<div class="container">
+			<div class="col-12 my-4">
+				<div class="title-1">
+					<h2 class="title"> اطلاعات اولیه حکم</h2>
+					<!-- <p class="dsec">قسمت اول مشخص کردن افراد در حکم
+					</p> -->
+				</div>
+			</div>
+		<div class="col-md-12 px-0" *ngIf="businessList && businessList.length">
+			<div class="form-input mb-3 mx-0">
 				<label> کسب کار</label>
 				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList"
 					loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب و کاری یافت نشد"
@@ -37,7 +45,7 @@
 		</div>
 		<!-- *ngIf="employerList && employerList.length" -->
 		<!-- انتحاب کارفرما -->
-		<div class="col-md-12">
+		<div class="col-md-12 px-0">
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
 				<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true"
@@ -50,27 +58,28 @@
 
 			</div>
 		</div>
-
+</div>
 		<form [formGroup]="sentenceForm" (ngSubmit)="onSubmit()">
 			<!--  -->
 			<div class="container mt-4">
 				<!-- step 0  -->
 				<div class="row mb-4" *ngIf=" step === 1 ">
-					<div class="col-12 my-4">
+					<!-- <div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">تکمیل اطلاعات اولیه حکم</h2>
 							<p class="dsec">قسمت اول مشخص کردن افراد در حکم
 							</p>
 						</div>
-					</div>
+					</div> -->
+
 					<!-- انتحاب کارمندان -->
 					<!-- (add)="AddAlowences($event)"
 	(remove)="removeAlowences($event)"
 	(change)="calcChildrenAllowance();" -->
 					<div *ngIf=" !employeeLoading" class="col-md-12">
 						<div class="form-input mb-3" *ngIf="employeeList && employeeList.length">
-							<label>انتخاب کارمندان</label>
-							<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"
+							<label> کارمندان</label>
+							<ng-select [readonly]="true" [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"
 								formControlName="business_employee_ids" loadingText="لطفا صبر کنید ..."
 								notFoundText="مناسفانه کارمندی یافت نشد">
 								<ng-option *ngFor="let item of employeeList" [value]="item.business_employee_id">
@@ -90,7 +99,7 @@
 								<app-validator #validation [control]="sentenceForm.controls['business_employee_ids']"
 									[controlName]="'انتخاب کارمندان '"></app-validator>
 							</span>
-							<span class="hint">کارمندان در این حکم را اضافه کنید .</span>
+							<!-- <span class="hint">کارمندان در این حکم را اضافه کنید .</span> -->
 						</div>
 
 

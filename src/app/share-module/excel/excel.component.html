@@ -267,7 +267,7 @@
 	  </div> -->
 	  <!-- -((this.custom_additions[0]?.value?.length+this.custom_deductions[0]?.value?.length)*2) -->
 	  
-	<div formArrayName="excelCell"  class="cells"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px  35px 80px 222px 105px repeat('+(gridColumns-4) + ',max(100%/'+(gridColumns-4)+', 170px))'" >
+	<div formArrayName="excelCell"  class="cells"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px  35px 70px 80px 222px 105px repeat('+(gridColumns-5) + ',max(100%/'+(gridColumns-5)+', 170px))'" >
 		<div class="cells__spacer"></div>
 		<div class="cells__alphabet" *ngFor="let dummy of  this.alfaArray ;let i = index" >{{ this.alfaArray[i]}}</div>
 			<!-- *for form array or all data araay (arr1) -->
@@ -297,30 +297,32 @@
 
 					<ion-checkbox [id]="i"  class="checkbox" formControlName="isWant"  (click)="checkAll(i)"   slot="start" ></ion-checkbox>
 				</div>
-				<ion-input   [class.title-cell]="i==0" 	readonly="true"  formControlName="employee_id"  type="text"  class="cells__input first-col-cell"></ion-input>
+				<input *ngIf="i!=0" (click)="clac(item);clacInverse(item)" class="cells__input first-col-cell" type="button" formControlName="calc">
+				<ion-input   *ngIf="i==0" 	readonly="true"  formControlName="calc"  type="text"  class="cells__input title-cell "></ion-input>
+				<ion-input   [class.title-cell]="i==0" 	readonly="true"  formControlName="employee_id"  type="text"  class="cells__input "></ion-input>
 				<ion-input   [class.title-cell]="i==0" 	readonly="true"  formControlName="full_name"  type="text"  class="cells__input"></ion-input>
 				<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="is_inverse"  type="text"  class="cells__input"></ion-input>
-				<select (change)="clacInverse(item)" *ngIf="i!=0"  formControlName="is_inverse"   class="cells__input" >
+				<select (change)="clacInverse(item,true)" *ngIf="i!=0"  formControlName="is_inverse"   class="cells__input" >
 						<option [value]="true"> بله </option>
 						<option [value]="false"> خیر </option>
 				</select>
-				<ion-input  [debounce]="850"  (ionChange)="clacInverse(item)"   [class.title-cell]="i==0" [readonly]="item.value.is_inverse=='true'?false:true"   formControlName="inverse_payroll_received"  type="text"  class="cells__input"></ion-input>
+				<ion-input  [debounce]="850"    [class.title-cell]="i==0" [readonly]="item.value.is_inverse=='true'?false:true"   formControlName="inverse_payroll_received"  type="text"  class="cells__input"></ion-input>
 
 				<ion-input  [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_over_time"  type="text"  class="cells__input"></ion-input>
 
-			<select  (change)="clacInverse(item)"  *ngIf="i!=0"   formControlName="has_working_over_time"   class="cells__input" >
+			<select    *ngIf="i!=0"   formControlName="has_working_over_time"   class="cells__input" >
 				<option [value]="1" [disabled]="item.value.is_inverse=='true'?false:true" > بله </option>
 				<option [value]="0" [disabled]="item.value.is_inverse=='true'?false:true"> خیر </option>
 		</select>
 		<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_friday"  type="text"  class="cells__input"></ion-input>
 
-		<select  (change)="clacInverse(item)"  *ngIf="i!=0"  formControlName="has_working_friday"   class="cells__input" >
+		<select    *ngIf="i!=0"  formControlName="has_working_friday"   class="cells__input" >
 				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="1"> بله </option>
 				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="0"> خیر </option>
 		</select>
 		<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="has_working_night"  type="text"  class="cells__input"></ion-input>
 
-		<select  *ngIf="i!=0"  formControlName="has_working_night"  (change)="clacInverse(item)"  class="cells__input" >
+		<select  *ngIf="i!=0"  formControlName="has_working_night"    class="cells__input" >
 				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="1"> بله </option>
 				<option  [disabled]="item.value.is_inverse=='true'?false:true"  [value]="0"> خیر </option>
 		</select>
@@ -328,24 +330,25 @@
 
 				<!-- {{(item.value.is_inverse)=='true'?false:true}} -->
 				<!-- [readonly]="i==0||calcparametr.indexOf('working_hour_count')!=-1?true:false" -->
-				<ion-input [debounce]="750" (ionChange)="clac(item)"  [class.title-cell]="i==0" readonly="true"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
-				<ion-input   [debounce]="750"  (ionChange)="clac(item)"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_wage')!=-1?true:false"  formControlName="insurance_wage"  type="text"  class="cells__input"></ion-input>
-				<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_day_count')!=-1?true:false"  formControlName="insurance_day_count"  type="text"  class="cells__input"></ion-input>
+				<ion-input [debounce]="750" [class.title-cell]="i==0" [readonly]="item.value.is_inverse!='true'&&item.value.is_hourly_contract=='ساعتی'?false:true"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
+				<ion-input   [debounce]="750"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_wage')!=-1?true:false"  formControlName="insurance_wage"  type="text"  class="cells__input"></ion-input>
+				<ion-input   [debounce]="750" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_day_count')!=-1?true:false"  formControlName="insurance_day_count"  type="text"  class="cells__input"></ion-input>
 				<ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="working_shift_id"  type="text"  class="cells__input"></ion-input>
-				<select  *ngIf="i!=0" (change)="clac(item)"  formControlName="working_shift_id"   class="cells__input" >
+				<select  *ngIf="i!=0"   formControlName="working_shift_id"   class="cells__input" >
 					<option [value]="' '"> هیچکدام  </option>
 					<!-- <optgroup  > -->
 						<option *ngFor="let workingShift of workingShiftsList; first as isFirst;let i = index" [value]="workingShift.id"> {{workingShift.name}}</option>
 						
 					  <!-- </optgroup> -->
 				</select>
-			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_deficit_hours')!=-1?true:false"  formControlName="working_deficit_hours"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_friday_hour_count')!=-1?true:false"  formControlName="working_friday_hour_count"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('outstation_day_count')!=-1?true:false"  formControlName="outstation_day_count"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [debounce]="750"  (ionChange)="clac(item)" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_over_time_hour_count')!=-1?true:false"  formControlName="working_over_time_hour_count"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [debounce]="750"  (ionChange)="clac(item)"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_night_hour_count')!=-1?true:false"  formControlName="working_night_hour_count"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [debounce]="750"   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_deficit_hours')!=-1?true:false"  formControlName="working_deficit_hours"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [debounce]="750"   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_friday_hour_count')!=-1?true:false"  formControlName="working_friday_hour_count"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [debounce]="750"   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('outstation_day_count')!=-1?true:false"  formControlName="outstation_day_count"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [debounce]="750"   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_over_time_hour_count')!=-1?true:false"  formControlName="working_over_time_hour_count"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [debounce]="750"    [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('working_night_hour_count')!=-1?true:false"  formControlName="working_night_hour_count"  type="text"  class="cells__input"></ion-input>
 			<!-- [readonly]="i==0||calcparametr.indexOf('working_day_count')!=-1?(item.value.is_inverse=='true'?false:true):false" -->
-			<ion-input  [debounce]="750"  (ionChange)="clacInverse(item)"  [class.title-cell]="i==0"  readonly="true"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
+			<!-- [readonly]="item.value.is_inverse=='true'?false:true" -->
+			<ion-input  [debounce]="750"   [class.title-cell]="i==0"  [readonly]="item.value.is_inverse!='true'&&item.value.is_hourly_contract=='تمام وقت'?false:true"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('addition_hour_friday_or_holiday')!=-1?true:false"  formControlName="addition_hour_friday_or_holiday"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_working_hours')!=-1?true:false"  formControlName="sum_working_hours"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('daily_or_hourly_wage')!=-1?true:false"  formControlName="daily_or_hourly_wage"  type="text"  class="cells__input"></ion-input>
@@ -390,7 +393,7 @@
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_payroll_deductions')!=-1?true:false"  formControlName="sum_payroll_deductions"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('payroll_received')!=-1?true:false"  formControlName="payroll_received"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('payment_date')!=-1?true:false"  formControlName="payment_date"  type="text"  class="cells__input"></ion-input>
-			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_over_night_friday_amounts')!=-1?true:false"  formControlName="sum_over_night_friday_amounts"  type="text"  class="cells__input"></ion-input>
+			<!-- <ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('sum_over_night_friday_amounts')!=-1?true:false"  formControlName="sum_over_night_friday_amounts"  type="text"  class="cells__input"></ion-input> -->
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_leave')!=-1?true:false"  formControlName="without_pay_leave"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_leave_amount')!=-1?true:false"  formControlName="without_pay_leave_amount"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('without_pay_cumulative_leave')!=-1?true:false"  formControlName="without_pay_cumulative_leave"  type="text"  class="cells__input"></ion-input>
@@ -398,6 +401,9 @@
 			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="calc_payroll_tax"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="calc_unused_leave_monthly"  type="text"  class="cells__input"></ion-input>
 			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="is_hourly_contract"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="working_hour_mentioned_in_contract"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('work_hours_in_day')!=-1?true:false"  formControlName="work_hours_in_day"  type="text"  class="cells__input"></ion-input>
+			<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('work_hours_in_night')!=-1?true:false"  formControlName="work_hours_in_night"  type="text"  class="cells__input"></ion-input>
 			
 			
 			<!-- <ion-input   [class.title-cell]="i==0"  *ngIf="i==0" readonly="true"  formControlName="calc_unused_leave_monthly"  type="text"  class="cells__input"></ion-input>
@@ -465,7 +471,7 @@
 			</ion-button>
 		</div>
 	</div>
-</form>
+ </form>
 
 
 </div>

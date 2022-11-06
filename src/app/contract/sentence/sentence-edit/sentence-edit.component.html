@@ -23,8 +23,11 @@
 		</div>
 	</div>
 	<main>
-		<!-- انتخاب کسب و کار -->
-		<div class="col-md-12" *ngIf="businessList && businessList.length">
+		<div class="container">
+			<!-- انتخاب کسب و کار -->
+
+		
+		<div class="col-md-12 px-0" *ngIf="businessList && businessList.length">
 			<div class="form-input mb-3">
 				<label> کسب کار</label>
 				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList" loadingText="لطفا صبر کنید ..."
@@ -36,7 +39,7 @@
 		</div>
 <!-- *ngIf="employerList && employerList.length" -->
 		<!-- انتحاب کارفرما -->
-		<div class="col-md-12" >
+		<div class="col-md-12 px-0" >
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
 				<ng-select  [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true" [(ngModel)]="employerId" loadingText="لطفا صبر کنید ..."
@@ -48,7 +51,7 @@
 			
 			</div>
 		</div>
-
+		</div>
 		<form [formGroup]="sentenceForm" (ngSubmit)="onSubmit()">
 			<!--  -->
 			<div class="container mt-4">

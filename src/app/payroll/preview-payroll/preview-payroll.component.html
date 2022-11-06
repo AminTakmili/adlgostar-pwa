@@ -30,7 +30,7 @@
                   <tbody>
                     <tr class="personal-information-table-body-tr">
                         <th   class="personal-information-table-body-tr-th">  {{list?.full_name}}</th>
-                        <th  class="personal-information-table-body-tr-th">{{list?.employee_id}}</th>
+                        <th  class="personal-information-table-body-tr-th">{{(list?.employee_code)?(list?.employee_code):(list?.employee_id)}}</th>
                         <th  class="personal-information-table-body-tr-th">{{global.getMonthName[list?.month] }} </th>
                         <th  class="personal-information-table-body-tr-th">{{list?.year}} </th>
                       </tr>

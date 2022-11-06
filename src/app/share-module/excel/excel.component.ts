@@ -39,6 +39,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 	excelBaceColumnsTitle: any = {
 		is_inverse: 'محاسبه معکوس',
+		calc:'عملگر',
 		has_working_over_time:'ساعت اضافه کار دارد؟',
 		has_working_friday:'ساعت جمعه کار دارد؟',
 		has_working_night:'ساعت شب کار دارد؟',
@@ -127,9 +128,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		payroll_tax: ' مالیات بر حقوق  ( کسورات )',
 
-		working_deficit_hours: '  ساعت کسر کار ( کسورات )',
+		working_deficit_hours: '  ساعت کسری کار ( کسورات )',
 
-		working_deficit_amount: '   مقدار کسر کار( کسورات )',
+		working_deficit_amount: '   مقدار کسری کار ( کسورات )',
 
 		loan_installment_amount: '   کسر قسط وام ( کسورات )',
 
@@ -159,19 +160,22 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		inverse_payroll_received: 'مبلغ حقوق خالص معکوس',
 
-		sum_over_night_friday_amounts: 'اضافه کاری و شبکاری و جمعه کاری',
+		// sum_over_night_friday_amounts: 'اضافه کاری و شبکاری و جمعه کاری',
 
 		without_pay_leave: 'تعداد مرخصی بدون حقوق',
 
 		without_pay_leave_amount: 'مبلغ مرخصی بدون حقوق',
 		without_pay_cumulative_leave: 'مرخصی بدون حقوق تجمیعی',
+		work_hours_in_day : 'مجموع ساعات کار در روز',
+		work_hours_in_night  : 'مجموع ساعات کار در شب',
 		calc_unused_leave_monthly: ' مرخصی استفاده نشده محاسبه میشود؟',
+		working_hour_mentioned_in_contract: ' ساعت کارکرد در قرارداد ذکر شده؟ ',
 		calc_payroll_tax: 'مالیات محاسبه میشود؟',
 		is_hourly_contract:'نوع قرارداد '
 	};
 
 	calcparametr: string[] = [
-		'working_day_count',
+		// 'working_day_count',
 		'daily_or_hourly_wage',
 		'addition_hour_friday_or_holiday',
 		'sum_working_hours',
@@ -210,6 +214,10 @@ export class ExcelComponent implements OnInit, OnChanges {
 	titleColumn: string;
 	AdditionsArray:Array<any> =[]
 	// outputData: any = [];
+
+	// isClacing=false
+	// isClacingInverse=false
+	perStateIsInverse:boolean|undefined=undefined
 	constructor(private fb: FormBuilder, private global: GlobalService) {}
 
 	async ngOnInit() {
@@ -381,7 +389,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 	
 	  
 
-	// coment html
+	//! coment html
 	// setCellClickValue(e: any) {
 	// 	this.cellClickValue = e.path[0].value;
 	// 	// console.log(e.path[0].value);
@@ -404,6 +412,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 		let forme = this.fb.group({
 			isWant: [true],
 			is_inverse: [employee.is_inverse?employee.is_inverse:false],
+			calc: [employee.calc?employee.calc:'محاسبه'],
+
 			has_working_over_time: [employee.has_working_over_time?employee.has_working_over_time:0],
 			has_working_friday: [employee.has_working_friday?employee.has_working_friday:0],
 			has_working_night: [employee.has_working_night?employee.has_working_night:0],
@@ -480,18 +490,27 @@ export class ExcelComponent implements OnInit, OnChanges {
 			payroll_received: [employee.payroll_received],
 			payment_date: [employee.payment_date],
 			inverse_payroll_received: [employee.inverse_payroll_received],
-			sum_over_night_friday_amounts: [
-				employee.sum_over_night_friday_amounts,
-			],
+			// sum_over_night_friday_amounts: [
+			// 	employee.sum_over_night_friday_amounts,
+			// ],
 			without_pay_leave: [employee.without_pay_leave],
 			without_pay_leave_amount: [employee.without_pay_leave_amount],
 			without_pay_cumulative_leave: [employee.without_pay_cumulative_leave],
+			work_hours_in_day : [employee.work_hours_in_day ],
+			work_hours_in_night : [employee.work_hours_in_night ],
 			calc_unused_leave_monthly: [
 				employee.calc_unused_leave_monthly == 0
 					? 'خیر'
 					: employee.calc_unused_leave_monthly == 1
 					? 'بله'
 					: employee.calc_unused_leave_monthly,
+			],
+			working_hour_mentioned_in_contract: [
+				employee.working_hour_mentioned_in_contract == 0
+					? 'خیر'
+					: employee.working_hour_mentioned_in_contract == 1
+					? 'بله'
+					: employee.working_hour_mentioned_in_contract,
 			],
 			// calc_unused_leave_monthly: [employee.calc_unused_leave_monthly?employee.calc_unused_leave_monthly:0],
 
@@ -504,7 +523,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 			is_hourly_contract: [
 				employee.is_hourly_contract == 0
-					? ' تمام وقت '
+					? 'تمام وقت'
 					: employee.is_hourly_contract == 1
 					? 'ساعتی'
 					: employee.is_hourly_contract,
@@ -553,6 +572,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 		});
 	}
+	/* ==============================  form arrays ===========================================*/
 
 	//
 	creatAlfab(count: number) {
@@ -762,77 +782,101 @@ export class ExcelComponent implements OnInit, OnChanges {
 			);
 		}
 	}
+	
 
-	async clac(item: FormGroup) {
-		if (
-			!Boolean(item.controls?.is_inverse?.value)&&
-			item.controls.business_employee_id.value &&
-			item.controls.contract_id.value &&
-			// item.controls.working_shift_id.value&&
-			item.controls.working_hour_count.value &&
-			item.controls.insurance_day_count.value &&
-			item.controls.insurance_wage.value &&
-			this.month &&
-			this.year
-		) {
-			await this.global.showLoading();
-			this.global
-				.httpPost('payroll/calculatePrices', {
-					contract_id: item.controls.contract_id.value,
-					business_employee_id:
-						item.controls.business_employee_id.value,
-					year: this.year,
-					month: this.month,
-					working_shift_id: item.controls.working_shift_id.value,
-					insurance_day_count:
-						item.controls.insurance_day_count.value,
-					insurance_wage: item.controls.insurance_wage.value,
-					working_hour_count: item.controls.working_hour_count.value,
-					working_deficit_hours:
-						item.controls.working_deficit_hours.value,
-					working_friday_hour_count:
-						item.controls.working_friday_hour_count.value,
-					outstation_day_count:
-						item.controls.outstation_day_count.value,
-					working_night_hour_count:
-						item.controls.working_night_hour_count.value,
-					working_over_time_hour_count:
-						item.controls.working_over_time_hour_count.value,
-					custom_additions: item.controls.custom_additions.value,
-					custom_deductions: item.controls.custom_deductions.value,
-				})
-				.subscribe(
-					async (res: any) => {
-						await this.global.dismisLoading();
-						// console.log(res);
-						item.patchValue(res);
-					},
-					async (error: any) => {
-						await this.global.dismisLoading();
-						this.global.showError(error);
-					}
-				);
+	async clac(item: FormGroup,isInverse=false) {
+		// console.log(item);
+		// console.log(item.value);
+		// !(item.controls.inverse_payroll_received.value) &&
+		// item.controls.working_hour_count.value &&
+		// item.controls.insurance_day_count.value &&
+		// item.controls.insurance_wage.value &&
+		console.log("object");
+		console.log(isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true')));
+		if (isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true'))) {
+			console.log(item.controls?.is_inverse?.value);
+			console.log(item.controls?.is_inverse?.value=='false');
+			console.log(item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false);
+			if (
+				(item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false)&&
+				item.controls.business_employee_id.value &&
+				item.controls.contract_id.value &&
+				// item.controls.working_shift_id.value&&
+				this.month &&
+				this.year
+			) {
+				await this.global.showLoading();
+				this.global
+					.httpPost('payroll/calculatePrices', {
+						contract_id: item.controls.contract_id.value,
+						business_employee_id:
+							item.controls.business_employee_id.value,
+						year: this.year,
+						month: this.month,
+						working_shift_id: item.controls.working_shift_id.value,
+						insurance_day_count:
+							item.controls.insurance_day_count.value,
+						insurance_wage: item.controls.insurance_wage.value,
+						working_hour_count: item.controls.working_hour_count.value,
+						working_deficit_hours:
+							item.controls.working_deficit_hours.value,
+						working_friday_hour_count:
+							item.controls.working_friday_hour_count.value,
+						outstation_day_count:
+							item.controls.outstation_day_count.value,
+						working_night_hour_count:
+							item.controls.working_night_hour_count.value,
+						working_over_time_hour_count:
+							item.controls.working_over_time_hour_count.value,
+						custom_additions: item.controls.custom_additions.value,
+						custom_deductions: item.controls.custom_deductions.value,
+					})
+					.subscribe(
+						async (res: any) => {
+							await this.global.dismisLoading();
+							// console.log(res);
+							item.patchValue(res);
+						},
+						async (error: any) => {
+							await this.global.dismisLoading();
+							this.global.showError(error);
+						}
+					);
+			}
+			// else{
+			// 	if (!item.controls.working_hour_count.value) {
+			// 		this.global.showToast('لطفا ساعت کارکرد را وارد کنید',750,'top','danger')
+			// 	}
+			// 	if (!item.controls.insurance_day_count.value) {
+			// 		this.global.showToast('لطفا ساعت بیمه را وارد کنید',750,'top','danger')
+			// 	}
+	
+			// }
 		}
 	}
 
-	async clacInverse(item: FormGroup) {
+	async clacInverse(item: FormGroup,isInverseButton=false) {
+		console.log("object");
+		this.perStateIsInverse=!(item.controls.is_inverse.value=='true')
 		let calc_unused_leave_monthly=item.controls.calc_unused_leave_monthly.value == 'خیر'
 		? 0
 		: item.controls.calc_unused_leave_monthly.value == 'بله'
 		? 1
 		: item.controls.calc_unused_leave_monthly.value
-		console.log(calc_unused_leave_monthly);
+		// console.log(calc_unused_leave_monthly);
 
+		// console.log((item.controls.is_inverse.value));
+		// console.log(Boolean(item.controls.is_inverse.value));
+		//? item.controls.calc_unused_leave_monthly.value&&
 		if (
-			Boolean(item.controls.is_inverse.value)  &&
+			(item.controls.is_inverse.value=='true'||item.controls.is_inverse.value==true)  &&
 			item.controls.business_employee_id.value &&
 			item.controls.contract_id.value &&
-			item.controls.calc_unused_leave_monthly.value&&
 			// item.controls.working_shift_id.value&&
 			
-			item.controls.working_day_count.value &&
-			item.controls.working_hour_count.value &&
-			item.controls.inverse_payroll_received.value &&
+			// item.controls.working_day_count.value &&
+			// item.controls.working_hour_count.value &&
+			// item.controls.inverse_payroll_received.value &&
 		
 			this.month &&
 			this.year
@@ -872,6 +916,14 @@ export class ExcelComponent implements OnInit, OnChanges {
 						this.global.showError(error);
 					}
 				);
+		} else if((item.controls.is_inverse.value!='true')){
+			// console.log(item);
+			// console.log(item.value);
+			// item.controls.inverse_payroll_received.setValue(0)
+			if (isInverseButton) {
+				
+				this.clac(item,true)
+			}
 		}
 	}
 

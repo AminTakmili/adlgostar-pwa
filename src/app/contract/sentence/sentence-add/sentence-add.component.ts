@@ -64,7 +64,6 @@ export class SentenceAddComponent implements OnInit {
 	isSingel!:boolean
 	singelEmployeeId:number
 	employeeLoading:boolean=true
-
 	constructor(
 		public global: GlobalService,
 		private fb: FormBuilder,
@@ -136,10 +135,10 @@ export class SentenceAddComponent implements OnInit {
 	get CountChildrenAllowancesGroup(): FormArray {
 		return this.sentenceForm.get('count_children_allowances') as FormArray;
 	}
-	newCountChildrenAllowances(business_employee_id:number): FormGroup {
+	newCountChildrenAllowances(business_employee_id:number,count_children_allowance:number): FormGroup {
 		return this.fb.group({
 			business_employee_id: [business_employee_id],
-			count_children_allowance: ['',Validators.compose([Validators.required,Validators.min(0)])],
+			count_children_allowance: [count_children_allowance,Validators.compose([Validators.required,Validators.min(0)])],
 		})
 	}
 
@@ -185,6 +184,7 @@ export class SentenceAddComponent implements OnInit {
 			.subscribe(
 				async (res: any) => {
 					await this.global.dismisLoading();
+					this.submitet = false;
 
 					this.dataList = new contract().deserialize(res);
 					this.businessId=this.dataList.business_info.id
@@ -198,15 +198,15 @@ export class SentenceAddComponent implements OnInit {
 					}
 					this.employerId = this.employerList.map((item:any)=>{return item.id;});
 
-					// console.log(this.dataList.children_allowances);
-					this.dataList.children_allowances.map((item)=>{
-						this.countChildrenAllowances.push(this.newCountChildrenAllowances(item.business_employee_id));
-					})
+				
 					
 				
 					const employeeList = this.dataList.employee_info.map((item: any) => {return new Employee().deserialize(item);});
 					this.employeeId= employeeList.map((item:any)=>{return item.business_employee_id;});
-
+					const employee_ids= employeeList.map((item:any)=>{return item.id;});
+					this.calculateChildrenAllowance(employee_ids)
+					// console.log(employeeList);
+					// console.log(employee_ids);
 					if (this.isSingel) {
 						if (this.employeeId.includes(this.singelEmployeeId)) {
 							this.sentenceForm.get('business_employee_ids').setValue([this.singelEmployeeId])
@@ -229,12 +229,41 @@ export class SentenceAddComponent implements OnInit {
 					}
 					this.GetEmployee();		
 					this.CalculationField()	
+					this.sentenceForm.get('pension_cost').setValue(this.dataList.pension_cost)
+					this.sentenceForm.get('food_cost').setValue(this.dataList.food_cost)
+
 				},
 				async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);
 				}
 			);
+	}
+	async calculateChildrenAllowance(employee_ids:Array<number>){
+		console.log(this.employeeId);
+		this.global.httpPost('contract/calculateChildrenAllowance',{
+			contract_id :this.id,
+		
+			contract_year : "",
+		
+			is_hourly_contract : "",
+		
+			employee_ids 
+		
+		}).subscribe(
+			async (res:any) => {
+				console.log(res);
+					// console.log(this.dataList.children_allowances);
+					res.map((item:any)=>{
+						this.countChildrenAllowances.push(this.newCountChildrenAllowances(item?.business_employee_id,item?.count_children_allowance));
+					})
+			},
+			async (error:any) => {
+			
+				this.global.showError(error)
+			},
+		)
+
 	}
 
 	employeeLists(data: any){
@@ -329,47 +358,52 @@ export class SentenceAddComponent implements OnInit {
 	// !؟
 	async CalculationField() {
 		console.log("object",this.submitet);
-		// if (!this.submitet) {
+		if (!this.submitet) {
 		
 
 			// if (!this.sentenceForm.get('is_manual').value) {
+				this.sentenceForm.get('contract_id').markAsTouched()
+				this.sentenceForm.get('business_employee_ids').markAsTouched()
+			if (this.sentenceForm.get('contract_id').value&&this.sentenceForm.get('business_employee_ids').value) {
+				
 				this.submitet = true;
-				await this.global.showLoading('لطفا منتظر بمانید...');
-				this.global
-					.httpPost('contractSentence/calculatePrices',
-						this.sentenceForm.value
-					)
-					.subscribe(
-						async (res: any) => {
-							this.submitet = false;
-							await this.global.dismisLoading();
-							
-
-							// this.sentenceForm.get('bonus').setValue(res.bonus);
-							this.sentenceForm
-								.get('grocery_allowance')
-								.setValue(res.grocery_allowance);
-							this.sentenceForm
-								.get('housing_allowance')
-								.setValue(res.housing_allowance);
-							// this.sentenceForm
-							// 	.get('new_year_gift')
-							// 	.setValue(res.new_year_gift);
-							// this.sentenceForm
-							// 	.get('severance_pay')
-							// 	.setValue(res.severance_pay);
-							this.sentenceForm.get('wage').setValue(res.wage);
-
-							// console.log(res);
-						},
-						async (error: any) => {
-							this.submitet = false;
-							await this.global.dismisLoading();
-							this.global.showError(error);
-						}
-					);
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global
+						.httpPost('contractSentence/calculatePrices',
+							this.sentenceForm.value
+						)
+						.subscribe(
+							async (res: any) => {
+								this.submitet = false;
+								await this.global.dismisLoading();
+								
+	
+								// this.sentenceForm.get('bonus').setValue(res.bonus);
+								this.sentenceForm
+									.get('grocery_allowance')
+									.setValue(res.grocery_allowance);
+								this.sentenceForm
+									.get('housing_allowance')
+									.setValue(res.housing_allowance);
+								// this.sentenceForm
+								// 	.get('new_year_gift')
+								// 	.setValue(res.new_year_gift);
+								// this.sentenceForm
+								// 	.get('severance_pay')
+								// 	.setValue(res.severance_pay);
+								this.sentenceForm.get('wage').setValue(res.wage);
+	
+								// console.log(res);
+							},
+							async (error: any) => {
+								this.submitet = false;
+								await this.global.dismisLoading();
+								this.global.showError(error);
+							}
+						);
+			}	
 			// }
-		// }
+		}
 	}
 
 	// AddAlowences(event: any) {
