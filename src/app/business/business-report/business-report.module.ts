@@ -1,3 +1,7 @@
+import { BusinessReportNewyeargiftandbonusComponent } from './business-report-newyeargiftandbonus/business-report-newyeargiftandbonus.component';
+import { BusinessReportInsuranceComponent } from './business-report-insurance/business-report-insurance.component';
+import { BusinessReportSeverancepayComponent } from './business-report-severancepay/business-report-severancepay.component';
+import { BusinessReportMonthlywageComponent } from './business-report-monthlywage/business-report-monthlywage.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 import { BusinessReportLoanComponent } from './business-report-loan/business-report-loan.component';
@@ -11,20 +15,28 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { BusinessReportPageRoutingModule } from './business-report-routing.module';
-
+import { WorkingovertimeComponent } from './workingovertime/workingovertime.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    BusinessReportPageRoutingModule,
-    ShareModulePageModule,
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		BusinessReportPageRoutingModule,
+		ShareModulePageModule,
 		HighchartsChartModule,
-    NgPersianDatepickerModule,
-    ReactiveFormsModule,
-    NgSelectModule
-  ],
-  declarations: [BusinessReportListModalComponent,BusinessReportLoanComponent]
+		NgPersianDatepickerModule,
+		ReactiveFormsModule,
+		NgSelectModule,
+	],
+	declarations: [
+		BusinessReportListModalComponent,
+		BusinessReportLoanComponent,
+		BusinessReportMonthlywageComponent,
+		BusinessReportSeverancepayComponent,
+		BusinessReportInsuranceComponent,
+		WorkingovertimeComponent,
+		BusinessReportNewyeargiftandbonusComponent,
+	],
 })
 export class BusinessReportPageModule {}

@@ -462,14 +462,17 @@ footer {
 }
 .first-col-cell{
     background: var(--ion-color-step-350) !important;
-    color: white;
+	// background: rgb(250,252,255);
+background:linear-gradient(90deg, rgba(180,180,180,1) 0%, rgba(250,252,255,1) 50%, rgba(180,180,180,1) 100%) !important;
+    // color: rgb(255, 255, 255);
+	font-weight: 400;
 	transition: ease .3s;
 
 
 }
 .first-col-cell:hover{
     background: white !important;
-    color: var(--ion-color-step-350);
+    color: #444;
 
 
 }

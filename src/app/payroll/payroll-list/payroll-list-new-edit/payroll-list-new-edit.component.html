@@ -43,7 +43,7 @@
 		 
 		<ng-select
 		[items]="businesslist$ | async"
-		placeholder="جستوجو در کسب و کارها"
+		placeholder="جستجو در کسب و کارها"
 		[loading]="businessInputLoading"
 		bindLabel="name"
 		bindValue="id"
@@ -103,7 +103,7 @@
 
 
 			<div *ngIf="!loading&&datasList&&datasList.length==0&&yearNumber&&monthNumber&&business_id" class="alert alert-warning my-3" role="alert">
-				<h4 class="title">اطلاعتی یافت نشد.</h4>
+				<h4 class="title">اطلاعاتی  یافت نشد.</h4>
 				<p class="dsec">
 					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yearNumber}} با این کسب وکار قراداد تایید شده ندارد.
 				</p>

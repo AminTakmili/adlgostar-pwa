@@ -116,7 +116,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		loan_received_amount: '  مبلغ وام دریافتی( اضافات )',
 
-		sum_payroll_additions: '  جمع اضافات( اضافات )',
+		sum_payroll_additions: 'جمع اضافات',
 
 		insurance_day_count: '  تعداد روز بیمه ( کسورات )',
 
@@ -217,7 +217,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 	// isClacing=false
 	// isClacingInverse=false
-	perStateIsInverse:boolean|undefined=undefined
+	// perStateIsInverse:boolean|undefined=undefined
 	constructor(private fb: FormBuilder, private global: GlobalService) {}
 
 	async ngOnInit() {
@@ -791,9 +791,10 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// item.controls.working_hour_count.value &&
 		// item.controls.insurance_day_count.value &&
 		// item.controls.insurance_wage.value &&
-		console.log("object");
-		console.log(isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true')));
-		if (isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true'))) {
+		// console.log("object");
+		//* event is change whant this if
+		// console.log(isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true')));
+		// if (isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true'))) {
 			console.log(item.controls?.is_inverse?.value);
 			console.log(item.controls?.is_inverse?.value=='false');
 			console.log(item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false);
@@ -814,6 +815,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 						year: this.year,
 						month: this.month,
 						working_shift_id: item.controls.working_shift_id.value,
+						working_day_count: item.controls.working_day_count.value,
+
 						insurance_day_count:
 							item.controls.insurance_day_count.value,
 						insurance_wage: item.controls.insurance_wage.value,
@@ -822,6 +825,20 @@ export class ExcelComponent implements OnInit, OnChanges {
 							item.controls.working_deficit_hours.value,
 						working_friday_hour_count:
 							item.controls.working_friday_hour_count.value,
+						operation_bonus:
+							item.controls.operation_bonus.value,
+						commission:
+							item.controls.commission.value,
+						car_fuel:
+							item.controls.car_fuel.value,
+						transportation_price:
+							item.controls.transportation_price.value,
+						fund_reserve:
+							item.controls.fund_reserve.value,
+						advance_money:
+							item.controls.advance_money.value,
+						purchase_invoice_from_company:
+							item.controls.purchase_invoice_from_company.value,
 						outstation_day_count:
 							item.controls.outstation_day_count.value,
 						working_night_hour_count:
@@ -852,12 +869,12 @@ export class ExcelComponent implements OnInit, OnChanges {
 			// 	}
 	
 			// }
-		}
+		// }
 	}
 
 	async clacInverse(item: FormGroup,isInverseButton=false) {
 		console.log("object");
-		this.perStateIsInverse=!(item.controls.is_inverse.value=='true')
+		// this.perStateIsInverse=!(item.controls.is_inverse.value=='true')
 		let calc_unused_leave_monthly=item.controls.calc_unused_leave_monthly.value == 'خیر'
 		? 0
 		: item.controls.calc_unused_leave_monthly.value == 'بله'
@@ -876,7 +893,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			
 			// item.controls.working_day_count.value &&
 			// item.controls.working_hour_count.value &&
-			// item.controls.inverse_payroll_received.value &&
+			item.controls.inverse_payroll_received.value &&
 		
 			this.month &&
 			this.year
@@ -925,6 +942,71 @@ export class ExcelComponent implements OnInit, OnChanges {
 				this.clac(item,true)
 			}
 		}
+	}
+	async resetDefaltData(item: FormGroup){
+		console.log(item.value);
+		if ((item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false)) {
+			await this.global.showLoading()
+			this.global.httpPost('payroll/getDefaultPayrollAmount',{
+				contract_id: item.controls.contract_id.value,
+				business_employee_id:
+					item.controls.business_employee_id.value,
+				year: this.year,
+				month: this.month,
+			}).subscribe(
+				async (res: any) => {
+					await this.global.dismisLoading();
+					// console.log(res);
+					item.patchValue(res);
+					// if (res.calc_unused_leave_monthly) {
+						
+						item.get('calc_unused_leave_monthly').setValue(res.calc_unused_leave_monthly == 0
+							? 'خیر'
+							: res.calc_unused_leave_monthly == 1
+							? 'بله'
+							: res.calc_unused_leave_monthly)
+					// }
+					// if (res.working_hour_mentioned_in_contract) {
+						item.get('working_hour_mentioned_in_contract').setValue(res.working_hour_mentioned_in_contract == 0
+							? 'خیر'
+							: res.working_hour_mentioned_in_contract == 1
+							? 'بله'
+							: res.working_hour_mentioned_in_contract)
+					
+						
+					// }
+					// if (res.calc_payroll_tax) {
+						item.get('calc_payroll_tax').setValue(res.calc_payroll_tax == 0
+							? 'خیر'
+							: res.calc_payroll_tax == 1
+							? 'بله'
+							: res.calc_payroll_tax)
+					
+						
+					// }
+					// console.log(res);
+					// if (res.is_hourly_contract) {
+						console.log('is_hourly_contract');
+						item.get('is_hourly_contract').setValue(res.is_hourly_contract == 0
+							?  'تمام وقت'
+							: res.is_hourly_contract == 1
+							?'ساعتی'
+							: res.is_hourly_contract)
+					
+						
+					// }
+				
+					// calc_unused_leave_monthly: [employee.calc_unused_leave_monthly?employee.calc_unused_leave_monthly:0],
+		
+					
+				},
+				async (error: any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				}
+			);
+		}
+
 	}
 
 	checkAll(i: number) {
@@ -1111,4 +1193,12 @@ export class ExcelComponent implements OnInit, OnChanges {
 	//   function rand(min, max) {
 	// 	return Math.floor(Math.random() * (max + 1)) + min;
 	//   }
+	trackByIndex(index:number, el:any): number {
+		// console.log(index,el);
+		return index;
+	}
+	trackByEmployeeId(index:number, el:any): number {
+		
+		return el.employee_id;
+	  }
 }

@@ -404,8 +404,8 @@ export class ContractAddComponent implements OnInit {
 				await this.global.dismisLoading();
 				this.contractsForm.controls.employer_ids.setValue('')
 				this.contractsForm.controls.employee_ids.setValue('')
-				this.employeeLists(employee);
 				this.employerLists(employer);
+				this.employeeLists(employee);
 			});
 		}else{
 			this.contractsForm.controls.business_id.markAsTouched()
@@ -470,7 +470,15 @@ export class ContractAddComponent implements OnInit {
 
 		if(data.employers.length === 0){
 			this.employerList = [];
-			this.global.showToast('کسب کار فاقد کارفرما می باشد');
+			this.contractsForm.get('business_id').setValue(null)
+			this.contractsForm.get('employer_ids').setValue(null)
+			this.employeeList=[]
+			this.employerList=[]
+			this.businesslist$=of([])
+			this.loadBusiness()
+			// this.employeeLists({list:[]})
+
+			this.global.showToast('کسب کار فاقد کارفرما می باشد',1000,'top','danger','ios');
 
 		}else{
 			this.employerList = data.employers.map((item: any) => {
@@ -481,8 +489,16 @@ export class ContractAddComponent implements OnInit {
 
 	employeeLists(data: any){
 		if(data.list.length === 0){
-			this.employeeList = [];
-			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید');
+			console.log(this.employerList);
+			this.contractsForm.get('business_id').setValue(null)
+			this.contractsForm.get('employer_ids').setValue(null)
+			this.employeeList=[]
+			this.employerList=[]
+			this.businesslist$=of([])
+			this.loadBusiness()
+
+
+			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید',1000,'top','danger','ios');
 
 		}else{
 			this.employeeList = data.list.map((item: any) => {

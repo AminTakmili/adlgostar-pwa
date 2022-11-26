@@ -403,7 +403,7 @@
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>مقدار</label>
-											<ion-input formControlName="amount" type="number" autocomplete="new-pass">
+											<ion-input  (ionChange)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
 											</ion-input>
 											<span class="error">
 												<app-validator [control]="item.get('amount')"
@@ -502,7 +502,7 @@
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>مقدار</label>
-											<ion-input formControlName="amount" type="number" autocomplete="new-pass">
+											<ion-input  (ionChange)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
 											</ion-input>
 											<span class="error">
 												<app-validator [control]="item.get('amount')"

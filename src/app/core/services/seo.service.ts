@@ -42,6 +42,7 @@ export class SeoService {
 
         this.metaService.updateTag({ name: 'keywords', content: config.keywords });
         this.metaService.updateTag({ name: 'robots', content: (!config.noIndex ? 'index,follow' : 'noindex,nofollow') });
+        this.metaService.updateTag({ name: 'author', content: 'emad faghihi' });
         // Twitter
         // this.metaService.updateTag({ property: 'twitter:card', content: 'summary' });
         // this.metaService.updateTag({ property: 'twitter:site', content: this.global.sitenametw });

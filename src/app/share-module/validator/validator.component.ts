@@ -42,13 +42,13 @@ export class ValidatorComponent implements OnInit {
 			notSame : `${this.controlName}  با کلمه عبور یکسان نیستند .`,
 			min :  `${this.controlName} حداقل باید %p  باشد.`,
 			max :  `${this.controlName} حداکثر باید %p  باشد.`,
+			pattern :  `${this.controlName} باید مطابق الگو مناسب باشد.`,
 		};
 	}
 
 	chkError(errors: ValidationErrors) {
 		if (this.control.touched || this.control.dirty) {
 			if (errors !== null) {
-				// console.log(errors);
 				// tslint:disable-next-line: forin
 				for (const error in errors) {
 					switch (error) {

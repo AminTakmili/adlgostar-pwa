@@ -43,7 +43,7 @@
 						</ng-select> -->
 						<ng-select
 						[items]="businesslist$ | async"
-						placeholder="جستوجو در کسب و کارها"
+						placeholder="جستجو در کسب و کارها"
 						[loading]="businessInputLoading"
 						bindLabel="name"
 						bindValue="id"
@@ -70,7 +70,7 @@
 
 						<ng-select
 						[items]="employerlist$ | async"
-						placeholder="جستوجو در کارفرمایان"
+						placeholder="جستجو در کارفرمایان"
 						[loading]="employerInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -96,7 +96,7 @@
 						
 						<ng-select
 						[items]="employeelist$ | async"
-						placeholder="جستوجو در کارمندان"
+						placeholder="جستجو در کارمندان"
 						[loading]="employeeInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -121,7 +121,7 @@
 						
 						<ng-select
 						[items]="TemplatedataList"
-						placeholder="جستوجو در قالب ها"
+						placeholder="جستجو در قالب ها"
 						bindLabel="name"
 						bindValue="id"
 						
@@ -167,7 +167,7 @@
             <!-- <form [formGroup]="date" class="width-100 " >
 						
 							<ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="datepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
+								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
 							 </ng-persian-datepicker>
 						</form>
 
@@ -180,7 +180,7 @@
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select> -->
 						
-						<!-- <ion-input [clearInput]="true" type="search" placeholder="جستوجو در عناوین" (ionChange)="pageChange(1)" [debounce]="750" [(ngModel)]="filtered_title"> </ion-input> -->
+						<!-- <ion-input [clearInput]="true" type="search" placeholder="جستجو در عناوین" (ionChange)="pageChange(1)" [debounce]="750" [(ngModel)]="filtered_title"> </ion-input> -->
 
 					<!-- </div> -->
 				<!-- </div> -->

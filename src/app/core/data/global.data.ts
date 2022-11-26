@@ -215,7 +215,7 @@ export const globalData = {
 					function: 'showDetail',
 				},
 				{
-					name: 'قالب تهد نامه',
+					name: 'قالب تعهد نامه',
 					url: '/recognizance/template/list',
 					icon: 'document-attach',
 					function: 'showDetail',
@@ -405,7 +405,7 @@ export const globalData = {
 			
 				{
 					access: true,
-					name: ' تنظیم بخش های درخوست ها',
+					name: ' تنظیم بخش های درخواست ها',
 					url: '/setting/contract_add_section',
 					icon: 'reader',
 					function: 'showDetail',

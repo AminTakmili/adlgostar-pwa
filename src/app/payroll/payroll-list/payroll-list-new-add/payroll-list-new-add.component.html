@@ -25,9 +25,24 @@
 	<main>
 		<div class="container mt-4">
 
+			<ion-toolbar class="container">
+				<ion-segment #segment [(ngModel)]="segmentType" color="primary" select-on-focus="true" (ionChange)="getData()" mode="md" scrollable>
+					<ion-segment-button *ngIf="global.userPermision['contract_list']" value="manual">
+						<ion-icon name="create"></ion-icon>
+
+						ورود دستی
+					</ion-segment-button>
+					<ion-segment-button value="excel" *ngIf="global.userPermision['employee_leave_list']">
+						<ion-icon src="/assets/svg/icon-excel.svg"></ion-icon>
+						ورود با اکسل
+					</ion-segment-button>
+
+				</ion-segment>
+			</ion-toolbar>
+
 			<div class="col-12 my-4">
 				<div class="title-1">
-					<h2  class="title"> اطلاعات اولیه فیش حقوقی</h2>
+					<h2 class="title"> اطلاعات اولیه فیش حقوقی</h2>
 					<p class="dsec">
 						ابتدا نام کسب وکار و سال و ماهی که میخواهید برای آن فیش حقوقی تنظیم کنید وارد کنید
 					</p>
@@ -39,68 +54,131 @@
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label> انتخاب کسب وکار </label>
-		 <!-- (change)="changeFilter()" -->
-		 
-		<ng-select
-		[items]="businesslist$ | async"
-		placeholder="جستوجو در کسب و کارها"
-		[loading]="businessInputLoading"
-		bindLabel="name"
-		bindValue="id"
-		typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
-		[typeahead]="businessInput$"
-		[(ngModel)]="business_id"
-		[clearable]="true"
-		loadingText="لطفا صبر کنید ..."
-		notFoundText="مناسفانه کسب و کاری یافت نشد"
-		(change)="getData()"
-		(focus)="businessChange()"
-	
-	>
-	</ng-select>
-			
-	
+						<!-- (change)="changeFilter()" -->
+
+						<ng-select [items]="businesslist$ | async" placeholder="جستجو در کسب و کارها"
+							[loading]="businessInputLoading" bindLabel="name" bindValue="id"
+							typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+							[typeahead]="businessInput$" [(ngModel)]="business_id" [clearable]="true"
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب و کاری یافت نشد"
+							(change)="getData()" (focus)="businessChange()">
+						</ng-select>
+
+
 					</div>
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label> انتخاب ماه </label>
-						<ng-select [(ngModel)]="monthNumber" (change)="getData()"  [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
-						notFoundText="مناسفانه ماه یافت نشد"
-							bindValue="number" placeholder="انتخاب کنید" >
+						<ng-select [(ngModel)]="monthNumber" (change)="getData()" [items]="monthList" bindLabel="name"
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
+							placeholder="انتخاب کنید">
 						</ng-select>
-			
-	
+
+
 					</div>
 				</div>
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label> انتخاب سال</label>
-		  
-						<ng-select [(ngModel)]="yeraNumber" (change)="getData()"  [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
-						notFoundText="مناسفانه سال یافت نشد"
-							bindValue="year" placeholder="انتخاب کنید">
+
+						<ng-select [(ngModel)]="yeraNumber" (change)="getData()" [items]="yearsList" bindLabel="year"
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه سال یافت نشد" bindValue="year"
+							placeholder="انتخاب کنید">
 						</ng-select>
-	 <!-- (change)="changeFilter()" -->
-					
-	
+						<!-- (change)="changeFilter()" -->
+
+
 					</div>
 				</div>
 			</div>
-		
+
 			<div class="col-12">
 				<hr>
 			</div>
 
 
+				<section class="row"*ngIf="segment.value=='excel'">
+					<div class="col-12 my-4">
+						<div class="title-1">
+							<h2 class="title"> افزودن فایل اکسل </h2>
+							<p class="dsec">
+								فایل اکسل مربوط به فیش حقوقی که در قالب استاندارد نوشته شده را آپلود کنید
+							</p>
+						</div>
+					</div>
+							<!-- form -->
+						<div class="col-md-6 my-4 ">
+							<!-- عنوان کسب و کار -->
 
-			<app-excel *ngIf="!loading&&datasList&&datasList.length&&yeraNumber&&monthNumber&&business_id" [list]="datasList" [year]="yeraNumber" [month]="monthNumber" (Data)="onSubmit($event)"></app-excel>
+							<section >
+							<div class="form-input mb-3">
+								<label>انتخاب نوع</label>
+							
+								<ng-select  [clearable]="false"	[(ngModel)]="isInverse"(change)="getData()" [items]="[{name:'قانونی',value:false},{name:'معکوس',value:true}]" bindLabel="name"
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه نوع یافت نشد" bindValue="value"
+							placeholder="انتخاب کنید">
+						</ng-select>
+
+								
+								<span class="hint">فایل اکسل را انتخاب کنید .</span>
+							</div>
+							</section>
+							<section  >
+							<div  [formGroup]="addForm"class="form-input mb-3">
+								<label>فایل اکسل</label>
+								<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file" (change)="uploadFile($event)">
+								</ion-input>
+								<span class="error">
+									<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'">
+									</app-validator>
+								</span>
+								<span class="hint">فایل اکسل را انتخاب کنید .</span>
+							</div>
+							<!-- errors -->
+							<div class="errors" *ngIf="errors && errors.length">
+								<p>خطاها : </p>
+								<ul>
+									<li class="font-size-12" *ngFor="let item of errors"><ion-text color="danger">سطر {{ item.row  }} - {{ item.msg  }}</ion-text></li>
+								</ul>
+							</div>
+							</section>
+						
+						</div>
+						<!-- desc -->
+						<div class="col-md-6 my-4">
+							<ion-card mode="ios" class="mb-0" color="white">
+								<ion-card-header>
+									<ion-card-title class="font-size-20">فایل نمونه </ion-card-title>
+								</ion-card-header>
+								<ion-card-content>
+									<p class="font-size-14 line-height-30">مشاهده فایل نمونه فیش حقوقی {{isInverse?'معکوس':'قانونی'}} ابتدا فیلد ها را پر کنید . </p>
+									<p class="font-size-14 line-height-30">
+										<a *ngIf="!isInverse" href="./assets/excell/payrolls.xlsx">دانلود
+											فایل نمونه</a>
+											 <!-- href="./assets/excell/employer.xlsx" -->
+										<a *ngIf="isInverse" href="./assets/excell/inverse_payrolls.xlsx">دانلود
+											فایل نمونه</a>
+										</p>
+	
+								</ion-card-content>
+							</ion-card>
+	
+						</div>
+					<hr class="col-12 my-4">
+
+				</section>
+				<app-excel *ngIf="!loading&&datasList&&datasList.length&&yeraNumber&&monthNumber&&business_id"
+					[list]="datasList" [year]="yeraNumber" [month]="monthNumber" (Data)="onSubmit($event)">
+				</app-excel>
 
 
-			<div *ngIf="!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id" class="alert alert-warning my-3" role="alert">
-				<h4 class="title">اطلاعتی یافت نشد.</h4>
+			<div *ngIf="segment.value!='excel'&&!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id"
+				class="alert alert-warning my-3" role="alert">
+				<h4 class="title">اطلاعاتی  یافت نشد.</h4>
 				<p class="dsec">
-					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قرادادی ندارد.
+					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قرادادی
+					ندارد.
 				</p>
 			</div>
 

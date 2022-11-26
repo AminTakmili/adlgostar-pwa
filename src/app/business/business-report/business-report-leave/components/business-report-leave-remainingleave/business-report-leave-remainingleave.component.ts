@@ -94,14 +94,16 @@ export class BusinessReportLeaveRemainingleaveComponent implements OnInit,OnChan
 			)
 		);
 	}
-	startdatepickerChange(){
+	startdatepickerChange(e:any){
+   
 		if (!this.startDatepickerIsChange) {
-			this.getData() 
+    //   console.log( this.startDate.value.filtered_from_date);
+			this.getData(this.businessId,e.shamsi?e.shamsi:null,this.endDate.get('filtered_to_date').value) 
 		}
 	}
-	enddatepickerChange(){
+	enddatepickerChange(e:any){
 		if (!this.endDatepickerIsChange) {
-			this.getData() 
+			this.getData(this.businessId,this.startDate.get('filtered_from_date').value,e.shamsi?e.shamsi:null) 
 		}
 	}
 
@@ -252,7 +254,7 @@ console.log(dataSetgroupBy);
 			this.plotShow = true;
 		}, 500);
 	}
-	async getData(	filtered_business_id:string=this.businessId) {
+	async getData(	filtered_business_id:string=this.businessId,filtered_from_date:string=this.startDate.get('filtered_from_date').value,filtered_to_date:string=this.endDate.get('filtered_to_date').value) {
 		
 		this.startDatepickerIsChange=true
 		this.endDatepickerIsChange=true

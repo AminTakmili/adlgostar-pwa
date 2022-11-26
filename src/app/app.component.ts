@@ -135,14 +135,17 @@ export class AppComponent {
                    await this.storage.get('user').then((val) => {
                         userStorge=val
                     })
-                    userStorge.permissions=res.permissions
-                    userStorge.permissionsList=permissionsList
+					if (userStorge) {
+						
+						userStorge.permissions=res?.permissions
+						userStorge.permissionsList=permissionsList
+						this.global.user =userStorge;
+						this.storage.set('user',this.global.user);
+						this.global._user.next(this.global.user);
+						this.global.setPermision(this.global.user.permissionsList);
+					}
                     // console.log(userStorge);
-                    this.global.user =userStorge;
                     // console.log(this.global.user);
-					this.storage.set('user',this.global.user);
-					this.global._user.next(this.global.user);
-					this.global.setPermision(this.global.user.permissionsList);
 				}
 			});
 	}

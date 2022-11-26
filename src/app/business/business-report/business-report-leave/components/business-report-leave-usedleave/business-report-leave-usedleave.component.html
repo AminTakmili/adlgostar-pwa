@@ -36,8 +36,8 @@
                </ng-select> -->
                <form [formGroup]="startDate" class="width-100 " >
                
-                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="startdatepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-                   <input class="pr-2" type="text" (change)="startdatepickerChange()"  placeholder="  تاریخ شروع" formControlName="filtered_from_date"  />
+                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="startdatepickerChange($event)" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                   <input class="pr-2" type="text" (change)="startdatepickerChange($event)"  placeholder="  تاریخ شروع" formControlName="filtered_from_date"  />
                   </ng-persian-datepicker>
                </form>
    
@@ -51,8 +51,8 @@
                </ng-select> -->
                <form [formGroup]="endDate" class="width-100 " >
                
-                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="enddatepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-                   <input class="pr-2" type="text" (change)="enddatepickerChange()"  placeholder="  تاریخ پایان" formControlName="filtered_to_date"  />
+                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="enddatepickerChange($event)" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                   <input class="pr-2" type="text" (change)="enddatepickerChange($event)"  placeholder="  تاریخ پایان" formControlName="filtered_to_date"  />
                   </ng-persian-datepicker>
                </form>
    
