@@ -49,15 +49,6 @@ export const globalData = {
 			],
 		},
 		{
-			name: 'کسب و کار ها',
-			url: '/businesses',
-			icon: 'business',
-
-			open: false,
-			state: 'close',
-			function: 'showDetail',
-		},
-		{
 			name: 'کارفرمایان',
 			url: '/employers',
 			icon: 'person-circle',
@@ -66,6 +57,16 @@ export const globalData = {
 			state: 'close',
 			function: 'showDetail',
 		},
+		{
+			name: 'کسب و کار ها',
+			url: '/businesses',
+			icon: 'business',
+
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+		},
+		
 		{
 			name: 'کارمندان',
 			url: '/employees',

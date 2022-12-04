@@ -77,7 +77,7 @@
 
 				</div>
 				<div class="row align-items-start d-flex ">
-					<div class="col-6 position-sticky top-15">
+					<div class="col-12 col-md-6 position-sticky top-15">
 						<!-- title -->
 						<div class="title-1 mb-4">
 							<h2 class="title">عملگر های تسویه حساب </h2>
@@ -112,16 +112,7 @@
 							</section>
 
 						</div>
-						<div class="form-input mb-3">
-							<label>  مبلغ خالص تسویه حساب </label>
-							<ion-input (ionChange)="calculatePrices()" [debounce]="1000" formControlName="settlement_received"></ion-input>
-							<span class="error">
-								
-								<app-validator #validation [control]="contractsForm.controls['settlement_received']"
-									[controlName]="' مبلغ خالص تسویه حساب'"></app-validator>
-							</span>
-							<span class="hint">مبلغ به ریال است</span>
-						</div>
+						
 						<div class="form-input mb-3">
 							<label>زمان ترک کار</label>
 
@@ -216,13 +207,13 @@
 				
 					<!-- options -->
 					
-					<div class="col-lg-6 position-sticky top-15">
+					<div class="col-12 col-md-6 position-sticky top-15">
 						<ion-list class="full-info">
 							<!-- <ion-list-header>محاسبات قرار داد</ion-list-header> -->
 							<div class="title-1 mb-4">
 								<h2 class="title">اطلاعات پایه تسویه حساب</h2>
 							</div>
-							<div class="form-input mb-3">
+							<!-- <div class="form-input mb-3">
 								<label>زمان شروع کار</label>
 	
 								<ng-persian-datepicker   [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
@@ -234,7 +225,7 @@
 										[controlName]="'زمان شروع کار کارمند'"></app-validator>
 								</span>
 								<span class="hint"></span>
-							</div>
+							</div> -->
 	
 							<!-- <ion-item lines="full" color="white">
 								<ion-label>
@@ -281,6 +272,17 @@
 								</ion-label>
 							</ion-item> -->
 						</ion-list>
+						<div class="form-input mb-3">
+							<label>  مبلغ خالص تسویه حساب </label>
+							<!-- (ionInput)="calculatePrices()" -->
+							<ion-input [readonly]="true"  [debounce]="1000" formControlName="settlement_received"></ion-input>
+							<span class="error">
+								
+								<app-validator #validation [control]="contractsForm.controls['settlement_received']"
+									[controlName]="' مبلغ خالص تسویه حساب'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
 						<div class="form-input mb-3">
 							<label>دستمزد روزانه <span *ngIf="contractsForm.controls['calc_wage_monthly'].value"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 							<ion-input [readonly]="true" formControlName="wage"></ion-input>
@@ -345,9 +347,9 @@
 										
 										<label>{{addition.name}}<span *ngIf="contractsForm.controls['calc_severance_pay_monthly']?.value&&addition.en_name=='severance_pay'||contractsForm.controls['calc_new_year_gift_monthly']?.value&&addition.en_name=='new_year_gift'||contractsForm.controls['calc_bonus_monthly']?.value&&addition.en_name=='bonus'"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 										<!-- [readonly]="calcparametr.indexOf(addition.en_name)!=-1" -->
-										<ion-input
-											
-											autocomplete="new-pass" [formControlName]="addition.en_name"></ion-input>
+										<ion-input	 [readonly]="true"
+											autocomplete="new-pass" [formControlName]="addition.en_name"
+											></ion-input>
 										<span class="error">
 											<app-validator #validation [control]="item.get(addition.en_name)"
 												[controlName]="addition.name"></app-validator>
@@ -376,7 +378,7 @@
 									</div>
 									<div class="col-auto">
 										<ion-buttons>
-											<ion-button (click)="removeCustomAdditions(i)" color="danger">
+											<ion-button (click)="removeCustomAdditions(i);" color="danger">
 												<ion-icon slot="icon-only" name="trash"></ion-icon>
 											</ion-button>
 										</ion-buttons>
@@ -403,7 +405,7 @@
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>مقدار</label>
-											<ion-input  (ionChange)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
+											<ion-input  (ionInput)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
 											</ion-input>
 											<span class="error">
 												<app-validator [control]="item.get('amount')"
@@ -502,7 +504,7 @@
 										<!-- کد پستی -->
 										<div class="form-input mb-3">
 											<label>مقدار</label>
-											<ion-input  (ionChange)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
+											<ion-input  (ionInput)="calculatePrices()"  formControlName="amount" type="number" autocomplete="new-pass">
 											</ion-input>
 											<span class="error">
 												<app-validator [control]="item.get('amount')"

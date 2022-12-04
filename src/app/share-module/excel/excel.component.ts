@@ -3,6 +3,7 @@ import { DataSets } from 'src/app/core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import {
+	
 	Component,
 	EventEmitter,
 	Input,
@@ -17,6 +18,7 @@ import { User } from 'src/app/core/models/user.model';
 	selector: 'app-excel',
 	templateUrl: './excel.component.html',
 	styleUrls: ['./excel.component.scss'],
+	
 })
 export class ExcelComponent implements OnInit, OnChanges {
 	@Input() list: object[];
@@ -213,12 +215,15 @@ export class ExcelComponent implements OnInit, OnChanges {
 	typeColumn: string;
 	titleColumn: string;
 	AdditionsArray:Array<any> =[]
+	wantLoade:boolean=false
 	// outputData: any = [];
 
 	// isClacing=false
 	// isClacingInverse=false
 	// perStateIsInverse:boolean|undefined=undefined
-	constructor(private fb: FormBuilder, private global: GlobalService) {}
+	constructor(private fb: FormBuilder, private global: GlobalService,		
+		) {}
+	
 
 	async ngOnInit() {
 		await this.global.baseData.subscribe((value) => {
@@ -383,11 +388,15 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 			})
 		}
+		
 
 
 	}
+	// onScroll(event:Event){
+	// 	console.log(event.srcElement);
+	// }
+
 	
-	  
 
 	//! coment html
 	// setCellClickValue(e: any) {
@@ -943,8 +952,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 			}
 		}
 	}
-	async resetDefaltData(item: FormGroup){
-		console.log(item.value);
+	async resetDefaltData(item: FormGroup,index:number){
+	
 		if ((item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false)) {
 			await this.global.showLoading()
 			this.global.httpPost('payroll/getDefaultPayrollAmount',{
@@ -1005,6 +1014,20 @@ export class ExcelComponent implements OnInit, OnChanges {
 					this.global.showError(error);
 				}
 			);
+		}else{
+				console.log(item.value);
+				console.log(this.custom_additions,);
+				console.log(this.custom_additions[index].controls,index);
+				console.log(item.get('custom_additions'));
+				// this.custom_additions[index].get('amount').setValue(null)
+				this.custom_additions[index].controls.map((item)=>{
+					item.get('amount').setValue(null)
+				})
+				this.custom_deductions[index].controls.map((item)=>{
+					item.get('amount').setValue(null)
+				})
+				// item.get('custom_additions').get('amount').setValue(null)
+				// item.get('custom_additions').controls
 		}
 
 	}
@@ -1131,7 +1154,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// console.log(this.excelForm.value);
 		// console.log(this.excelForm.value.excelCell[0].isWant);
 		let domyList: any[] = [];
-		this.excelForm.value.excelCell.shift();
+		// this.excelForm.value.excelCell.shift();
 		// console.log(this.excelForm.value.excelCell);
 		this.excelForm.value.excelCell.map((item: any) => {
 			// console.log(item.isWant);
@@ -1140,11 +1163,12 @@ export class ExcelComponent implements OnInit, OnChanges {
 			}
 		});
 
-		// console.log(domyList);
+		domyList.shift() 
+		console.log(domyList);
 		if (domyList && domyList.length) {
 			this.Data.emit(domyList);
 		} else {
-			this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle);
+			// this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle);
 			this.global.showToast(
 				'لطفا حداقل یک کارمند را انتخاب کنید',
 				800,

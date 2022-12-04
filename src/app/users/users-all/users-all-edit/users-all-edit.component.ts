@@ -160,7 +160,9 @@ export class UsersAllEditComponent implements OnInit {
 	async onSubmit() {
 		this.editForm.markAllAsTouched();
 		console.log(this.editForm);
-		if (this.paswordChecker.totalValid&&this.editForm.value.password==this.editForm.value.confirmPassword&&this.editForm.valid) {
+		const padVlidation=this.editForm.value.password?this.paswordChecker.totalValid&&this.editForm.value.password==this.editForm.value.confirmPassword:true
+
+		if (padVlidation&&this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('user/edit', this.editForm.value)
 				.subscribe(async (res: any) => {

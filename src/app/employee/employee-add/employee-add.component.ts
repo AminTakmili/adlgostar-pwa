@@ -138,7 +138,7 @@ export class EmployeeAddComponent implements OnInit {
 	military_information(): FormGroup {
 		return this.fb.group({
 			military_state: [''],
-			military_exempt_reason: [''],
+			military_exempt_reason: ['',Validators.required],
 		})
 	}
 
@@ -361,8 +361,21 @@ export class EmployeeAddComponent implements OnInit {
 		}
 	}
 
-	checkItem(item:any){
-		console.log(item.value);
+	checkItem(data:FormGroup|AbstractControl){
+		console.log(data.value);
+		console.log(data.get('military_state'));
+		console.log(data.get('military_state').value);
+		if (data.get('military_state')?.value=='exempt') {
+			data.get('military_exempt_reason').setValidators([Validators.required]);
+			// data.get('military_exempt_reason').setValue('123')
+			data.get('military_exempt_reason').setValue('');
+			data.markAllAsTouched();
+		}else{
+			data.get('military_exempt_reason').setValidators([]);
+			// data.get('military_exempt_reason').setValue('');
+			// data.markAllAsTouched();
+		}
+		
 	}
 
 	async showPrew(){

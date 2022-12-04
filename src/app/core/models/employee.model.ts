@@ -89,6 +89,7 @@ export class businessEmployeeInfo implements Deserializable {
 	createdAtEn !: string;
 	updatedAt !: string;
 	updatedAtEn !: string;
+	employee_start_date!:string
 
 	deserialize(input: any): this {
 

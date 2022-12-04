@@ -78,7 +78,7 @@ export class BusinessAddComponent implements OnInit {
 		return this.fb.group({
 			city_id: ['', Validators.compose([Validators.required])],
 			address: ['', Validators.compose([Validators.required])],
-			postal_code: ['', Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(10)])],
+			postal_code: ['', Validators.compose([Validators.minLength(10),Validators.maxLength(10)])],
 			phone: ['', Validators.compose([Validators.required,Validators.maxLength(11)])],
 		}) ;
 	}

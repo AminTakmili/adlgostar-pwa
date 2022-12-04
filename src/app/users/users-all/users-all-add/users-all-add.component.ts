@@ -106,7 +106,8 @@ export class UsersAllAddComponent implements OnInit {
 
 		this.addForm.markAllAsTouched();
 		console.log(this.addForm);
-		if (this.paswordChecker.totalValid&&this.addForm.value.password==this.addForm.value.confirmPassword&&this.addForm.valid) {
+		const padVlidation=this.addForm.value.password?this.paswordChecker.totalValid&&this.addForm.value.password==this.addForm.value.confirmPassword:true
+		if (padVlidation&&this.addForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPost('user/add', this.addForm.value)
 				.subscribe(async (res: any) => {

@@ -64,3 +64,19 @@ ion-card{
 		box-shadow: 0 0 2px #c00;
 	
 }
+.settlementNotConfrim{
+	display: flex;
+	align-items: center;
+	h2{
+		width: 50px;
+		white-space: pre-wrap;
+	}
+	
+}
+ion-text[color="danger"]{
+	span{
+
+		color: var(--ion-color-danger) !important;
+	}
+
+}

@@ -177,7 +177,9 @@ export class EmployerEditComponent implements OnInit {
 	async onSubmit() {
 
 		this.editForm.markAllAsTouched();
-		if (this.paswordChecker.totalValid&&this.editForm.value.password==this.editForm.value.confirmPassword&&this.editForm.valid) {
+		const padVlidation=this.editForm.value.password?this.paswordChecker.totalValid&&this.editForm.value.password==this.editForm.value.confirmPassword:true
+
+		if (padVlidation&&this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			console.log(this.editForm.value);
 			this.global.httpPatch('employer/edit', this.editForm.value)

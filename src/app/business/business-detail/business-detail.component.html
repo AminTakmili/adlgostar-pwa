@@ -521,19 +521,19 @@
 									</ion-button> -->
 											<ion-button (click)="confirmedSettlement(item)" fill="clear"
 												class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی"
-												*ngIf="global.userPermision['payroll_confirm']&&!item.is_confirmed">
+												*ngIf="global.userPermision['settlement_confirm']&&!item.is_confirmed">
 												<ion-icon size="small" color="medium" slot="icon-only"
 													name="checkmark-done"></ion-icon>
 											</ion-button>
 											<ion-button (click)="removeSettlementItem(item)" fill="clear"
 												class="px-0 mx-0 tooltip-show" tooltip="حذف"
-												*ngIf="global.userPermision['payrolls_payroll_delete']&&!item.is_confirmed">
+												*ngIf="global.userPermision['payrolls_settlement_delete']&&!item.is_confirmed">
 												<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 												</ion-icon>
 											</ion-button>
 											<ion-button [routerLink]="['/settlement/edit',item.id]"
 												 fill="clear" class="px-0 mx-0 tooltip-show"
-												tooltip="ویرایش"
+												tooltip="ویرایش و مشاهده"
 												*ngIf="global.userPermision['payrolls_settlement_edit']&&!item.is_confirmed">
 												<ion-icon size="small" color="medium" slot="icon-only" name="build">
 												</ion-icon>

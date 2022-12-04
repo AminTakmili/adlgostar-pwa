@@ -6,14 +6,21 @@
 			</ion-img>
 		</ion-thumbnail>
 		<ion-label>
-			<div class="d-inline-flex">
+			<div [ngClass]="{'settlementNotConfrim':this.settlementId&&!isCollaboration}" class="d-inline-flex ">
 				<h2  [routerLink]="['/employees/detail',employee?.id]"class="title">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
-				<ion-chip [routerLink]="[ '/settlement/edit',settlementId]"  *ngIf="this.settlementId&&!isCollaboration" color="danger" mode="ios" outline="true">
+				<ion-chip class="d-none d-lg-inline-flex" [routerLink]="[ '/settlement/edit',settlementId]"  *ngIf="this.settlementId&&!isCollaboration" color="danger" mode="ios" outline="true">
 					<ion-label>در انتظار تایید تسویه حساب...</ion-label>
 				</ion-chip>
 				
 			</div>
-			<p [routerLink]="['/employees/detail',employee?.id]" class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span></p>
+			
+			<p [routerLink]="['/employees/detail',employee?.id]" class="posts"><span *ngFor="let item of employee.posts"> {{ item.name }} </span>
+				<ion-text  *ngIf="this.settlementId&&!isCollaboration" color="danger" class="d-inline-flex d-lg-none">
+					<span>
+						(تسویه حساب تایید نشده)	
+					</span>
+				</ion-text>
+			</p>
 		</ion-label>
 		<!-- <ion-chip *ngIf="contractid" slot="end" color="primary"
 			[routerLink]="['/contracts/print',contractid,employee?.id]">

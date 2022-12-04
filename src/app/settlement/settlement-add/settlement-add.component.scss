@@ -7,3 +7,9 @@
 .top-15{
 	top:15px
 }
+@media screen and (max-width: 767px) {
+	.position-sticky{
+		position: relative;
+	}
+  }
+  

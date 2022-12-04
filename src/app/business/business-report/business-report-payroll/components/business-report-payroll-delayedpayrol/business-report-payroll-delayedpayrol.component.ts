@@ -231,11 +231,11 @@ console.log(dataSetgroupBy);
 				type: 'column'
 			},
 			title: {
-				text: Object.keys(dataSetgroupBy).length!=1?'جزیات فیش های حقوقی معوقه':' جزیات فیش های حقوقی معوقه سال '+Object.keys(dataSetgroupBy)[0],
+				text: Object.keys(dataSetgroupBy).length!=1?'جزئیات فیش های حقوقی معوقه':' جزئیات فیش های حقوقی معوقه سال '+Object.keys(dataSetgroupBy)[0],
 			},
 			subtitle: {
 				text:
-					' جزیات فیش های حقوقی معوقه هرماه را به تفکیک میتوانید مشاهده کنید ' 
+					' جزئیات فیش های حقوقی معوقه هرماه را به تفکیک میتوانید مشاهده کنید ' 
 					
 			},
 			tooltip: {

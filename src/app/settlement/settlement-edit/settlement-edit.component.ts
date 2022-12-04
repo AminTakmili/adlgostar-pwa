@@ -64,6 +64,7 @@ export class SettlementEditComponent implements OnInit {
   custom_additions: FormArray;
 	custom_deductions: FormArray;
 
+	setingCalcValue:boolean=false
 
 	constructor(
 		public global: GlobalService,
@@ -103,7 +104,7 @@ export class SettlementEditComponent implements OnInit {
 				Validators.compose([Validators.required]),
 			],
 
-			employee_start_date: [, Validators.compose([Validators.required])],
+			// employee_start_date: [, Validators.compose([Validators.required])],
 			wage: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
@@ -306,30 +307,36 @@ export class SettlementEditComponent implements OnInit {
     //   this.contractsForm.patchValue(res)
 	//   setTimeout(() => {
 		  this.contractsForm.get('calc_bonus_monthly').setValue(res.calc_bonus_monthly)
+		  this.contractsForm.get('settlement_received').setValue(res.settlement_received)
 		  this.contractsForm.get('calc_new_year_gift_monthly').setValue(res.calc_new_year_gift_monthly)
 		  this.contractsForm.get('calc_severance_pay_monthly').setValue(res.calc_severance_pay_monthly)
 		  this.contractsForm.get('calc_children_allowance_monthly').setValue(res.calc_children_allowance_monthly)
 		  this.contractsForm.get('calc_housing_allowance_monthly').setValue(res.calc_housing_allowance_monthly)
 		  this.contractsForm.get('calc_grocery_allowance_monthly').setValue(res.calc_grocery_allowance_monthly)
 		  this.contractsForm.get('calc_wage_monthly').setValue(res.calc_wage_monthly)
-		  this.contractsForm.get('children_allowance').setValue(res.children_allowance)
-		  this.contractsForm.get('housing_allowance').setValue(res.housing_allowance)
-		  this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance)
-		  this.contractsForm.get('wage').setValue(res.wage)
-		  this.contractsForm.get('employee_start_date').setValue(res.employee_start_date)
+		  this.contractsForm.get('children_allowance').setValue(res.settlement_additions.children_allowance)
+		  this.contractsForm.get('housing_allowance').setValue(res.settlement_additions?.housing_allowance)
+		  this.contractsForm.get('grocery_allowance').setValue(res.settlement_additions?.grocery_allowance)
+		  this.contractsForm.get('wage').setValue(res.settlement_additions?.wage)
+		//   this.contractsForm.get('employee_start_date').setValue(res.employee_start_date)
 		  this.contractsForm.get('severance_pay_calc_type').setValue(res.severance_pay_calc_type)
 		  this.contractsForm.get('unused_leave_calc_type').setValue(res.unused_leave_calc_type)
 		  this.contractsForm.get('bonus_calc_type').setValue(res.bonus_calc_type)
 		  this.contractsForm.get('new_year_gift_calc_type').setValue(res.new_year_gift_calc_type)
 		  this.contractsForm.get('leave_work_date').setValue(res.leave_work_date)
 		  this.contractsForm.get('settlement_template_id').setValue(res.settlement_template_id)
+		  this.contractsForm.get('description').setValue(res.description)
 		  this.settlementDeductionsGroup.controls[0].get('loan_installment_amount').setValue(res.settlement_deductions.loan_installment_amount)
 		
-		console.log(   this.settlementDeductionsGroup.controls[0].get('loan_installment_amount'));
-		console.log(res.loan_installment_amount);
-	console.log( this.settlementDeductionsGroup.controls[0]);
+	// 	console.log(   this.settlementDeductionsGroup.controls[0].get('loan_installment_amount'));
+	// 	console.log(res.loan_installment_amount);
+	// console.log( this.settlementDeductionsGroup.controls[0]);
+	// this.settlementAdditionsGroup.setValue(res.settlement_additions)
 		  for (const key in res.settlement_additions) {
-			
+			console.log(key);
+			// console.log( this.settlementAdditionsGroup.controls[0].get(
+			// 	key
+			//   ));
 			if (
 			  this.settlementAdditionsGroup.controls[0].get(
 				key
@@ -337,7 +344,7 @@ export class SettlementEditComponent implements OnInit {
 			) {
 			  this.settlementAdditionsGroup.controls[0]
 				.get(key)
-				.setValue(res[key]? 1 : 0);
+				.setValue(res.settlement_additions[key]);
 			}
 			
 			
@@ -352,7 +359,7 @@ export class SettlementEditComponent implements OnInit {
 			) {
 			  this.settlementDeductionsGroup.controls[0]
 				.get(key)
-				.setValue(res[key]? 1 : 0);
+				.setValue(res.settlement_deductions[key]);
 			}
 		  }
 		  res?.custom_additions?.map((item:any)=>{
@@ -380,6 +387,9 @@ export class SettlementEditComponent implements OnInit {
 		if (template) {
 			this.settlementTemplateText = '';
 		}
+		if (!this.setingCalcValue) {
+			
+		
 		if (
 			this.businessEmployeeId&&
 			this.contractsForm.get('settlement_template_id').valid &&
@@ -393,6 +403,8 @@ export class SettlementEditComponent implements OnInit {
 			// domy['business_employee_id']=this.businessEmployeeId
 			await this.global.showLoading();
 			// console.log(domy);
+			this.setingCalcValue=true
+
 
 			this.global
 				.httpPost(
@@ -431,12 +443,17 @@ export class SettlementEditComponent implements OnInit {
 									.setValue(res[key]);
 							}
 						}
-						console.log(this.settlementAdditionsGroup.controls[0].value);
-						console.log(this.settlementDeductionsGroup.controls[0].value);
+						// console.log(this.settlementAdditionsGroup.controls[0].value);
+						// console.log(this.settlementDeductionsGroup.controls[0].value);
+						this.setingCalcValue=false
+
+
 					},
 					async (error: any) => {
 						await this.global.dismisLoading();
 						await this.global.showError(error);
+						this.setingCalcValue=false
+
 						// console.log(error);
 					}
 				);
@@ -449,6 +466,7 @@ export class SettlementEditComponent implements OnInit {
 			// this.contractsForm.get('working_hour_count').markAllAsTouched();
 			// this.contractsForm.get('working_shift_id').markAllAsTouched();
 		}
+	}
 	}
 
 	fillingSettlementTemplateList(data: any) {
@@ -587,6 +605,7 @@ export class SettlementEditComponent implements OnInit {
 				if (e.role === 'yes') {
 					
 					this.custom_additions.removeAt(index);
+					this.calculatePrices()
 				}
 			});
 		});
@@ -610,6 +629,7 @@ export class SettlementEditComponent implements OnInit {
 				if (e.role === 'yes') {
 					
 					this.custom_deductions.removeAt(index);
+					this.calculatePrices()
 				}
 			});
 		});

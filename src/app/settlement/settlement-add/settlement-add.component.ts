@@ -69,6 +69,7 @@ export class SettlementAddComponent implements OnInit {
 	minLengthTerm = 3;
 	businessList!: businessEmployeeInfo[];
 	dataList:any
+	setingCalcValue:boolean=false
 
 	constructor(
 		public global: GlobalService,
@@ -92,7 +93,8 @@ export class SettlementAddComponent implements OnInit {
 				,
 				Validators.compose([Validators.required]),
 			],
-			settlement_received: [, Validators.compose([Validators.required])],
+			// , Validators.compose([Validators.required])
+			settlement_received: [],
 			leave_work_date: [, Validators.compose([Validators.required])],
 			new_year_gift_calc_type: [
 				'all_working_days',
@@ -111,7 +113,7 @@ export class SettlementAddComponent implements OnInit {
 				Validators.compose([Validators.required]),
 			],
 
-			employee_start_date: [, Validators.compose([Validators.required])],
+			// employee_start_date: [, Validators.compose([Validators.required])],
 			wage: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
@@ -403,6 +405,9 @@ export class SettlementAddComponent implements OnInit {
 		if (template) {
 			this.settlementTemplateText = '';
 		}
+		if (!this.setingCalcValue) {
+			
+		
 		if (
 			this.contractsForm.get('business_employee_id').valid &&
 			this.contractsForm.get('settlement_template_id').valid &&
@@ -412,6 +417,7 @@ export class SettlementAddComponent implements OnInit {
 			this.contractsForm.get('bonus_calc_type').valid &&
 			this.contractsForm.get('unused_leave_calc_type').valid
 		) {
+			this.setingCalcValue=true
 			await this.global.showLoading();
 			console.log(this.contractsForm.value);
 			this.global
@@ -454,8 +460,12 @@ export class SettlementAddComponent implements OnInit {
 						this.dataList=res
 						console.log(this.settlementAdditionsGroup.controls[0].value);
 						console.log(this.settlementDeductionsGroup.controls[0].value);
+						this.setingCalcValue=false
+
 					},
 					async (error: any) => {
+						this.setingCalcValue=false
+
 						await this.global.dismisLoading();
 						await this.global.showError(error);
 						// console.log(error);
@@ -470,6 +480,7 @@ export class SettlementAddComponent implements OnInit {
 			// this.contractsForm.get('working_hour_count').markAllAsTouched();
 			// this.contractsForm.get('working_shift_id').markAllAsTouched();
 		}
+	}
 	}
 
 	fillingSettlementTemplateList(data: any) {
@@ -544,6 +555,7 @@ export class SettlementAddComponent implements OnInit {
 				if (e.role === 'yes') {
 					
 					this.custom_additions.removeAt(index);
+					this.calculatePrices()
 				}
 			});
 		});
@@ -567,6 +579,7 @@ export class SettlementAddComponent implements OnInit {
 				if (e.role === 'yes') {
 					
 					this.custom_deductions.removeAt(index);
+					this.calculatePrices()
 				}
 			});
 		});

@@ -99,6 +99,12 @@
 							</ion-item>
 							<ion-item lines="full" color="white">
 								<ion-label>
+									<h2 class="value">{{ dataList?.severance_pay ?? 0 | number }} ریال</h2>
+									<p class="title">حق سنوات</p>
+								</ion-label>
+							</ion-item>
+							<ion-item lines="full" color="white">
+								<ion-label>
 									<h2 class="value">{{ dataList?.trust_allowance ?? 0 | number }} ریال</h2>
 									<p class="title">حق مسئولیت</p>
 								</ion-label>
@@ -114,6 +120,18 @@
 								<ion-label>
 									<h2 class="value">{{ dataList?.housing_allowance ?? 0 | number }} ریال</h2>
 									<p class="title">حق مسکن</p>
+								</ion-label>
+							</ion-item>
+							<ion-item lines="full" color="white">
+								<ion-label>
+									<h2 class="value">{{ dataList?.bonus ?? 0 | number }} ریال</h2>
+									<p class="title">پاداش</p>
+								</ion-label>
+							</ion-item>
+							<ion-item lines="full" color="white">
+								<ion-label>
+									<h2 class="value">{{ dataList?.new_year_gift ?? 0 | number }} ریال</h2>
+									<p class="title">عیدی</p>
 								</ion-label>
 							</ion-item>
 						

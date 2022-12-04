@@ -92,6 +92,7 @@
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
 									<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+										|  تاریخ شروع به کار: {{ item.business_employee_info[0].employee_start_date }}
 										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}
 										| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
 										| ساعت کاری در شب : {{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }} ساعت
@@ -500,7 +501,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>قرارداد مربوط به آینده است؟</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()"debounce="1000" formControlName="is_contract_for_future" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices();calcChildrenAllowance()"debounce="1000" formControlName="is_contract_for_future" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->

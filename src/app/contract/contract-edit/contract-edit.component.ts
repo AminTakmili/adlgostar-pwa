@@ -590,7 +590,9 @@ export class ContractEditComponent implements OnInit {
 			this.global.httpPost('contract/calculateChildrenAllowance', {
 				contract_year : this.contractsForm.value.contract_year,
 				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
-				employee_ids : this.contractsForm.value.employee_ids
+				employee_ids : this.contractsForm.value.employee_ids,
+				is_contract_for_future : this.contractsForm.value.is_contract_for_future,
+
 			}).subscribe(async (res: any) => {
 
 				console.log(res);

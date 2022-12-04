@@ -4,16 +4,17 @@ import { Post } from './../../core/models/post.model';
 import { GlobalService } from './../../core/services/global.service';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 
 @Component({
 	selector: 'app-contract-extend-modal',
 	templateUrl: './contract-extend-modal.component.html',
 	styleUrls: ['./contract-extend-modal.component.scss'],
 })
-export class ContractExtendModalComponent implements OnInit {
+export class ContractExtendModalComponent implements OnInit  {
 	@Input('employeeList') employeeList: Employee[];
 	@Input('type') type: string;
+	@Input('contract_id ') contract_id : string;
 
 	addForm: FormGroup;
 	business_employee_new_posts: FormArray;
@@ -39,7 +40,26 @@ export class ContractExtendModalComponent implements OnInit {
 	}
 	ngOnInit() {
 		console.log(this.employeeList);
+		this.getData()
 	}
+	
+	 async getData(){
+		// console.log(this.contract_id );
+		await this.global.showLoading()
+		this.global.httpPost('contract/getLastWage',{contract_id :this.contract_id }).subscribe(
+			async (res:any) => {
+				this.global.dismisLoading()
+				// console.log(res);
+				this.addForm.get('new_wage').setValue(res.last_wage)
+			},
+			async (error:any) => {
+				this.global.dismisLoading()
+
+				this.global.showError(error)
+			},
+		)
+	  }
+	  
 
 	//
 

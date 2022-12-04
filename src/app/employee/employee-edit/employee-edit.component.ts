@@ -246,7 +246,7 @@ export class EmployeeEditComponent implements OnInit {
 	military_information(): FormGroup {
 		return this.fb.group({
 			military_state: ['', Validators.compose([Validators.required])],
-			military_exempt_reason: [''],
+			military_exempt_reason: ['', Validators.compose([Validators.required])],
 		})
 	}
 
@@ -367,7 +367,7 @@ export class EmployeeEditComponent implements OnInit {
 	async onSubmit() {
 
 		this.employeeForm.markAllAsTouched();
-		console.log(this.employeeForm);
+		// console.log(this.employeeForm);
 		if(this.employeeForm.valid){
 			await this.global.showLoading('لطفا منتظر بمانید...');
 			this.global.httpPatch('employee/edit', this.employeeForm.value)
@@ -411,10 +411,22 @@ export class EmployeeEditComponent implements OnInit {
 		}
 	}
 
-	checkItem(item:any){
-		console.log(item.value);
+	checkItem(data:FormGroup|AbstractControl){
+		console.log(data.value);
+		console.log(data.get('military_state'));
+		console.log(data.get('military_state').value);
+		if (data.get('military_state')?.value=='exempt') {
+			data.get('military_exempt_reason').setValidators([Validators.required]);
+			// data.get('military_exempt_reason').setValue('123')
+			data.get('military_exempt_reason').setValue('');
+			data.markAllAsTouched();
+		}else{
+			data.get('military_exempt_reason').setValidators([]);
+			// data.get('military_exempt_reason').setValue('');
+			// data.markAllAsTouched();
+		}
+		
 	}
-
 	async showPrew(){
 
 		const modal = await this.modalController.create({

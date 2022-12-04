@@ -1,3 +1,4 @@
+import { AftersecendloadeDirective } from './../core/directives/aftersecendloade.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -40,7 +41,9 @@ import { ExcelComponent } from './excel/excel.component';
 		EmployerCardComponent,
 		ImagePipe,
 		ImporterListComponent,
-		ExcelComponent
+		ExcelComponent,
+		AftersecendloadeDirective
+		
 	],
 	exports : [
 		SidebarComponent,
@@ -51,7 +54,8 @@ import { ExcelComponent } from './excel/excel.component';
 		EmployerCardComponent,
 		ImagePipe,
 		ImporterListComponent,
-		ExcelComponent
+		ExcelComponent,
+		AftersecendloadeDirective
 	]
 
 })

@@ -31,6 +31,9 @@ export class sentence implements Deserializable {
    updatedAtEn!:string;
    contract_info!:contract
    children_allowance_info:childrenAllowances[]
+   severance_pay:number
+   bonus:number
+   new_year_gift:number
    
 
 	deserialize(input: any): this {

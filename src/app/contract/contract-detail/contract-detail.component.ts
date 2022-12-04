@@ -252,6 +252,7 @@ export class ContractDetailComponent implements OnInit {
 			swipeToClose: true,
 			componentProps: {
 				employeeList: this.dataList.employee_info,
+				contract_id :this.route.snapshot.paramMap.get('id'),
 				type,
 			},
 		});
