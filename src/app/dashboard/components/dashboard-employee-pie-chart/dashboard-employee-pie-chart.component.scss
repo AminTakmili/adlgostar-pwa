@@ -1,0 +1,19 @@
+ion-card{
+    height: 230px;
+    ion-card-header{
+        z-index: 2;
+    }
+    ion-card-content{
+    //  z-index: -1;
+            highcharts-chart{
+               width: 100% !important;
+                height: 100% !important;
+                 display: block;
+                 position: relative;
+                 top: -162px;
+                 .highcharts-mhtvcqv-0{
+                    direction: rtl !important;
+                 }
+            }
+    }
+}

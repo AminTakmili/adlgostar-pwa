@@ -1,0 +1,97 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">لیست تمام تعهدنامه های مربوط به کسب و کارهای من
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+
+				<ion-button shape="round" color="success" [routerLink]="['/recognizance/template/add']" *ngIf="global.userPermision['recognizance_template_add']">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					{{ pageTitle }} جدید
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+		<div class="container pb-5">
+			<!-- search and title -->
+			<div class="row mt-4">
+				<div class="col-md-8">
+					<div class="title-1">
+						<h2 class="title">لیست {{ pageTitle }}</h2>
+						<p class="dsec">لیست قالب تعهدنامه ها به شرح زیر است</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<!-- search -->
+					<div class="search-input-2">
+            <ion-searchbar  enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در قالب ها" (ionChange)="getData()"></ion-searchbar>
+					</div>
+				</div>
+			</div>
+
+			<!-- لیست قرر داد ها -->
+			<!-- table -->
+			<div class="table-responsive-md" *ngIf="dataList && dataList.length  ">
+				<table class="width-100 theme-table mt-4">
+					<thead class="thead-dark">
+						<tr class="ion-text-center">
+							<th class="ion-text-center">#</th>
+							<th scope="col">عنوان</th>
+							<th scope="col">تاریخ ساخت</th>
+							<th scope="col">تاریخ اخرین ویرایش</th>
+							<th class="ion-text-left" scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							*ngFor="let item of dataList  | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
+							<td>{{ item.name }}</td>
+							<td>{{ item.createdAt }}</td>
+							<td>{{ item.updatedAt }}</td>
+					
+
+							<td class="ion-text-left">
+								<ion-buttons class="justify-content-end">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['recognizance_template_delete']"
+										tooltip="حذف">
+										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+										</ion-icon>
+									</ion-button>
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" *ngIf="global.userPermision['recognizance_template_edit']"
+										[routerLink]="['/recognizance/template/edit' , item.id ]" tooltip="ویرایش">
+										<ion-icon size="small" color="medium" slot="icon-only" name="build">
+										</ion-icon>
+									</ion-button>
+								</ion-buttons>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot *ngIf="limit < total && dataList && dataList.length">
+						<tr>
+							<td colspan="5">
+								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageChange($event)"
+									[autoHide]="true">
+								</pagination-controls>
+							</td>
+						</tr>
+
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</main>
+</ion-content>

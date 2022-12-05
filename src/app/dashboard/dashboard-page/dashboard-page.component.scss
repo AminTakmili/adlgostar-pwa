@@ -9,8 +9,24 @@
 	}
 }
 
-app-dashboard-nocontract-employee , app-dashboard-expire-contracts , app-dashboard-bookmark{
+app-dashboard-nocontract-employee , 
+app-dashboard-expire-contracts , 
+app-dashboard-bookmark , 
+app-dashboard-unconfirmed-contracts,
+app-dashboard-unconfirmed-payrolls{
 	width: 100%;
 	height: 326px;
 	display: block;
+}
+.employee_count-card{
+	height: 230px;
+	ion-card-content{
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-content: center;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px 0;
+	}
 }

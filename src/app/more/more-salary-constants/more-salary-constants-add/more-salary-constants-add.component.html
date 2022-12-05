@@ -26,7 +26,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>سال عقد قرار داد</label>
-								<ion-input type="number" autocomplete="new-pass" formControlName="year"></ion-input>
+								<ion-input  (ionChange)="getConstantMaxValues()" [debounce]="1000"  type="number" autocomplete="new-pass" formControlName="year"></ion-input>
 								<span class="error">
 									<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرار داد'">
 									</app-validator>
@@ -77,7 +77,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>حداکثر عیدی (ریال)</label>
-								<ion-input type="number" autocomplete="new-pass" formControlName="max_new_year_gift">
+								<ion-input [readonly]="true" type="number" autocomplete="new-pass" formControlName="max_new_year_gift">
 								</ion-input>
 								<span class="error">
 									<app-validator [control]="addForm.controls['max_new_year_gift']"
@@ -90,7 +90,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>حداکثر پاداش (ریال)</label>
-								<ion-input type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
+								<ion-input [readonly]="true" type="number" autocomplete="new-pass" formControlName="max_bonus"></ion-input>
 								<span class="error">
 									<app-validator [control]="addForm.controls['max_bonus']" [controlName]="'حداکثر پاداش'">
 									</app-validator>

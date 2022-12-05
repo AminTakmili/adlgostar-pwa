@@ -1,0 +1,30 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">گزارش های مرخصی مربوط به کسب و کار
+					</p>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+    <div class="content-main">
+
+      <app-business-report-leave-remainingleave [businessId]="businessId"></app-business-report-leave-remainingleave>
+      <app-business-report-leave-usedleave [businessId]="businessId"></app-business-report-leave-usedleave>
+      <app-business-report-leave-unusedleave [businessId]="businessId"></app-business-report-leave-unusedleave>
+      <app-business-report-leave-paidleave [businessId]="businessId"></app-business-report-leave-paidleave>
+    </div>
+  </main>
+</ion-content>

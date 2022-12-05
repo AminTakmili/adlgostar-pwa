@@ -1,0 +1,28 @@
+.content{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+    ion-card{
+        overflow: auto;
+        width: 100%;
+        ion-card-content{
+            width: 100%;
+            margin: 0 auto;
+    
+            highcharts-chart{
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}

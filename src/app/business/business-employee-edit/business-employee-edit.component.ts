@@ -37,6 +37,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 		this.editForm = this.fb.group({
 			business_employee_id: [this.route.snapshot.paramMap.get('id')],
 			business_id: [],
+			employee_code: [],
 			employee_id: ['', Validators.compose([Validators.required])],
 			specialty: ['', Validators.compose([Validators.required])],
 			net_income: ['', Validators.compose([Validators.required])],
@@ -333,6 +334,7 @@ export class BusinessEmployeeEditComponent implements OnInit {
 			this.editForm.get('work_place').setValue(res.work_place);
 			this.editForm.get('has_insurance').setValue(res.has_insurance);
 			this.editForm.get('employee_start_date').setValue(res.employee_start_date);
+			this.editForm.get('employee_code').setValue(res.employee_code);
 
 			//posts
 			if (res.posts && res.posts.length !== 0) {

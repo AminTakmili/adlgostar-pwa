@@ -35,7 +35,7 @@
 				</div>
 			
 				<!--  -->
-				<div class="col-lg-4 mt-3">
+				<div class="col-lg-3 mt-3">
 					<div class="form-input ">
 						<!-- <label>جستجو در کسب کار</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
@@ -43,7 +43,7 @@
 						</ng-select> -->
 						<ng-select
 						[items]="businesslist$ | async"
-						placeholder="جستوجو در کسب و کارها"
+						placeholder="جستجو در کسب و کارها"
 						[loading]="businessInputLoading"
 						bindLabel="name"
 						bindValue="id"
@@ -60,7 +60,7 @@
 
 					</div>
 				</div>
-				<div class="col-lg-4 mt-3">
+				<div class="col-lg-3 mt-3">
 					<div class="form-input ">
 						<!-- <label>جستجو در کارفرمایان</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
@@ -69,7 +69,7 @@
 
 						<ng-select
 						[items]="employerlist$ | async"
-						placeholder="جستوجو در کارفرمایان"
+						placeholder="جستجو در کارفرمایان"
 						[loading]="employerInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -85,7 +85,7 @@
 
 					</div>
 				</div>
-				<div class="col-lg-4 mt-3">
+				<div class="col-lg-3 mt-3">
 					<div class="form-input ">
 						<!-- <label>جستجو در کارمندان</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
@@ -94,7 +94,7 @@
 						
 						<ng-select
 						[items]="employeelist$ | async"
-						placeholder="جستوجو در کارمندان"
+						placeholder="جستجو در کارمندان"
 						[loading]="employeeInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -108,7 +108,7 @@
 					></ng-select>
 					</div>
 				</div>
-				<div class="col-lg-4 mt-3">
+				<div class="col-lg-3 mt-3">
 					<div class="form-input ">
 						<!-- <label>جستجو در افراد تاییدکننده</label> -->
 						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
@@ -118,9 +118,30 @@
 						[(ngModel)]="filtered_confirmer_id"
 						[items]="filtered_confirmer_list"
 						[clearable]="true"
-						placeholder="جستجو در افراد تاییدکنند"
+						placeholder="جستجو در افراد تاییدکننده"
 						bindLabel="full_name"
 						bindValue="id"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText=" چنین فردی تا به حال قراردادی را تایید نکرده"
+						(change)="pageChange(1)"
+						>
+						</ng-select>
+
+					</div>
+				</div>
+				<div class="col-lg-4 mt-3">
+					<div class="form-input ">
+						<!-- <label>جستجو در افراد تاییدکننده</label> -->
+						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select> -->
+						<ng-select
+						[(ngModel)]="filtered_is_confirmed"
+						[items]="[{name:'تایید شده',value:1},{name:'تایید نشده',value:0}]"
+						[clearable]="true"
+						placeholder="نوع قرارداد"
+						bindLabel="name"
+						bindValue="value"
 						loadingText="لطفا صبر کنید ..."
 						notFoundText=" چنین فردی تا به حال قراردادی را تایید نکرده"
 						(change)="pageChange(1)"
@@ -138,7 +159,7 @@
 						<form [formGroup]="date" class="width-100 " >
 						
 							<ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="datepickerChange()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستوجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
+								<input class="pr-2" type="text" (change)="datepickerChange()"  placeholder="جستجو در تاریخ های تایید" formControlName="filtered_confirm_date"  />
 							 </ng-persian-datepicker>
 						</form>
 
@@ -151,7 +172,7 @@
 							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
 						</ng-select> -->
 						
-						<ion-input [clearInput]="true" type="search" placeholder="جستوجو در عناوین" (ionChange)="pageChange(1)" [debounce]="750" [(ngModel)]="filtered_title"> </ion-input>
+						<ion-input [clearInput]="true" type="search" placeholder="جستجو در عناوین" (ionChange)="pageChange(1)" [debounce]="1750" [(ngModel)]="filtered_title"> </ion-input>
 
 					</div>
 				</div>

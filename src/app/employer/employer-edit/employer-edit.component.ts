@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, IonInput } from '@ionic/angular';
 import { citiesClass } from 'src/app/core/classes/cities.class';
 import { globalData } from 'src/app/core/data/global.data';
 import { Employer } from 'src/app/core/models/employer.model';
@@ -25,6 +25,16 @@ export class EmployerEditComponent implements OnInit {
 	province: citiesClass[] = [];
 	dataList: Employer;
 	StaticData : StaticData;
+	paswordChecker = {
+		minLengthFive: false,
+		hasCharecter: false,
+		hasNumber: false,
+		hasEnglishWord: false,
+		totalValid: false,
+	};
+	paswordBarValue: number = 0;
+	paswordBarColor: string = 'danger';
+
 
 	constructor(
 		public global: GlobalService,
@@ -50,6 +60,8 @@ export class EmployerEditComponent implements OnInit {
 			image: [''],
 			image_old: [''],
 			addresses: this.fb.array([this.addresses()]),
+			password: [],
+			confirmPassword: [],
 		});
 
 		this.address = this.editForm.get('addresses') as FormArray;
@@ -135,6 +147,8 @@ export class EmployerEditComponent implements OnInit {
 				email: [this.dataList.email, Validators.compose([ Validators.email])],
 				image: [],
 				addresses: this.fb.array(address.length ? address : [this.addresses()]),
+				password: [],
+			confirmPassword: [],
 			});
 
 			// console.log(this.dataList);
@@ -163,11 +177,14 @@ export class EmployerEditComponent implements OnInit {
 	async onSubmit() {
 
 		this.editForm.markAllAsTouched();
-		if (this.editForm.valid) {
+		const padVlidation=this.editForm.value.password?this.paswordChecker.totalValid&&this.editForm.value.password==this.editForm.value.confirmPassword:true
+
+		if (padVlidation&&this.editForm.valid) {
 			await this.global.showLoading('لطفا منتظر بمانید...');
+			console.log(this.editForm.value);
 			this.global.httpPatch('employer/edit', this.editForm.value)
 				.subscribe(async (res: any) => {
-
+					console.log(this.editForm.value);
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/employers');
@@ -214,5 +231,109 @@ export class EmployerEditComponent implements OnInit {
 	setExtraField(event:any){
 		console.log(event);
 	}
+	// passwoed
+	checkPassword(e: any) {
+		const totalPattern = /^[a-zA-Z0-9$@$!%*/?&#^-_. +]+$/;
+		const charPattern = /^[$@$!%*/?&#^-_. +]+$/;
+		const wordPattern = /^[a-zA-Z]+$/;
+		const numPattern = /^[0-9]+$/;
+		const value = e.detail.value;
+		if (!value) {
+			this.paswordChecker = {
+				minLengthFive: false,
+				hasCharecter: false,
+				hasNumber: false,
+				hasEnglishWord: false,
+				totalValid: false,
+			};
+		}
+
+		if (totalPattern.test(value)) {
+			this.paswordChecker = {
+				minLengthFive: false,
+				hasCharecter: false,
+				hasNumber: false,
+				hasEnglishWord: false,
+				totalValid: false,
+			};
+			this.paswordChecker.minLengthFive = value.length >= 5;
+			value.split('').map((item: any, index: number) => {
+				if (numPattern.test(item)) {
+					this.paswordChecker.hasNumber = true;
+				}
+				if (wordPattern.test(item)) {
+					this.paswordChecker.hasEnglishWord = true;
+				}
+				if (charPattern.test(item)) {
+					this.paswordChecker.hasCharecter = true;
+				}
+			});
+		} else {
+			// console.log(value.split('')[value.split('').length - 1]);
+			// console.log(
+			// 	wordPattern.test(value.split('')[value.split('').length - 1])
+			// );
+			if (value) {
+				this.global.showToast(
+					'لطفا فقط از کارکترهای مجاز و حروف انگلیسی استفاده کنید ',
+					800,
+					'top',
+					'danger',
+					'ios'
+				);
+			}
+		}
+		this.paswordChecker.totalValid =
+			this.paswordChecker.hasCharecter &&
+			this.paswordChecker.hasEnglishWord &&
+			this.paswordChecker.hasNumber &&
+			this.paswordChecker.minLengthFive;
+		// console.log('////////////////////////////////////////');
+		// console.log(this.paswordChecker);
+		this.setPaswordValidtionBarValue(this.paswordChecker);
+	}
+	setPaswordValidtionBarValue(paswordChecker: any) {
+		this.paswordBarValue = 0;
+
+		if (paswordChecker.hasCharecter) {
+			this.paswordBarValue += 0.25;
+		}
+		if (paswordChecker.hasEnglishWord) {
+			this.paswordBarValue += 0.25;
+		}
+		if (paswordChecker.hasNumber) {
+			this.paswordBarValue += 0.25;
+		}
+		if (paswordChecker.minLengthFive) {
+			this.paswordBarValue += 0.25;
+		}
+		this.setPaswordValidtionBarColor();
+	}
+	setPaswordValidtionBarColor() {
+		if (this.paswordBarValue <= 0.25) {
+			this.paswordBarColor = 'danger';
+		}
+		if (this.paswordBarValue <= 0.5 && this.paswordBarValue > 0.25) {
+			this.paswordBarColor = 'warning-orang';
+		}
+		if (this.paswordBarValue <= 0.75 && this.paswordBarValue > 0.5) {
+			this.paswordBarColor = 'warning';
+		}
+		if (this.paswordBarValue <= 1 && this.paswordBarValue > 0.75) {
+			this.paswordBarColor = 'success';
+		}
+	}
+	togglePasswordShow(input: IonInput) {
+		// console.log(input);
+		// console.log(input);
+		// console.log(input.type);
+		if (input.type == 'password') {
+			input.type = 'text';
+		} else {
+			input.type = 'password';
+		}
+		// console.log(input);
+	}
+
 
 }

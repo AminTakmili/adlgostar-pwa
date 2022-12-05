@@ -37,12 +37,13 @@
 			<div class="container mt-4">
 
 				<div class="row align-items-start d-flex ">
-					<div class="col-6 position-sticky top-15">
+					<div class="col-md-6 position-sticky top-15">
 						<!-- title -->
 						<div class="title-1 mb-4">
 							<h2 class="title">عملگر های تسویه حساب </h2>
 						</div>
 						<!--  -->
+
 						<!-- settlement_template_id -->
 						<div *ngIf="settlementTemplateList&&settlementTemplateList.length" class="form-input mb-3">
 							<label>انتخاب قالب تسویه حساب <span *ngIf="contractsForm.controls['settlement_template_id'].valid" (click)="tagelttlementTemplateText()" class="mx-3 py-4">( <a> {{settlementTemplateText&&settlementTemplateText!=''?'پنهان کردن':'نمایش'}} متن قالب  </a> ) </span>
@@ -65,6 +66,7 @@
 							</section>
 
 						</div>
+						
 						<div class="form-input mb-3">
 							<label>زمان ترک کار</label>
 
@@ -156,12 +158,12 @@
 
 					</div>
 					<!-- options -->
-					<div class="col-md-6">
+					<div class="col-md-6 position-sticky top-15">
 						<!-- title -->
 						<div class="title-1 mb-4">
 							<h2 class="title">اطلاعات پایه تسویه حساب</h2>
 						</div>
-						<div class="form-input mb-3">
+						<!-- <div class="form-input mb-3">
 							<label>زمان شروع کار</label>
 
 							<ng-persian-datepicker  [timeMeridian]="true"
@@ -173,9 +175,9 @@
 									[controlName]="'زمان شروع کار کارمند'"></app-validator>
 							</span>
 							<span class="hint"></span>
-						</div>
+						</div> -->
 
-						<ion-card color="white" class="mb-4 mx-0 " mode="ios">
+						<!-- <ion-card color="white" class="mb-4 mx-0 " mode="ios">
 							<ion-label class="px-1">محاسبه دستمزد </ion-label>
 
 							<ion-segment  [disabled]="true" select-on-focus=true formControlName="calc_wage_monthly" class="mt-2"
@@ -300,11 +302,21 @@
 
 							</ion-segment>
 
-						</ion-card>
+						</ion-card> -->
 
 						<!-- دستمزد روزانه -->
 						<div class="form-input mb-3">
-							<label>دستمزد روزانه </label>
+							<label>  مبلغ خالص تسویه حساب </label>
+							<ion-input [readonly]="true" (ionInput)="calculatePrices()" [debounce]="1000" formControlName="settlement_received"></ion-input>
+							<span class="error">
+								
+								<app-validator #validation [control]="contractsForm.controls['settlement_received']"
+									[controlName]="' مبلغ خالص تسویه حساب'"></app-validator>
+							</span>
+							<span class="hint">مبلغ به ریال است</span>
+						</div>
+						<div class="form-input mb-3">
+							<label>دستمزد روزانه <span *ngIf="contractsForm.controls['calc_wage_monthly'].value"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 							<ion-input [readonly]="true"
 								formControlName="wage"></ion-input>
 							<span class="error">
@@ -314,7 +326,7 @@
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
 						<div class="form-input mb-3">
-							<label>حق اولاد </label>
+							<label>حق اولاد <span *ngIf="contractsForm.controls['calc_children_allowance_monthly'].value"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 							<ion-input [readonly]="true"
 								formControlName="children_allowance"></ion-input>
 							<span class="error">
@@ -327,7 +339,7 @@
 					
 						<!-- حق بن -->
 						<div class="form-input mb-3">
-							<label>حق بن </label>
+							<label>حق بن <span *ngIf="contractsForm.controls['calc_grocery_allowance_monthly'].value"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 							<ion-input [readonly]="true"
 								formControlName="grocery_allowance"></ion-input>
 							<span class="error">
@@ -338,7 +350,7 @@
 						</div>
 						<!-- حق مسکن -->
 						<div class="form-input mb-3">
-							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>حق مسکن <span *ngIf="contractsForm.controls['calc_housing_allowance_monthly'].value"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span> </label>
 							<ion-input [readonly]="true"
 								formControlName="housing_allowance"></ion-input>
 							<span class="error">
@@ -357,7 +369,7 @@
 					
 				</div>
 				<div class="row align-items-start d-flex ">
-					<div class="col-md-6 ">
+					<div class="col-md-6 position-sticky top-15">
 						<!-- title -->
 						<div class="title-1 mb-4">
 							<h2 class="title">اضافات تسویه حساب</h2>
@@ -369,9 +381,11 @@
 
 								<div  *ngFor="let addition of settlementAdditionList" >
 								<section *ngIf="!contractsForm.controls[addition.en_name]" class="form-input mb-3">
-									<label>{{addition.name}}</label>
+									<label>{{addition.name}} <span *ngIf="contractsForm.controls['calc_severance_pay_monthly']?.value&&addition.en_name=='severance_pay'||contractsForm.controls['calc_new_year_gift_monthly']?.value&&addition.en_name=='new_year_gift'||contractsForm.controls['calc_bonus_monthly']?.value&&addition.en_name=='bonus'"> <ion-text color="danger"> * </ion-text> ( به صورت ماهانه پرداخت و تسویه شده است )</span></label>
 									<!-- [readonly]="calcparametr.indexOf(addition.en_name)!=-1" -->
-									<ion-input [readonly]="addition.en_name=='yearly_new_year_gift'||addition.en_name=='yearly_bonus'||addition.en_name=='yearly_severance_pay'"  autocomplete="new-pass" [formControlName]="addition.en_name"></ion-input>
+
+									<!-- [readonly]="addition.en_name=='yearly_new_year_gift'||addition.en_name=='yearly_bonus'||addition.en_name=='yearly_severance_pay'" -->
+									<ion-input  [readonly]="true"  autocomplete="new-pass" [formControlName]="addition.en_name"></ion-input>
 									<span class="error">
 										<app-validator #validation [control]="item.get(addition.en_name)"
 											[controlName]="addition.name"></app-validator>
@@ -385,9 +399,74 @@
 							
 
 						</section>
+						<div formArrayName="custom_additions">
+							<div class="business-address"
+								*ngFor="let item of  customAdditionsGroup.controls ; let i = index" [formGroupName]="i">
+								<div class="row mb-3 justify-content-between align-items-center" >
+									<div class="col-12">
+										<hr>
+									</div>
+									<div class="col-9">
+										<div class="title-1">
+											<h2 class="title"> اضافه دستی شماره {{ i+1 }}</h2>
+										</div>
+									</div>
+									<div class="col-auto">
+										<ion-buttons>
+											<ion-button (click)="removeCustomAdditions(i)" color="danger">
+												<ion-icon slot="icon-only" name="trash"></ion-icon>
+											</ion-button>
+										</ion-buttons>
+									</div>
+								</div>
+
+								<!-- جزییات آدرس -->
+								
+								<div class="row">
+									<div class="col-lg-6">
+										<!-- شماره تماس -->
+										<div class="form-input mb-3">
+											<label>نام اضافه</label>
+											<ion-input formControlName="name" type="text"
+											 autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('name')"
+													[controlName]="'نام'"></app-validator>
+											</span>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<!-- کد پستی -->
+										<div class="form-input mb-3">
+											<label>مقدار</label>
+											<ion-input (ionInput)="calculatePrices()" formControlName="amount" type="number" autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('amount')"
+													[controlName]="'مقدار'"></app-validator>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="row ion-justify-content-between ion-align-items-center">
+								<div class="col-auto">
+									<p> آیا میخواهید اضافه دیگری اضافه کنید؟</p>
+								</div>
+								<div class="col-auto">
+									<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherCustomAdditions()">
+										<ion-icon slot="start" name="add"></ion-icon>
+										افزودن اضافات دستی
+									</ion-button>
+								</div>
+							</div>
+						</div>
 					</div>
 					<!-- options -->
-					<div class="col-md-6">
+					<div class="col-md-6 position-sticky top-15">
 						<!-- title -->
 						<div class="title-1 mb-4">
 							<h2 class="title">کسورات تسویه حساب</h2>
@@ -414,11 +493,95 @@
 							
 
 						</section>
+						
+						<div formArrayName="custom_deductions">
+							<div class="business-address"
+								*ngFor="let item of  customDeductionsGroup.controls ; let i = index" [formGroupName]="i">
+								<div class="row mb-3 justify-content-between align-items-center" >
+									<div class="col-12">
+										<hr>
+									</div>
+									<div class="col-9">
+										<div class="title-1">
+											<h2 class="title"> کسر دستی شماره {{ i+1 }}</h2>
+										</div>
+									</div>
+									<div class="col-auto">
+										<ion-buttons>
+											<ion-button (click)="removeCustomDeductions(i)" color="danger">
+												<ion-icon slot="icon-only" name="trash"></ion-icon>
+											</ion-button>
+										</ion-buttons>
+									</div>
+								</div>
+
+								<!-- جزییات آدرس -->
+								
+								<div class="row">
+									<div class="col-lg-6">
+										<!-- شماره تماس -->
+										<div class="form-input mb-3">
+											<label>نام کسری</label>
+											<ion-input formControlName="name" type="text"
+											 autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('name')"
+													[controlName]="'نام'"></app-validator>
+											</span>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<!-- کد پستی -->
+										<div class="form-input mb-3">
+											<label>مقدار</label>
+											<ion-input (ionInput)="calculatePrices()" formControlName="amount" type="number" autocomplete="new-pass">
+											</ion-input>
+											<span class="error">
+												<app-validator [control]="item.get('amount')"
+													[controlName]="'مقدار'"></app-validator>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="row ion-justify-content-between ion-align-items-center">
+								<div class="col-auto">
+									<p> آیا میخواهید کسورات دیگری اضافه کنید؟</p>
+								</div>
+								<div class="col-auto">
+									<ion-button color="dark" fill="outline" shape="round" (click)="addAnotherCustomDeductions()">
+										<ion-icon slot="start" name="add"></ion-icon>
+										افزودن کسورات دستی
+									</ion-button>
+								</div>
+							</div>
+						</div>
+						
+						
 
 					</div>
 					
 					
 				</div>
+				<hr>
+				<div class="row mb-1 align-items-center">
+					
+					<div class="form-input mb-3 col-12">
+						<label>توضیحات  </label>
+						<ion-textarea rows="4"  formControlName="description"></ion-textarea>
+						<!-- <span class="error">
+							<app-validator #validation [control]="contractsForm.controls['children_allowance']"
+								[controlName]="'حق اولاد'"></app-validator>
+						</span> -->
+						<span class="hint">در صورت دلخواه میتوانید توضیحی برای این تسویه حساب بنویسید</span>
+					</div>
+				
+				
+				</div>
+
 				<div class="row mb-5 align-items-end">
 					<div class="col-12">
 						<hr>

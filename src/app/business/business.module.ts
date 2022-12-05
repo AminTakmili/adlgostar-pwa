@@ -1,3 +1,5 @@
+import { BusinessBackSeverancePayListTableComponent } from './business-back-severance-pay-list-table/business-back-severance-pay-list-table.component';
+import { BusinessBackNewyeargiftBonusTableComponent } from './business-back-newyeargift-bonus-table/business-back-newyeargift-bonus-table.component';
 import { RequestAddContractComponent } from './request-add-contract/request-add-contract.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -43,7 +45,9 @@ import { RequestAddPayrollComponent } from './request-add-payroll/request-add-pa
 		BusinessEmployeeEditComponent,
 		BusinessEmployeeImporterComponent,
 		RequestAddContractComponent,
-		RequestAddPayrollComponent
+		RequestAddPayrollComponent,
+		BusinessBackNewyeargiftBonusTableComponent,
+		BusinessBackSeverancePayListTableComponent
 
 	]
 })

@@ -1,0 +1,85 @@
+<ion-header mode="md" class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > افزودن رسانه </ion-title>
+  </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <form [formGroup]="addForm"  (submit)="submit()">
+      <div  formArrayName="files">
+        <section *ngFor="let item of getApiObj.controls; let i = index" [formGroupName]="i">
+          <div class="row mb-3 justify-content-between align-items-center" *ngIf="i > 0">
+            <div class="col-12">
+              <hr>
+            </div>
+            <div class="col-9">
+              <div class="title-1">
+                <h2 class="title"> فایل شماره {{ i+1 }}</h2>
+              </div>
+            </div>
+            <div class="col-auto">
+              <ion-buttons>
+                <ion-button (click)="removeAddress(i)" color="danger">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+          <div >
+            
+  
+            <div class="form-input mb-3 ">
+              <label>عنوان</label>
+              <ion-input type="text" autocomplete="new-pass" formControlName="title"></ion-input>
+              <span class="error">
+                <app-validator #validation [control]="item.get('title')" [controlName]="'عنوان'"></app-validator>
+              </span>
+              <span class="hint">عنوان برای فایل مورد نظر را بنویسید</span>
+            </div>
+          </div>
+          <div>
+            <div class="form-input mb-3">
+              <label> فایل </label>
+              <ion-input type="file" accept="application/msword, application/vnd.ms-excel, application/pdf,audio/*,video/*,image/*" autocomplete="new-pass" (change)="setFile($event , item )" >
+              </ion-input>
+              <span class="error">
+                <app-validator #validation [control]="item.get('file')" [controlName]="'انتخاب فایل'"></app-validator>
+              </span>
+              <span class="hint">فایل مور نظر را انتخاب کنید حجم فایل نباید بیشتر از 50mb باشد</span>
+            </div>
+          </div>
+          
+          <!-- <hr> -->
+        </section>
+
+       
+      </div>
+      <div class="col-lg-12">
+        <div class="row ion-justify-content-between ion-align-items-center">
+          <div class="col-auto">
+            <p> آیا فایل دیگری میخواهید آپلود کنید؟</p>
+          </div>
+          <div class="col-auto">
+            <ion-button color="dark" fill="outline" shape="round" (click)="addAnotherFile()">
+              <ion-icon slot="start" name="add"></ion-icon>
+              افزودن فایل
+            </ion-button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <hr>
+      </div>
+     
+      <ion-button class=" mt-20" type="submit"  expand="block" color="success" shape="round">
+        ثبت 
+        </ion-button>
+    
+    </form>
+   
+   
+  </ion-content>

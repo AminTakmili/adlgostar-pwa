@@ -1,0 +1,104 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">گزارش مجموع بیمه های مربوط به کسب و کار
+					</p>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+
+
+    <div class="container content mt-3">
+      <!-- *ngIf="!loading" -->
+     <ion-card  [class.d-none]="!plotShow||loading"class="counter-item m-0 mb-4 " mode="ios" color="white">
+       <ion-card-header >
+         <div class="row">
+
+           <div class="col-lg-4 mt-3">
+             <div class="form-input ">
+               <!-- <label>جستجو در کارمندان</label> -->
+               <!-- <ng-select [(ngModel)]="filtered_employee_id" [items]="employeeList" bindLabel="full_name"
+                 bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+               </ng-select> -->
+               
+               <ng-select
+               [items]="employeelist$ | async"
+               placeholder="فیلتر کارمند"
+               [loading]="employeeInputLoading"
+               bindLabel="full_name"
+               bindValue="id"
+               typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+               [typeahead]="employeeInput$"
+               [(ngModel)]="filtered_employee_id"
+               [clearable]="true"
+               (change)="getData()"
+               loadingText="لطفا صبر کنید ..."
+               notFoundText="مناسفانه کارمندی یافت نشد"
+             ></ng-select>
+             </div>
+           </div>
+           <div class="col-lg-4 mt-3">
+             <div class="form-input ">
+               <!-- <label>جستجو در کارفرمایان</label> -->
+               <!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
+                 bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+               </ng-select> -->
+               <form [formGroup]="startDate" class="width-100 " >
+               
+                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="startdatepickerChange($event)" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                   <input class="pr-2" type="text" (change)="startdatepickerChange($event)"  placeholder="  تاریخ شروع" formControlName="filtered_from_date"  />
+                  </ng-persian-datepicker>
+               </form>
+   
+             </div>
+           </div>
+           <div class="col-lg-4 mt-3">
+             <div class="form-input ">
+               <!-- <label>جستجو در کارفرمایان</label> -->
+               <!-- <ng-select [(ngModel)]="filtered_employer_id" [items]="empoloyerList" bindLabel="full_name"
+                 bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+               </ng-select> -->
+               <form [formGroup]="endDate" class="width-100 " >
+               
+                 <ng-persian-datepicker  [dateInitValue]="false" (dateOnSelect)="enddatepickerChange($event)" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                   <input class="pr-2" type="text" 
+                    (change)="enddatepickerChange($event)"  placeholder="  تاریخ پایان" formControlName="filtered_to_date"  />
+                  </ng-persian-datepicker>
+               </form>
+   
+             </div>
+           </div>
+         </div>
+
+       </ion-card-header>
+
+       <ion-card-content>
+         <highcharts-chart  [Highcharts]="columnHighcharts" [options]="columnChartOptions" *ngIf="plotShow&&data&&data.length">
+
+         </highcharts-chart>
+
+         <div *ngIf="data&&data.length === 0 && !(this.startDate.value.filtered_from_date||filtered_employee_id||endDate.value.filtered_to_date)" class="alert alert-warning my-3" role="alert">
+           <h4 class="title">گزارش بیمه برای نمایش یافت نشد .</h4>
+           <!-- <p class="dsec">کسب و کاری با عبارت جستجو شده یافت نشد</p> -->
+         </div>
+         <div *ngIf="data&&data.length === 0 && (this.startDate.value.filtered_from_date||filtered_employee_id||endDate.value.filtered_to_date)" class="alert alert-warning my-3" role="alert">
+           <h4 class="title">گزارش بیمه برای نمایش یافت نشد .</h4>
+           <p class="dsec">گزارش بیمه با عبارت جستجو شده یافت نشد</p>
+         </div>
+       </ion-card-content>
+     </ion-card>
+     <ion-skeleton-text *ngIf="loading||!plotShow"  [animated]="true" style="width: 70% ;height: 400px;min-height:70%;"class="counter-item m-0 mb-4"></ion-skeleton-text>
+   </div>
+	</main>

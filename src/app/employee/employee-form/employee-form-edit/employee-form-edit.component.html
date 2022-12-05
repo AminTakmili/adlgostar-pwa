@@ -1,0 +1,114 @@
+<ion-header>
+	<app-header [title]="'ویرایش فرم  جدید'"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header ">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">ویرایش فرم</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک فرم جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-back-button defaultHref="/employees" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				</ion-back-button>
+			</div>
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+		<div class="container">
+			<!-- form -->
+			<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+				<div class="row mt-4">
+					<!-- title -->
+					<div class="col-12">
+						<div class="title-1 my-4">
+							<h2 class="title">اطلاعات اولیه</h2>
+							<p class="dsec">اطلاعات اولیه و کلی فرم را در این قسمت وارد کنید</p>
+						</div>
+					</div>
+          
+        
+
+					<!-- عنوان فرم -->
+					<div class="col-lg-12">
+						<div class="form-input mb-3">
+							<label>زمان فرم</label>
+						  <ng-persian-datepicker  [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+                <input class="form-input" type="text"   formControlName="form_date" />
+               </ng-persian-datepicker>
+              <span class="error">
+                <app-validator #validation [control]="addForm.controls['form_date']" [controlName]="'زمان فرم '"></app-validator>
+              </span>
+							<span class="hint">تاریخ فرم را وارد کنید</span>
+						</div>
+					</div>
+				
+					<div class="col-lg-12">
+						<div class="form-input mb-3">
+							<label>قالب فرم</label>
+              <ng-select (change)="setTemplateText($event)" [items]="formTempeletList" placeholder="یک قالب انتخاب کنید" bindLabel="name"
+              bindValue="id" groupBy="province" formControlName="form_template_id">
+            </ng-select>
+              <span class="error">
+                <app-validator #validation [control]="addForm.controls['form_template_id']" [controlName]="'قالب فرم '"></app-validator>
+              </span>
+							<span class="hint">عنوان قالب فرم را انتخاب کنید</span>
+						</div>
+					</div>
+          
+				
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label> متن قالب فرم</label>
+							<ckeditor name="myckeditor" formControlName="form_text" [config]="ckeConfig"></ckeditor>
+							<span class="error">
+								<app-validator [control]="addForm.controls['form_text']" [controlName]="'متن قالب فرم'">
+								</app-validator>
+							</span>
+							<span class="hint">متن قالب فرم را بنویسید.</span>
+						</div>
+					</div>
+					
+				
+				
+					<div class="col-lg-12">
+						<hr>
+					</div>
+					<div class="col-lg-12 mb-4">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							<div class="col-lg-2">
+               
+								<ion-button expand="block"  (click)="global.emptyFrom(addForm)"color="medium" fill="outline" shape="round"
+>
+									پاک کردن فرم
+								</ion-button>
+							</div>
+
+							<!-- <div class="col-lg-3">
+								<ion-button type="button" (click)="onSubmit(true)" expand="block" color="success" fill="solid" shape="round">
+									ثبت و ثبت جدید
+								</ion-button>
+							</div> -->
+							<div class="col-lg-3">
+								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+									ویرایش فرم
+								</ion-button>
+							</div>
+						</div>
+					</div>
+
+					<!-- add another address -->
+
+					<!-- desc -->
+				</div>
+			</form>
+		</div>
+	</main>
+
+</ion-content>

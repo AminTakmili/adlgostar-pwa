@@ -13,6 +13,8 @@ export class importer implements Deserializable {
 	createdAt!: string;
 	updatedAtEn!: string;
 	updatedAt!: string;
+	
+
 	deserialize(input: any): this {
 		Object.assign(this, input);
 		return this;
@@ -30,6 +32,13 @@ export class dashboard implements Deserializable {
 	contract_count!: number;
 	employee_count!: number;
 	finishing_contracts_count!: number;
+	payroll_count!: number;
+	employee_separately_count: {
+        total_count: number,
+        female_count: number,
+        male_count: number
+    }
+
 	without_contract_employees_count!: number;
 
 	deserialize(input: any): this {

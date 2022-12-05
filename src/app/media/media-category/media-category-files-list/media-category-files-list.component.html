@@ -20,7 +20,7 @@
 				</ion-button> --> 
         <!-- *ngIf="global.userPermision['employers_add']" -->
          <!-- (click)="presentAlert()"  -->
-				<ion-button shape="round" color="success" >
+				<ion-button (click)="openAddModal()" shape="round" color="success" >
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					افزودن {{ pageTitle }} جدید
 				</ion-button>
@@ -31,21 +31,21 @@
     <div class="row mt-4">
       <div class="col-md-8">
         <div class="title-1">
-          <h2 class="title">لیست دسته بندی ها</h2>
-          <p class="dsec">لیست دسته بندی ها به شرح زیر است</p>
+          <h2 class="title">لیست رسانه ها</h2>
+          <p class="dsec">لیست رسانه ها به شرح زیر است</p>
         </div>
       </div>
       <div class="col-md-4">
         <!-- search -->
         <div class="search-input-2">
            <!-- (ionChange)="getData()" -->
-          <ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در دسته بندی ها"></ion-searchbar>
+          <ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در رسانه ها"></ion-searchbar>
         </div>
       </div>
     </div>
     <div class="folders pt-15 col-12 row">
 
-      <section class="col-2 folder" *ngFor="let item of dataList;let i=index" (click)="download(item.downloadUrl,item.title)" >
+      <section class="col-2 folder" *ngFor="let item of dataList;let i=index" >
   
       
 
@@ -53,10 +53,10 @@
       <div class="icons">
         <!-- <ion-button class="tooltip-show"    color="light" fill="clear"  tooltip="تسویه حساب"> -->
        
-          <ion-icon   color="light"  class="mx-1 " id="contextMenuLabel2" slot="start" name="create"  ></ion-icon>
+          <ion-icon (click)="openEditModal(item)"  color="light"  class="mx-1 " id="contextMenuLabel2" slot="start" name="create"  ></ion-icon>
         <!-- </ion-button> -->
 
-        <ion-icon color="light" class="mx-1" id="contextMenuLabel1" slot="start" name="trash-bin"></ion-icon>
+        <ion-icon (click)="removeFile(item)" color="light" class="mx-1" id="contextMenuLabel1" slot="start" name="trash-bin"></ion-icon>
 
       
       </div>
@@ -64,10 +64,12 @@
       {{item.sizeText}}
       
       </p>
-      <ion-img [src]="item.srcFile"></ion-img>
+      <ion-img (click)="download(item.downloadUrl,item.title)" [src]="item.srcFile"></ion-img>
 
     </div>
-          <span > {{item.title}} </span>
+          <span class=" title-span" > {{item.title}} </span>
+          <span  class="d-none size-span">   {{item.sizeText}} </span>
+          
           <!-- <ion-input #nameInput [id]="'input-'+item.id" [readonly]="!item.editable" type="text"[value]="item.name"></ion-input> -->
         <!-- </> -->
   

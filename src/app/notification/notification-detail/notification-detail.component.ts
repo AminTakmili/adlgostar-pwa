@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationDetailComponent implements OnInit {
   dataList:notification
-  pageTitle:string='جزیات اعلان'
+  pageTitle:string='جزئیات اعلان'
   notificationTypesList:notificationType[]=[]
 
   constructor(

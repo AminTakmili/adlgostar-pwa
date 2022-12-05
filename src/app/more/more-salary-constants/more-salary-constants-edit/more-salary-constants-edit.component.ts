@@ -81,6 +81,22 @@ export class MoreSalaryConstantsEditComponent implements OnInit {
 		});
 	}
 
+	async getConstantMaxValues(){
+		await this.global.showLoading('لطفا منتظر بمانید...')
+		this.global.httpPost('salaryBaseInfo/getConstantMaxValues',{year:this.editForm.value.year}).subscribe(
+			async (res:any) => {
+			await	this.global.dismisLoading()
+			
+				this.editForm.patchValue(res)
+			},
+			async (error:any) => {
+				await	this.global.dismisLoading()
+				this.global.showError(error)
+				
+			},
+		)
+	}
+
 	async onSubmit() {
 
 		// console.log(this.extraSalary.value);

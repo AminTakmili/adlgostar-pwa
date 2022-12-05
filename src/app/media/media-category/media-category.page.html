@@ -19,13 +19,13 @@
       <ion-icon  color="light"  class="mx-1" id="contextMenuLabel2" slot="start" name="create-outline"></ion-icon>
       <ion-label id="contextMenuLabel1"> تغیر نام </ion-label>
     </ion-item>
-    <ion-item lines="none"  button>
+    <ion-item (click)="removeFile()" lines="none"  button>
       
       <!-- <ion-button color="light"  expand="block" fill="clear" >
         حذف
       </ion-button>
     -->
-    <ion-icon color="light" class="mx-1" id="contextMenuLabel1" slot="start" name="trash-bin-outline"></ion-icon>
+    <ion-icon  color="light" class="mx-1" id="contextMenuLabel1" slot="start" name="trash-bin-outline"></ion-icon>
       <ion-label id="contextMenuLabel2"> حذف </ion-label>
      </ion-item>
    </ion-list>
@@ -68,8 +68,8 @@
       <div class="col-md-4">
         <!-- search -->
         <div class="search-input-2">
-           <!-- (ionChange)="getData()" -->
-          <ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در دسته بندی ها"></ion-searchbar>
+          
+          <ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="500" placeholder="جستجو در دسته بندی ها" (ionChange)="getData()"></ion-searchbar>
         </div>
       </div>
     </div>

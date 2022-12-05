@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./payroll-list-detail.component.scss'],
 })
 export class PayrollListDetailComponent implements OnInit {
-  pageTitle='جزیات فیش حقوقی'
+  pageTitle='جزئیات فیش حقوقی'
   id:string
   dataObject:payrolDetail
   constructor(

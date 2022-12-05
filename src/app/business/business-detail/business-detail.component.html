@@ -113,170 +113,349 @@
 			<!-- end title -->
 		</section>
 		<hr>
-		<!-- قرار داد ها -->
+		<div class="container">
 
-		<section>
+			<!-- title -->
+				<div class="col-md-3 mb-3">
+					<div class="title-1">
+						<h2 class="title">لیست عیدی و پاداش معوقه</h2>
+					</div>
+				</div>
+
+				<app-business-back-newyeargift-bonus-table [businessId]="businessId">
+				</app-business-back-newyeargift-bonus-table>
+			</div>
+			<hr>
 			<div class="container">
+
 				<!-- title -->
-				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-3">
+					<div class="col-md-3 mb-3">
 						<div class="title-1">
-							<h2 class="title">لیست قرار داد ها</h2>
+							<h2 class="title">لیست سنوات معوقه</h2>
 						</div>
 					</div>
-					<div class="col-md-3 ion-text-left">
 
-						<ion-button class="ml-3" shape="round" color="warning" (click)="openAddContractModal()"
-							*ngIf="global.userPermision['add_contract_request_via_ticket']&&is_employer">
-							<ion-icon slot="start" name="options"></ion-icon>
-							درخواست ثبت قرارداد
-						</ion-button>
-					</div>
-					<div class="col-md-3 ion-text-left">
+					<app-business-back-severance-pay-list-table [businessId]="businessId">
+					</app-business-back-severance-pay-list-table>
+				</div>
+				<!-- قرار داد ها -->
+				<hr>
 
-						<ion-button class="ml-3" shape="round" color="success" [routerLink]="['/contracts/add']"
-						[queryParams]="{business_id: businessId}"
-						
-						*ngIf="global.userPermision['contract_add']">
-						<ion-icon slot="start" name="add-circle"></ion-icon>
-						ثبت قرارداد جدید
-					</ion-button>
+				<section>
+					<div class="container">
+						<!-- title -->
+						<div class="row align-items-center justify-content-between mt-4">
+							<div class="col-md-3">
+								<div class="title-1">
+									<h2 class="title">لیست قرار داد ها</h2>
+								</div>
+							</div>
+							<div class="col-md-3 ion-text-left">
+
+								<ion-button class="ml-3" shape="round" color="warning" (click)="openAddContractModal()"
+									*ngIf="global.userPermision['add_contract_request_via_ticket']&&is_employer">
+									<ion-icon slot="start" name="options"></ion-icon>
+									درخواست ثبت قرارداد
+								</ion-button>
+							</div>
+							<div class="col-md-3 ion-text-left">
+
+								<ion-button class="ml-3" shape="round" color="success" [routerLink]="['/contracts/add']"
+									[queryParams]="{business_id: businessId}"
+									*ngIf="global.userPermision['contract_add']">
+									<ion-icon slot="start" name="add-circle"></ion-icon>
+									ثبت قرارداد جدید
+								</ion-button>
+							</div>
+
+
+							<div class="col-md-3">
+								<div class="search-input-2">
+									<ion-searchbar (ionChange)="changeFilterContract($event)" [debounce]=750
+										enterkeyhint="" type="text" #SearchContarct
+										placeholder="جستجو در عناوین قراردادها">
+									</ion-searchbar>
+								</div>
+							</div>
+
+						</div>
+						<hr>
+						<!-- لیست قرار داد ها -->
+						<!-- table -->
+						<table *ngIf="dataList&&dataList.length!=0" class="width-100 theme-table ">
+							<thead class="thead-dark">
+								<tr class="ion-text-center">
+									<th class="ion-text-center">#</th>
+									<th scope="col">عنوان</th>
+									<th scope="col">کسب و کار</th>
+									<th scope="col">کارمندان در قرار داد</th>
+									<th scope="col">شروع و پایان</th>
+									<th scope="col">مدت قرار داد</th>
+									<th scope="col">تاریخ ثبت</th>
+									<th class="ion-text-left" scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
+									<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}
+									</th>
+									<td>
+										<a [routerLink]="['/contracts/detail',item.id]">{{ item.title }}</a>
+										<ion-chip mod="ios" color="success" *ngIf="!item.business_employee_id">
+											<ion-label class="font-size-10">گروهی</ion-label>
+										</ion-chip>
+									</td>
+									<td class="py-1">
+										<p class="my-1 font-size-12"><a
+												[routerLink]="['/businesses/detail/',item.business_info.id ] ">
+												<ion-icon name="business"></ion-icon> {{ item.business_info.name }}
+											</a></p>
+									</td>
+									<td>
+										<span class="font-size-12 " *ngFor="let emp of item.employee_info">
+											{{ emp.full_name }}
+										</span>
+									</td>
+									<td>
+										<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span> </p>
+										<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span> </p>
+									</td>
+									<td>
+										<span class="my-1 font-size-12"><span>{{ item.month_count }} ماه</span></span> ,
+										<span class="my-1 font-size-12"><span>{{ item.day_count }} روز</span></span>
+									</td>
+									<td>{{ item.createdAt }}</td>
+									<td class="ion-text-left">
+										<ion-buttons class="justify-content-end">
+											<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+										[id]="'hover-button-'+item.id">
+										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
+										</ion-icon>
+									</ion-button> -->
+											<ion-button (click)="removeContractALert(item)" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="حذف"
+												*ngIf="global.userPermision['contract_delete']">
+												<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+												</ion-icon>
+											</ion-button>
+											<ion-button [routerLink]="['/contracts/edit',item.id]" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
+												*ngIf="global.userPermision['contract_edit']">
+												<ion-icon size="small" color="medium" slot="icon-only" name="build">
+												</ion-icon>
+											</ion-button>
+											<ion-button [routerLink]="['/contracts/sentence',item.id]" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="حکم"
+												*ngIf="global.userPermision['contract_sentence_list']">
+												<ion-icon size="small" color="medium" slot="icon-only"
+													name="document-text">
+												</ion-icon>
+											</ion-button>
+											<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+										<ion-icon size="small" color="medium" slot="icon-only" name="copy">
+										</ion-icon>
+									</ion-button> -->
+											<ion-button [routerLink]="['/contracts/detail',item.id]" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="جزییات"
+												*ngIf="global.userPermision['contract_detail']">
+												<ion-icon size="small" color="medium" slot="icon-only" name="search">
+												</ion-icon>
+											</ion-button>
+										</ion-buttons>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot *ngIf="limit < total && dataList && dataList.length">
+								<tr>
+									<td colspan="8">
+										<pagination-controls *ngIf="limit < total && dataList && dataList.length"
+											[previousLabel]="'قبلی'" [nextLabel]="'بعدی'"
+											(pageChange)="pageChangeContract($event)" [autoHide]="true">
+										</pagination-controls>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+
+						<div *ngIf="dataList && dataList.length === 0" class="alert alert-warning my-3" role="alert">
+							<h4 class="title"> قرادادی برای نمایش یافت نشد .</h4>
+						</div>
+
+
 					</div>
-					
-					
-					<div class="col-md-3">
+				</section>
+				<!-- payroll -->
+
+				<section>
+					<div class="container">
+						<!-- title -->
+						<div class="row align-items-center justify-content-between mt-4">
+							<div class="col-md-6">
+								<div class="title-1">
+									<h2 class="title">لیست فیش های حقوقی</h2>
+								</div>
+							</div>
+							<div class="col-md-3 ion-text-left">
+
+
+								<ion-button class="ml-3" shape="round" color="warning" (click)="openAddPayrollModal()"
+									*ngIf="global.userPermision['add_payroll_request_via_ticket']&&is_employer">
+									<ion-icon slot="start" name="options"></ion-icon>
+									درخواست ثبت فیش حقوقی
+								</ion-button>
+							</div>
+							<div class="col-md-3 ion-text-left">
+
+								<ion-button class="ml-3" shape="round" color="success"
+									[routerLink]="['/payrolls/payroll/add']" [queryParams]="{business_id: businessId}"
+									*ngIf="global.userPermision['payrolls_payroll_add']">
+									<ion-icon slot="start" name="add-circle"></ion-icon>
+									ثبت فیش حقوقی جدید
+								</ion-button>
+							</div>
+							<!-- <div class="col-md-4">
 						<div class="search-input-2">
 							<ion-searchbar (ionChange)="changeFilterContract($event)" [debounce]=750 enterkeyhint=""
 								type="text" #SearchContarct placeholder="جستجو در عناوین قراردادها">
 							</ion-searchbar>
 						</div>
-					</div>
+					</div> -->
 
-				</div>
-				<hr>
-				<!-- لیست قرار داد ها -->
-				<!-- table -->
-				<table *ngIf="dataList&&dataList.length!=0" class="width-100 theme-table ">
-					<thead class="thead-dark">
-						<tr class="ion-text-center">
-							<th class="ion-text-center">#</th>
-							<th scope="col">عنوان</th>
-							<th scope="col">کسب و کار</th>
-							<th scope="col">کارمندان در قرار داد</th>
-							<th scope="col">شروع و پایان</th>
-							<th scope="col">مدت قرار داد</th>
-							<th scope="col">تاریخ ثبت</th>
-							<th class="ion-text-left" scope="col"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							*ngFor="let item of dataList | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
-							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
-							<td>
-								<a [routerLink]="['/contracts/detail',item.id]">{{ item.title }}</a>
-								<ion-chip mod="ios" color="success" *ngIf="!item.business_employee_id">
-									<ion-label class="font-size-10">گروهی</ion-label>
-								</ion-chip>
-							</td>
-							<td class="py-1">
-								<p class="my-1 font-size-12"><a
-										[routerLink]="['/businesses/detail/',item.business_info.id ] ">
-										<ion-icon name="business"></ion-icon> {{ item.business_info.name }}
-									</a></p>
-							</td>
-							<td>
-								<span class="font-size-12 " *ngFor="let emp of item.employee_info"> {{ emp.full_name }}
-								</span>
-							</td>
-							<td>
-								<p class="my-1 font-size-12"> شروع : <span>{{ item.start_date }}</span> </p>
-								<p class="my-1 font-size-12"> پایان : <span>{{ item.end_date }}</span> </p>
-							</td>
-							<td>
-								<span class="my-1 font-size-12"><span>{{ item.month_count }} ماه</span></span> ,
-								<span class="my-1 font-size-12"><span>{{ item.day_count }} روز</span></span>
-							</td>
-							<td>{{ item.createdAt }}</td>
-							<td class="ion-text-left">
-								<ion-buttons class="justify-content-end">
-									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+						</div>
+						<hr>
+						<!-- لیستpayrollا -->
+						<!-- table -->
+						<table *ngIf="payrollInfoList&&payrollInfoList.length!=0"
+							class="width-100 theme-table payroll ">
+							<thead class="thead-dark">
+								<tr class="ion-text-center">
+									<th class="ion-text-center">#</th>
+									<th scope="col">سال</th>
+									<th scope="col">ماه</th>
+									<th scope="col">تعداد فیش ثبت شده </th>
+									<th scope="col"> مجوع دریافتی </th>
+									<th scope="col"> وضعیت </th>
+
+									<th class="ion-text-left" scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									*ngFor="let item of payrollInfoList | paginate : { itemsPerPage : PayrollLimit , currentPage: PayrollCurrentPage ,  totalItems: PayrollTotal } ; let i = index;">
+									<th class="ion-text-center" scope="row">
+										{{ ( ( PayrollCurrentPage - 1) * PayrollLimit ) + i + 1 }}</th>
+									<td>
+										<p class="my-1 font-size-12">
+											{{ item.year}}
+										</p>
+									</td>
+									<td class="py-1">
+										<p class="my-1 font-size-12">
+											{{global.getMonthName[item.month] }}
+										</p>
+									</td>
+									<td>
+										<p class="my-1 font-size-12">
+											{{item.count}}
+										</p>
+									</td>
+
+
+									<td>
+										<p class="my-1 font-size-12">
+											{{item.sum_payroll_received|number}} ریال
+										</p>
+									</td>
+									<td>
+										<p class="my-1 font-size-12">
+
+											<ion-chip [color]="item.list_confirmed?'success':'danger'">
+
+												{{item.list_confirmed?'تمام لیست تایید شده':' درانتظار تایید'}}
+											</ion-chip>
+
+										</p>
+									</td>
+									<td class="ion-text-left">
+										<ion-buttons class="justify-content-end">
+											<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
 										[id]="'hover-button-'+item.id">
 										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 										</ion-icon>
 									</ion-button> -->
-									<ion-button (click)="removeContractALert(item)" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="حذف"
-										*ngIf="global.userPermision['contract_delete']">
-										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
-										</ion-icon>
-									</ion-button>
-									<ion-button [routerLink]="['/contracts/edit',item.id]" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
-										*ngIf="global.userPermision['contract_edit']">
-										<ion-icon size="small" color="medium" slot="icon-only" name="build">
-										</ion-icon>
-									</ion-button>
-									<ion-button [routerLink]="['/contracts/sentence',item.id]" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="حکم"
-										*ngIf="global.userPermision['contract_sentence_list']">
-										<ion-icon size="small" color="medium" slot="icon-only" name="document-text">
-										</ion-icon>
-									</ion-button>
-									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
+											<ion-button (click)="confirmedPayrollHour(item)" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی"
+												*ngIf="global.userPermision['payroll_confirm']&&!item.list_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only"
+													name="checkmark-done"></ion-icon>
+											</ion-button>
+											<ion-button (click)="removeparollALert(item)" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="حذف"
+												*ngIf="global.userPermision['payrolls_payroll_delete']&&!item.list_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+												</ion-icon>
+											</ion-button>
+											<ion-button [routerLink]="['/payrolls/payroll/edit']"
+												[queryParams]="{business_id: businessId,year:item.year,month:item.month}"
+												fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
+												*ngIf="global.userPermision['payrolls_payroll_edit']&&!item.list_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only" name="build">
+												</ion-icon>
+											</ion-button>
+
+											<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
 										<ion-icon size="small" color="medium" slot="icon-only" name="copy">
 										</ion-icon>
 									</ion-button> -->
-									<ion-button [routerLink]="['/contracts/detail',item.id]" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="جزییات"
-										*ngIf="global.userPermision['contract_detail']">
-										<ion-icon size="small" color="medium" slot="icon-only" name="search">
-										</ion-icon>
-									</ion-button>
-								</ion-buttons>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot *ngIf="limit < total && dataList && dataList.length">
-						<tr>
-							<td colspan="8">
-								<pagination-controls *ngIf="limit < total && dataList && dataList.length"
-									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'"
-									(pageChange)="pageChangeContract($event)" [autoHide]="true">
-								</pagination-controls>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
 
-				<div *ngIf="dataList && dataList.length === 0" class="alert alert-warning my-3" role="alert">
-					<h4 class="title"> قرادادی برای نمایش یافت نشد .</h4>
-				</div>
+										</ion-buttons>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot *ngIf="PayrollLimit < PayrollTotal && dataList && dataList.length">
+								<tr>
+									<td colspan="8">
+										<pagination-controls
+											*ngIf="PayrollLimit < PayrollTotal && dataList && dataList.length"
+											[previousLabel]="'قبلی'" [nextLabel]="'بعدی'"
+											(pageChange)="pageChangePyroll($event)" [autoHide]="true">
+										</pagination-controls>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
 
-
-			</div>
-		</section>
-		<!-- payroll -->
-
-		<section>
-			<div class="container">
-				<!-- title -->
-				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-6">
-						<div class="title-1">
-							<h2 class="title">لیست فیش های حقوقی</h2>
+						<div *ngIf="payrollInfoList && payrollInfoList.length === 0" class="alert alert-warning my-3"
+							role="alert">
+							<h4 class="title"> فیش حقوقی برای نمایش یافت نشد .</h4>
 						</div>
-					</div>
-					<div class="col-md-3 ion-text-left">
-						
 
-						<ion-button class="ml-3" shape="round" color="warning" (click)="openAddPayrollModal()"
-							*ngIf="global.userPermision['add_payroll_request_via_ticket']">
-							<ion-icon slot="start" name="options"></ion-icon>
-							درخواست ثبت فیش حقوقی
-						</ion-button>
+
 					</div>
-					<div class="col-md-3 ion-text-left">
+				</section>
+
+				<!-- payroll -->
+
+				<section>
+					<div class="container">
+						<!-- title -->
+						<div class="row align-items-center justify-content-between mt-4">
+							<div class="col-md-6">
+								<div class="title-1">
+									<h2 class="title">لیست کارمندان تسویه شده</h2>
+								</div>
+							</div>
+							<div class="col-md-3 ion-text-left">
+
+
+								<ion-button class="ml-3" shape="round" color="warning" (click)="openAddPayrollModal()"
+									*ngIf="global.userPermision['add_settlement_request_via_ticket']&&is_employer">
+									<ion-icon slot="start" name="options"></ion-icon>
+									درخواست ثبت تسویه حساب
+								</ion-button>
+							</div>
+							<!-- <div class="col-md-3 ion-text-left">
 
 						<ion-button class="ml-3" shape="round" color="success" [routerLink]="['/payrolls/payroll/add']"
 							[queryParams]="{business_id: businessId}"
@@ -284,8 +463,8 @@
 							<ion-icon slot="start" name="add-circle"></ion-icon>
 							ثبت فیش حقوقی جدید
 						</ion-button>
-					</div>
-					<!-- <div class="col-md-4">
+					</div> -->
+							<!-- <div class="col-md-4">
 						<div class="search-input-2">
 							<ion-searchbar (ionChange)="changeFilterContract($event)" [debounce]=750 enterkeyhint=""
 								type="text" #SearchContarct placeholder="جستجو در عناوین قراردادها">
@@ -293,250 +472,120 @@
 						</div>
 					</div> -->
 
-				</div>
-				<hr>
-				<!-- لیستpayrollا -->
-				<!-- table -->
-				<table *ngIf="payrollInfoList&&payrollInfoList.length!=0" class="width-100 theme-table payroll ">
-					<thead class="thead-dark">
-						<tr class="ion-text-center">
-							<th class="ion-text-center">#</th>
-							<th scope="col">سال</th>
-							<th scope="col">ماه</th>
-							<th scope="col">تعداد فیش ثبت شده </th>
-							<th scope="col"> مجوع دریافتی </th>
-							<th scope="col"> وضعیت </th>
+						</div>
+						<hr>
+						<!-- لیستpayrollا -->
+						<!-- table -->
+						<table *ngIf="settlementdataList && settlementdataList.length" class="width-100 theme-table ">
+							<thead class="thead-dark">
+								<tr class="ion-text-center">
+									<th class="ion-text-center">#</th>
+									<th scope="col">نام کارمند</th>
+									<th scope="col">تاریخ شروع همکاری</th>
+									<th scope="col">تاریخ پایان همکاری</th>
+									<th scope="col">وضعیت</th>
 
-							<th class="ion-text-left" scope="col"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							*ngFor="let item of payrollInfoList | paginate : { itemsPerPage : PayrollLimit , currentPage: PayrollCurrentPage ,  totalItems: PayrollTotal } ; let i = index;">
-							<th class="ion-text-center" scope="row">{{ ( ( PayrollCurrentPage - 1) * PayrollLimit ) + i + 1 }}</th>
-							<td>
-								<p class="my-1 font-size-12">
-									{{ item.year}}
-								</p>
-							</td>
-							<td class="py-1">
-								<p class="my-1 font-size-12">
-									{{global.getMonthName[item.month] }}
-								</p>
-							</td>
-							<td>
-								<p class="my-1 font-size-12">
-									{{item.count}}
-								</p>
-							</td>
+									<th scope="col">تاریخ اخرین ویرایش</th>
+									<th scope="col">تاریخ ایجاد</th>
+									<th class="ion-text-left" scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									*ngFor="let item of settlementdataList | paginate : { itemsPerPage : settlementLimit , currentPage: settlementCurrentPage ,  totalItems: settlementTotal } ; let i = index;">
+									<th class="ion-text-center" scope="row">
+										{{ ( ( settlementCurrentPage - 1) * settlementLimit ) + i + 1 }}</th>
 
+									<td class="py-1">
+										<span class="my-1 font-size-12">{{item.employee_name}}</span>
+									</td>
 
-							<td>
-								<p class="my-1 font-size-12">
-									 {{item.sum_payroll_received|number}} ریال
-								</p>
-							</td>
-							<td>
-								<p class="my-1 font-size-12">
-								
-									<ion-chip [color]="item.list_confirmed?'success':'danger'" >
+									<td>
+										<span class="my-1 font-size-12">{{item.employee_start_date  }}</span>
+									</td>
+									<td>
+										<span class="my-1 font-size-12"> {{item.leave_work_date }}</span>
+									</td>
 
-										{{item.list_confirmed?'تمام لیست تایید شده':' درانتظار تایید'}}
-									</ion-chip>
-
-								</p>
-							</td>
-							<td class="ion-text-left">
-								<ion-buttons class="justify-content-end">
-									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
+									<td> <span
+											class="my-1 font-size-12">{{ item.is_confirmed?'تایید شده':'تایید نشده' }}</span>
+									</td>
+									<td> <span class="my-1 font-size-12">{{item.updatedAt }}</span></td>
+									<td> <span class="my-1 font-size-12">{{ item.createdAt }}</span></td>
+									<td class="ion-text-left">
+										<ion-buttons class="justify-content-end">
+											<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
 										[id]="'hover-button-'+item.id">
 										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 										</ion-icon>
 									</ion-button> -->
-									<ion-button (click)="confirmedPayrollHour(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی" *ngIf="global.userPermision['payroll_confirm']&&!item.list_confirmed">
-										<ion-icon  size="small" color="medium" slot="icon-only" name="checkmark-done"></ion-icon>
-									</ion-button>
-									<ion-button (click)="removeparollALert(item)" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="حذف"
-										*ngIf="global.userPermision['payrolls_payroll_delete']&&!item.list_confirmed">
-										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
-										</ion-icon>
-									</ion-button>
-									<ion-button [routerLink]="['/payrolls/payroll/edit']"
-										[queryParams]="{business_id: businessId,year:item.year,month:item.month}" fill="clear"
-										class="px-0 mx-0 tooltip-show" tooltip="ویرایش"
-										*ngIf="global.userPermision['payrolls_payroll_edit']&&!item.list_confirmed">
-										<ion-icon size="small" color="medium" slot="icon-only" name="build">
-										</ion-icon>
-									</ion-button>
-
-									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="کپی">
-										<ion-icon size="small" color="medium" slot="icon-only" name="copy">
-										</ion-icon>
-									</ion-button> -->
-
-								</ion-buttons>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot *ngIf="PayrollLimit < PayrollTotal && dataList && dataList.length">
-						<tr>
-							<td colspan="8">
-								<pagination-controls *ngIf="PayrollLimit < PayrollTotal && dataList && dataList.length"
-									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'"
-									(pageChange)="pageChangePyroll($event)" [autoHide]="true">
-								</pagination-controls>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-
-				<div *ngIf="payrollInfoList && payrollInfoList.length === 0" class="alert alert-warning my-3" role="alert">
-					<h4 class="title"> فیش حقوقی برای نمایش یافت نشد .</h4>
-				</div>
+											<ion-button (click)="confirmedSettlement(item)" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی"
+												*ngIf="global.userPermision['settlement_confirm']&&!item.is_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only"
+													name="checkmark-done"></ion-icon>
+											</ion-button>
+											<ion-button (click)="removeSettlementItem(item)" fill="clear"
+												class="px-0 mx-0 tooltip-show" tooltip="حذف"
+												*ngIf="global.userPermision['payrolls_settlement_delete']&&!item.is_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only" name="trash">
+												</ion-icon>
+											</ion-button>
+											<ion-button [routerLink]="['/settlement/edit',item.id]"
+												 fill="clear" class="px-0 mx-0 tooltip-show"
+												tooltip="ویرایش و مشاهده"
+												*ngIf="global.userPermision['payrolls_settlement_edit']&&!item.is_confirmed">
+												<ion-icon size="small" color="medium" slot="icon-only" name="build">
+												</ion-icon>
+											</ion-button>
 
 
-			</div>
-		</section>
+										</ion-buttons>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot
+								*ngIf="settlementLimit < settlementTotal && settlementdataList && settlementdataList.length">
+								<tr>
+									<td colspan="8">
+										<pagination-controls
+											*ngIf="settlementLimit < settlementTotal && settlementdataList && settlementdataList.length"
+											[previousLabel]="'قبلی'" [nextLabel]="'بعدی'"
+											(pageChange)="pageSettlementChange($event)" [autoHide]="true">
+										</pagination-controls>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
 
-		<!-- payroll -->
-
-		<section>
-			<div class="container">
-				<!-- title -->
-				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col-md-6">
-						<div class="title-1">
-							<h2 class="title">لیست کارمندان تسویه شده</h2>
+						<div *ngIf="settlementdataList && settlementdataList.length === 0"
+							class="alert alert-warning my-3" role="alert">
+							<h4 class="title"> تسویه حساب برای نمایش یافت نشد .</h4>
 						</div>
-					</div>
-					<div class="col-md-3 ion-text-left">
-						
 
-						<ion-button class="ml-3" shape="round" color="warning" (click)="openAddPayrollModal()"
-							*ngIf="global.userPermision['add_payroll_request_via_ticket']">
-							<ion-icon slot="start" name="options"></ion-icon>
-							درخواست ثبت تسویه حساب
-						</ion-button>
-					</div>
-					<!-- <div class="col-md-3 ion-text-left">
 
-						<ion-button class="ml-3" shape="round" color="success" [routerLink]="['/payrolls/payroll/add']"
-							[queryParams]="{business_id: businessId}"
-							*ngIf="global.userPermision['payrolls_payroll_add']">
-							<ion-icon slot="start" name="add-circle"></ion-icon>
-							ثبت فیش حقوقی جدید
-						</ion-button>
-					</div> -->
-					<!-- <div class="col-md-4">
-						<div class="search-input-2">
-							<ion-searchbar (ionChange)="changeFilterContract($event)" [debounce]=750 enterkeyhint=""
-								type="text" #SearchContarct placeholder="جستجو در عناوین قراردادها">
-							</ion-searchbar>
+					</div>
+				</section>
+
+
+				<hr class="d-none">
+				<!-- آدرس های کسب کار -->
+				<section class="d-none">
+					<div class="container">
+						<!-- title -->
+						<div class="row align-items-center justify-content-between mt-4">
+							<div class="col">
+								<div class="title-1">
+									<h2 class="title">لیست آدرس های کسب کار</h2>
+								</div>
+							</div>
 						</div>
-					</div> -->
+						<hr>
+						<!-- list of address -->
 
-				</div>
-				<hr>
-				<!-- لیستpayrollا -->
-				<!-- table -->
-				<table *ngIf="settlementdataList && settlementdataList.length" class="width-100 theme-table ">
-					<thead class="thead-dark">
-						<tr class="ion-text-center">
-							<th class="ion-text-center">#</th>
-							<th scope="col">نام کارمند</th>
-							<th scope="col">تاریخ شروع همکاری</th>
-							<th scope="col">تاریخ پایان همکاری</th>
-							<th scope="col">وضعیت</th>
-							
-							<th scope="col">تاریخ اخرین ویرایش</th>
-							<th scope="col">تاریخ ایجاد</th>
-							<th class="ion-text-left" scope="col"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							*ngFor="let item of settlementdataList | paginate : { itemsPerPage : settlementLimit , currentPage: settlementCurrentPage ,  totalItems: settlementTotal } ; let i = index;">
-							<th class="ion-text-center" scope="row">{{ ( ( settlementCurrentPage - 1) * settlementLimit ) + i + 1 }}</th>
-						
-							<td class="py-1">
-								<span class="my-1 font-size-12" >{{item.employee_name}}</span>
-							</td>
-						
-							<td>
-				  <span class="my-1 font-size-12" >{{item.employee_start_date  }}</span>
-						</td>
-							<td>
-				  <span class="my-1 font-size-12" > {{item.leave_work_date }}</span>
-						</td>
-						
-							<td> <span class="my-1 font-size-12" >{{ item.is_confirmed?'تایید شده':'تایید نشده' }}</span></td>
-							<td> <span class="my-1 font-size-12" >{{item.updatedAt }}</span></td>
-							<td> <span class="my-1 font-size-12" >{{ item.createdAt }}</span></td>
-							<td class="ion-text-left">
-								<ion-buttons class="justify-content-end">
-									<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
-										[id]="'hover-button-'+item.id">
-										<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
-										</ion-icon>
-									</ion-button> -->
-								<ion-button (click)="confirmedSettlement(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی" *ngIf="global.userPermision['payroll_confirm']&&!item.is_confirmed">
-										<ion-icon  size="small" color="medium" slot="icon-only" name="checkmark-done"></ion-icon>
-									</ion-button>
-									<ion-button (click)="removeSettlementItem(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="حذف" *ngIf="global.userPermision['payrolls_payroll_delete']&&!item.is_confirmed">
-										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
-										</ion-icon>
-									</ion-button>
-									<ion-button [routerLink]="['/payrolls/payroll/edit']"
-									[queryParams]="{id:item.id}" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="ویرایش" *ngIf="global.userPermision['payrolls_payroll_edit']&&!item.is_confirmed">
-										<ion-icon size="small" color="medium" slot="icon-only" name="build">
-										</ion-icon>
-									</ion-button>
-									
-								
-								</ion-buttons>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot *ngIf="settlementLimit < settlementTotal && settlementdataList && settlementdataList.length">
-						<tr>
-							<td colspan="8">
-								<pagination-controls *ngIf="settlementLimit < settlementTotal && settlementdataList && settlementdataList.length"
-									[previousLabel]="'قبلی'" [nextLabel]="'بعدی'" (pageChange)="pageSettlementChange($event)"
-									[autoHide]="true">
-								</pagination-controls>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-
-				<div *ngIf="settlementdataList && settlementdataList.length === 0" class="alert alert-warning my-3" role="alert">
-					<h4 class="title">  تسویه حساب برای نمایش یافت نشد .</h4>
-				</div>
-
-
-			</div>
-		</section>
-
-
-		<hr class="d-none">
-		<!-- آدرس های کسب کار -->
-		<section class="d-none">
-			<div class="container">
-				<!-- title -->
-				<div class="row align-items-center justify-content-between mt-4">
-					<div class="col">
-						<div class="title-1">
-							<h2 class="title">لیست آدرس های کسب کار</h2>
-						</div>
+						<!-- list of address -->
 					</div>
-				</div>
-				<hr>
-				<!-- list of address -->
-
-				<!-- list of address -->
-			</div>
-		</section>
+				</section>
 	</main>
 
 </ion-content>

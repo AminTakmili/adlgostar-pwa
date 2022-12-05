@@ -299,7 +299,7 @@ export class PayrollListListComponent implements OnInit {
 	confirmedPayrollHour(item: payrollList) {
 		this.global
 			.showAlert('تایید  ' + this.pageTitle,			
-			 `آیا برای تایید فیش حقوقی ${this.global.getMonthName[item.month]} ماه سال ${item.year} ${item.contract_info.employee_info[0].first_name } ${item.contract_info.employee_info[0].last_name } اطمینان دارید؟`, [
+			 `آیا برای تایید فیش حقوقی ${this.global.getMonthName[item.month]} ماه سال ${item.year} ${item.full_name }  اطمینان دارید؟`, [
 				{
 					text: 'بلی',
 					role: 'yes',

@@ -404,8 +404,8 @@ export class ContractAddComponent implements OnInit {
 				await this.global.dismisLoading();
 				this.contractsForm.controls.employer_ids.setValue('')
 				this.contractsForm.controls.employee_ids.setValue('')
-				this.employeeLists(employee);
 				this.employerLists(employer);
+				this.employeeLists(employee);
 			});
 		}else{
 			this.contractsForm.controls.business_id.markAsTouched()
@@ -470,7 +470,15 @@ export class ContractAddComponent implements OnInit {
 
 		if(data.employers.length === 0){
 			this.employerList = [];
-			this.global.showToast('کسب کار فاقد کارفرما می باشد');
+			this.contractsForm.get('business_id').setValue(null)
+			this.contractsForm.get('employer_ids').setValue(null)
+			this.employeeList=[]
+			this.employerList=[]
+			this.businesslist$=of([])
+			this.loadBusiness()
+			// this.employeeLists({list:[]})
+
+			this.global.showToast('کسب کار فاقد کارفرما می باشد',1000,'top','danger','ios');
 
 		}else{
 			this.employerList = data.employers.map((item: any) => {
@@ -481,8 +489,16 @@ export class ContractAddComponent implements OnInit {
 
 	employeeLists(data: any){
 		if(data.list.length === 0){
-			this.employeeList = [];
-			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید');
+			console.log(this.employerList);
+			this.contractsForm.get('business_id').setValue(null)
+			this.contractsForm.get('employer_ids').setValue(null)
+			this.employeeList=[]
+			this.employerList=[]
+			this.businesslist$=of([])
+			this.loadBusiness()
+
+
+			this.global.showToast('کسب کار فاقد کارمند می باشد . ابتدا از قسمت کسب کار به این کسب و کار کارمند اضاف کنید',1000,'top','danger','ios');
 
 		}else{
 			this.employeeList = data.list.map((item: any) => {
@@ -606,6 +622,41 @@ export class ContractAddComponent implements OnInit {
 			}
 		}
 	}
+	async manualCalculatePrices() {
+console.log('this.manualCalculatePrices');
+		if (!this.submitet) {
+			if (this.contractsForm.get('is_manual').value) {
+			if (this.contractsForm.value.contract_year === '') {
+				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				return;
+			}
+
+			else {
+				this.submitet = true;
+				await this.global.showLoading('لطفا منتظر بمانید...');
+				this.global.httpPost('contract/manualCalculatePrices', this.contractsForm.value).
+					subscribe(async (res: any) => {
+						this.submitet = false;
+						await this.global.dismisLoading();
+
+						this.contractsForm.get('bonus').setValue(res.bonus);
+						this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance);
+						this.contractsForm.get('housing_allowance').setValue(res.housing_allowance);
+						this.contractsForm.get('new_year_gift').setValue(res.new_year_gift);
+						this.contractsForm.get('severance_pay').setValue(res.severance_pay);
+						this.contractsForm.get('wage').setValue(res.wage);
+
+						// console.log(res);
+
+					}, async (error: any) => {
+						this.submitet = false;
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+			}
+		}
+		}
+	}
 
 	AddAlowences(event: any) {
 		console.log(event);
@@ -634,7 +685,8 @@ export class ContractAddComponent implements OnInit {
 			this.global.httpPost('contract/calculateChildrenAllowance', {
 				contract_year : this.contractsForm.value.contract_year,
 				is_hourly_contract : this.contractsForm.value.is_hourly_contract,
-				employee_ids : this.contractsForm.value.employee_ids
+				employee_ids : this.contractsForm.value.employee_ids,
+				is_contract_for_future : this.contractsForm.value.is_contract_for_future,
 			}).subscribe(async (res: any) => {
 
 				this.childrenAllowanceFormGroup.controls.map((item:any)=>{

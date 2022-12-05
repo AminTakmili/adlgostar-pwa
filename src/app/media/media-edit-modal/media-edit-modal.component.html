@@ -1,0 +1,53 @@
+<ion-header mode="md" class="ion-no-border">
+  <ion-toolbar color="success">
+    <ion-buttons (click)=" this.modalController.dismiss(null, 'cancel');" slot="start">
+      <ion-button>
+        <ion-icon slot="start" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title > ویرایش رسانه </ion-title>
+  </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <form [formGroup]="addForm"  (submit)="submit()">
+      <div >
+      
+       
+     
+            
+  
+            <div class="form-input mb-3 ">
+              <label>عنوان</label>
+              <ion-input type="text" autocomplete="new-pass" formControlName="title"></ion-input>
+              <span class="error">
+                <app-validator #validation [control]="addForm.get('title')" [controlName]="'عنوان'"></app-validator>
+              </span>
+              <span class="hint">عنوان برای فایل مورد نظر را بنویسید</span>
+            </div>
+            <div class="form-input mb-3">
+              <label> فایل </label>
+              <ion-input type="file" accept="application/msword, application/vnd.ms-excel, application/pdf,audio/*,video/*,image/*" autocomplete="new-pass" (change)="setFile($event )" >
+              </ion-input>
+              <span class="error">
+                <app-validator #validation [control]="addForm.get('file')" [controlName]="'انتخاب فایل'"></app-validator>
+              </span>
+              <span class="hint">فایل مور نظر را انتخاب کنید حجم فایل نباید بیشتر از 50mb باشد</span>
+            </div>
+        
+          
+          <!-- <hr> -->
+       
+
+       
+      </div>
+   
+     
+     
+      <ion-button class=" mt-20" type="submit"  expand="block" color="success" shape="round">
+        ثبت 
+        </ion-button>
+    
+    </form>
+   
+   
+  </ion-content>

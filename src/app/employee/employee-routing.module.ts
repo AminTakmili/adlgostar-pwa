@@ -40,6 +40,12 @@ const routes: Routes = [
     path: 'loan',
     loadChildren: () => import('./employee-loan/employee-loan.module').then( m => m.EmployeeLoanPageModule)
   },
+  {
+    path: 'form',
+    loadChildren: () => import('./employee-form/employee-form.module').then( m => m.EmployeeFormPageModule)
+  },
+
+ 
 
 
  

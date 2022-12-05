@@ -3,6 +3,7 @@ import { DataSets } from 'src/app/core/models/StaticData.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import {
+	
 	Component,
 	EventEmitter,
 	Input,
@@ -17,6 +18,7 @@ import { User } from 'src/app/core/models/user.model';
 	selector: 'app-excel',
 	templateUrl: './excel.component.html',
 	styleUrls: ['./excel.component.scss'],
+	
 })
 export class ExcelComponent implements OnInit, OnChanges {
 	@Input() list: object[];
@@ -38,104 +40,109 @@ export class ExcelComponent implements OnInit, OnChanges {
 	alfaArray: any;
 
 	excelBaceColumnsTitle: any = {
+		is_inverse: 'محاسبه معکوس',
+		calc:'عملگر',
+		has_working_over_time:'ساعت اضافه کار دارد؟',
+		has_working_friday:'ساعت جمعه کار دارد؟',
+		has_working_night:'ساعت شب کار دارد؟',
 		employee_id: 'کد کارمند',
 
 		full_name: 'نام کارمند',
 
 		working_shift_id: 'شیفت کاری',
 
-		working_day_count: 'تعداد روز کارکرد',
+		working_day_count:  ' تعداد روز کارکرد ( اضافات )',
 
-		working_hour_count: 'ساعت کارکرد',
+		working_hour_count: ' ساعت کارکرد( اضافات )',
 
-		addition_hour_friday_or_holiday: 'ساعت تعطیل و جمعه کاری',
+		addition_hour_friday_or_holiday: ' ساعت تعطیل و جمعه کاری ( اضافات ) ',
 
-		sum_working_hours: 'جمع کل ساعت کار',
+		sum_working_hours: 'جمع کل ساعت کار  (اضافات)  ',
 
-		daily_or_hourly_wage: 'حقوق ثابت ',
-		monthly_wage: 'حقوق ماهانه ',
+		daily_or_hourly_wage: 'حقوق ثابت   ',
+		monthly_wage: '  حقوق ماهانه ',
 
-		grocery_allowance: 'حق بن',
+		grocery_allowance: '  حق بن( اضافات )',
 
-		housing_allowance: 'حق مسکن',
+		housing_allowance: ' حق مسکن ( اضافات )',
 
-		children_allowance: 'حق اولاد',
+		children_allowance: '  حق اولاد ( اضافات )',
 
-		severance_pay: 'حق سنوات',
+		severance_pay: '  حق سنوات ( اضافات )',
 
-		new_year_gift: 'عیدی',
+		new_year_gift: '  عیدی ( اضافات )',
 
-		bonus: 'پاداش',
+		bonus: '  پاداش( اضافات )',
 
-		working_over_time_hour_count: 'ساعت اضافه کاری',
+		working_over_time_hour_count: '  ساعت اضافه کاری( اضافات )',
 
-		working_over_time_price: 'مبلغ اضافه کاری',
+		working_over_time_price: ' مبلغ اضافه کاری( اضافات ) ',
 
-		working_friday_hour_count: 'ساعت جمعه کاری',
+		working_friday_hour_count: '  ساعت جمعه کاری( اضافات )',
 
-		working_friday_price: 'مبلغ جمعه کاری',
+		working_friday_price: ' مبلغ جمعه کاری ( اضافات )',
 
-		working_night_hour_count: 'ساعت شب کاری',
+		working_night_hour_count: '  ساعت شب کاری( اضافات )',
 
-		working_night_price: 'مبلغ شب کاری',
+		working_night_price: ' مبلغ شب کاری ( اضافات )',
 
-		unused_leave_amount: 'مبلغ مرخصی استفاده نشده',
+		unused_leave_amount: '  مبلغ مرخصی استفاده نشده( اضافات )',
 
-		unused_leave: 'تعداد مرخصی استفاده نشده',
+		unused_leave: '  تعداد مرخصی استفاده نشده ( اضافات )',
 
-		used_leave: 'تعداد مرخصی استفاده شده',
+		used_leave: '  تعداد مرخصی استفاده شده ( اضافات )',
 
-		operation_bonus: 'پاداش عملکرد',
+		operation_bonus: '  پاداش عملکرد ( اضافات )',
 
 		// اضافات اکسل
 
-		outstation_day_count: 'تعداد روز ماموریت',
+		outstation_day_count: ' تعداد روز ماموریت ( اضافات )',
 
-		outstation_allowance_price: 'مبلغ حق ماموریت',
+		outstation_allowance_price: '  مبلغ حق ماموریت( اضافات )',
 
-		working_shift_price: 'مبلغ شیفت کاری',
+		working_shift_price: ' مبلغ شیفت کاری ( اضافات )',
 
-		remaining_cumulative_leave: 'مانده مرخصی تجمیعی',
+		remaining_cumulative_leave: ' مانده مرخصی تجمیعی ( اضافات )',
 
-		commission: 'پورسانت',
+		commission: ' پورسانت ( اضافات )',
 
-		car_fuel: 'هزینه سوخت خودرو',
+		car_fuel: ' هزینه سوخت خودرو ( اضافات )',
 
-		attract_allowance: 'حق جذب',
+		attract_allowance: ' حق جذب ( اضافات )',
 
-		trust_allowance: 'حق مسئولیت',
+		trust_allowance: ' حق مسئولیت ( اضافات )',
 
-		hardship_allowance: 'حق سختی کار ',
+		hardship_allowance: ' حق سختی کار  ( اضافات )',
 
-		transportation_price: 'هزینه ایاب و ذهاب',
+		transportation_price: '  هزینه ایاب و ذهاب( اضافات )',
 
-		loan_received_amount: 'مبلغ وام دریافتی',
+		loan_received_amount: '  مبلغ وام دریافتی( اضافات )',
 
 		sum_payroll_additions: 'جمع اضافات',
 
-		insurance_day_count: 'تعداد روز بیمه',
+		insurance_day_count: '  تعداد روز بیمه ( کسورات )',
 
-		insurance_wage: 'مبلغ دستمزد روزانه حق بیمه',
+		insurance_wage: '   مبلغ دستمزد روزانه حق بیمه( کسورات )',
 
-		insurance_allowance: '7% حق بیمه',
+		insurance_allowance: '   7% حق بیمه( کسورات )',
 
 		employer_insurance_allowance: 'حق بیمه سهم کارفرما',
 
-		payroll_tax: 'مالیات بر حقوق',
+		payroll_tax: ' مالیات بر حقوق  ( کسورات )',
 
-		working_deficit_hours: 'ساعت کسر کار',
+		working_deficit_hours: '  ساعت کسری کار ( کسورات )',
 
-		working_deficit_amount: 'مقدار کسر کار',
+		working_deficit_amount: '   مقدار کسری کار ( کسورات )',
 
-		loan_installment_amount: 'کسر قسط وام',
+		loan_installment_amount: '   کسر قسط وام ( کسورات )',
 
-		advance_money: 'کسر مساعده',
+		advance_money: '   کسر مساعده( کسورات )',
 
-		purchase_invoice_from_company: 'خرید از شرکت',
+		purchase_invoice_from_company: ' خرید از شرکت ( کسورات ) ',
 
-		food_cost: 'هزینه استفاده از غذای پرسنلی ',
+		food_cost: ' هزینه استفاده از غذای پرسنلی  ( کسورات ) ',
 
-		pension_cost: 'هزینه اجاره پانسیون ',
+		pension_cost: '  هزینه اجاره پانسیون ( کسورات ) ',
 
 		//  اضافه اکسل
 
@@ -143,7 +150,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		// absence_penalty: 'جریمه غیبت',
 
-		fund_reserve: 'ذخیره صندوق',
+		fund_reserve: ' ذخیره صندوق ( کسورات ) ',
 
 		fund_reserve_yearly_repay: 'بازپرداخت ذخیره صندوق سالیانه',
 
@@ -155,17 +162,22 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 		inverse_payroll_received: 'مبلغ حقوق خالص معکوس',
 
-		sum_over_night_friday_amounts: 'اضافه کاری و شبکاری و جمعه کاری',
+		// sum_over_night_friday_amounts: 'اضافه کاری و شبکاری و جمعه کاری',
 
 		without_pay_leave: 'تعداد مرخصی بدون حقوق',
 
 		without_pay_leave_amount: 'مبلغ مرخصی بدون حقوق',
+		without_pay_cumulative_leave: 'مرخصی بدون حقوق تجمیعی',
+		work_hours_in_day : 'مجموع ساعات کار در روز',
+		work_hours_in_night  : 'مجموع ساعات کار در شب',
 		calc_unused_leave_monthly: ' مرخصی استفاده نشده محاسبه میشود؟',
+		working_hour_mentioned_in_contract: ' ساعت کارکرد در قرارداد ذکر شده؟ ',
 		calc_payroll_tax: 'مالیات محاسبه میشود؟',
+		is_hourly_contract:'نوع قرارداد '
 	};
 
 	calcparametr: string[] = [
-		'working_day_count',
+		// 'working_day_count',
 		'daily_or_hourly_wage',
 		'addition_hour_friday_or_holiday',
 		'sum_working_hours',
@@ -202,8 +214,16 @@ export class ExcelComponent implements OnInit, OnChanges {
 	allDataInpu: any;
 	typeColumn: string;
 	titleColumn: string;
+	AdditionsArray:Array<any> =[]
+	wantLoade:boolean=false
 	// outputData: any = [];
-	constructor(private fb: FormBuilder, private global: GlobalService) {}
+
+	// isClacing=false
+	// isClacingInverse=false
+	// perStateIsInverse:boolean|undefined=undefined
+	constructor(private fb: FormBuilder, private global: GlobalService,		
+		) {}
+	
 
 	async ngOnInit() {
 		await this.global.baseData.subscribe((value) => {
@@ -213,7 +233,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 			}
 		});
 	}
-	ngOnChanges(changes: SimpleChanges) {
+	async ngOnChanges(changes: SimpleChanges) {
+
 		this.excelForm = this.fb.group({
 			excelCell: this.fb.array([]),
 		});
@@ -253,7 +274,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// console.log(this.gridRows, this.gridColumns);
 		this.allDataInpu.map((item: any) => {
 			this.excelCell.push(this.newexcelCell(item));
-			console.log(item);
+			// console.log(item);
 			if(item.custom_additions&&item.custom_additions.length){
 				// console.log(item.custom_additions);
 				item.custom_additions.map((addition:any)=>{
@@ -272,8 +293,8 @@ export class ExcelComponent implements OnInit, OnChanges {
 				// console.log(item.custom_additions);
 			
 				item.custom_deductions.map((deduction:any)=>{
-					console.log("object");
-					console.log(deduction);
+					// console.log("object");
+					// console.log(deduction);
 					if (!this.default_custom_deductions.find((item:any)=>{return item.name==deduction.name})) {
 						this.default_custom_deductions.push(deduction)
 						
@@ -367,30 +388,44 @@ export class ExcelComponent implements OnInit, OnChanges {
 
 			})
 		}
+		
+
 
 	}
+	// onScroll(event:Event){
+	// 	console.log(event.srcElement);
+	// }
+
 	
-	  
 
-	// coment html
-	setCellClickValue(e: any) {
-		this.cellClickValue = e.path[0].value;
-		// console.log(e.path[0].value);
-		if (e.detail.value) {
-			this.cellClickValue = e.detail.value;
-			// console.log(e.detail.value);
-		}
-	}
+	//! coment html
+	// setCellClickValue(e: any) {
+	// 	this.cellClickValue = e.path[0].value;
+	// 	// console.log(e.path[0].value);
+	// 	if (e.detail.value) {
+	// 		this.cellClickValue = e.detail.value;
+	// 		// console.log(e.detail.value);
+	// 	}
+	// }
 
 	/* ============================== All form arrays ===========================================*/
 	get excelCellGroup(): FormArray {
 		return this.excelForm.get('excelCell') as FormArray;
 	}
 
-	newexcelCell(employee: any): FormGroup {
+	 newexcelCell(employee: any): FormGroup {
+		//  this.setAdditionsArray()
+		console.log(employee);
+		console.log(	this.AdditionsArray);
 		// console.log(employee, employee.employee_id);
 		let forme = this.fb.group({
 			isWant: [true],
+			is_inverse: [employee.is_inverse?employee.is_inverse:false],
+			calc: [employee.calc?employee.calc:'محاسبه'],
+
+			has_working_over_time: [employee.has_working_over_time?employee.has_working_over_time:0],
+			has_working_friday: [employee.has_working_friday?employee.has_working_friday:0],
+			has_working_night: [employee.has_working_night?employee.has_working_night:0],
 			id: [employee.id],
 			contract_id: [employee.contract_id],
 			business_employee_id: [employee.business_employee_id],
@@ -464,11 +499,14 @@ export class ExcelComponent implements OnInit, OnChanges {
 			payroll_received: [employee.payroll_received],
 			payment_date: [employee.payment_date],
 			inverse_payroll_received: [employee.inverse_payroll_received],
-			sum_over_night_friday_amounts: [
-				employee.sum_over_night_friday_amounts,
-			],
+			// sum_over_night_friday_amounts: [
+			// 	employee.sum_over_night_friday_amounts,
+			// ],
 			without_pay_leave: [employee.without_pay_leave],
 			without_pay_leave_amount: [employee.without_pay_leave_amount],
+			without_pay_cumulative_leave: [employee.without_pay_cumulative_leave],
+			work_hours_in_day : [employee.work_hours_in_day ],
+			work_hours_in_night : [employee.work_hours_in_night ],
 			calc_unused_leave_monthly: [
 				employee.calc_unused_leave_monthly == 0
 					? 'خیر'
@@ -476,12 +514,28 @@ export class ExcelComponent implements OnInit, OnChanges {
 					? 'بله'
 					: employee.calc_unused_leave_monthly,
 			],
+			working_hour_mentioned_in_contract: [
+				employee.working_hour_mentioned_in_contract == 0
+					? 'خیر'
+					: employee.working_hour_mentioned_in_contract == 1
+					? 'بله'
+					: employee.working_hour_mentioned_in_contract,
+			],
+			// calc_unused_leave_monthly: [employee.calc_unused_leave_monthly?employee.calc_unused_leave_monthly:0],
+
 			calc_payroll_tax: [
 				employee.calc_payroll_tax == 0
 					? 'خیر'
 					: employee.calc_payroll_tax == 1
 					? 'بله'
 					: employee.calc_payroll_tax,
+			],
+			is_hourly_contract: [
+				employee.is_hourly_contract == 0
+					? 'تمام وقت'
+					: employee.is_hourly_contract == 1
+					? 'ساعتی'
+					: employee.is_hourly_contract,
 			],
 			// calc_payroll_tax: [employee.calc_payroll_tax==0?'خیر':'بله'],
 			custom_additions: this.fb.array([]),
@@ -497,6 +551,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// this.custom_additions = this.excelForm.get('custom_additions') as FormArray;
 		// this.custom_deductions = this.excelForm.get('custom_deductions') as FormArray;
 		// this.form.push(forme)
+		if (this.AdditionsArray.length) {
+			console.log("object");
+		}
 
 		return forme;
 	}
@@ -524,6 +581,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			],
 		});
 	}
+	/* ==============================  form arrays ===========================================*/
 
 	//
 	creatAlfab(count: number) {
@@ -581,6 +639,28 @@ export class ExcelComponent implements OnInit, OnChanges {
 		this.alfaArray = all.splice(0, count);
 		//  console.log(this.alfaArray);
 	}
+
+	// setAdditionsArray(){
+	// 	this.global.httpPost('payrollAddition/filteredList',{limit:9999,offset:0}).subscribe(
+	// 		async (res:any) => {
+	// 			console.log(res.list);
+	// 			console.log(this.excelBaceColumnsTitle);
+	// 			res.list.map((addition:any)=>{
+	// 				this.AdditionsArray.push(addition)
+	// 				// console.log(this.excelCellGroup.get(addition.en_name));
+	// 				// console.log(addition.en_name);
+	// 				// console.log(this.excelBaceColumnsTitle[addition.en_name]);
+	// 				// this.excelBaceColumnsTitle[addition.en_name]=this.excelBaceColumnsTitle[addition.en_name]+' (اضافات)'
+
+	// 			})
+	// 		},
+	// 		async (error:any) => {
+				
+	// 		}
+	// 		)
+	// 		console.log(this.excelBaceColumnsTitle);
+	// }
+
 	// setvalue(value: any, e: any, item: any) {
 	// 	console.log(value);
 	// 	console.log(e);
@@ -711,48 +791,150 @@ export class ExcelComponent implements OnInit, OnChanges {
 			);
 		}
 	}
+	
 
-	async clac(item: FormGroup) {
+	async clac(item: FormGroup,isInverse=false) {
+		// console.log(item);
+		// console.log(item.value);
+		// !(item.controls.inverse_payroll_received.value) &&
+		// item.controls.working_hour_count.value &&
+		// item.controls.insurance_day_count.value &&
+		// item.controls.insurance_wage.value &&
+		// console.log("object");
+		//* event is change whant this if
+		// console.log(isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true')));
+		// if (isInverse||(!this.perStateIsInverse&&!(item.controls.is_inverse.value=='true'))) {
+			console.log(item.controls?.is_inverse?.value);
+			console.log(item.controls?.is_inverse?.value=='false');
+			console.log(item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false);
+			if (
+				(item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false)&&
+				item.controls.business_employee_id.value &&
+				item.controls.contract_id.value &&
+				// item.controls.working_shift_id.value&&
+				this.month &&
+				this.year
+			) {
+				await this.global.showLoading();
+				this.global
+					.httpPost('payroll/calculatePrices', {
+						contract_id: item.controls.contract_id.value,
+						business_employee_id:
+							item.controls.business_employee_id.value,
+						year: this.year,
+						month: this.month,
+						working_shift_id: item.controls.working_shift_id.value,
+						working_day_count: item.controls.working_day_count.value,
+
+						insurance_day_count:
+							item.controls.insurance_day_count.value,
+						insurance_wage: item.controls.insurance_wage.value,
+						working_hour_count: item.controls.working_hour_count.value,
+						working_deficit_hours:
+							item.controls.working_deficit_hours.value,
+						working_friday_hour_count:
+							item.controls.working_friday_hour_count.value,
+						operation_bonus:
+							item.controls.operation_bonus.value,
+						commission:
+							item.controls.commission.value,
+						car_fuel:
+							item.controls.car_fuel.value,
+						transportation_price:
+							item.controls.transportation_price.value,
+						fund_reserve:
+							item.controls.fund_reserve.value,
+						advance_money:
+							item.controls.advance_money.value,
+						purchase_invoice_from_company:
+							item.controls.purchase_invoice_from_company.value,
+						outstation_day_count:
+							item.controls.outstation_day_count.value,
+						working_night_hour_count:
+							item.controls.working_night_hour_count.value,
+						working_over_time_hour_count:
+							item.controls.working_over_time_hour_count.value,
+						custom_additions: item.controls.custom_additions.value,
+						custom_deductions: item.controls.custom_deductions.value,
+					})
+					.subscribe(
+						async (res: any) => {
+							await this.global.dismisLoading();
+							// console.log(res);
+							item.patchValue(res);
+						},
+						async (error: any) => {
+							await this.global.dismisLoading();
+							this.global.showError(error);
+						}
+					);
+			}
+			// else{
+			// 	if (!item.controls.working_hour_count.value) {
+			// 		this.global.showToast('لطفا ساعت کارکرد را وارد کنید',750,'top','danger')
+			// 	}
+			// 	if (!item.controls.insurance_day_count.value) {
+			// 		this.global.showToast('لطفا ساعت بیمه را وارد کنید',750,'top','danger')
+			// 	}
+	
+			// }
+		// }
+	}
+
+	async clacInverse(item: FormGroup,isInverseButton=false) {
+		console.log("object");
+		// this.perStateIsInverse=!(item.controls.is_inverse.value=='true')
+		let calc_unused_leave_monthly=item.controls.calc_unused_leave_monthly.value == 'خیر'
+		? 0
+		: item.controls.calc_unused_leave_monthly.value == 'بله'
+		? 1
+		: item.controls.calc_unused_leave_monthly.value
+		// console.log(calc_unused_leave_monthly);
+
+		// console.log((item.controls.is_inverse.value));
+		// console.log(Boolean(item.controls.is_inverse.value));
+		//? item.controls.calc_unused_leave_monthly.value&&
 		if (
+			(item.controls.is_inverse.value=='true'||item.controls.is_inverse.value==true)  &&
 			item.controls.business_employee_id.value &&
 			item.controls.contract_id.value &&
 			// item.controls.working_shift_id.value&&
-			item.controls.working_hour_count.value &&
-			item.controls.insurance_day_count.value &&
-			item.controls.insurance_wage.value &&
+			
+			// item.controls.working_day_count.value &&
+			// item.controls.working_hour_count.value &&
+			item.controls.inverse_payroll_received.value &&
+		
 			this.month &&
 			this.year
 		) {
+			console.log("object");
 			await this.global.showLoading();
 			this.global
-				.httpPost('payroll/calculatePrices', {
+				.httpPost('payroll/inverseCalculatePrices', {
 					contract_id: item.controls.contract_id.value,
 					business_employee_id:
 						item.controls.business_employee_id.value,
 					year: this.year,
 					month: this.month,
-					working_shift_id: item.controls.working_shift_id.value,
-					insurance_day_count:
-						item.controls.insurance_day_count.value,
-					insurance_wage: item.controls.insurance_wage.value,
+					working_day_count: item.controls.working_day_count.value,
+					
 					working_hour_count: item.controls.working_hour_count.value,
-					working_deficit_hours:
-						item.controls.working_deficit_hours.value,
-					working_friday_hour_count:
-						item.controls.working_friday_hour_count.value,
-					outstation_day_count:
-						item.controls.outstation_day_count.value,
-					working_night_hour_count:
-						item.controls.working_night_hour_count.value,
-					working_over_time_hour_count:
-						item.controls.working_over_time_hour_count.value,
-					custom_additions: item.controls.custom_additions.value,
-					custom_deductions: item.controls.custom_deductions.value,
+					has_working_over_time:
+						item.controls.has_working_over_time.value,
+					has_working_friday:
+						item.controls.has_working_friday.value,
+					has_working_night:
+						item.controls.has_working_night.value,
+						inverse_payroll_received:
+							item.controls.inverse_payroll_received.value,
+						calc_unused_leave_monthly,
+					
+					
 				})
 				.subscribe(
 					async (res: any) => {
 						await this.global.dismisLoading();
-						// console.log(res);
+						console.log(res);
 						item.patchValue(res);
 					},
 					async (error: any) => {
@@ -760,8 +942,96 @@ export class ExcelComponent implements OnInit, OnChanges {
 						this.global.showError(error);
 					}
 				);
+		} else if((item.controls.is_inverse.value!='true')){
+			// console.log(item);
+			// console.log(item.value);
+			// item.controls.inverse_payroll_received.setValue(0)
+			if (isInverseButton) {
+				
+				this.clac(item,true)
+			}
 		}
 	}
+	async resetDefaltData(item: FormGroup,index:number){
+	
+		if ((item.controls?.is_inverse?.value=='false'||item.controls?.is_inverse?.value==false)) {
+			await this.global.showLoading()
+			this.global.httpPost('payroll/getDefaultPayrollAmount',{
+				contract_id: item.controls.contract_id.value,
+				business_employee_id:
+					item.controls.business_employee_id.value,
+				year: this.year,
+				month: this.month,
+			}).subscribe(
+				async (res: any) => {
+					await this.global.dismisLoading();
+					// console.log(res);
+					item.patchValue(res);
+					// if (res.calc_unused_leave_monthly) {
+						
+						item.get('calc_unused_leave_monthly').setValue(res.calc_unused_leave_monthly == 0
+							? 'خیر'
+							: res.calc_unused_leave_monthly == 1
+							? 'بله'
+							: res.calc_unused_leave_monthly)
+					// }
+					// if (res.working_hour_mentioned_in_contract) {
+						item.get('working_hour_mentioned_in_contract').setValue(res.working_hour_mentioned_in_contract == 0
+							? 'خیر'
+							: res.working_hour_mentioned_in_contract == 1
+							? 'بله'
+							: res.working_hour_mentioned_in_contract)
+					
+						
+					// }
+					// if (res.calc_payroll_tax) {
+						item.get('calc_payroll_tax').setValue(res.calc_payroll_tax == 0
+							? 'خیر'
+							: res.calc_payroll_tax == 1
+							? 'بله'
+							: res.calc_payroll_tax)
+					
+						
+					// }
+					// console.log(res);
+					// if (res.is_hourly_contract) {
+						console.log('is_hourly_contract');
+						item.get('is_hourly_contract').setValue(res.is_hourly_contract == 0
+							?  'تمام وقت'
+							: res.is_hourly_contract == 1
+							?'ساعتی'
+							: res.is_hourly_contract)
+					
+						
+					// }
+				
+					// calc_unused_leave_monthly: [employee.calc_unused_leave_monthly?employee.calc_unused_leave_monthly:0],
+		
+					
+				},
+				async (error: any) => {
+					await this.global.dismisLoading();
+					this.global.showError(error);
+				}
+			);
+		}else{
+				console.log(item.value);
+				console.log(this.custom_additions,);
+				console.log(this.custom_additions[index].controls,index);
+				console.log(item.get('custom_additions'));
+				// this.custom_additions[index].get('amount').setValue(null)
+				this.custom_additions[index].controls.map((item)=>{
+					item.get('amount').setValue(null)
+				})
+				this.custom_deductions[index].controls.map((item)=>{
+					item.get('amount').setValue(null)
+				})
+				// item.get('custom_additions').get('amount').setValue(null)
+				// item.get('custom_additions').controls
+		}
+
+	}
+
 	checkAll(i: number) {
 		if (i == 0) {
 			// console.log(e);
@@ -884,7 +1154,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// console.log(this.excelForm.value);
 		// console.log(this.excelForm.value.excelCell[0].isWant);
 		let domyList: any[] = [];
-		this.excelForm.value.excelCell.shift();
+		// this.excelForm.value.excelCell.shift();
 		// console.log(this.excelForm.value.excelCell);
 		this.excelForm.value.excelCell.map((item: any) => {
 			// console.log(item.isWant);
@@ -893,11 +1163,12 @@ export class ExcelComponent implements OnInit, OnChanges {
 			}
 		});
 
-		// console.log(domyList);
+		domyList.shift() 
+		console.log(domyList);
 		if (domyList && domyList.length) {
 			this.Data.emit(domyList);
 		} else {
-			this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle);
+			// this.excelForm.value.excelCell.unshift(this.excelBaceColumnsTitle);
 			this.global.showToast(
 				'لطفا حداقل یک کارمند را انتخاب کنید',
 				800,
@@ -910,4 +1181,48 @@ export class ExcelComponent implements OnInit, OnChanges {
 		// this.excelForm.reset()
 		// this.allDataInpu = [this.excelBaceColumnsTitle];
 	}
+	//  explode() {
+	// 	var particles = 15,
+	// 	  // explosion container and its reference to be able to delete it on animation end
+	// 	  explosion = '<div class="explosion"></div>';
+	  
+	// 	// put the explosion container into the body to be able to get it's size
+	// 	document.getElementById('form').append(explosion);
+	  
+	// 	// position the container to be centered on click
+	// 	// explosion.css('left', x - explosion.width() / 2);
+	// 	// explosion.css('top', y - explosion.height() / 2);
+	  
+	// 	for (var i = 0; i < particles; i++) {
+	// 	  // positioning x,y of the particle on the circle (little randomized radius)
+	// 	//   var x = (explosion.width() / 2) + rand(80, 150) * Math.cos(2 * Math.PI * i / rand(particles - 10, particles + 10)),
+	// 	// 	y = (explosion.height() / 2) + rand(80, 150) * Math.sin(2 * Math.PI * i / rand(particles - 10, particles + 10)),
+	// 	var	color = rand(0, 255) + ', ' + rand(0, 255) + ', ' + rand(0, 255), // randomize the color rgb
+	// 		  // particle element creation (could be anything other than div)
+	// 		elm = '<div class="particle" style="' +
+	// 		  'background-color: rgb(' + color + ') ;' +
+	// 		 '</div>';
+	  
+	// 	  if (i == 0) { // no need to add the listener on all generated elements
+	// 		// css3 animation end detection
+	// 		elm.one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {
+	// 		  explosion.remove(); // remove this explosion container when animation ended
+	// 		});
+	// 	  }
+	// 	  explosion.append(elm);
+	// 	}
+	//   }
+	  
+	//   // get random number between min and max value
+	//   function rand(min, max) {
+	// 	return Math.floor(Math.random() * (max + 1)) + min;
+	//   }
+	trackByIndex(index:number, el:any): number {
+		// console.log(index,el);
+		return index;
+	}
+	trackByEmployeeId(index:number, el:any): number {
+		
+		return el.employee_id;
+	  }
 }

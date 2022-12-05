@@ -14,7 +14,7 @@
 			</div>
 			<div class="col-lg-auto">
 				<ion-button shape="round" color="medium" fill="outline">
-					<ion-back-button defaultHref="contracts/sentence/{{id}}" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					<ion-back-button defaultHref="contracts/sentence/{{contractId}}" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 					</ion-back-button>
 					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
 					بازگشت -->
@@ -23,8 +23,11 @@
 		</div>
 	</div>
 	<main>
-		<!-- انتخاب کسب و کار -->
-		<div class="col-md-12" *ngIf="businessList && businessList.length">
+		<div class="container">
+			<!-- انتخاب کسب و کار -->
+
+		
+		<div class="col-md-12 px-0" *ngIf="businessList && businessList.length">
 			<div class="form-input mb-3">
 				<label> کسب کار</label>
 				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList" loadingText="لطفا صبر کنید ..."
@@ -36,7 +39,7 @@
 		</div>
 <!-- *ngIf="employerList && employerList.length" -->
 		<!-- انتحاب کارفرما -->
-		<div class="col-md-12" >
+		<div class="col-md-12 px-0" >
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
 				<ng-select  [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true" [(ngModel)]="employerId" loadingText="لطفا صبر کنید ..."
@@ -48,7 +51,7 @@
 			
 			</div>
 		</div>
-
+		</div>
 		<form [formGroup]="sentenceForm" (ngSubmit)="onSubmit()">
 			<!--  -->
 			<div class="container mt-4">
@@ -201,14 +204,14 @@
 						<!-- extra fileds -->
 							<div class="form-input mb-3">
 								<label>
-									<span>حق مسولیت</span>
+									<span>حق مسئولیت</span>
 									<span > (ساعتی)</span>
 								</label>
 									<!-- (ionChange)="CalculationField()"  -->
 								<ion-input min="0" type="number" step=".01" autocomplete="new-pass"
 								 formControlName="trust_allowance"></ion-input>
 								<span class="error">
-									<app-validator #validation [control]="sentenceForm.controls['trust_allowance']" [controlName]="'حق مسولیت'"></app-validator>
+									<app-validator #validation [control]="sentenceForm.controls['trust_allowance']" [controlName]="'حق مسئولیت'"></app-validator>
 								</span>
 								<span class="hint">مبلغ به ریال است</span>
 							</div>
@@ -224,7 +227,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_severance_pay" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -232,7 +235,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_bonus" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -240,7 +243,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
-								<ion-toggle color="success" 
+								<ion-toggle  (ionChange)="CalculationField()" color="success" 
 									formControlName="has_monthly_new_year_gift" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>

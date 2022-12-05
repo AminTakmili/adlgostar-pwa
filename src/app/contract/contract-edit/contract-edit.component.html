@@ -92,6 +92,7 @@
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
 									<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+										|  تاریخ شروع به کار: {{ item.business_employee_info[0].employee_start_date }}
 										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}
 										| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
 										| ساعت کاری در شب : {{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }} ساعت
@@ -294,7 +295,7 @@
 						<!-- زمان شروع به کار -->
 						<!-- <div class="form-input mb-3">
 							<label>زمان شروع به کار</label>
-							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true" [timeEnable]="false" [dateInitValue]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+							<ng-persian-datepicker (dateOnSelect)="CalculationField();manualCalculatePrices()" [timeMeridian]="true" [timeEnable]="false" [dateInitValue]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="employee_start_date"  />
 							 </ng-persian-datepicker>
 							<span class="error">
@@ -305,7 +306,7 @@
 						<!-- زمان شروع قرارداد -->
 						<div  class="form-input mb-3" >
 							<label>زمان شروع قرارداد</label>
-							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+							<ng-persian-datepicker (dateOnSelect)="CalculationField();manualCalculatePrices()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text"  formControlName="start_date" />
 							 </ng-persian-datepicker>
 							<span class="error">
@@ -316,7 +317,7 @@
 						<!-- زمان پایان قرار داد -->
 						<div  class="form-input mb-3">
 							<label>زمان پایان قرارداد</label>
-							<ng-persian-datepicker (dateOnSelect)="CalculationField()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+							<ng-persian-datepicker (dateOnSelect)="CalculationField();manualCalculatePrices()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="end_date" />
 							 </ng-persian-datepicker>
 							<span class="error">
@@ -334,7 +335,7 @@
 								[items]="severanceBaseCalculationList"
 								formControlName="contract_year"
 								[clearable]="false"
-								(change)="CalculationField();calcChildrenAllowance();"
+								(change)="CalculationField();manualCalculatePrices();calcChildrenAllowance();"
 								>
 							</ng-select>
 							<span class="error">
@@ -345,7 +346,7 @@
 						<!-- دستمزد روزانه -->
 						<div class="form-input mb-3">
 							<label>دستمزد روزانه <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input  [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="wage"></ion-input>
+							<ion-input  [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="wage"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['wage']" [controlName]="'دستمزد روزانه'"></app-validator>
 							</span>
@@ -353,8 +354,8 @@
 						</div>
 						<!-- حق سنوات -->
 						<div class="form-input mb-3">
-							<label>حق سنوات</label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="severance_pay"></ion-input>
+							<label>حق سنوات<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="severance_pay"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['severance_pay']" [controlName]="'حق سنوات'"></app-validator>
 							</span>
@@ -363,7 +364,7 @@
 						<!-- حق بن -->
 						<div class="form-input mb-3">
 							<label>حق بن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="grocery_allowance"></ion-input>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="grocery_allowance"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator>
 							</span>
@@ -372,7 +373,7 @@
 						<!-- حق مسکن -->
 						<div class="form-input mb-3">
 							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="housing_allowance"></ion-input>
+							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="housing_allowance"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
 							</span>
@@ -389,8 +390,8 @@
 						</div> -->
 						<!-- عیدی -->
 						<div class="form-input mb-3">
-							<label>عیدی</label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="new_year_gift"></ion-input>
+							<label>عیدی<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="new_year_gift"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['new_year_gift']" [controlName]="'عیدی '"></app-validator>
 							</span>
@@ -398,9 +399,10 @@
 						</div>
 						<!-- پاداش -->
 						<div class="form-input mb-3">
-							<label>پاداش</label>
-							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="bonus"></ion-input>
+							<label>پاداش<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="bonus"></ion-input>
 							<span class="error">
+
 								<app-validator #validation [control]="contractsForm.controls['bonus']" [controlName]="'پاداش '"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
@@ -454,7 +456,7 @@
 									<span [innerText]="returnNameExtraField(item['value']['contract_extra_field_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
 								</label>
-								<ion-input type="number" autocomplete="new-pass" (ionChange)="CalculationField()" debounce="500"  formControlName="price"></ion-input>
+								<ion-input type="number" autocomplete="new-pass" (ionChange)="CalculationField();manualCalculatePrices()" debounce="1000"  formControlName="price"></ion-input>
 								<span class="error">
 									<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 								</span>
@@ -471,49 +473,49 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه پایه سنوات</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="calc_severance_base" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()"debounce="1000" formControlName="calc_severance_base" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="calc_severance_pay_monthly" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()"debounce="1000" formControlName="calc_severance_pay_monthly" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="calc_bonus_monthly" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()"debounce="1000" formControlName="calc_bonus_monthly" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="calc_new_year_gift_monthly" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()"debounce="1000" formControlName="calc_new_year_gift_monthly" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>قرارداد مربوط به آینده است؟</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="is_contract_for_future" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices();calcChildrenAllowance()"debounce="1000" formControlName="is_contract_for_future" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه قرار داد به صورت ساعتی</ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField();calcChildrenAllowance();" formControlName="is_hourly_contract" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices();calcChildrenAllowance();"debounce="1000" formControlName="is_hourly_contract" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>توقف محاسبات و وارد کردن دستی </ion-label>
-								<ion-toggle color="success" (ionChange)="CalculationField()" formControlName="is_manual" slot="start"></ion-toggle>
+								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices()" formControlName="is_manual"debounce="1000" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
 
@@ -540,7 +542,7 @@
 							</ion-item>
 						</ion-card>
 								<!--  -->
-						<ion-button  *ngIf="!this.contractsForm.get('is_manual').value" (click)="CalculationField()" expand="block" color="primary" fill="outline" >محاسبه مجدد</ion-button>
+						<ion-button  *ngIf="!this.contractsForm.get('is_manual').value" (click)="CalculationField();manualCalculatePrices()" expand="block" color="primary" fill="outline" >محاسبه مجدد</ion-button>
 					</div>
 				</div>
 				<div class="row mb-5">

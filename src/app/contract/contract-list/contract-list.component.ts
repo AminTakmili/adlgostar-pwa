@@ -64,6 +64,7 @@ export class ContractListComponent implements OnInit {
 	minLengthTerm = 3;
 	
 	filtered_confirmer_id:number
+	filtered_is_confirmed :number
 	filtered_title:string
 	// filtered_confirm_date:string
 	filtered_confirmer_list:User[]
@@ -112,6 +113,7 @@ export class ContractListComponent implements OnInit {
 			filtered_title:this.filtered_title,
 			filtered_confirm_date:this.date.value.filtered_confirm_date,
 			filtered_confirmer_id:this.filtered_confirmer_id,
+			filtered_is_confirmed :this.filtered_is_confirmed ,
 
 		}).subscribe(async (res: any) => {
 					this.datepickerIsChange=false

@@ -40,7 +40,7 @@
 
 						<ng-select
 						[items]="businesslist$ | async"
-						placeholder="جستوجو در کسب و کار"
+						placeholder="جستجو در کسب و کار"
 						[loading]="businessInputLoading"
 						bindLabel="name"
 						bindValue="id"
@@ -66,7 +66,7 @@
 
             <ng-select
 						[items]="employeelist$ | async"
-						placeholder="جستوجو در کارمندان"
+						placeholder="جستجو در کارمندان"
 						[loading]="employeeInputLoading"
 						bindLabel="full_name"
 						bindValue="id"
@@ -98,10 +98,10 @@
 						<th scope="col">کارمند</th>
 						<th scope="col">کسب و کار</th>
 						<th scope="col">حقوق دریافتی</th>
-						<th scope="col">مجوع اضافات</th>
-						<th scope="col">مجوع کسورات</th>
+						<th scope="col">مجموع اضافات</th>
+						<th scope="col">مجموع کسورات</th>
 						<th scope="col">وضعیت</th>
-						<th scope="col">تاریخ ایجاد</th>
+						<th scope="col">تاریخ واریز حقوق</th>
 						<th class="ion-text-left" scope="col"></th>
 					</tr>
 				</thead>
@@ -118,10 +118,10 @@
               <span class="my-1 font-size-12" >{{global.getMonthName[item.month]  }}</span>
 					</td>
 						<td>
-              <span class="my-1 font-size-12" > {{item.contract_info.employee_info[0].first_name }} {{item.contract_info.employee_info[0].last_name }}</span>
+              <span class="my-1 font-size-12" > {{item.full_name }}</span>
 					</td>
 						<td>
-              <span class="my-1 font-size-12" >{{item.contract_info.business_info.name }}</span>
+              <span class="my-1 font-size-12" >{{item.business_name }}</span>
 					</td>
 						<td>
               <span class="my-1 font-size-12" >{{item.payroll_received }}</span>
@@ -132,7 +132,9 @@
 					</td>
 						<td> <span class="my-1 font-size-12" >{{item.sum_payroll_deductions }}</span></td>
 						<td> <span class="my-1 font-size-12" >{{ item.is_confirmed?'تایید شده':'تایید نشده' }}</span></td>
-						<td> <span class="my-1 font-size-12" >{{ item.createdAt }}</span></td>
+						<td> <span class="my-1 font-size-12" *ngIf="item.payment_date" >{{ item.payment_date }}</span><ion-chip mod="ios" color="danger" *ngIf="!item.payment_date">
+							<span class="font-size-10">پرداخت نشده</span>
+						  </ion-chip></td>
 						<td class="ion-text-left">
 							<ion-buttons class="justify-content-end">
 								<!-- <ion-button fill="clear" class="px-0 mx-0 tooltip-show" tooltip="عملگرها"
@@ -140,7 +142,7 @@
 									<ion-icon size="small" color="medium" size="cover" slot="icon-only" name="ellipsis-vertical">
 									</ion-icon>
 								</ion-button> -->
-							<ion-button [routerLink]="['/payrolls/payroll/detail',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزیات " *ngIf="global.userPermision['payrolls_payroll_detail']">
+							<ion-button [routerLink]="['/payrolls/payroll/detail',item.id]" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="جزئیات " *ngIf="global.userPermision['payrolls_payroll_detail']">
 									<ion-icon  size="small" color="medium" slot="icon-only" name="search"></ion-icon>
 								</ion-button>
 							<ion-button (click)="confirmedPayrollHour(item)" fill="clear" class="px-0 mx-0 tooltip-show" tooltip="تایید نهایی" *ngIf="global.userPermision['payroll_confirm']&&!item.is_confirmed">

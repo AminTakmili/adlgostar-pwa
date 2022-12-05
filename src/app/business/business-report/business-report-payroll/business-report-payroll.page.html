@@ -1,0 +1,30 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">گزارش های فیش حقوقی مربوط به کسب و کار
+					</p>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+    <div class="content-main">
+
+      <app-business-report-payroll-summarypayroll [businessId]="businessId"></app-business-report-payroll-summarypayroll>
+      <app-business-report-payroll-payrollseparatelydetail [businessId]="businessId"></app-business-report-payroll-payrollseparatelydetail>
+      <app-business-report-payroll-payrolltax [businessId]="businessId"></app-business-report-payroll-payrolltax>
+      <app-business-report-payroll-delayedpayrol [businessId]="businessId"></app-business-report-payroll-delayedpayrol>
+    </div>
+  </main>
+</ion-content>

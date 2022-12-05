@@ -70,10 +70,9 @@ export class RequestAddPayrollComponent implements OnInit ,OnChanges {
         // content=` <ul> لیست کارمندان :  ${li} </ul>  <hr>   <p> ${this.addForm.value.text} </p>`
         let section_id:number=this.payrollDefinitionSectionId
        let  subject:string='تنظیم فیش حقوقی'
-      let is_add_contract_request=false
-      let is_add_payroll_request=true
+     let type="add_payroll_request"
       
-        this.global.httpPost('profile/userTicket/add',{content,subject,section_id,is_add_payroll_request,is_add_contract_request}).subscribe(
+        this.global.httpPost('profile/userTicket/add',{content,subject,section_id,type}).subscribe(
          async (res:any) => {
          await  this.global.dismisLoading()
          console.log(res);

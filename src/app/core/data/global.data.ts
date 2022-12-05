@@ -49,15 +49,6 @@ export const globalData = {
 			],
 		},
 		{
-			name: 'کسب و کار ها',
-			url: '/businesses',
-			icon: 'business',
-
-			open: false,
-			state: 'close',
-			function: 'showDetail',
-		},
-		{
 			name: 'کارفرمایان',
 			url: '/employers',
 			icon: 'person-circle',
@@ -66,6 +57,16 @@ export const globalData = {
 			state: 'close',
 			function: 'showDetail',
 		},
+		{
+			name: 'کسب و کار ها',
+			url: '/businesses',
+			icon: 'business',
+
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+		},
+		
 		{
 			name: 'کارمندان',
 			url: '/employees',
@@ -201,6 +202,30 @@ export const globalData = {
 				},
 			],
 		},
+		{
+			name: 'تعهدنامه ها',
+			icon: 'documents',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			submenu: [
+				{
+					name: 'لیست تعهدنامه ها',
+					url: '/recognizance/list',
+					icon: 'document',
+					function: 'showDetail',
+				},
+				{
+					name: 'قالب تعهد نامه',
+					url: '/recognizance/template/list',
+					icon: 'document-attach',
+					function: 'showDetail',
+				}
+				
+			]
+		},
+		
+
 		// {
 		// 	name: ' تسویه حساب',
 		// 	icon: 'document-text',
@@ -251,48 +276,66 @@ export const globalData = {
 		// 		},
 		// 	],
 		// },
+		// {
+		// 	name: ' گزارشات',
+		// 	icon: 'receipt',
+		// 	open: false,
+		// 	state: 'close',
+		// 	function: 'showDetail',
+		// 	access: true,
+		// 	submenu: [
+		// 		// {
+		// 		// 	name: 'ویرایش اطلاعات',
+		// 		// 	url: '/business',
+		// 		// 	icon: 'create',
+		// 		// 	function: 'showDetail'
+
+		// 		// },
+		// 		// {
+		// 		// 	name: 'اطلاعات تماس',
+		// 		// 	url: '/business',
+		// 		// 	icon: 'call',
+		// 		// 	function: 'showDetail'
+		// 		// },
+		// 		{
+		// 			name: 'مرخصی باقی مانده',
+		// 			url: '/report/payroll/remainingLeave',
+		// 			icon: 'calendar',
+		// 			function: 'showDetail',
+					
+		// 		},
+		// 		{
+		// 			name: 'دستمزد ماهیانه',
+		// 			url: '/report/payroll/monthlyWage',
+		// 			icon: 'card',
+		// 			function: 'showDetail',
+					
+		// 		},
+		// 		{
+		// 			name: 'پایه سنوات',
+		// 			icon: 'file-tray-full',
+		// 			url: '/report/payroll/severancePayList',
+		// 			function: 'showDetail',
+		// 		},
+		// 	],
+		// },
 		{
-			name: ' گزارشات',
-			icon: 'receipt',
+			name: 'فرم ها',
+			url: '/form/template/list',
+			icon: 'file-tray-stacked',
 			open: false,
 			state: 'close',
 			function: 'showDetail',
 			access: true,
-			submenu: [
-				// {
-				// 	name: 'ویرایش اطلاعات',
-				// 	url: '/business',
-				// 	icon: 'create',
-				// 	function: 'showDetail'
-
-				// },
-				// {
-				// 	name: 'اطلاعات تماس',
-				// 	url: '/business',
-				// 	icon: 'call',
-				// 	function: 'showDetail'
-				// },
-				{
-					name: 'مرخصی باقی مانده',
-					url: '/report/payroll/remainingLeave',
-					icon: 'calendar',
-					function: 'showDetail',
-					
-				},
-				{
-					name: 'دستمزد ماهیانه',
-					url: '/report/payroll/monthlyWage',
-					icon: 'card',
-					function: 'showDetail',
-					
-				},
-				{
-					name: 'پایه سنوات',
-					icon: 'file-tray-full',
-					url: '/report/payroll/severancePayList',
-					function: 'showDetail',
-				},
-			],
+		},
+		{
+			name: 'رسانه',
+			url: '/media/uploaded_file_category/list',
+			icon: 'file-tray-full',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			access: true,
 		},
 
 		{
@@ -363,7 +406,7 @@ export const globalData = {
 			
 				{
 					access: true,
-					name: ' تنظیم بخش های درخوست ها',
+					name: ' تنظیم بخش های درخواست ها',
 					url: '/setting/contract_add_section',
 					icon: 'reader',
 					function: 'showDetail',

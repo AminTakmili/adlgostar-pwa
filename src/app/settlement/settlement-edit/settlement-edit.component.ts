@@ -61,6 +61,10 @@ export class SettlementEditComponent implements OnInit {
 	settlementDeductionList: payrollDeduction[];
 	settlementCalcType!:DataSets[]
   businessEmployeeId!:string
+  custom_additions: FormArray;
+	custom_deductions: FormArray;
+
+	setingCalcValue:boolean=false
 
 	constructor(
 		public global: GlobalService,
@@ -75,11 +79,13 @@ export class SettlementEditComponent implements OnInit {
 		this.contractsForm = this.fb.group({
 		id: [this.settlementId],
 		business_employee_id:[],
+		description: [],
 
 			settlement_template_id: [
 				,
 				Validators.compose([Validators.required]),
 			],
+			settlement_received: [, Validators.compose([Validators.required])],
 			leave_work_date: [, Validators.compose([Validators.required])],
 			new_year_gift_calc_type: [
 				'all_working_days',
@@ -98,7 +104,7 @@ export class SettlementEditComponent implements OnInit {
 				Validators.compose([Validators.required]),
 			],
 
-			employee_start_date: [, Validators.compose([Validators.required])],
+			// employee_start_date: [, Validators.compose([Validators.required])],
 			wage: [0, Validators.compose([Validators.required])],
 			grocery_allowance: [0, Validators.compose([Validators.required])],
 			housing_allowance: [0, Validators.compose([Validators.required])],
@@ -132,6 +138,9 @@ export class SettlementEditComponent implements OnInit {
 
 			settlement_additions: this.fb.array([]),
 			settlement_deductions: this.fb.array([]),
+			custom_additions: this.fb.array([]),
+			custom_deductions: this.fb.array([]),
+			
 		});
 
 		this.settlement_additions = this.contractsForm.get(
@@ -139,6 +148,12 @@ export class SettlementEditComponent implements OnInit {
 		) as FormArray;
 		this.settlement_deductions = this.contractsForm.get(
 			'settlement_deductions'
+		) as FormArray;
+		this.custom_additions = this.contractsForm.get(
+			'custom_additions'
+		) as FormArray;
+		this.custom_deductions = this.contractsForm.get(
+			'custom_deductions'
 		) as FormArray;
 	}
 
@@ -175,6 +190,13 @@ export class SettlementEditComponent implements OnInit {
 	get settlementAdditionsGroup(): FormArray {
 		return this.contractsForm.get('settlement_additions') as FormArray;
 	}
+	get customDeductionsGroup(): FormArray {
+		return this.contractsForm.get('custom_deductions') as FormArray;
+	}
+	get customAdditionsGroup(): FormArray {
+		return this.contractsForm.get('custom_additions') as FormArray;
+	}
+
 
 	newSettlementDeductions(deductions: payrollDeduction[]): FormGroup {
 		// console.log(deductions);
@@ -218,6 +240,22 @@ export class SettlementEditComponent implements OnInit {
 		console.log(form);
 		return form;
 	}
+		
+	newCustomDeductions(customDeductions?:any): FormGroup {
+		return this.fb.group({
+			name: [customDeductions?.name?customDeductions.name:'', Validators.compose([Validators.required])],
+			amount: [customDeductions?.amount?customDeductions.amount:'', Validators.compose([Validators.required])],
+			
+		}) ;
+	}
+	newCustomAdditions(customAdditions?:any): FormGroup {
+		return this.fb.group({
+			name: [customAdditions?.name?customAdditions.name:'', Validators.compose([Validators.required])],
+			amount: [customAdditions?.amount?customAdditions.amount:'', Validators.compose([Validators.required])],
+			
+		}) ;
+	}
+
 
 	async getDatas() {
 		await this.global.showLoading();
@@ -266,33 +304,39 @@ export class SettlementEditComponent implements OnInit {
 //   this.global.httpPost('settlement/detail',{id:this.settlementId }).subscribe(
 //     async (res:any) => {
       console.log(res);
-      // this.contractsForm.patchValue(res)
+    //   this.contractsForm.patchValue(res)
 	//   setTimeout(() => {
 		  this.contractsForm.get('calc_bonus_monthly').setValue(res.calc_bonus_monthly)
+		  this.contractsForm.get('settlement_received').setValue(res.settlement_received)
 		  this.contractsForm.get('calc_new_year_gift_monthly').setValue(res.calc_new_year_gift_monthly)
 		  this.contractsForm.get('calc_severance_pay_monthly').setValue(res.calc_severance_pay_monthly)
 		  this.contractsForm.get('calc_children_allowance_monthly').setValue(res.calc_children_allowance_monthly)
 		  this.contractsForm.get('calc_housing_allowance_monthly').setValue(res.calc_housing_allowance_monthly)
 		  this.contractsForm.get('calc_grocery_allowance_monthly').setValue(res.calc_grocery_allowance_monthly)
 		  this.contractsForm.get('calc_wage_monthly').setValue(res.calc_wage_monthly)
-		  this.contractsForm.get('children_allowance').setValue(res.children_allowance)
-		  this.contractsForm.get('housing_allowance').setValue(res.housing_allowance)
-		  this.contractsForm.get('grocery_allowance').setValue(res.grocery_allowance)
-		  this.contractsForm.get('wage').setValue(res.wage)
-		  this.contractsForm.get('employee_start_date').setValue(res.employee_start_date)
+		  this.contractsForm.get('children_allowance').setValue(res.settlement_additions.children_allowance)
+		  this.contractsForm.get('housing_allowance').setValue(res.settlement_additions?.housing_allowance)
+		  this.contractsForm.get('grocery_allowance').setValue(res.settlement_additions?.grocery_allowance)
+		  this.contractsForm.get('wage').setValue(res.settlement_additions?.wage)
+		//   this.contractsForm.get('employee_start_date').setValue(res.employee_start_date)
 		  this.contractsForm.get('severance_pay_calc_type').setValue(res.severance_pay_calc_type)
 		  this.contractsForm.get('unused_leave_calc_type').setValue(res.unused_leave_calc_type)
 		  this.contractsForm.get('bonus_calc_type').setValue(res.bonus_calc_type)
 		  this.contractsForm.get('new_year_gift_calc_type').setValue(res.new_year_gift_calc_type)
 		  this.contractsForm.get('leave_work_date').setValue(res.leave_work_date)
 		  this.contractsForm.get('settlement_template_id').setValue(res.settlement_template_id)
+		  this.contractsForm.get('description').setValue(res.description)
 		  this.settlementDeductionsGroup.controls[0].get('loan_installment_amount').setValue(res.settlement_deductions.loan_installment_amount)
 		
-		console.log(   this.settlementDeductionsGroup.controls[0].get('loan_installment_amount'));
-		console.log(res.loan_installment_amount);
-	console.log( this.settlementDeductionsGroup.controls[0]);
+	// 	console.log(   this.settlementDeductionsGroup.controls[0].get('loan_installment_amount'));
+	// 	console.log(res.loan_installment_amount);
+	// console.log( this.settlementDeductionsGroup.controls[0]);
+	// this.settlementAdditionsGroup.setValue(res.settlement_additions)
 		  for (const key in res.settlement_additions) {
-			
+			console.log(key);
+			// console.log( this.settlementAdditionsGroup.controls[0].get(
+			// 	key
+			//   ));
 			if (
 			  this.settlementAdditionsGroup.controls[0].get(
 				key
@@ -300,7 +344,7 @@ export class SettlementEditComponent implements OnInit {
 			) {
 			  this.settlementAdditionsGroup.controls[0]
 				.get(key)
-				.setValue(res[key]? 1 : 0);
+				.setValue(res.settlement_additions[key]);
 			}
 			
 			
@@ -315,9 +359,17 @@ export class SettlementEditComponent implements OnInit {
 			) {
 			  this.settlementDeductionsGroup.controls[0]
 				.get(key)
-				.setValue(res[key]? 1 : 0);
+				.setValue(res.settlement_deductions[key]);
 			}
 		  }
+		  res?.custom_additions?.map((item:any)=>{
+
+			this.custom_additions.push(this.newCustomAdditions(item))
+		  })
+		  res?.custom_deductions?.map((item:any)=>{
+
+			this.custom_deductions.push(this.newCustomDeductions(item))
+		  })
 		  this.businessEmployeeId=res.business_employee_id
 		  this.contractsForm.get('business_employee_id').setValue(res.business_employee_id)
 
@@ -335,6 +387,9 @@ export class SettlementEditComponent implements OnInit {
 		if (template) {
 			this.settlementTemplateText = '';
 		}
+		if (!this.setingCalcValue) {
+			
+		
 		if (
 			this.businessEmployeeId&&
 			this.contractsForm.get('settlement_template_id').valid &&
@@ -348,6 +403,8 @@ export class SettlementEditComponent implements OnInit {
 			// domy['business_employee_id']=this.businessEmployeeId
 			await this.global.showLoading();
 			// console.log(domy);
+			this.setingCalcValue=true
+
 
 			this.global
 				.httpPost(
@@ -386,12 +443,17 @@ export class SettlementEditComponent implements OnInit {
 									.setValue(res[key]);
 							}
 						}
-						console.log(this.settlementAdditionsGroup.controls[0].value);
-						console.log(this.settlementDeductionsGroup.controls[0].value);
+						// console.log(this.settlementAdditionsGroup.controls[0].value);
+						// console.log(this.settlementDeductionsGroup.controls[0].value);
+						this.setingCalcValue=false
+
+
 					},
 					async (error: any) => {
 						await this.global.dismisLoading();
 						await this.global.showError(error);
+						this.setingCalcValue=false
+
 						// console.log(error);
 					}
 				);
@@ -404,6 +466,7 @@ export class SettlementEditComponent implements OnInit {
 			// this.contractsForm.get('working_hour_count').markAllAsTouched();
 			// this.contractsForm.get('working_shift_id').markAllAsTouched();
 		}
+	}
 	}
 
 	fillingSettlementTemplateList(data: any) {
@@ -522,6 +585,67 @@ export class SettlementEditComponent implements OnInit {
 			});
 		});
 	}
+
+	removeCustomAdditions(index: number) {
+
+		this.global.showAlert('حذف اضافات',
+		'آیا برای حذف اضافه اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					
+					this.custom_additions.removeAt(index);
+					this.calculatePrices()
+				}
+			});
+		});
+	}
+	removeCustomDeductions(index: number) {
+
+		this.global.showAlert('حذف کسورات',
+		'آیا برای حذف کسر اطمینان دارید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					
+					this.custom_deductions.removeAt(index);
+					this.calculatePrices()
+				}
+			});
+		});
+	}
+	
+	addAnotherCustomAdditions() {
+		// this.businessAddress.push(this.businessAddress.length + 1);
+		this.custom_additions.push(this.newCustomAdditions());
+		// console.log(this.addressFormGroup);
+	}
+	addAnotherCustomDeductions() {
+		// this.businessAddress.push(this.businessAddress.length + 1);
+		this.custom_deductions.push(this.newCustomDeductions());
+		// console.log(this.addressFormGroup);
+	}
+
 	async onSubmit(){
 		if (this.contractsForm.valid) {
 			await this.global.showLoading()

@@ -25,8 +25,16 @@
 	</div>
 	<main>
 		<!-- انتخاب کسب و کار -->
-		<div class="col-md-12" *ngIf="businessList && businessList.length">
-			<div class="form-input mb-3">
+		<div class="container">
+			<div class="col-12 my-4">
+				<div class="title-1">
+					<h2 class="title"> اطلاعات اولیه حکم</h2>
+					<!-- <p class="dsec">قسمت اول مشخص کردن افراد در حکم
+					</p> -->
+				</div>
+			</div>
+		<div class="col-md-12 px-0" *ngIf="businessList && businessList.length">
+			<div class="form-input mb-3 mx-0">
 				<label> کسب کار</label>
 				<ng-select bindLabel="name" bindValue="id" [clearable]="false" [items]="businessList"
 					loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب و کاری یافت نشد"
@@ -37,7 +45,7 @@
 		</div>
 		<!-- *ngIf="employerList && employerList.length" -->
 		<!-- انتحاب کارفرما -->
-		<div class="col-md-12">
+		<div class="col-md-12 px-0">
 			<div class="form-input mb-3">
 				<label> کارفرما</label>
 				<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true" [readonly]="true"
@@ -50,27 +58,28 @@
 
 			</div>
 		</div>
-
+</div>
 		<form [formGroup]="sentenceForm" (ngSubmit)="onSubmit()">
 			<!--  -->
 			<div class="container mt-4">
 				<!-- step 0  -->
 				<div class="row mb-4" *ngIf=" step === 1 ">
-					<div class="col-12 my-4">
+					<!-- <div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">تکمیل اطلاعات اولیه حکم</h2>
 							<p class="dsec">قسمت اول مشخص کردن افراد در حکم
 							</p>
 						</div>
-					</div>
+					</div> -->
+
 					<!-- انتحاب کارمندان -->
 					<!-- (add)="AddAlowences($event)"
 	(remove)="removeAlowences($event)"
 	(change)="calcChildrenAllowance();" -->
 					<div *ngIf=" !employeeLoading" class="col-md-12">
 						<div class="form-input mb-3" *ngIf="employeeList && employeeList.length">
-							<label>انتخاب کارمندان</label>
-							<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"
+							<label> کارمندان</label>
+							<ng-select [readonly]="true" [clearable]="false" placeholder="انتخاب کنید" [multiple]="true"
 								formControlName="business_employee_ids" loadingText="لطفا صبر کنید ..."
 								notFoundText="مناسفانه کارمندی یافت نشد">
 								<ng-option *ngFor="let item of employeeList" [value]="item.business_employee_id">
@@ -90,7 +99,7 @@
 								<app-validator #validation [control]="sentenceForm.controls['business_employee_ids']"
 									[controlName]="'انتخاب کارمندان '"></app-validator>
 							</span>
-							<span class="hint">کارمندان در این حکم را اضافه کنید .</span>
+							<!-- <span class="hint">کارمندان در این حکم را اضافه کنید .</span> -->
 						</div>
 
 
@@ -233,7 +242,7 @@
 						<!-- extra fileds -->
 						<div class="form-input mb-3">
 							<label>
-								<span>حق مسولیت</span>
+								<span>حق مسئولیت</span>
 								<span> (ساعتی)</span>
 							</label>
 							<!-- (ionChange)="CalculationField()"  -->
@@ -241,7 +250,7 @@
 								formControlName="trust_allowance"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="sentenceForm.controls['trust_allowance']"
-									[controlName]="'حق مسولیت'"></app-validator>
+									[controlName]="'حق مسئولیت'"></app-validator>
 							</span>
 							<span class="hint">مبلغ به ریال است</span>
 						</div>
@@ -257,7 +266,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه حق سنوات به صورت ماهانه</ion-label>
-								<ion-toggle color="success" formControlName="has_monthly_severance_pay" slot="start">
+								<ion-toggle (ionChange)="CalculationField()" color="success" formControlName="has_monthly_severance_pay" slot="start">
 								</ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -265,7 +274,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه پاداش به صورت ماهانه</ion-label>
-								<ion-toggle color="success" formControlName="has_monthly_bonus" slot="start">
+								<ion-toggle (ionChange)="CalculationField()" color="success" formControlName="has_monthly_bonus" slot="start">
 								</ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -273,7 +282,7 @@
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
 								<ion-label>محاسبه عیدی به صورت ماهانه</ion-label>
-								<ion-toggle color="success" formControlName="has_monthly_new_year_gift" slot="start">
+								<ion-toggle (ionChange)="CalculationField()" color="success" formControlName="has_monthly_new_year_gift" slot="start">
 								</ion-toggle>
 							</ion-item>
 						</ion-card>

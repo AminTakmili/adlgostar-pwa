@@ -44,7 +44,7 @@
 						<div class="row">
 							<div class="dscription"  [class.col-12]="!true" [class.col-7]="true" [innerHTML]="dataList.content|safeHtml"></div>
 							
-														<ion-button  class="col-3" *ngIf="global.userPermision['payrolls_payroll_add']&&true" shape="round" color="success" (click)="submitPayroll()">
+														<ion-button  class="col-3" *ngIf="global.userPermision['payrolls_payroll_add']&&dataList.type=='add_payroll_request'" shape="round" color="success" (click)="submitPayroll()">
 															<ion-icon slot="start" name="add-circle"></ion-icon>
 															فیش حقوقی
 														</ion-button>

@@ -1,0 +1,35 @@
+<ion-header mode="md">
+	<ion-toolbar color="white">
+		<ion-title class="font-size-14"> قراردادهای تایید نشده </ion-title>
+		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} قرار داد</ion-badge>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div *ngIf="!loading && !dataList.length" class="empty-item">
+		<ion-icon name="document"></ion-icon>
+		<p>قرار داد تایید نشده ای یافت نشد.</p>
+	</div>
+	<div *ngIf="loading || dataList.length" class="listItem">
+		<div class="bookmark">
+			<ion-item color="white" lines="full" *ngFor="let item of dataList"
+				[routerLink]="['/contracts/detail/',item.id]" detail>
+				<ion-icon color="primary" name="document-text" slot="start"></ion-icon>
+				<ion-label>
+					<h2 class="font-size-10">{{ item.title }}</h2>
+          <span class="sub-title d-none d-sm-inline-flex">
+       ( شروع : {{item.start_date}} پایان: {{item.end_date}} )
+          </span>
+					<p>
+						<ion-text class="font-size-12" color="medium">کسب و کار : {{ item.business_info.name }}
+						</ion-text>
+					</p>
+				</ion-label>
+			</ion-item>
+		</div>
+	</div>
+	<!--  -->
+	<ion-infinite-scroll threshold="20" *ngIf="!this.end" (ionInfinite)="getData($event)">
+		<ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!--  -->
+</ion-content>

@@ -1,0 +1,43 @@
+
+<ion-header mode="md">
+	<ion-toolbar color="white">
+		<ion-title class="font-size-14"> فیش های حقوقی تایید نشده </ion-title>
+		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} فیش حقوقی</ion-badge>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div *ngIf="!loading && !dataList.length" class="empty-item">
+		<ion-icon name="document"></ion-icon>
+		<p>فیش حقوقی تایید نشده یافت نشد.</p>
+	</div>
+	<div *ngIf="loading || dataList.length" class="listItem">
+		<ion-accordion-group expand="inset">
+			<ion-accordion *ngFor="let item of dataList" [value]="item.business_name+'_'+item.year+'_'+item.month" >
+			  <ion-item slot="header" color="light">
+				<ion-label> {{global.getMonthName[item.month]+'_'+item.year }} </ion-label>
+				<span class="business_name">
+					( {{item.business_name}} )
+				</span>
+				<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ item.payrolls.length }} فیش حقوقی</ion-badge>
+
+			  </ion-item>
+			  <div class="ion-padding" slot="content"mode="md">
+				  <ion-segment [scrollable]="true" value="heart" >
+					  <ion-segment-button  *ngFor="let payroll of item.payrolls; index as index" [value]="payroll.id" [routerLink]="['/payrolls/payroll/detail',payroll.id]">
+					 <span>
+						{{index+1}} - {{payroll.employee_name}}
+					 </span> 
+					  </ion-segment-button>
+					
+					</ion-segment>
+			  </div>
+			</ion-accordion>
+			
+		  </ion-accordion-group>
+	</div>
+	<!--  -->
+	<ion-infinite-scroll threshold="20" *ngIf="!this.end" (ionInfinite)="getData($event)">
+		<ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!--  -->
+</ion-content>

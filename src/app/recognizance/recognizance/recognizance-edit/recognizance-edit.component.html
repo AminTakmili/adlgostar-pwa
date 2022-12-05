@@ -1,0 +1,259 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title">افزودن تعهدنامه جدید</h1>
+					<p class="dsec">در این قسمت شما میتوانید یک تعهدنامه جدید اضافه کنید
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-auto">
+				<ion-button shape="round" color="medium" fill="outline">
+					<ion-back-button defaultHref="recognizance/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+					</ion-back-button>
+					<!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+					بازگشت -->
+				</ion-button>
+			</div>
+		</div>
+	</div>
+	<main>
+		<form [formGroup]="contractsForm" (ngSubmit)="onSubmit()">
+			<!--  -->
+			<div class="container mt-4">
+
+				<div class="row mb-4">
+					<div class="col-12 my-4">
+						<div class="title-1">
+							<h2 class="title">تکمیل اطلاعات اولیه تعهدنامه</h2>
+							<p class="dsec"> مشخص کردن فرد درون تعهدنامه و قالب های تعهدنامه
+							</p>
+						</div>
+					</div>
+					<!-- انتخاب کسب و کار -->
+					<!-- *ngIf="businessList && businessList.length" -->
+					<div class="col-md-12">
+						<div class="form-input mb-3">
+							<label>انتخاب کسب کار</label>
+							<!-- <ng-select
+								bindLabel="name"
+								bindValue="id"
+								[clearable]="false"
+								[items]="businessList"
+								placeholder="انتخاب کنید"
+								(change)="GetEmployee()"
+								formControlName="business_id"
+								>
+								</ng-select> -->
+
+							<ng-select [items]="businesslist$ | async" placeholder="انتخاب کسب و کار"
+								[loading]="businessInputLoading" bindLabel="name" bindValue="id"
+								typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+								[typeahead]="businessInput$" formControlName="business_id" [clearable]="true"
+								(change)="GetEmployee()" loadingText="لطفا صبر کنید ..."
+								notFoundText="مناسفانه کسب و کاری یافت نشد">
+							</ng-select>
+
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['business_id']"
+									[controlName]="'انتخاب کسب و کار '"></app-validator>
+							</span>
+							<span class="hint"> این قرارداد برای کدام کسب کار است </span>
+						</div>
+					</div>
+
+					<!-- انتحاب کارمندان -->
+					<div class="col-md-12" *ngIf="employeeList && employeeList.length">
+						<div class="form-input mb-3">
+							<label>انتخاب کارمندان</label>
+							<ng-select [clearable]="false" placeholder="انتخاب کنید" [multiple]="false"
+								formControlName="employee_ids" (change)="changeEmployee($event);">
+								<!-- (add)="AddEmployee($event)"
+								(remove)="removeEmployee($event)" -->
+								<ng-option *ngFor="let item of employeeList" [value]="item.id">
+									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
+									<span class="font-size-12">
+										سمت : {{ item.business_employee_info[0].business.posts[0].name }}
+										| حقوق خالص : {{ item.business_employee_info[0].net_income }}
+										| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
+										| ساعت کاری در شب :
+										{{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }}
+										ساعت
+										| بیمه {{ item.business_employee_info[0].has_insurance ? 'دارد' : 'ندارد' }}
+
+									</span>
+								</ng-option>
+							</ng-select>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['employee_ids']"
+									[controlName]="'انتخاب کارمندان '"></app-validator>
+							</span>
+							<span class="hint">کارمندان در این تعهدنامه را اضافه کنید .</span>
+						</div>
+					</div>
+
+					<!-- عنوان تعهدنامه -->
+					<div class="col-md-12 ">
+						<div class="form-input mb-3">
+							<label>زمان شروع تعهدنامه</label>
+							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
+								dateFormat="jYYYY/jMM/jDD">
+								<input type="text" formControlName="start_date" />
+							</ng-persian-datepicker>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['start_date']"
+									[controlName]="'زمان شروع تعهدنامه'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- عنوان تعهدنامه -->
+					<div class="col-md-12 ">
+						<div class="form-input mb-3">
+							<label>عنوان تعهدنامه</label>
+							<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['title']"
+									[controlName]="'نام شرکت'"></app-validator>
+							</span>
+							<span class="hint">برای تعهدنامه خود یک عنوان انتخاب کنید</span>
+						</div>
+					</div>
+					<!--  -->
+					<!-- انتخاب قالب header تعهدنامه -->
+
+					<div formArrayName="recognizance_header_template_info" class="col-12">
+						<div *ngFor="let item of contractHeaderTemplateInfoListGroup.controls ; let i = index"
+							[formGroupName]="i">
+							<div class="form-input mb-3">
+
+								<label>قالب سربرگ تعهدنامه
+								</label>
+								<ng-select formControlName="recognizance_header_template_id" bindLabel="name" bindValue="id"
+									[items]="contractHeaderTemplatelist" placeholder="انتخاب کنید" [clearable]="true"
+									(change)="setHeaderContractTheme()">
+								</ng-select>
+								<span class="error">
+									<app-validator #validation
+										[control]="item.get('recognizance_header_template_id')"
+										[controlName]="'قالب تعهدنامه'">
+									</app-validator>
+								</span>
+								<span class="hint">از بین قالب های سربرگ تعهدنامه یک قالب را انتخاب کنید.</span>
+							</div>
+							<!-- header txt -->
+							<div *ngIf="this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').value"
+								class="form-input mb-3">
+								<label>سربرگ</label>
+								<ckeditor name="myckeditor" formControlName="header_text" [config]="ckeConfig">
+								</ckeditor>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['header_text']"
+										[controlName]="'قالب تعهدنامه'"></app-validator>
+								</span>
+								<span class="hint"></span>
+							</div>
+
+						</div>
+					</div>
+					<!-- انتخاب قالب تعهدنامه -->
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label>قالب تعهدنامه</label>
+							<ng-select formControlName="recognizance_template_id" bindLabel="name" bindValue="id"
+								[items]="recognizanceTemplatelist" placeholder="انتخاب کنید" [clearable]="false"
+								(change)="setContractTheme()">
+							</ng-select>
+							<span class="error">
+								<app-validator #validation
+									[control]="contractsForm.controls['recognizance_template_id']"
+									[controlName]="'قالب تعهدنامه'">
+								</app-validator>
+							</span>
+							<span class="hint">از بین قالب های تعهدنامه یک قالب را انتخاب کنید.</span>
+						</div>
+					</div>
+
+					<!-- تعهدنامه -->
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label> تعهدنامه</label>
+							<ckeditor name="myckeditor" formControlName="main_text" [config]="ckeConfig"></ckeditor>
+							<span class="error">
+								<app-validator #validation [control]="contractsForm.controls['main_text']"
+									[controlName]="'قالب تعهدنامه'"></app-validator>
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!--  -->
+
+					<!--  -->
+
+					<!-- نوشته ی انتهای تعهدنامه -->
+					<div class="col-12">
+						<div class="form-input mb-3">
+							<label> متن انتهای تعهدنامه</label>
+							<ckeditor name="myckeditor" formControlName="end_text" [config]="ckeConfig"></ckeditor>
+							<span class="error">
+								<!-- <app-validator #validation [control]="contractsForm.controls['end_text']" [controlName]="'متن انتهای تعهدنامه '"></app-validator> -->
+							</span>
+							<span class="hint"></span>
+						</div>
+					</div>
+					<!-- انتخاب قالب footer تعهدنامه -->
+
+					<div formArrayName="recognizance_footer_template_info" class="col-12">
+						<div *ngFor="let item of contractFooterTemplateInfoListGroup.controls ; let i = index"
+							[formGroupName]="i">
+							<div class="form-input mb-3">
+								<label>قالب پاورقی تعهدنامه</label>
+								<ng-select formControlName="recognizance_footer_template_id" bindLabel="name" bindValue="id"
+									[items]="contractFooterTemplatelist" placeholder="انتخاب کنید" [clearable]="true"
+									(change)="setFooterContractTheme()">
+								</ng-select>
+								<span class="error">
+									<app-validator #validation
+										[control]="contractsForm.controls['recognizance_footer_template_id']"
+										[controlName]="'قالب پاورقی تعهدنامه'">
+									</app-validator>
+								</span>
+								<span class="hint">از بین قالب های پاورقی تعهدنامه یک قالب را انتخاب کنید.</span>
+							</div>
+							<!-- header txt -->
+							<div *ngIf="this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').value"
+								class="form-input mb-3">
+								<label>پاورقی</label>
+								<ckeditor name="myckeditor" formControlName="footer_text" [config]="ckeConfig">
+								</ckeditor>
+								<span class="error">
+									<app-validator #validation [control]="contractsForm.controls['footer_text']"
+										[controlName]="'قالب پاورقی تعهدنامه'"></app-validator>
+								</span>
+								<span class="hint"></span>
+							</div>
+
+						</div>
+					</div>
+					<div class="col-12">
+						<hr>
+					</div>
+				</div>
+
+				<div class="row mb-5 justify-content-end">
+
+
+
+					<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ویرایش تعهدنامه
+					</ion-button>
+
+				</div>
+			</div>
+		</form>
+	</main>
+</ion-content>

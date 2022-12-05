@@ -28,9 +28,10 @@ export class DashboardNearestBirthdayComponent implements OnInit {
 
 	async getData() {
 		this.loading = true;
-		await this.global.httpPost('dashboard/nearbyBirthdays', {
+		await this.global.httpPost('employerDashboard/employeeNearbyBirthdays', {
 			limit: this.limit,
-			offset: this.offset
+			offset: this.offset,
+			day :20
 		}).subscribe(async (res: any) => {
 			console.log(res);
 			this.dataList = res.list.map((item:any)=>{

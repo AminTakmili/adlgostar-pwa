@@ -53,6 +53,11 @@ const routes: Routes = [
     component: BusinessImporterComponent,
 	canActivate: [LoginGuard]
   },
+  {
+    path: 'report',
+    loadChildren: () => import('./business-report/business-report.module').then( m => m.BusinessReportPageModule)
+  },
+
 
 ];
 

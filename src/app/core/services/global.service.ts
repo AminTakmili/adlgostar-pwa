@@ -291,7 +291,7 @@ export class GlobalService {
 
 	setUserInfo() {
 		this.storage.get('user').then((val) => {
-			if (Object.keys(val).length) {
+			if (val&&Object.keys(val)?.length) {
 				this.changeLogin(true);
 				this.user = new User().deserialize(val);
 				this._user.next(this.user);

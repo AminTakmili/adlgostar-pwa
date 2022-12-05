@@ -191,6 +191,114 @@
 							<span class="hint">حداکثر 1024 در 768 پیکسل</span>
 						</div>
 					</div>
+
+
+					<div class="col-12">
+						<div class="title-1 my-4">
+							<h2 class="title">پسورد اولیه کارفرما</h2>
+							<p> در صورت نیاز پسورد اولیه برای کارفرما تعیین کنید. </p>
+
+						</div>
+						<div class="row my-4" >
+
+							<div class="form-input input-progress col-6 ">
+								<label>رمز عبور </label>
+								<div class="input-raper">
+									<ion-icon *ngIf="!paswordChecker.totalValid" name="lock-closed"></ion-icon>
+									<ion-icon *ngIf="paswordChecker.totalValid" name="lock-open"></ion-icon>
+									<ion-input [clearOnEdit]="false" #passwordinput type="password" formControlName="password" (ionChange)="checkPassword($event)" autofocus="true" autocomplete="new-pass">
+									</ion-input>
+									
+									<ion-buttons slot="end">
+									  <ion-button shape="round" (click)="togglePasswordShow(passwordinput)">
+						  
+										<ion-icon *ngIf="passwordinput.type!=='text'" slot="end" name="eye"></ion-icon>
+										<ion-icon *ngIf="passwordinput.type=='text'" slot="end" name="eye-off"></ion-icon>
+									  </ion-button>
+										
+									</ion-buttons>
+						  
+								  </div>
+								  <ion-progress-bar [color]="paswordBarColor" [value]="paswordBarValue"></ion-progress-bar>
+								<span class="error">
+									<!-- <app-validator [control]="passwordForm.controls['verifycode']"
+										[controlName]="'کد 5 رقمی'"></app-validator> -->
+
+									<ion-item lines="full">
+										<ion-icon *ngIf="!paswordChecker.minLengthFive" color="danger" name="close" slot="start"></ion-icon>
+										<ion-icon *ngIf="paswordChecker.minLengthFive"color="success" name="checkmark" slot="start"></ion-icon>
+										<ion-label>  حداقل 5 کارکتر </ion-label>
+									</ion-item>
+									<ion-item lines="full">
+										<ion-icon *ngIf="!paswordChecker.hasCharecter" color="danger" name="close" slot="start"></ion-icon>
+										<ion-icon *ngIf="paswordChecker.hasCharecter"color="success" name="checkmark" slot="start"></ion-icon>
+										<ion-label>حداقل شامل یکی از کارکتر های مجاز 
+											<br>
+										<span >
+											({{'$@!%*/?&#^_. +'}})
+										</span></ion-label>
+										
+									</ion-item>
+									<ion-item lines="full">
+										<ion-icon *ngIf="!paswordChecker.hasEnglishWord" color="danger" name="close" slot="start"></ion-icon>
+										<ion-icon *ngIf="paswordChecker.hasEnglishWord" color="success" name="checkmark" slot="start"></ion-icon>
+										<ion-label> حداقل شامل یک حرف انگلیسی </ion-label>
+									</ion-item>
+									<ion-item lines="full">
+										<ion-icon *ngIf="!paswordChecker.hasNumber" color="danger" name="close" slot="start"></ion-icon>
+										<ion-icon *ngIf="paswordChecker.hasNumber" color="success" name="checkmark" slot="start"></ion-icon>
+										<ion-label> حداقل شامل یک عدد </ion-label>
+									</ion-item>
+								</span>
+							
+								
+							</div>
+							<div class="form-input input-progress col-6 confirm-password">
+								<label>تکرار رمز عبور </label>
+								<div class="input-raper">
+									<ion-icon *ngIf="!paswordChecker.totalValid||editForm.value.password!=editForm.value.confirmPassword" name="lock-closed"></ion-icon>
+									<ion-icon  *ngIf="paswordChecker.totalValid&&editForm.value.password==editForm.value.confirmPassword" name="lock-open"></ion-icon>
+									<ion-input [clearOnEdit]="false" #confirmPasswordInput type="password" formControlName="confirmPassword"  autofocus="true" autocomplete="new-pass">
+									</ion-input>
+									
+									<ion-buttons slot="end">
+									  <ion-button shape="round" (click)="togglePasswordShow(confirmPasswordInput)">
+					
+										<ion-icon  *ngIf="confirmPasswordInput.type!=='text'" slot="end" name="eye"></ion-icon>
+										<ion-icon  *ngIf="confirmPasswordInput.type=='text'" slot="end" name="eye-off"></ion-icon>
+									  </ion-button>
+										
+									</ion-buttons>
+						  
+								  </div>
+								  <!-- <ion-progress-bar [color]="paswordBarColor" [value]="paswordBarValue"></ion-progress-bar> -->
+								<span class="error">
+									<!-- <app-validator [control]="passwordForm.controls['verifycode']"
+										[controlName]="'کد 5 رقمی'"></app-validator> -->
+										<div class="ion-text-right" *ngIf="editForm.value.confirmPassword&&editForm.value.password!=editForm.value.confirmPassword">
+											<ion-text #text class="validation-text" color="danger">
+												
+												تکرار رمز عبور با رمز عبور واردشده برار نیست
+											</ion-text>
+										  </div>
+										
+
+								</span>
+							
+								<div class="hint">
+
+									<!-- <hr> -->
+									<!-- href="/login/forgetpassword" -->
+<!-- 										
+									<p>رمز عبور خود را فراموش کرده ام !! <a (click)="backtoPasswordSlide()">فراموشی
+											رمز عبور</a>
+									</p> -->
+								</div>
+							</div>
+
+						</div>
+					</div>
+
 					<!--  -->
 					<div class="col-12"><hr></div>
 					<!--  -->

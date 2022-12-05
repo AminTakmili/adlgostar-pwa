@@ -15,10 +15,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { PipeModule } from './core/pipes/pipe.module';
+import { AftersecendloadeDirective } from './core/directives/aftersecendloade.directive';
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+//   AftersecendloadeDirective
 	],
 	entryComponents: [],
 	imports: [

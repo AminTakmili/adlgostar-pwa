@@ -1,3 +1,5 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { error } from 'src/app/core/models/other.models';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { BusinessList } from 'src/app/core/models/business.model';
@@ -17,6 +19,8 @@ import {
 } from 'rxjs/operators';
 import { payroll } from 'src/app/core/models/payroll-base-info.model';
 import * as moment from 'jalali-moment';
+import * as _ from 'lodash';
+
 @Component({
 	selector: 'app-payroll-list-new-add',
 	templateUrl: './payroll-list-new-add.component.html',
@@ -29,6 +33,8 @@ export class PayrollListNewAddComponent implements OnInit {
 
 	yeraNumber!: number;
 	monthNumber!: number;
+	isInverse: boolean=false;
+	segmentType: string='manual';
 	yearsList!: DataSets[];
 	monthList!: Array<{
 		name: string;
@@ -43,17 +49,26 @@ export class PayrollListNewAddComponent implements OnInit {
 	loading: boolean = false;
 	businessId: string;
 
+	errors : error[] = [];
+	addForm: FormGroup;
+
+
 	constructor(
 		private navCtrl: NavController,
 		public global: GlobalService,
 		private seo: SeoService,
+		private fb: FormBuilder,
+
 		public route: ActivatedRoute
 	) {
-
+		this.addForm = this.fb.group({
+			file: ['', Validators.compose([Validators.required])],
+		});
 	}
 
 	ngOnInit() {
 		// this.getData()
+
 	}
 
 	async ionViewWillEnter() {
@@ -96,9 +111,9 @@ export class PayrollListNewAddComponent implements OnInit {
 		// );
 
 		
-		console.log(this.businessId);
+		// console.log(this.businessId);
 		if (this.businessId) {
-		console.log("object");
+		// console.log("object");
 			this.getBusinessById(this.businessId);
 		} else {
 			// this.loadbusiness();
@@ -116,7 +131,16 @@ export class PayrollListNewAddComponent implements OnInit {
 
 	async getData() {
 		this.datasList = [];
+		if (this.segmentType=='manual') {
+			this.getImportManualData()
+		}else{
+			this.getExcelManualData()
+		}
 
+		
+		// console.log( this.datasList);
+	}
+	async getImportManualData(){
 		if (this.monthNumber && this.yeraNumber && this.business_id) {
 			this.loading = true;
 
@@ -131,15 +155,8 @@ export class PayrollListNewAddComponent implements OnInit {
 					async (res: any) => {
 						await this.global.dismisLoading();
 						//  console.log(res);
-						this.datasList = res.list.map((item: payroll) => {
-							return new payroll().deserialize(item);
-						});
-
-						this.businesslist$ = of([]);
-
-						this.loadBusiness();
-						// console.log( this.datasList);
-						this.loading = false;
+						this.setData(res.list)
+						
 					},
 					async (error: any) => {
 						await this.global.dismisLoading();
@@ -149,7 +166,100 @@ export class PayrollListNewAddComponent implements OnInit {
 				);
 			//  console.log( this.datasList);
 		}
+	}
+	async getExcelManualData(){
+		this.addForm.markAllAsTouched()
+		if (this.monthNumber && this.yeraNumber && this.business_id&&this.addForm.valid) {
+			this.loading = true;
+
+
+			this.errors=[]
+			var formData: any = new FormData();
+			formData.append("file", this.addForm.get('file').value);
+			formData.append("business_id",  this.business_id);
+			formData.append("year",  this.yeraNumber);
+			formData.append("month",  this.monthNumber);
+
+			await this.global.showLoading('لطفا منتظر بمانید...');
+		
+			if (this.isInverse) {
+				
+				this.global
+					.httpPostFormData('payroll/inverseImport',formData)
+					.subscribe(
+						async (res: any) => {
+							await this.global.dismisLoading();
+							 console.log('payroll/inverseImport:',res);
+							this.setData(res.list)
+							
+						},
+						 async (err: any) => {
+							await this.global.dismisLoading();
+							this.errors = err.error.data.map((item:any)=>{
+								return new error().deserialize(item);
+							});
+							this.errors = _.sortBy(this.errors, ['row']);
+							console.log(this.errors);
+							this.addForm.reset();
+							this.global.showError(err);
+							this.loading = false;
+
+						}
+					);
+			}else{
+			//  console.log( this.datasList);
+			this.global
+				.httpPostFormData('payroll/import', formData)
+				.subscribe(
+					async (res: any) => {
+						await this.global.dismisLoading();
+						 console.log(res);
+						this.setData(res.list)
+						
+					},
+					async (err: any) => {
+						await this.global.dismisLoading();
+						this.errors = err.error.data.map((item:any)=>{
+							return new error().deserialize(item);
+						});
+						this.errors = _.sortBy(this.errors, ['row']);
+						console.log(this.errors);
+						this.addForm.reset();
+						this.global.showError(err);
+						this.loading = false;
+
+					}
+				);
+			}
+		}
+	}
+
+
+	setData(list:payroll[]){
+		this.datasList = list.map((item: payroll) => {
+			return new payroll().deserialize(item);
+		});
+
+		this.businesslist$ = of([]);
+
+		this.loadBusiness();
 		// console.log( this.datasList);
+		this.loading = false;
+	}
+
+	uploadFile(event: any) {
+		const file = (event.target as HTMLInputElement).files[0];
+		console.log(file);
+		// this.addForm.get('file').setValue(file)
+
+		this.addForm.patchValue({
+			file: file,
+		});
+		this.addForm.get('file').updateValueAndValidity();
+		this.getData()
+		if (!this.monthNumber) { this.global.showToast( 'لطفا ماه را انتخاب کنید',700,'top','danger','ios' ) }
+		if ( !this.yeraNumber ) { this.global.showToast( 'لطفا سال را انتخاب کنید',700,'top','danger','ios' ) }
+		if ( !this.business_id) { this.global.showToast( 'لطفا کسب وکار را انتخاب کنید',700,'top','danger','ios' ) }
 	}
 	businessChange() {
 		if (this.businessId) {

@@ -12,7 +12,11 @@ const routes: Routes = [
   {
     path: 'category',
     loadChildren: () => import('./media-category/media-category.module').then( m => m.MediaCategoryPageModule)
-  }
+  },
+  {
+    path: 'uploaded_file_category/list',
+redirectTo:'category'  
+}
 ];
 
 @NgModule({
