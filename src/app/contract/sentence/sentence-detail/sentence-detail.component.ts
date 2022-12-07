@@ -42,7 +42,7 @@ export class SentenceDetailComponent implements OnInit {
       console.log(res);
 
 			this.dataList = new sentence().deserialize(res);
-			this.pageTitle = `حکم قرار داد ${	this.dataList.contract_info.title}`;
+			this.pageTitle = `حکم قرارداد ${	this.dataList.contract_info.title}`;
 			this.setTitle();
 
 			 console.log(this.dataList);

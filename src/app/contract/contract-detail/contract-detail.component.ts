@@ -297,7 +297,7 @@ export class ContractDetailComponent implements OnInit {
 		return await modal.present();
 	}
 	async sendExtend(data: any) {
-		console.log(data);
+		// console.log(data);
 		let senObj = data;
 		senObj['contract_id'] = this.id;
 		await this.global.showLoading();
@@ -312,7 +312,8 @@ export class ContractDetailComponent implements OnInit {
 					'success',
 					'ios'
 				);
-				this.pageChange(1);
+				this.navCtrl.navigateForward('/contracts/list')
+				// this.pageChange(1);
 			},
 			async (error: any) => {
 				await this.global.dismisLoading();

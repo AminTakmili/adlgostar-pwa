@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
 export class FooterTemplateListComponent implements OnInit {
 
   
-	pageTitle: string = "قالب های پاورقی قرار داد";
+	pageTitle: string = "قالب های پاورقی قرارداد";
 
 	limit: number = 10;
 	offset: number = 0;

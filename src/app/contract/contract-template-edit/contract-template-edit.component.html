@@ -24,7 +24,7 @@
 					<div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">{{ pageTitle }}</h2>
-							<p class="dsec">در این قسمت میتوانید  قالب ضمن عقد قرار داد را ویرایش کنید
+							<p class="dsec">در این قسمت میتوانید  قالب ضمن عقد قرارداد را ویرایش کنید
 							</p>
 						</div>
 					</div>
@@ -32,9 +32,9 @@
 					<div class="col-12">
 						<ion-card color="white"  class="my-3 mx-0 overflow-visible" mode="ios">
 							<ion-card-header>
-								<h4 class="mb-3 mt-0">لیست متغییرها در قرار داد </h4>
+								<h4 class="mb-3 mt-0">لیست متغیرها در قرارداد </h4>
 								<div class="search-input-2">
-									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="100" (ionChange)="ChangeSearch($event)"
+									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="1500" (ionChange)="ChangeSearch($event)"
 										placeholder="جستجو در {{ pageTitle }}"></ion-searchbar>
 								</div>
 								<hr>
@@ -134,10 +134,10 @@
 					<!-- عنوان  -->
 					<div class="col-12">
 						<div class="form-input mb-3">
-							<label> قرار داد </label>
+							<label> قرارداد </label>
 							<ckeditor name="myckeditor" formControlName="template" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="editForm.controls['template']" [controlName]="'قالب قرار داد'">
+								<app-validator [control]="editForm.controls['template']" [controlName]="'قالب قرارداد'">
 								</app-validator>
 							</span>
 							<span class="hint"></span>

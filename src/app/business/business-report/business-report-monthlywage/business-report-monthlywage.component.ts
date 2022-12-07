@@ -188,7 +188,7 @@ console.log(dataSetgroupBy);
 				}
 			},
 			title: {
-				text: Object.keys(dataSetgroupBy).length!=1?'دسمزد های ماهیانه':' دسمزد های ماهیانه سال '+Object.keys(dataSetgroupBy)[0],
+				text: Object.keys(dataSetgroupBy).length!=1?'دستمزد های ماهیانه':' دستمزد های ماهیانه سال '+Object.keys(dataSetgroupBy)[0],
 			},
 			subtitle: {
 				text:

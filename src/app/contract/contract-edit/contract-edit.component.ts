@@ -25,7 +25,7 @@ import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalcu
 export class ContractEditComponent implements OnInit {
 
 	@ViewChildren( 'validation' ) validation : QueryList<any>;
-	pageTitle: string = " ویرایش قرار داد ";
+	pageTitle: string = " ویرایش قرارداد ";
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
 	ckeConfig: CKEDITOR.config;
@@ -149,9 +149,9 @@ export class ContractEditComponent implements OnInit {
 
 	setTitle() {
 		this.seo.generateTags({
-			title: 'ویرایش قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: "قرار داد جدی",
+			title: 'ویرایش قرارداد جدید',
+			description: 'قرارداد جدی ',
+			keywords: "قرارداد جدی",
 			isNoIndex: false,
 		});
 	}
@@ -333,6 +333,19 @@ export class ContractEditComponent implements OnInit {
 			this.dataList.provisos.map((item: any) => {
 				this.provisosList.push(this.provisos(item.contract_proviso_template_id, item.proviso_text));
 			});
+			console.log(this.dataList.employee_info);
+			this.dataList.employee_info.map((item:any)=>{
+				console.log(item);
+				console.log(this.dataList.children_allowances);
+				console.log(this.dataList.children_allowances.find((x:any) =>  x.employee_id === item.id));
+				const  allowance = this.dataList.children_allowances.find((x:any) => x.employee_id === item.id).children_allowance ;
+			
+				console.log(allowance);
+				// item.get('children_allowance').setValue(allowance);
+				this.childrenAllowancesList.push(this.childrenAllowance(item.business_employee_id , item.id,allowance ));
+
+			});
+
 
 			setTimeout(() => {
 				this.submitet = false;
@@ -489,7 +502,7 @@ export class ContractEditComponent implements OnInit {
 		if (!this.submitet) {
 
 			if (this.contractsForm.value.contract_year === '') {
-				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				this.global.showToast('سال عقد قرارداد را انتخاب کنید')
 				return;
 			}
 			if (!this.contractsForm.get('is_manual').value) {
@@ -523,7 +536,7 @@ export class ContractEditComponent implements OnInit {
 				if (!this.submitet) {
 					if (this.contractsForm.get('is_manual').value) {
 					if (this.contractsForm.value.contract_year === '') {
-						this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+						this.global.showToast('سال عقد قرارداد را انتخاب کنید')
 						return;
 					}
 		
@@ -559,10 +572,10 @@ export class ContractEditComponent implements OnInit {
 		console.log('addddddddddddddddddddddd',event);
 		const data = this.employeeList.find(x=> x.id === event);
 		this.businessEmpId.push(data.business_employee_info[0].id);
-		this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
+		// this.childrenAllowancesList.push(this.childrenAllowance(data.business_employee_info[0].id , data.id ));
 		this.contractsForm.get('business_employee_ids').setValue(this.businessEmpId);
 		console.log(this.contractsForm.value.business_employee_ids);
-		console.log(this.childrenAllowancesList);
+		// console.log(this.childrenAllowancesList);
 	}
 
 	removeAlowences(event: any) {
@@ -621,7 +634,7 @@ export class ContractEditComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					this.navCtrl.navigateForward('/contracts/list');
-					this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ویرایش شد .');
+					this.global.showToast(' قرارداد با نام  ' + this.contractsForm.value.title + ' ویرایش شد .');
 					this.contractsForm.reset();
 
 				}, async (error: any) => {

@@ -18,7 +18,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class ContractTemplateEditComponent implements OnInit {
 
-	pageTitle: string = "افزودن شروط ضمن قرار داد جدید";
+	pageTitle: string = "افزودن شروط ضمن قرارداد جدید";
 	editForm: FormGroup;
 	businessCatgeories: businessClass[] = [];
 
@@ -155,7 +155,7 @@ export class ContractTemplateEditComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/template');
-					this.global.showToast(' قالب قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
+					this.global.showToast(' قالب قرارداد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
 					this.editForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

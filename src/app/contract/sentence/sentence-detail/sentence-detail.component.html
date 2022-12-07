@@ -80,11 +80,11 @@
 					</div>
 				</div>
 				<div class="row">
-					<!-- اطلاعات حقوق و دستمزد قرار داد -->
+					<!-- اطلاعات حقوق و دستمزد قرارداد -->
 					<div class="col-lg-6">
 						<!--  -->
 						<ion-list class="full-info">
-							<ion-list-header>اطلاعات حقوق و دستمزد قرار داد</ion-list-header>
+							<ion-list-header>اطلاعات حقوق و دستمزد قرارداد</ion-list-header>
 							<ion-item lines="full" color="white">
 								<ion-label>
 									<h2 class="value">{{ dataList?.date }} </h2>
@@ -159,10 +159,10 @@
 						</ion-list>
 					
 					</div>
-					<!-- محاسبات قرار داد -->
+					<!-- محاسبات قرارداد -->
 					<div class="col-lg-6">
 						<ion-list class="full-info">
-							<ion-list-header>محاسبات قرار داد</ion-list-header>
+							<ion-list-header>محاسبات قرارداد</ion-list-header>
 						
 							<ion-item lines="full" color="white">
 								<ion-label>
@@ -190,6 +190,13 @@
 									<h2 class="value">{{ dataList?.calc_unused_leave_monthly ? 'فعال' : 'غیرفعال' }}
 									</h2>
 									<p class="title">محاسبه مرخصی استفاده نشده به صورت ماهانه</p>
+								</ion-label>
+							</ion-item>
+							<ion-item lines="full" color="white">
+								<ion-label>
+									<h2 class="value">{{ dataList?.calc_without_pay_leave_monthly ? 'فعال' : 'غیرفعال' }}
+									</h2>
+									<p class="title">محاسبه مرخصی بدون حقوق</p>
 								</ion-label>
 							</ion-item>
 							<ion-item lines="full" color="white">

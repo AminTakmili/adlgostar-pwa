@@ -7,8 +7,8 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title"> ویرایش قرار داد </h1>
-					<p class="dsec">در این قسمت شما میتوانید قرار داد را ویرایش کنید
+					<h1 class="title"> ویرایش قرارداد </h1>
+					<p class="dsec">در این قسمت شما میتوانید قرارداد را ویرایش کنید
 					</p>
 				</div>
 			</div>
@@ -31,8 +31,8 @@
 				<div class="row mb-4"  *ngIf="dataList">
 					<div class="col-12 my-4">
 						<div class="title-1">
-							<h2 class="title">تکمیل اطلاعات اولیه قرار داد</h2>
-							<p class="dsec">قسمت اول مشخص کردن افراد در قرار داد قالب قرار داد و شروط ضمن عقد قرار داد
+							<h2 class="title">تکمیل اطلاعات اولیه قرارداد</h2>
+							<p class="dsec">قسمت اول مشخص کردن افراد در قرارداد قالب قرارداد و شروط ضمن عقد قرارداد
 							</p>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['business_id']" [controlName]="'انتخاب کسب و کار '"></app-validator>
 								</span>
-								<span class="hint">کارفرما در قرار داد چه کسی باشد</span>
+								<span class="hint">کارفرما در قرارداد چه کسی باشد</span>
 							</div>
 						</div>
 						<!-- انتحاب کارفرما -->
@@ -73,7 +73,7 @@
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارفرما '"></app-validator>
 								</span>
-								<span class="hint">کارفرمایان در این قرار داد را اضافه کنید .</span>
+								<span class="hint">کارفرمایان در این قرارداد را اضافه کنید .</span>
 							</div>
 						</div>
 						<!-- انتحاب کارمندان -->
@@ -92,7 +92,7 @@
 								<ng-option *ngFor="let item of employeeList" [value]="item.id">
 									<div class="font-size-14"><strong>{{item.full_name}}</strong></div>
 									<span class="font-size-12"> سمت : {{ item.business_employee_info[0].business.posts[0].name }}
-										|  تاریخ شروع به کار: {{ item.business_employee_info[0].employee_start_date }}
+										|  تاریخ شروع به کار: <span dir="ltr"> {{ item.business_employee_info[0].employee_start_date }}</span>
 										|  حقوق خالص : {{ item.business_employee_info[0].net_income }}
 										| ساعت کاری در روز : {{ item.business_employee_info[0].work_hours_in_day }} ساعت
 										| ساعت کاری در شب : {{ item.business_employee_info[0].work_hours_in_night ? item.business_employee_info[0].work_hours_in_night : 0 }} ساعت
@@ -103,16 +103,16 @@
 								<span class="error">
 									<app-validator #validation [control]="contractsForm.controls['employee_ids']" [controlName]="'انتخاب کارمندان '"></app-validator>
 								</span>
-								<span class="hint">کارمندان در این قرار داد را اضافه کنید .</span>
+								<span class="hint">کارمندان در این قرارداد را اضافه کنید .</span>
 							</div>
 						</div>
 
-							<!-- انتخاب قالب header قرار داد -->
+							<!-- انتخاب قالب header قرارداد -->
 							
 					<div formArrayName="contract_header_template_info" class="col-12">
 						<div *ngFor="let item of contractHeaderTemplateInfoListGroup.controls ; let i = index" [formGroupName]="i">
 							<div class="form-input mb-3">
-								<label>قالب سربرگ قرار داد</label>
+								<label>قالب سربرگ قرارداد</label>
 								<ng-select
 								
 									formControlName="contract_header_template_id"
@@ -125,17 +125,17 @@
 								>
 								</ng-select>
 								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['contract_header_template_id']"  [controlName]="'قالب قرار داد'">
+									<app-validator #validation [control]="contractsForm.controls['contract_header_template_id']"  [controlName]="'قالب قرارداد'">
 									</app-validator>
 								</span>
-								<span class="hint">از بین قالب های سربرگ قرار داد یک قالب را انتخاب کنید.</span>
+								<span class="hint">از بین قالب های سربرگ قرارداد یک قالب را انتخاب کنید.</span>
 							</div>
 							<!-- header txt -->
 							<div *ngIf="this.contractHeaderTemplateInfoListGroup.controls[0].get('header_text').value" class="form-input mb-3">
 								<label>سربرگ</label>
 								<ckeditor  name="myckeditor" formControlName="header_text" [config]="ckeConfig"></ckeditor>
 								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['header_text']" [controlName]="'قالب قرار داد'"></app-validator>
+									<app-validator #validation [control]="contractsForm.controls['header_text']" [controlName]="'قالب قرارداد'"></app-validator>
 								</span>
 								<span class="hint"></span>
 							</div>
@@ -143,22 +143,22 @@
 						</div>
 					</div>
 
-						<!-- عنوان قرار داد -->
+						<!-- عنوان قرارداد -->
 						<div class="col-md-12 ">
 							<div class="form-input mb-3">
-								<label>عنوان قرار داد</label>
+								<label>عنوان قرارداد</label>
 								<ion-input autocomplete="new-pass" formControlName="title"></ion-input>
 								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['title']" [controlName]="'نام شرکت'"></app-validator>
+									<app-validator #validation [control]="contractsForm.controls['title']" [controlName]="'عنوان قرارداد'"></app-validator>
 								</span>
-								<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
+								<span class="hint">برای قرارداد خود یک عنوان انتخاب کنید</span>
 							</div>
 						</div>
 					<!--  -->
-					<!-- انتخاب قالب قرار داد -->
+					<!-- انتخاب قالب قرارداد -->
 					<div class="col-12">
 						<div class="form-input mb-3">
-							<label>قالب قرار داد</label>
+							<label>قالب قرارداد</label>
 							<ng-select
 								formControlName="contract_template_id"
 								bindLabel="name"
@@ -170,29 +170,29 @@
 							>
 							</ng-select>
 							<span class="error">
-								<app-validator #validation [control]="contractsForm.controls['contract_template_id']"  [controlName]="'قالب قرار داد'">
+								<app-validator #validation [control]="contractsForm.controls['contract_template_id']"  [controlName]="'قالب قرارداد'">
 								</app-validator>
 							</span>
-							<span class="hint">از بین قالب های قرار داد یک قالب را انتخاب کنید.</span>
+							<span class="hint">از بین قالب های قرارداد یک قالب را انتخاب کنید.</span>
 						</div>
 					</div>
 
-					<!-- قرار داد -->
+					<!-- قرارداد -->
 					<div class="col-12" >
 						<div class="form-input mb-3">
-							<label> قرار داد</label>
+							<label> قرارداد</label>
 							<ckeditor name="myckeditor" formControlName="main_text" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator #validation [control]="contractsForm.controls['main_text']" [controlName]="'قالب قرار داد'"></app-validator>
+								<app-validator #validation [control]="contractsForm.controls['main_text']" [controlName]="'قالب قرارداد'"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
 					</div>
 					<!--  -->
-					<!-- شروط ضمن عقد قرار داد -->
+					<!-- شروط ضمن عقد قرارداد -->
 					<div class="col-12" >
 						<div class="form-input mb-3">
-							<label> انتخاب شروط ضمن عقد قرار داد </label>
+							<label> انتخاب شروط ضمن عقد قرارداد </label>
 							<ng-select
 								bindLabel="name"
 								bindValue="id"
@@ -206,23 +206,23 @@
 							</ng-select>
 							<span class="error">
 								<!-- <app-validator
-									[controlName]="'قالب قرار داد'"></app-validator> -->
+									[controlName]="'قالب قرارداد'"></app-validator> -->
 							</span>
-							<span class="hint">اگر شرایطی برای قرار داد دارید از شروط ضمن عقد قرار داد انتخاب
+							<span class="hint">اگر شرایطی برای قرارداد دارید از شروط ضمن عقد قرارداد انتخاب
 								کنید</span>
 						</div>
 					</div>
 					<!--  -->
-					<!-- قرار داد -->
+					<!-- قرارداد -->
 					<div class="col-12" formArrayName="provisos">
 						<div class="row" *ngFor="let item of provisosFormGroup.controls ; let i = index" [formGroupName]="i">
 
 							<div class="col-12" >
 								<div class="form-input mb-3">
-									<label> شروط ضمن عقد قرار داد {{ i }}</label>
+									<label> شروط ضمن عقد قرارداد {{ i }}</label>
 									<ckeditor name="myckeditor"  formControlName="proviso_text" [config]="ckeConfig"></ckeditor>
 									<span class="error">
-										<app-validator [control]="item.get('proviso_text')" [controlName]="'شروط ضمن عقد قرار داد '"></app-validator>
+										<app-validator [control]="item.get('proviso_text')" [controlName]="'شروط ضمن عقد قرارداد '"></app-validator>
 									</span>
 									<span class="hint"></span>
 								</div>
@@ -230,24 +230,24 @@
 						</div>
 					</div>
 
-					<!-- نوشته ی انتهای قرار داد -->
+					<!-- نوشته ی انتهای قرارداد -->
 					<div class="col-12" >
 						<div class="form-input mb-3">
-							<label> متن انتهای قرار داد</label>
+							<label> متن انتهای قرارداد</label>
 							<ckeditor name="myckeditor" formControlName="end_text" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="contractsForm.controls['end_text']" [controlName]="'متن انتهای قرار داد '"></app-validator>
+								<app-validator [control]="contractsForm.controls['end_text']" [controlName]="'متن انتهای قرارداد '"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
 					</div>
 
-					<!-- انتخاب قالب footer قرار داد -->
+					<!-- انتخاب قالب footer قرارداد -->
 							
 					<div formArrayName="contract_footer_template_info" class="col-12">
 						<div *ngFor="let item of contractFooterTemplateInfoListGroup.controls ; let i = index" [formGroupName]="i">
 							<div class="form-input mb-3">
-								<label>قالب پاورقی قرار داد</label>
+								<label>قالب پاورقی قرارداد</label>
 								<ng-select
 									formControlName="contract_footer_template_id"
 									bindLabel="name"
@@ -259,17 +259,17 @@
 								>
 								</ng-select>
 								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['contract_footer_template_id']"  [controlName]="'قالب پاورقی قرار داد'">
+									<app-validator #validation [control]="contractsForm.controls['contract_footer_template_id']"  [controlName]="'قالب پاورقی قرارداد'">
 									</app-validator>
 								</span>
-								<span class="hint">از بین قالب های پاورقی قرار داد یک قالب را انتخاب کنید.</span>
+								<span class="hint">از بین قالب های پاورقی قرارداد یک قالب را انتخاب کنید.</span>
 							</div>
 							<!-- header txt -->
 							<div *ngIf="this.contractFooterTemplateInfoListGroup.controls[0].get('footer_text').value" class="form-input mb-3">
 								<label>پاورقی</label>
 								<ckeditor name="myckeditor" formControlName="footer_text" [config]="ckeConfig"></ckeditor>
 								<span class="error">
-									<app-validator #validation [control]="contractsForm.controls['footer_text']" [controlName]="'قالب پاورقی قرار داد'"></app-validator>
+									<app-validator #validation [control]="contractsForm.controls['footer_text']" [controlName]="'قالب پاورقی قرارداد'"></app-validator>
 								</span>
 								<span class="hint"></span>
 							</div>
@@ -301,7 +301,7 @@
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['employee_start_date']" [controlName]="'زمان شروع به کار'"></app-validator>
 							</span>
-							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
+							<span class="hint">برای قرارداد خود یک عنوان انتخاب کنید</span>
 						</div> -->
 						<!-- زمان شروع قرارداد -->
 						<div  class="form-input mb-3" >
@@ -310,24 +310,24 @@
 								<input type="text"  formControlName="start_date" />
 							 </ng-persian-datepicker>
 							<span class="error">
-								<app-validator #validation [control]="contractsForm.controls['start_date']" [controlName]="'زمان شروع قرار داد '"></app-validator>
+								<app-validator #validation [control]="contractsForm.controls['start_date']" [controlName]="'زمان شروع قرارداد '"></app-validator>
 							</span>
-							<span class="hint">برای قرار داد خود یک عنوان انتخاب کنید</span>
+							<span class="hint">برای قرارداد خود یک عنوان انتخاب کنید</span>
 						</div>
-						<!-- زمان پایان قرار داد -->
+						<!-- زمان پایان قرارداد -->
 						<div  class="form-input mb-3">
 							<label>زمان پایان قرارداد</label>
 							<ng-persian-datepicker (dateOnSelect)="CalculationField();manualCalculatePrices()" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="end_date" />
 							 </ng-persian-datepicker>
 							<span class="error">
-								<app-validator #validation [control]="contractsForm.controls['end_date']" [controlName]="' زمان پایان قرار داد'"></app-validator>
+								<app-validator #validation [control]="contractsForm.controls['end_date']" [controlName]="' زمان پایان قرارداد'"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
-						<!-- سال عقد قرار داد -->
+						<!-- سال عقد قرارداد -->
 						<div class="form-input mb-3">
-							<label>سال عقد قرار داد</label>
+							<label>سال عقد قرارداد</label>
 							<ng-select
 								bindLabel="contract_year"
 								bindValue="contract_year"
@@ -339,13 +339,13 @@
 								>
 							</ng-select>
 							<span class="error">
-								<app-validator #validation [control]="contractsForm.controls['contract_year']" [controlName]="' سال عقد قرار داد'"></app-validator>
+								<app-validator #validation [control]="contractsForm.controls['contract_year']" [controlName]="' سال عقد قرارداد'"></app-validator>
 							</span>
 							<span class="hint"></span>
 						</div>
 						<!-- دستمزد روزانه -->
 						<div class="form-input mb-3">
-							<label>دستمزد روزانه <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>دستمزد  <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(روزانه)</span></label>
 							<ion-input  [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="wage"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['wage']" [controlName]="'دستمزد روزانه'"></app-validator>
@@ -354,7 +354,7 @@
 						</div>
 						<!-- حق سنوات -->
 						<div class="form-input mb-3">
-							<label>حق سنوات<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>حق سنوات<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="severance_pay"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['severance_pay']" [controlName]="'حق سنوات'"></app-validator>
@@ -363,7 +363,7 @@
 						</div>
 						<!-- حق بن -->
 						<div class="form-input mb-3">
-							<label>حق بن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>حق بن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="grocery_allowance"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['name']" [controlName]="'نام شرکت'"></app-validator>
@@ -372,7 +372,7 @@
 						</div>
 						<!-- حق مسکن -->
 						<div class="form-input mb-3">
-							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>حق مسکن <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="housing_allowance"(ionChange)="manualCalculatePrices()"debounce="1000"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['housing_allowance']" [controlName]="'حق مسکن'"></app-validator>
@@ -381,7 +381,7 @@
 						</div>
 						<!-- حق اولاد (برای یک فرزند) -->
 						<!-- <div class="form-input mb-3">
-							<label>حق اولاد (برای یک فرزند) <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>حق اولاد (برای یک فرزند) <span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="!this.contractsForm.get('is_manual').value" autocomplete="new-pass" formControlName="children_allowance"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['children_allowance']" [controlName]="'حق اولاد'"></app-validator>
@@ -390,7 +390,7 @@
 						</div> -->
 						<!-- عیدی -->
 						<div class="form-input mb-3">
-							<label>عیدی<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>عیدی<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="new_year_gift"></ion-input>
 							<span class="error">
 								<app-validator #validation [control]="contractsForm.controls['new_year_gift']" [controlName]="'عیدی '"></app-validator>
@@ -399,7 +399,7 @@
 						</div>
 						<!-- پاداش -->
 						<div class="form-input mb-3">
-							<label>پاداش<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span></label>
+							<label>پاداش<span *ngIf="contractsForm.value.is_hourly_contract">(ساعتی)</span><span *ngIf="!contractsForm.value.is_hourly_contract">(ماهانه)</span></label>
 							<ion-input [readonly]="true" autocomplete="new-pass" formControlName="bonus"></ion-input>
 							<span class="error">
 
@@ -409,7 +409,7 @@
 						</div>
 						<!-- هزینه ی غذا -->
 						<div class="form-input mb-3">
-							<label>هزینه ی غذا</label>
+							<label> هزینه ی غذا ( ماهانه)</label>
 							<ion-input autocomplete="new-pass" formControlName="food_cost"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
@@ -418,7 +418,7 @@
 						</div>
 						<!-- هزینه پانسیون -->
 						<div class="form-input mb-3">
-							<label>هزینه پانسیون</label>
+							<label> هزینه پانسیون (ماهانه)</label>
 							<ion-input autocomplete="new-pass" formControlName="pension_cost"></ion-input>
 							<span class="error">
 								<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
@@ -436,6 +436,7 @@
 								<label >
 									حق اولاد <span [innerText]="returnchildrenAllowanceName(item['value']['employee_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
+									<span *ngIf="!contractsForm.value.is_hourly_contract"> (ماهانه)</span>
 								</label>
 								<ion-input type="number" readonly=""autocomplete="new-pass" formControlName="children_allowance"></ion-input>
 								<span class="error">
@@ -455,6 +456,7 @@
 								<label >
 									<span [innerText]="returnNameExtraField(item['value']['contract_extra_field_id'])"></span>
 									<span *ngIf="contractsForm.value.is_hourly_contract"> (ساعتی)</span>
+									<span *ngIf="!contractsForm.value.is_hourly_contract"> (ماهانه)</span>
 								</label>
 								<ion-input type="number" autocomplete="new-pass" (ionChange)="CalculationField();manualCalculatePrices()" debounce="1000"  formControlName="price"></ion-input>
 								<span class="error">
@@ -467,7 +469,7 @@
 					<div class="col-6 position-sticky top-15" >
 						<!-- title -->
 						<div class="title-1 mb-4">
-							<h2 class="title">عملگرهای قرار داد</h2>
+							<h2 class="title">عملگرهای قرارداد</h2>
 						</div>
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
@@ -507,7 +509,7 @@
 						<!--  -->
 						<ion-card class="mb-4 mx-0" mode="ios">
 							<ion-item color="white" mode="md" lines="none">
-								<ion-label>محاسبه قرار داد به صورت ساعتی</ion-label>
+								<ion-label>محاسبه قرارداد به صورت ساعتی</ion-label>
 								<ion-toggle color="success" (ionChange)="CalculationField();manualCalculatePrices();calcChildrenAllowance();"debounce="1000" formControlName="is_hourly_contract" slot="start"></ion-toggle>
 							</ion-item>
 						</ion-card>
@@ -553,7 +555,7 @@
 						<!-- <ion-button expand="block" type="button" color="dark" shape="round" fill="outline">پاک کردن فرم</ion-button> -->
 					</div>
 					<div class="col-lg-3 col-md-5">
-						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ویرایش  قرار داد</ion-button>
+						<ion-button expand="block" type="submit" color="success" shape="round" fill="solid">ویرایش  قرارداد</ion-button>
 					</div>
 				</div>
 			</div>

@@ -11,7 +11,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class ContractConditionsListComponent implements OnInit {
 
-	pageTitle: string = "شروط ضمن عقد قرار داد";
+	pageTitle: string = "شروط ضمن عقد قرارداد";
 
 	limit: number = 10;
 	offset: number = 0;

@@ -18,7 +18,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class HeaderTemplateAddComponent implements OnInit {
 
 
-	pageTitle: string = "افزودن قالب سربرگ قرار داد جدید";
+	pageTitle: string = "افزودن قالب سربرگ قرارداد جدید";
 
 	addForm: FormGroup;
 
@@ -117,7 +117,7 @@ export class HeaderTemplateAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.global.showToast('قالب قرار داد با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.global.showToast('قالب قرارداد با نام  ' + this.addForm.value.name + ' ثبت شد .');
 					this.navCtrl.navigateForward('/contracts/header/template/list');
 					this.addForm.reset();
 				}, async (error:any) => {

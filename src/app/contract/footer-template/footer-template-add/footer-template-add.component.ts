@@ -18,7 +18,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class FooterTemplateAddComponent implements OnInit {
 
   
-	pageTitle: string = "افزودن قالب پاورقی قرار داد جدید";
+	pageTitle: string = "افزودن قالب پاورقی قرارداد جدید";
 
 	addForm: FormGroup;
 
@@ -117,7 +117,7 @@ export class FooterTemplateAddComponent implements OnInit {
 
 					await this.global.dismisLoading();
 					// console.log(res:any);
-					this.global.showToast('قالب قرار داد با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.global.showToast('قالب قرارداد با نام  ' + this.addForm.value.name + ' ثبت شد .');
 					this.navCtrl.navigateForward('/contracts/footer/template/list');
 					this.addForm.reset();
 				}, async (error:any) => {

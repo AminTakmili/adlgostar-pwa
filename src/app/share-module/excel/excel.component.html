@@ -284,8 +284,9 @@
 		
 
 		<!--* for on item make x cell-->
-		
-		<ng-container  [formGroupName]="i" *appAftersecendloade >
+		<!-- ! reload shel -->
+		<!-- *appAftersecendloade -->
+		<ng-container  [formGroupName]="i"  >
 			<!-- * set value & make input-->
 			<!-- <ion-input [readonly]="detail[0].readonly"  *ngIf="!(i!==0&&index==2)"  [value]="detail[0].value"  [class.title-cell]="i==0"  [class.first-col-cell]="index==0" type="text"  (ionChange)="setvalue(detail[0],$event,item)"  class="cells__input"></ion-input>
 				<select  *ngIf="i!==0&&index==2" [value]="detail[0].value"   (change)="setvalue(detail[0],$event,item)"  class="cells__input" >
@@ -329,10 +330,10 @@
 		</select>
 
 		<!-- مرتب شده بعدیا-->
-		<ion-input  [debounce]="750"   [class.title-cell]="i==0"  [readonly]="item.value.is_inverse!='true'||item.value.is_inverse!=true&&item.value.is_hourly_contract=='تمام وقت'?false:true"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
+		<ion-input  [debounce]="750"   [class.title-cell]="i==0"  [readonly]="((item.value.is_inverse=='false'||item.value.is_inverse==false)&&item.value.is_hourly_contract=='تمام وقت')?false:true"  formControlName="working_day_count"  type="text"  class="cells__input"></ion-input>
 		<!-- {{(item.value.is_inverse)=='true'?false:true}} -->
 		<!-- [readonly]="i==0||calcparametr.indexOf('working_hour_count')!=-1?true:false" -->
-		<ion-input [debounce]="750" [class.title-cell]="i==0" [readonly]="item.value.is_inverse!='true'||item.value.is_inverse!=true&&item.value.is_hourly_contract=='ساعتی'?false:true"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
+		<ion-input [debounce]="750" [class.title-cell]="i==0" [readonly]="((item.value.is_inverse=='false'||item.value.is_inverse==false)&&item.value.is_hourly_contract=='ساعتی')?false:true"  formControlName="working_hour_count"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('addition_hour_friday_or_holiday')!=-1?true:false"  formControlName="addition_hour_friday_or_holiday"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('sum_working_hours')!=-1?true:false"  formControlName="sum_working_hours"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('daily_or_hourly_wage')!=-1?true:false"  formControlName="daily_or_hourly_wage"  type="text"  class="cells__input"></ion-input>
@@ -370,7 +371,9 @@
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('outstation_allowance_price')!=-1?true:false"  formControlName="outstation_allowance_price"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('attract_allowance')!=-1?true:false"  formControlName="attract_allowance"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('trust_allowance')!=-1?true:false"  formControlName="trust_allowance"  type="text"  class="cells__input"></ion-input>
+		
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('hardship_allowance')!=-1?true:false"  formControlName="hardship_allowance"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('operation_bonus')!=-1?true:false"  formControlName="operation_bonus"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('loan_received_amount')!=-1?true:false"  formControlName="loan_received_amount"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('commission')!=-1?true:false"  formControlName="commission"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('car_fuel')!=-1?true:false"  formControlName="car_fuel"  type="text"  class="cells__input"></ion-input>
@@ -390,7 +393,6 @@
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('fund_reserve')!=-1?true:false"  formControlName="fund_reserve"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('fund_reserve_yearly_repay')!=-1?true:false"  formControlName="fund_reserve_yearly_repay"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('purchase_invoice_from_company')!=-1?true:false"  formControlName="purchase_invoice_from_company"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('operation_bonus')!=-1?true:false"  formControlName="operation_bonus"  type="text"  class="cells__input"></ion-input>
 
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('sum_payroll_additions')!=-1?true:false"  formControlName="sum_payroll_additions"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('sum_payroll_deductions')!=-1?true:false"  formControlName="sum_payroll_deductions"  type="text"  class="cells__input"></ion-input>

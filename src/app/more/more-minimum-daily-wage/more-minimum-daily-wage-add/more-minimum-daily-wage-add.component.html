@@ -22,13 +22,13 @@
 		<div class="container">
 			<form [formGroup]="addForm" (submit)="onSubmit()">
 				<div class="row my-4">
-					<!-- سال عقد قرار داد -->
+					<!-- سال عقد قرارداد -->
 					<div class="col-md-12">
 						<div class="form-input mb-3">
-							<label>سال عقد قرار داد</label>
+							<label>سال عقد قرارداد</label>
 							<ion-input (keypress)="global.justNumber($event)" type="phone" autocomplete="new-pass" formControlName="year"></ion-input>
 							<span class="error">
-								<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرار داد'">
+								<app-validator [control]="addForm.controls['year']" [controlName]="'سال عقد قرارداد'">
 								</app-validator>
 							</span>
 							<span class="hint">مثلا 1403</span>

@@ -27,7 +27,7 @@ import { contractExtraField } from 'src/app/core/models/contractExtraField.model
 })
 export class ReportPayrollSeverancepayListComponent implements OnInit {
 
-	pageTitle: string = "قرار داد ها";
+	pageTitle: string = "قرارداد ها";
 
 	limit: number = 10;
 	offset: number = 0;
@@ -283,7 +283,7 @@ export class ReportPayrollSeverancepayListComponent implements OnInit {
 	}
 
 	removeItem(item: contractExtraField) {
-		this.global.showAlert('حذف قرار داد', 'آیا برای حذف اطمینان دارید؟', [
+		this.global.showAlert('حذف قرارداد', 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
 				role: 'yes'
@@ -350,8 +350,8 @@ export class ReportPayrollSeverancepayListComponent implements OnInit {
 		const alert = await this.alertController.create({
 			cssClass: 'my-custom-class',
 			header: item.title,
-			subHeader: 'حذف قرار داد',
-			message : ' حذف افراد از قرار داد'+item.title,
+			subHeader: 'حذف قرارداد',
+			message : ' حذف افراد از قرارداد'+item.title,
 			inputs: employee,
 			buttons: [
 				{

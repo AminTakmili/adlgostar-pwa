@@ -57,6 +57,8 @@ export class PayrollListListComponent implements OnInit {
 	businessInputLoading = false;
 	businessInput$ = new Subject<string>();
 	minLengthTerm = 3;
+	filtered_is_confirmed :number
+
   
 
 	@ViewChildren('searchInp') Search: IonInput;
@@ -92,7 +94,8 @@ export class PayrollListListComponent implements OnInit {
 				limit: this.limit,
 				offset: this.offset,
 				filtered_employee_id:this.employeeId,
-				filtered_business_id:this.businessId
+				filtered_business_id:this.businessId,
+				filtered_is_confirmed:this.filtered_is_confirmed
 			})
 			.subscribe(
 				async (res: any) => {
@@ -200,7 +203,7 @@ export class PayrollListListComponent implements OnInit {
 
 	removeItem(item: contractExtraField) {
 		this.global
-			.showAlert('حذف قرار داد', 'آیا برای حذف اطمینان دارید؟', [
+			.showAlert('حذف قرارداد', 'آیا برای حذف اطمینان دارید؟', [
 				{
 					text: 'بلی',
 					role: 'yes',

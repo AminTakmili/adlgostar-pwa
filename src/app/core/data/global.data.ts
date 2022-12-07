@@ -85,7 +85,7 @@ export const globalData = {
 			function: 'showDetail',
 			submenu: [
 				{
-					name: 'لیست قرار داد ها',
+					name: 'لیست قرارداد ها',
 					url: '/contracts/list',
 					icon: 'document',
 					function: 'showDetail',
@@ -111,7 +111,7 @@ export const globalData = {
 					function: 'showDetail',
 				},
 				{
-					name: 'شروط ضمن قرار داد',
+					name: 'شروط ضمن قرارداد',
 					url: '/contracts/conditions',
 					icon: 'document-lock',
 					function: 'showDetail',

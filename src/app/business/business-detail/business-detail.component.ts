@@ -245,8 +245,8 @@ export class BusinessDetailComponent implements OnInit {
 		const alert = await this.alertController.create({
 			cssClass: 'my-custom-class',
 			header: item.title,
-			subHeader: 'حذف قرار داد',
-			message: ' حذف افراد از قرار داد' + item.title,
+			subHeader: 'حذف قرارداد',
+			message: ' حذف افراد از قرارداد' + item.title,
 			inputs: employee,
 			buttons: [
 				{

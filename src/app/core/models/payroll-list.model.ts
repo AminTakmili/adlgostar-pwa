@@ -55,6 +55,7 @@ export class payrolDetail implements Deserializable {
     count!: number
     sum_payroll_received!: number
     list_confirmed!: boolean
+    is_confirmed:number
 
 
     
@@ -90,7 +91,7 @@ export class payrolDetail implements Deserializable {
         working_friday_price: number;
         unused_leave_amount: number;
         unused_leave:number;
-        used_leave: number;
+        used_leave: string;
         operation_bonus: number;
         outstation_day_count: number;
         outstation_allowance_price: number;
@@ -125,7 +126,7 @@ export class payrolDetail implements Deserializable {
         payment_date: string;
         inverse_payroll_received: number;
         sum_over_night_friday_amounts:number;
-        without_pay_leave:number;
+        without_pay_leave:string;
         without_pay_leave_amount:number
         custom_deductions:Array<custom>
         custom_additions:Array<custom>
@@ -134,16 +135,32 @@ export class payrolDetail implements Deserializable {
  
 
 	deserialize(input: any): this {
-        console.log(this);
-        console.log(  input);
-
+       
         for (const key in input) {
-           if ((typeof input[key])=='string'&&key!='payment_date'&&key!='full_name'&&key!='employee_gender'&&key!='business_name') {
+           if ((typeof input[key])=='string'&&key!='payment_date'&&key!='full_name'&&key!='employee_gender'&&key!='business_name'&&key!='used_leave'&&key!='without_pay_leave') {
             input[key]=Number(input[key])
            }
         }
-       
         Object.assign(this, input);
+        if (input.used_leave&&input.used_leave!='0') {
+            const H=Number(input.used_leave?.split(':')[0])
+            const M=Number(input.used_leave?.split(':')[1])
+            
+            this.used_leave=(H||M)?( (H?(H+' ساعت'):'')+ ((H&&M)?' و ':'') + (M?(M+' دقیقه'):'')):''
+            
+            // this.used_leave= Number(input.used_leave.split(':')[0])? (input.used_leave.split(':')[0] + 'ساعت'):'' + Number(input.used_leave.split(':')[1]) ? ' و '+(input.used_leave.split(':')[1] + 'دقیقه'):''
+        }
+       
+        if (input.without_pay_leave&&input.without_pay_leave!='0') {
+            const H=Number(input.without_pay_leave?.split(':')[0])
+            const M=Number(input.without_pay_leave?.split(':')[1])
+            
+            this.without_pay_leave=(H||M)?((H?(H+' ساعت'):'')+ ((H&&M)?' و ':'') + (M?(M+' دقیقه'):'')):''
+            // this.without_pay_leave= Number(input.without_pay_leave.split(':')[0])? (input.without_pay_leave.split(':')[0] + 'ساعت'):'' + Number(input.without_pay_leave.split(':')[1]) ? (' و '+(input.without_pay_leave.split(':')[1] + 'دقیقه')):''
+
+           
+        }
+
 
 		return this;
 	}

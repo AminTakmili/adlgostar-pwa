@@ -1,13 +1,13 @@
 <ion-header mode="md">
 	<ion-toolbar color="white">
 		<ion-title class="font-size-14"> قراردادهای در حال انقضا </ion-title>
-		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} قرار داد</ion-badge>
+		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} قرارداد</ion-badge>
 	</ion-toolbar>
 </ion-header>
 <ion-content>
 	<div *ngIf="!loading && !dataList.length" class="empty-item">
 		<ion-icon name="document"></ion-icon>
-		<p>قرار داد در حال انقضا یافت نشد.</p>
+		<p>قرارداد در حال انقضا یافت نشد.</p>
 	</div>
 	<div *ngIf="loading || dataList.length" class="listItem">
 		<div class="bookmark">
@@ -17,7 +17,7 @@
 				<ion-label>
 					<h2 class="font-size-10">{{ item.title }}</h2>
 					<p>
-						<ion-text class="font-size-12" color="medium">پایان قرار داد : {{ item.end_date }}
+						<ion-text class="font-size-12" color="medium">پایان قرارداد : {{ item.end_date }}
 						</ion-text>
 					</p>
 				</ion-label>

@@ -111,9 +111,9 @@ export class SentenceEditComponent implements OnInit {
 
 	setTitle() {
 		this.seo.generateTags({
-			title: 'افزودن قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: 'قرار داد جدی',
+			title: 'افزودن قرارداد جدید',
+			description: 'قرارداد جدی ',
+			keywords: 'قرارداد جدی',
 			isNoIndex: false,
 		});
 	}

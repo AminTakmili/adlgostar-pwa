@@ -58,7 +58,7 @@ import { severanceBaseCalculation } from 'src/app/core/models/severanceBaseCalcu
 export class ContractAddComponent implements OnInit {
 
 	@ViewChildren('validation') validation: QueryList<any>;
-	pageTitle: string = "افزودن قرار داد";
+	pageTitle: string = "افزودن قرارداد";
 	contractsForm: FormGroup;
 	@ViewChild("myckeditor") ckeditor: CKEditorComponent;
 	ckeConfig: CKEDITOR.config;
@@ -199,9 +199,9 @@ export class ContractAddComponent implements OnInit {
 
 	setTitle() {
 		this.seo.generateTags({
-			title: 'افزودن قرار داد جدید',
-			description: 'قرار داد جدی ',
-			keywords: "قرار داد جدی",
+			title: 'افزودن قرارداد جدید',
+			description: 'قرارداد جدی ',
+			keywords: "قرارداد جدی",
 			isNoIndex: false,
 		});
 	}
@@ -593,7 +593,7 @@ export class ContractAddComponent implements OnInit {
 		if (!this.submitet) {
 
 			if (this.contractsForm.value.contract_year === '') {
-				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				this.global.showToast('سال عقد قرارداد را انتخاب کنید')
 				return;
 			}
 
@@ -627,7 +627,7 @@ console.log('this.manualCalculatePrices');
 		if (!this.submitet) {
 			if (this.contractsForm.get('is_manual').value) {
 			if (this.contractsForm.value.contract_year === '') {
-				this.global.showToast('سال عقد قرار داد را انتخاب کنید')
+				this.global.showToast('سال عقد قرارداد را انتخاب کنید')
 				return;
 			}
 
@@ -714,7 +714,7 @@ console.log('this.manualCalculatePrices');
 
 					await this.global.dismisLoading();
 					this.navCtrl.navigateForward('/contracts/list');
-					this.global.showToast(' قرار داد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
+					this.global.showToast(' قرارداد با نام  ' + this.contractsForm.value.title + ' ثبت شد .');
 					this.contractsForm.reset();
 
 				}, async (error: any) => {

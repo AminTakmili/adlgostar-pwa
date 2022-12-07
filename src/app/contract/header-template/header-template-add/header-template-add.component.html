@@ -24,7 +24,7 @@
 					<div class="col-12 my-4">
 						<div class="title-1">
 							<h2 class="title">{{ pageTitle }}</h2>
-							<p class="dsec">در این قسمت میتوانید یک قالب سربرگ قرار داد جدید تعریف کنید
+							<p class="dsec">در این قسمت میتوانید یک قالب سربرگ قرارداد جدید تعریف کنید
 							</p>
 						</div>
 					</div>
@@ -32,9 +32,9 @@
 					<div class="col-12">
 						<ion-card color="white" class="my-3 mx-0  overflow-visible" mode="ios">
 							<ion-card-header>
-								<h4 class="mb-3 mt-0">لیست متغییرها در قرار داد </h4>
+								<h4 class="mb-3 mt-0">لیست متغیرها در قرارداد </h4>
 								<div class="search-input-2">
-									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="100" (ionChange)="ChangeSearch($event)"
+									<ion-searchbar mode="md" enterkeyhint="" type="text" debounce="1500" (ionChange)="ChangeSearch($event)"
 										placeholder="جستجو در {{ pageTitle }}"></ion-searchbar>
 								</div>
 								<hr>
@@ -120,10 +120,10 @@
 					<!-- شروط ضمن عقد  -->
 					<div class="col-12">
 						<div class="form-input mb-3">
-							<label> متن قالب سربرگ قرار داد</label>
+							<label> متن قالب سربرگ قرارداد</label>
 							<ckeditor name="myckeditor" formControlName="template" [config]="ckeConfig"></ckeditor>
 							<span class="error">
-								<app-validator [control]="addForm.controls['template']" [controlName]="'قالب سربرگ قرار داد'">
+								<app-validator [control]="addForm.controls['template']" [controlName]="'قالب سربرگ قرارداد'">
 								</app-validator>
 							</span>
 							<span class="hint"></span>
