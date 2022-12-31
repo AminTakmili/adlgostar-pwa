@@ -1,3 +1,4 @@
+import { BusinessList } from 'src/app/core/models/business.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -23,7 +24,7 @@ import { GlobalService } from 'src/app/core/services/global.service';
   styleUrls: ['./business-report-newyeargiftandbonus.component.scss'],
 })
 export class BusinessReportNewyeargiftandbonusComponent implements OnInit {
-  pageTitle:string='گزارشات عیدی وپاداش'
+  pageTitle:string='گزارشات عیدی و پاداش'
 	columnHighcharts: typeof Highcharts = Highcharts;
 	plotShow: boolean = false;
 	data: reportNewYearGiftAndBonusList[];
@@ -49,8 +50,12 @@ export class BusinessReportNewyeargiftandbonusComponent implements OnInit {
 	startDatepickerIsChange:boolean=false
 	endDatepickerIsChange:boolean=false
 	loading:boolean=false
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
 
-	constructor(private global: GlobalService,  private fb:FormBuilder,private rout:ActivatedRoute) {
+
+	constructor(private global: GlobalService,  private fb:FormBuilder,public rout: ActivatedRoute) {
 		this.id = rout.snapshot.paramMap.get('id');
 		this.startDate=fb.group({
 			filtered_from_date:[]
@@ -63,6 +68,8 @@ export class BusinessReportNewyeargiftandbonusComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadEmployee()
+		this.loadBusiness();
+
 	}
 	ionViewWillEnter() {
       this.getData(this.id)
@@ -73,6 +80,48 @@ export class BusinessReportNewyeargiftandbonusComponent implements OnInit {
   //   // console.log(changes.businessId.currentValue);
   
   // }
+  loadBusiness() {
+	this.businesslist$ = concat(
+		of([]), // default items
+		this.businessInput$.pipe(
+			filter((res) => {
+				return res !== null && res.length >= this.minLengthTerm;
+			}),
+			distinctUntilChanged(),
+			debounceTime(800),
+			tap(() => (this.businessInputLoading = true)),
+			switchMap((term) => {
+				return this.getbusiness(term).pipe(
+					catchError(() => of([])), // empty list on error
+					tap(() => (this.businessInputLoading = false))
+				);
+			})
+		)
+	);
+}
+
+getbusiness(term: string = null): Observable<any> {
+	return this.global
+		.httpPost('business/filteredList', {
+			filtered_name: term,
+			for_combo: true,
+			limit: 1000,
+			offset: 0,
+		})
+		.pipe(
+			map((resp) => {
+				if (resp.Error) {
+					throwError(resp.Error);
+				} else {
+					return resp.list.map((item: any) => {
+						return new BusinessList().deserialize(item);
+					});
+				}
+			})
+		);
+}
+ 
+
   
 	loadEmployee() {
 		this.employeelist$ = concat(
@@ -190,11 +239,11 @@ console.log(dataSetgroupBy);
 				}
 			},
 			title: {
-				text: Object.keys(dataSetgroupBy).length!=1?'عیدی وپاداش':' عیدی وپاداش سال '+Object.keys(dataSetgroupBy)[0],
+				text: Object.keys(dataSetgroupBy).length!=1?'عیدی و پاداش':' عیدی و پاداش سال '+Object.keys(dataSetgroupBy)[0],
 			},
 			subtitle: {
 				text:
-					' مجموع عیدی وپاداش به تفکیک هر ماه را میتوانید مشاهده کنید ' 
+					' مجموع عیدی و پاداش به تفکیک هر ماه را میتوانید مشاهده کنید ' 
 					
 			},
 			tooltip: {

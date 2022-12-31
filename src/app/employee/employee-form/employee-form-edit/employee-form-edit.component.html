@@ -1,5 +1,5 @@
 <ion-header>
-	<app-header [title]="'ویرایش فرم  جدید'"></app-header>
+	<app-header [title]="'ویرایش فرم '"></app-header>
 </ion-header>
 <ion-content>
 	<!-- top bar content -->
@@ -8,7 +8,7 @@
 			<div class="col-lg-auto">
 				<div class="page-info">
 					<h1 class="title">ویرایش فرم</h1>
-					<p class="dsec">در این قسمت شما میتوانید یک فرم جدید اضافه کنید
+					<p class="dsec">در این قسمت شما میتوانید فرم را ویرایش کنید
 					</p>
 				</div>
 			</div>
@@ -22,70 +22,48 @@
 	<!-- main -->
 	<main>
 		<div class="container">
-			<!-- form -->
-			<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-				<div class="row mt-4">
-					<!-- title -->
-					<div class="col-12">
-						<div class="title-1 my-4">
-							<h2 class="title">اطلاعات اولیه</h2>
-							<p class="dsec">اطلاعات اولیه و کلی فرم را در این قسمت وارد کنید</p>
-						</div>
-					</div>
-          
-        
 
-					<!-- عنوان فرم -->
-					<div class="col-lg-12">
-						<div class="form-input mb-3">
-							<label>زمان فرم</label>
-						  <ng-persian-datepicker  [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
-                <input class="form-input" type="text"   formControlName="form_date" />
-               </ng-persian-datepicker>
-              <span class="error">
-                <app-validator #validation [control]="addForm.controls['form_date']" [controlName]="'زمان فرم '"></app-validator>
-              </span>
-							<span class="hint">تاریخ فرم را وارد کنید</span>
+			<form *ngIf="step==1" [formGroup]="typeForm" (ngSubmit)="setFormeType()">
+				<div class=" mt-4">
+					<section >
+
+						<!-- title -->
+						<div class="col-12">
+							<div class="title-1 my-4">
+								<h2 class="title"> انتخاب نوع فرم </h2>
+								<p class="dsec">اطلاعات اولیه و کلی فرم را در این قسمت وارد کنید</p>
+							</div>
 						</div>
-					</div>
-				
-					<div class="col-lg-12">
-						<div class="form-input mb-3">
-							<label>قالب فرم</label>
-              <ng-select (change)="setTemplateText($event)" [items]="formTempeletList" placeholder="یک قالب انتخاب کنید" bindLabel="name"
-              bindValue="id" groupBy="province" formControlName="form_template_id">
-            </ng-select>
-              <span class="error">
-                <app-validator #validation [control]="addForm.controls['form_template_id']" [controlName]="'قالب فرم '"></app-validator>
-              </span>
-							<span class="hint">عنوان قالب فرم را انتخاب کنید</span>
+						<div class="col-lg-12">
+							<div class="form-input mb-3" *ngIf="formTemplateTypeList && formTemplateTypeList.length">
+								<label>نوع فرم</label>
+								 <!-- (change)="getFormTemplateVariable()" -->
+								<ng-select placeholder="نوع فرم را انتخاب کنید" [items]="formTemplateTypeList"
+									bindLabel="fa_name" bindValue="id" [clearable]="false" formControlName="form_type_id" >
+			
+								</ng-select>
+								<span class="error">
+									<app-validator [control]="typeForm.controls['form_type_id']"
+										[controlName]="'انتخاب نوع فرم'"></app-validator>
+								</span>
+							</div>
 						</div>
-					</div>
-          
-				
-					<div class="col-12">
-						<div class="form-input mb-3">
-							<label> متن قالب فرم</label>
-							<ckeditor name="myckeditor" formControlName="form_text" [config]="ckeConfig"></ckeditor>
-							<span class="error">
-								<app-validator [control]="addForm.controls['form_text']" [controlName]="'متن قالب فرم'">
-								</app-validator>
-							</span>
-							<span class="hint">متن قالب فرم را بنویسید.</span>
-						</div>
-					</div>
-					
-				
-				
+	
+	
+	
+						
+					</section>	
+
+
 					<div class="col-lg-12">
 						<hr>
 					</div>
 					<div class="col-lg-12 mb-4">
 						<div class="row ion-justify-content-end ion-align-items-center">
 							<div class="col-lg-2">
-               
-								<ion-button expand="block"  (click)="global.emptyFrom(addForm)"color="medium" fill="outline" shape="round"
->
+
+								<ion-button expand="block" (click)="global.emptyFrom(typeForm)" color="medium"
+									fill="outline" shape="round">
 									پاک کردن فرم
 								</ion-button>
 							</div>
@@ -97,7 +75,7 @@
 							</div> -->
 							<div class="col-lg-3">
 								<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
-									ویرایش فرم
+									 ثبت نوع فرم 
 								</ion-button>
 							</div>
 						</div>
@@ -108,6 +86,143 @@
 					<!-- desc -->
 				</div>
 			</form>
+			
+			<section [ngSwitch]="typeNmae" *ngIf="step==2">
+				<app-employee-form-edit-varriable-other *ngSwitchDefault [formTemplateVariableList]="formTemplateVariableList" (variableValues)="setFormVrableValues($event)" (goBack)="goPerSlide()" ></app-employee-form-edit-varriable-other>
+				<app-employee-form-edit-varriable-loan-received  *ngSwitchCase="'loan_received'" [detailsList]="detailsList" [formTemplateVariableList]="formTemplateVariableList"(variableValues)="setFormVrableValues($event)" (goBack)="goPerSlide()" ></app-employee-form-edit-varriable-loan-received>
+				<app-employee-form-edit-varriable-loan-installment *ngSwitchCase="'loan_installment'" [business_employee_form_id]="business_employee_form_id"  [formTemplateVariableList]="formTemplateVariableList" [businessEmployeeId]="businessEmployeeId"(variableValues)="setFormVrableValues($event)" (goBack)="goPerSlide()" ></app-employee-form-edit-varriable-loan-installment>
+			</section>
+
+
+
+			<!-- form -->
+			<form [ngClass]="{'d-none': step!=3}" [formGroup]="templateForme" (ngSubmit)="setTemplate()">
+				<div class=" mt-4">
+					<section >
+
+						<!-- title -->
+						<div class="col-12">
+							<div class="title-1 my-4">
+								<h2 class="title"> انتخاب قالب و تاریخ فرم</h2>
+								<p class="dsec"> تاریخ و قالب فرم را در این قسمت وارد کنید</p>
+							</div>
+						</div>
+	
+	
+	
+						<!-- عنوان فرم -->
+						<div class="col-lg-12">
+							<div class="form-input mb-3">
+								<label>زمان فرم</label>
+								<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
+									dateFormat="jYYYY/jMM/jDD">
+									<input class="form-input" type="text" formControlName="form_date" />
+								</ng-persian-datepicker>
+								<span class="error">
+									<app-validator #validation [control]="templateForme.controls['form_date']"
+										[controlName]="'زمان فرم '"></app-validator>
+								</span>
+								<span class="hint">تاریخ فرم را وارد کنید</span>
+							</div>
+						</div>
+	
+						<div class="col-lg-12">
+							<div class="form-input mb-3">
+								<label>قالب فرم</label>
+								<ng-select (change)="setTemplateText($event)" [items]="formTempeletList"
+									placeholder="یک قالب انتخاب کنید"notFoundText="قالب فرمی با نوع انتخاب شده یافت نشد" bindLabel="name" bindValue="id" groupBy="province"
+									formControlName="form_template_id">
+								</ng-select>
+								<span class="error">
+									<app-validator #validation [control]="templateForme.controls['form_template_id']"
+										[controlName]="'قالب فرم '"></app-validator>
+								</span>
+								<span class="hint">عنوان قالب فرم را انتخاب کنید</span>
+							</div>
+						</div>
+	
+						<!-- <app-employee-form-table [businessEmployeeId]="businessEmployeeId"></app-employee-form-table> -->
+	
+						<div class="col-12">
+							<div  class="form-input mb-3">
+								<label> متن قالب فرم</label>
+								<ckeditor *ngIf="showText" name="myckeditor" formControlName="form_text" [config]="ckeConfig"></ckeditor>
+								<span class="error">
+									<app-validator [control]="templateForme.controls['form_text']" [controlName]="'متن قالب فرم'">
+									</app-validator>
+								</span>
+								<span class="hint">متن قالب فرم را بنویسید.</span>
+							</div>
+						</div>
+
+					</section>	
+
+
+					<div class="col-lg-12">
+						<hr>
+					</div>
+					
+					<div class="col-lg-12 mb-4">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							 <div class="col-lg-3">
+							<ion-button type="button" (click)="goPerSlide()" expand="block" color="warning" fill="solid" shape="round">
+							  بازگشت به مرحله قبل
+							</ion-button>
+						  </div>
+						  <div class="col-lg-2">
+				  
+							<ion-button expand="block" (click)="global.emptyFrom(templateForme)" color="medium"
+							  fill="outline" shape="round">
+							  پاک کردن فرم
+							</ion-button>
+						  </div>
+				   <!-- (click)="onSubmit(true)" -->
+					   
+						  <div class="col-lg-3">
+							<ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+							  ثبت قالب فرم
+							</ion-button>
+						  </div>
+						</div>
+					  </div>
+
+					<!-- add another address -->
+
+					<!-- desc -->
+				</div>
+			</form>
+
+			<section *ngIf="step==4">
+				
+				<ion-card class="replace-text-card"  color="light">
+					<ion-card-header>
+						<ion-card-title> متن نهایی </ion-card-title>
+						<ion-card-subtitle> متن نهایی و جایگذاری شده را در صورت تایید ثبت کنید</ion-card-subtitle>
+					</ion-card-header>
+					<hr>
+					<ion-card-content class="main-text" [innerHTML]="replaceText">
+						
+					</ion-card-content>
+					<div class="col-lg-12 mb-4">
+						<div class="row ion-justify-content-end ion-align-items-center">
+							 <div class="col-md-3">
+							<ion-button type="button" (click)="goPerSlide()" expand="block" color="warning" fill="solid" shape="round">
+							  بازگشت به مرحله قبل
+							</ion-button>
+						  </div>
+					
+				   <!-- (click)="onSubmit(true)" -->
+					   
+						  <div class="col-md-3">
+							<ion-button (click)="submitforme()" type="submit" expand="block" color="success" fill="solid" shape="round">
+							  تایید و ثبت نهایی فرم
+							</ion-button>
+						  </div>
+						</div>
+					  </div>
+				</ion-card>
+
+			</section>
 		</div>
 	</main>
 

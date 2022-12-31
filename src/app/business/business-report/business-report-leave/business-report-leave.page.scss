@@ -9,7 +9,11 @@
     margin: 15px auto;
     align-items: center;
     app-business-report-payroll-summarypayroll,
-    app-business-report-leave-usedleave{
+    app-business-report-leave-usedleave,
+    app-business-report-leave-unusedleave,
+    app-business-report-leave-withoutpayleav,
+    app-business-report-leave-paidleave,
+    app-business-report-leave-unpaidleave{
         min-height: 200px;
         margin: 2px auto;
     }

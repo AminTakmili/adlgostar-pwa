@@ -320,7 +320,7 @@ export const globalData = {
 		// 	],
 		// },
 		{
-			name: 'فرم ها',
+			name: 'قالب های فرم ',
 			url: '/form/template/list',
 			icon: 'file-tray-stacked',
 			open: false,
@@ -337,7 +337,92 @@ export const globalData = {
 			function: 'showDetail',
 			access: true,
 		},
+		{
+			name: 'گزارشات ادمین',
+			url: '/admin-report',
+			icon: 'reader',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			// access: true,
+		},
 
+		{
+			name: 'گزارشات',
+			icon: 'receipt',
+			open: false,
+			state: 'close',
+			function: 'showDetail',
+			submenu: [
+				{
+					name: 'وام ها',
+					url: '/businesses/report/loan',
+					src: '/assets/svg/icons8-loan-64.svg',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'مرخصی',
+					url: '/businesses/report/leave',
+					icon: 'calendar-clear',
+					function: 'showDetail',
+					
+
+				},
+				{
+					name: 'فیش حقوقی',
+					url: '/businesses/report/payroll',
+					icon: 'layers',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'دستمزدهای ماهانه',
+					url: '/businesses/report/wage',
+					icon: 'wallet',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'حق سنوات',
+					url: '/businesses/report/severance',
+					icon: 'leaf',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'بیمه',
+					url: '/businesses/report/insurance',
+					icon: 'ribbon',
+					function: 'showDetail',
+					
+
+
+				},
+				{
+					name: 'کارکرد',
+					url: '/businesses/report/workinghour',
+					icon: 'time',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'عیدی و پاداش',
+					url: '/businesses/report/newyeargift_bonus',
+					icon: 'trending-up',
+					function: 'showDetail',
+					
+				},
+				{
+					name: 'زمان حضور در کارگاه',
+					url: '/businesses/report/workinghourcount',
+					icon: 'hourglass',
+					function: 'showDetail',
+				
+					
+				},
+			],
+		},
 		{
 			name: 'بیشتر',
 			icon: 'ellipsis-vertical',

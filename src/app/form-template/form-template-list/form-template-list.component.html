@@ -15,7 +15,8 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-button shape="round" color="success" [routerLink]="['/form/template/add']" *ngIf="global.userPermision['form_template_add']">
+				<ion-button shape="round" color="success" [routerLink]="['/form/template/add']"
+					*ngIf="global.userPermision['form_template_add']">
 					<ion-icon slot="start" name="add-circle"></ion-icon>
 					{{ pageTitle }} جدید
 				</ion-button>
@@ -27,19 +28,39 @@
 		<div class="container pb-5">
 			<!-- search and title -->
 			<div class="row mt-4">
-				<div class="col-md-8">
-					<div class="title-1">
-						<h2 class="title">لیست {{ pageTitle }}</h2>
-						<p class="dsec">لیست قالب فرم ها به شرح زیر است</p>
-					</div>
+				<!-- <div class="col-md-8"> -->
+				<div class="title-1">
+					<h2 class="title">لیست {{ pageTitle }}</h2>
+					<p class="dsec">لیست قالب فرم ها به شرح زیر است</p>
 				</div>
-				<div class="col-md-4">
-					<!-- search -->
+				<!-- </div> -->
+				<!-- search -->
+				<!-- <div class="col-md-4">
 					<div class="search-input-2">
             <ion-searchbar  enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="1500" placeholder="جستجو در قالب ها" (ionChange)="getData()"></ion-searchbar>
 					</div>
+				</div> -->
+			</div>
+			<div class="row mt-4">
+				<div class="col-md-6">
+					<!-- search -->
+					<div class="search-input-2 form-input mb-3">
+						<ion-searchbar enterkeyhint="" type="text" [(ngModel)]="filtered_name" debounce="1500"
+							placeholder="جستجو در قالب ها" (ionChange)="getData()"></ion-searchbar>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-input mb-3" *ngIf="formTemplateTypeList && formTemplateTypeList.length">
+						<!-- <label>نوع قالب</label> -->
+						<ng-select (change)="getData()" placeholder="نوع قالب را انتخاب کنید" [items]="formTemplateTypeList"
+							bindLabel="fa_name" bindValue="id" [clearable]="true"  [(ngModel)]="filtered_form_type_id">
+
+						</ng-select>
+						
+					</div>
 				</div>
 			</div>
+
 
 			<!-- لیست قرر داد ها -->
 			<!-- table -->
@@ -49,6 +70,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">عنوان</th>
+							<th scope="col">نوع</th>
 							<th scope="col">تاریخ ساخت</th>
 							<th scope="col">تاریخ اخرین ویرایش</th>
 							<th class="ion-text-left" scope="col"></th>
@@ -59,18 +81,20 @@
 							*ngFor="let item of dataList  | paginate : { itemsPerPage : limit , currentPage: CurrentPage ,  totalItems: total } ; let i = index;">
 							<th class="ion-text-center" scope="row">{{ ( ( CurrentPage - 1) * limit ) + i + 1 }}</th>
 							<td>{{ item.name }}</td>
+							<td>{{ this.formTemplateTypeNameHint[item.form_type_id]  }}</td>
 							<td>{{ item.createdAt }}</td>
 							<td>{{ item.updatedAt }}</td>
-					
+
 
 							<td class="ion-text-left">
 								<ion-buttons class="justify-content-end">
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)" *ngIf="global.userPermision['form_template_delete']"
-										tooltip="حذف">
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" (click)="removeItem(item)"
+										*ngIf="global.userPermision['form_template_delete']" tooltip="حذف">
 										<ion-icon size="small" color="medium" slot="icon-only" name="trash">
 										</ion-icon>
 									</ion-button>
-									<ion-button fill="clear" class="px-0 mx-0 tooltip-show" *ngIf="global.userPermision['form_template_edit']"
+									<ion-button fill="clear" class="px-0 mx-0 tooltip-show"
+										*ngIf="global.userPermision['form_template_edit']"
 										[routerLink]="['/form/template/edit' , item.id ]" tooltip="ویرایش">
 										<ion-icon size="small" color="medium" slot="icon-only" name="build">
 										</ion-icon>

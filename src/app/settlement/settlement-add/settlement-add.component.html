@@ -37,7 +37,7 @@
 							<label>انتخاب کارمند</label>
 							<ng-select formControlName="emId" [clearable]="true" (change)="changEemployee($event)"
 							[items]="employeelist$ | async" placeholder="انتخاب کنید"
-							[loading]="employeeInputLoading" bindLabel="full_name" bindValue="id"
+							[loading]="employeeInputLoading" bindLabel="businessEmployeePackInfo" bindValue="id"
 							typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
 							[typeahead]="employeeInput$" loadingText="لطفا صبر کنید .."
 							notFoundText="مناسفانه کارمندی یافت نشد"
@@ -64,10 +64,11 @@
 						>
 						</ng-select> -->
 						<ng-select formControlName="bId" (change)="changBusiness($event)" [items]="businessList"
-						placeholder="انتخاب کنید" bindLabel="business.name" bindValue="id" [clearable]="true"
+						placeholder="انتخاب کنید" bindLabel="businessEmployeePackInfo" bindValue="id" [clearable]="true"
 						loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه کسب کاری یافت نشد"></ng-select>
 					
-
+						<!--* bindLabel="business.name" -->
+						
 						<span class="error">
 							<app-validator #validation [control]="contractsForm.controls['business_id']" [controlName]="'انتخاب کسب و کار '"></app-validator>
 						</span>
@@ -209,7 +210,7 @@
 					
 					<div class="col-12 col-md-6 position-sticky top-15">
 						<ion-list class="full-info">
-							<!-- <ion-list-header>محاسبات قرارداد</ion-list-header> -->
+							<!-- <ion-list-header>محاسبات قرار داد</ion-list-header> -->
 							<div class="title-1 mb-4">
 								<h2 class="title">اطلاعات پایه تسویه حساب</h2>
 							</div>

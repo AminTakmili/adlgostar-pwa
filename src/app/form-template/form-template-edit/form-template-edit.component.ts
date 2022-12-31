@@ -1,3 +1,4 @@
+import { formTemplateType } from './../../core/models/form-template.model';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,6 +29,8 @@ export class FormTemplateEditComponent implements OnInit {
 
 	contractTemplateVariableList : contractTemplateVariable[];
 	filterList : contractTemplateVariable[];
+	formTemplateTypeList: formTemplateType[];
+
 
 	// public Editor = ClassicEditor;
 	editors = ['Classic', 'Inline'];
@@ -47,6 +50,8 @@ export class FormTemplateEditComponent implements OnInit {
       id:[this.id],
 			name: ['', Validators.compose([Validators.required])],
 			template: ['', Validators.compose([Validators.required])],
+			form_type_id: [, Validators.compose([Validators.required])],
+
 		
 			// header_as_logo: [false],
 		});
@@ -75,17 +80,54 @@ export class FormTemplateEditComponent implements OnInit {
 		});
 	}
 
-	getData() {
+	async getData() {
 
+		await this.global.showLoading()
 		// const businessCategory = this.global.httpPost('businessCategory/list', { limit: 1000, offset: 0 });
-		const contractTemplateVariable = this.global.httpGet('formTemplate/variableList');
+		const formTypeReq = this.global.httpGet('formType/getFormType');
 		const formTemplateDetail = this.global.httpPost('formTemplate/detail',{id:this.id});
-		this.global.parallelRequest([  contractTemplateVariable,formTemplateDetail])
-			.subscribe(([  contractTemplateVariableRes = '', formTemplateDetailRes = '' ]) => {
+		this.global.parallelRequest([  formTypeReq,formTemplateDetail])
+			.subscribe(([  formTypeRes = '', formTemplateDetailRes = '' ]) => {
 				// this.setBussinessCategory(businessCategory);
-				this.setcontractTemplateVariab(contractTemplateVariableRes);
-        this.setdetail(formTemplateDetailRes)
+				this.global.dismisLoading()
+				this.setdetail(formTemplateDetailRes)
+				this.setFormType(formTypeRes);
 			});
+	}
+	async setFormType(data:any) {
+		// await this.global.showLoading();
+		// const businessCategory = this.global.httpPost('businessCategory/list', { limit: 1000, offset: 0 });
+		// this.global.httpGet('formType/getFormType').subscribe(
+		// 	async (res: any) => {
+				this.global.dismisLoading();
+				this.formTemplateTypeList = data.map(
+					(type: formTemplateType) => {
+						return new formTemplateType().deserialize(type);
+					}
+				);
+				this.getFormTemplateVariable();
+		// 		// console.log(this.formTemplateTypeList);
+		// 	},
+		// 	async (error: any) => {
+		// 		this.global.dismisLoading();
+
+		// 		this.global.showError(error);
+		// 	}
+		// );
+	}
+	getFormTemplateVariable() {
+		this.global
+			.httpPost('formType/getFormTemplateVariable', {
+				form_type_id: this.editForm.value.form_type_id,
+				from_form:0
+			})
+			.subscribe(
+				async (res: any) => {
+					console.log(res);
+					this.formTemplateeVariable(res);
+				},
+				async (error: any) => {}
+			);
 	}
   setdetail(data:any){
 
@@ -105,7 +147,7 @@ export class FormTemplateEditComponent implements OnInit {
 	// 	});
 	// }
 
-	setcontractTemplateVariab(data : any){
+	formTemplateeVariable(data : any){
 		this.contractTemplateVariableList = data.map((category: any) => {
 			return new contractTemplateVariable().deserialize(category);
 		});

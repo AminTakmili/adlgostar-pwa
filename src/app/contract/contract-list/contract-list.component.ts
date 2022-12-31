@@ -60,8 +60,8 @@ export class ContractListComponent implements OnInit {
 	businesslist$: Observable<BusinessList[]>;
 	businessInputLoading = false;
 	businessInput$ = new Subject<string>();
-	selectedMovie: any;
 	minLengthTerm = 3;
+	selectedMovie: any;
 	
 	filtered_confirmer_id:number
 	filtered_is_confirmed :number

@@ -1,0 +1,105 @@
+<form [formGroup]="varriableForm"(ngSubmit)="onSubmitVariable()"
+ >
+  <div class=" mt-4">
+    <section >
+
+      <!-- title -->
+      <div class="col-12">
+        <div class="title-1 my-4">
+          <h2 class="title"> عملگرهای فرم </h2>
+          <p class="dsec">عملگرهای فرم را در این قسمت وارد کنید</p>
+        </div>
+      </div>
+
+
+
+      <!-- عنوان فرم -->
+      <!-- <div class="col-lg-12">
+        <div class="form-input mb-3">
+          <label>زمان فرم</label>
+          <ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
+            dateFormat="jYYYY/jMM/jDD">
+            <input class="form-input" type="text" formControlName="form_date" />
+          </ng-persian-datepicker>
+          <span class="error">
+            <app-validator #validation [control]="varriableForm.controls['form_date']"
+              [controlName]="'زمان فرم '"></app-validator>
+          </span>
+          <span class="hint">تاریخ فرم را وارد کنید</span>
+        </div>
+      </div> -->
+
+     
+    </section>	
+    <section formArrayName="variable_values">
+    
+
+      <section id="" *ngFor="let item of  variableValuesGroup.controls ; let i = index"
+        [formGroupName]="i">
+
+        <div  *ngFor="let variable of formTemplateVariableList" >
+        <section *ngIf="!varriableForm.controls[variable.variable]" class="form-input mb-3">
+          <label>{{variable.description}}</label>
+          <ion-input *ngIf="variable.input_type=='number'" type="number" min=0 autocomplete="new-pass" [formControlName]="variable.variable"></ion-input>
+          <ng-select *ngIf="variable.input_type=='year_combo'"  [formControlName]="variable.variable"  [items]="yearsList" bindLabel="year" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه سال یافت نشد"
+							bindValue="year" placeholder="انتخاب کنید">
+						</ng-select>
+            <ng-select *ngIf="variable.input_type=='month_combo'"  [formControlName]="variable.variable" [items]="monthList" bindLabel="name" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه ماه یافت نشد"
+							bindValue="number" placeholder="انتخاب کنید" >
+						</ng-select>
+            <ng-persian-datepicker *ngIf="variable.input_type=='date'" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true"
+            dateFormat="jYYYY/jMM/jDD">
+            <input class="form-input" type="text" [formControlName]="variable.variable" />
+          </ng-persian-datepicker>
+          
+							<ion-input *ngIf="variable.input_type=='hour_minute'" readonly="true" (click)="openPicker(item)"   [value]="date"  >
+							</ion-input>
+          <span class="error">
+            <app-validator #validation [control]="item.get(variable.variable)"
+              [controlName]="variable.description"></app-validator>
+          </span>
+        </section>
+      </div>
+      
+    </section>
+    
+  </section>
+  <!-- <span class="hint">مبلغ به ریال است</span> -->
+    <!-- deductions -->
+    
+
+
+    <div class="col-lg-12">
+      <hr>
+    </div>
+    <div class="col-lg-12 mb-4">
+      <div class="row ion-justify-content-end ion-align-items-center">
+           <div class="col-lg-3">
+          <ion-button type="button" (click)="emitGoBack()" expand="block" color="warning" fill="solid" shape="round">
+						بازگشت به مرحله قبل
+          </ion-button>
+        </div>
+        <div class="col-lg-2">
+
+          <ion-button expand="block" (click)="global.emptyFrom(varriableForm)" color="medium"
+            fill="outline" shape="round">
+            پاک کردن فرم
+          </ion-button>
+        </div>
+ <!-- (click)="onSubmit(true)" -->
+     
+        <div class="col-lg-3">
+          <ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+            ثبت عملگرهای فرم
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- add another address -->
+
+    <!-- desc -->
+  </div>
+</form>

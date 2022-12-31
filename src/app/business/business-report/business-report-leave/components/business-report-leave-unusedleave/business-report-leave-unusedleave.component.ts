@@ -110,6 +110,7 @@ export class BusinessReportLeaveUnusedleaveComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.businessId,
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -138,8 +139,11 @@ export class BusinessReportLeaveUnusedleaveComponent implements OnInit {
 			return x.year;
 		});
 		let fackData = [];
+		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
+		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
+		
 		for (const year in dataSetgroupBy) {
-			for (let index = 1; index <= 12; index++) {
+			for (let index = startMonth; index <= endMonth; index++) {
 				
 				if (
 					dataSet.findIndex((item) => {
@@ -173,10 +177,40 @@ export class BusinessReportLeaveUnusedleaveComponent implements OnInit {
 				return this.global.getMonthName[item.month]+'/'+item.year;
 
 			}else{
-				return this.global.getMonthName[item.month];
 
+				if (item.month<=endMonth||item.month>=startMonth) {
+					return this.global.getMonthName[item.month];
+
+				}
+				// if (this.endDate.get('filtered_to_date').value) {
+					
+				// 	if (item.month<=parseInt(this.endDate.get('filtered_to_date').value.split("/")[1])) {
+				// 		return this.global.getMonthName[item.month];
+
+				// 	}
+				// }
+				// if (this.startDate.get('filtered_from_date').value) {
+					
+				// 	if (item.month>=parseInt(this.startDate.get('filtered_from_date').value.split("/")[1])) {
+				// 		return this.global.getMonthName[item.month];
+
+				// 	}
+				// }
+				// if (!this.endDate.get('filtered_to_date').value&&!this.startDate.get('filtered_from_date').value) {
+					
+				// 	return this.global.getMonthName[item.month];
+				// }
 			}
 		});
+		// const dataCategories = fackData.map((item: reportLeave) => {
+		// 	if (Object.keys(dataSetgroupBy).length>1 ) {
+		// 		return this.global.getMonthName[item.month]+'/'+item.year;
+
+		// 	}else{
+		// 		return this.global.getMonthName[item.month];
+
+		// 	}
+		// });
     console.log(dataCategories);
 	
 		this.columnChartOptions = {
@@ -266,8 +300,8 @@ export class BusinessReportLeaveUnusedleaveComponent implements OnInit {
 			.httpPost('report/payroll/unUsedLeaveList', {
 				filtered_business_id ,
 				filtered_employee_id: this.filtered_employee_id,
-				filtered_to_date: this.endDate.value.filtered_to_date,
-				filtered_from_date: this.startDate.value.filtered_from_date,
+				filtered_to_date ,
+				filtered_from_date,
 			})
 			.subscribe(
 				async (res: any) => {

@@ -258,7 +258,7 @@ async  getData(){
             
               
             }else{
-              this.global.showToast('لطفا کد نام را کنید',3000,'bottom','danger','ios')
+              this.global.showToast('لطفا نام را وارد کنید',3000,'bottom','danger','ios')
             }
           }
         }

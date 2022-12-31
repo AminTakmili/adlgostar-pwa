@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormTemplateEditComponent } from './form-template-edit/form-template-edit.component';
 import { FormTemplateListComponent } from './form-template-list/form-template-list.component';
 import { CKEditorModule } from 'ng2-ckeditor';
@@ -26,6 +27,7 @@ import { FormTemplatePageRoutingModule } from './form-template-routing.module';
 		PipeModule,
 		NgxPaginationModule,
 		CKEditorModule,
+		NgSelectModule,
 	],
 	declarations: [
 		FormTemplateListComponent,

@@ -111,6 +111,8 @@ export class BusinessReportLeaveRemainingleaveComponent implements OnInit,OnChan
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.businessId,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -140,8 +142,11 @@ export class BusinessReportLeaveRemainingleaveComponent implements OnInit,OnChan
 		});
 console.log(dataSetgroupBy);
 		let fackData = [];
+		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
+		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
+		
 		for (const year in dataSetgroupBy) {
-			for (let index = 1; index <= 12; index++) {
+			for (let index = startMonth; index <= endMonth; index++) {
 				
 				if (
 					dataSet.findIndex((item) => {
@@ -175,8 +180,12 @@ console.log(dataSetgroupBy);
 				return this.global.getMonthName[item.month]+'/'+item.year;
 
 			}else{
-				return this.global.getMonthName[item.month];
 
+				if (item.month<=endMonth||item.month>=startMonth) {
+					return this.global.getMonthName[item.month];
+
+				}
+				
 			}
 		});
     console.log(dataCategories);
@@ -268,8 +277,8 @@ console.log(dataSetgroupBy);
 			.httpPost('report/payroll/remainingLeave', {
 				filtered_business_id ,
 				filtered_employee_id: this.filtered_employee_id,
-				filtered_to_date: this.endDate.value.filtered_to_date,
-				filtered_from_date: this.startDate.value.filtered_from_date,
+				filtered_to_date ,
+				filtered_from_date,
 			})
 			.subscribe(
 				async (res: any) => {

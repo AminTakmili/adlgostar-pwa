@@ -5,12 +5,41 @@
 <ion-content>
 	<!-- top bar content -->
 	<div class="content-header">
-		<div class="row justify-content-between ion-align-items-center">
-			<div class="col-lg-auto">
+		<div class="row justify-content-between ion-align-items-center container">
+			<div class="col-lg-8">
 				<div class="page-info">
 					<h1 class="title">{{ pageTitle }}</h1>
-					<p class="dsec">گزارش مجموع سنوات های مربوط به کسب و کار
-					</p>
+					<p class="dsec">گزارش مجموع سنوات
+            <span *ngIf="rout.snapshot.paramMap.get('id')">
+              های مربوط به کسب و کار
+                        
+            </span> 
+          					</p>
+				</div>
+			</div>
+      <div *ngIf="!rout.snapshot.paramMap.get('id')" class="col-lg-4 mt-3">
+				<div class="form-input ">
+					<!-- <label>جستجو در کسب کار</label> -->
+					<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+						bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+					</ng-select> -->
+					<ng-select
+					[items]="businesslist$ | async"
+					placeholder="جستجو در کسب و کارها"
+					[loading]="businessInputLoading"
+					bindLabel="name"
+					bindValue="id"
+					typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید"
+					[typeahead]="businessInput$"
+					[(ngModel)]="id"
+					[clearable]="true"
+					loadingText="لطفا صبر کنید ..."
+					notFoundText="مناسفانه کسب و کاری یافت نشد"
+          (change)="getData()"
+					
+					>
+				</ng-select>
+
 				</div>
 			</div>
 		
@@ -90,12 +119,12 @@
          </highcharts-chart>
 
          <div *ngIf="data&&data.length === 0 && !(this.startDate.value.filtered_from_date||filtered_employee_id||endDate.value.filtered_to_date)" class="alert alert-warning my-3" role="alert">
-           <h4 class="title">گزارش مرخصی های پرداخت شده برای نمایش یافت نشد .</h4>
+           <h4 class="title">گزارش حق سنوات برای نمایش یافت نشد .</h4>
            <!-- <p class="dsec">کسب و کاری با عبارت جستجو شده یافت نشد</p> -->
          </div>
          <div *ngIf="data&&data.length === 0 && (this.startDate.value.filtered_from_date||filtered_employee_id||endDate.value.filtered_to_date)" class="alert alert-warning my-3" role="alert">
-           <h4 class="title">گزارش مرخصی های پرداخت شده برای نمایش یافت نشد .</h4>
-           <p class="dsec">گزارش مرخصی های پرداخت شده با عبارت جستجو شده یافت نشد</p>
+           <h4 class="title">گزارش حق سنوات برای نمایش یافت نشد .</h4>
+           <p class="dsec">گزارش حق سنوات با عبارت جستجو شده یافت نشد</p>
          </div>
        </ion-card-content>
      </ion-card>

@@ -1,3 +1,4 @@
+import { BusinessList } from 'src/app/core/models/business.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -49,8 +50,11 @@ export class BusinessReportSeverancepayComponent implements OnInit {
 	startDatepickerIsChange:boolean=false
 	endDatepickerIsChange:boolean=false
 	loading:boolean=false
+	businesslist$: Observable<BusinessList[]>;
+	businessInputLoading = false;
+	businessInput$ = new Subject<string>();
 
-	constructor(private global: GlobalService,  private fb:FormBuilder,private rout:ActivatedRoute) {
+	constructor(private global: GlobalService,  private fb:FormBuilder,public rout:ActivatedRoute) {
 		this.id = rout.snapshot.paramMap.get('id');
 		this.startDate=fb.group({
 			filtered_from_date:[]
@@ -63,6 +67,7 @@ export class BusinessReportSeverancepayComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadEmployee()
+		this.loadBusiness()
 	}
 	ionViewWillEnter() {
       this.getData(this.id)
@@ -74,6 +79,47 @@ export class BusinessReportSeverancepayComponent implements OnInit {
   
   // }
   
+  loadBusiness() {
+	this.businesslist$ = concat(
+		of([]), // default items
+		this.businessInput$.pipe(
+			filter((res) => {
+				return res !== null && res.length >= this.minLengthTerm;
+			}),
+			distinctUntilChanged(),
+			debounceTime(800),
+			tap(() => (this.businessInputLoading = true)),
+			switchMap((term) => {
+				return this.getbusiness(term).pipe(
+					catchError(() => of([])), // empty list on error
+					tap(() => (this.businessInputLoading = false))
+				);
+			})
+		)
+	);
+}
+
+getbusiness(term: string = null): Observable<any> {
+	return this.global
+		.httpPost('business/filteredList', {
+			filtered_name: term,
+			for_combo: true,
+			limit: 1000,
+			offset: 0,
+		})
+		.pipe(
+			map((resp) => {
+				if (resp.Error) {
+					throwError(resp.Error);
+				} else {
+					return resp.list.map((item: any) => {
+						return new BusinessList().deserialize(item);
+					});
+				}
+			})
+		);
+}
+ 
 	loadEmployee() {
 		this.employeelist$ = concat(
 			of([]), // default items
@@ -110,6 +156,8 @@ export class BusinessReportSeverancepayComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.id,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -139,8 +187,11 @@ export class BusinessReportSeverancepayComponent implements OnInit {
 		});
 console.log(dataSetgroupBy);
 		let fackData = [];
+		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
+		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
+		
 		for (const year in dataSetgroupBy) {
-			for (let index = 1; index <= 12; index++) {
+			for (let index = startMonth; index <= endMonth; index++) {
 				
 				if (
 					dataSet.findIndex((item) => {
@@ -174,8 +225,12 @@ console.log(dataSetgroupBy);
 				return this.global.getMonthName[item.month]+'/'+item.year;
 
 			}else{
-				return this.global.getMonthName[item.month];
 
+				if (item.month<=endMonth||item.month>=startMonth) {
+					return this.global.getMonthName[item.month];
+
+				}
+				
 			}
 		});
     console.log(dataCategories);
@@ -257,7 +312,7 @@ console.log(dataSetgroupBy);
 		// 	this.plotShow=false
 		// }
 		this.global
-			.httpPost('report/payroll/monthlyWage', {
+			.httpPost('report/payroll/severancePayList', {
 				filtered_business_id ,
 				filtered_employee_id: this.filtered_employee_id,
 				filtered_to_date ,

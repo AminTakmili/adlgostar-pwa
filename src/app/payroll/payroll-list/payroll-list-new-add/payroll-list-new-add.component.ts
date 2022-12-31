@@ -33,6 +33,8 @@ export class PayrollListNewAddComponent implements OnInit {
 
 	yeraNumber!: number;
 	monthNumber!: number;
+	fromYeraNumber!: number;
+	fromMonthNumber!: number;
 	isInverse: boolean=false;
 	segmentType: string='manual';
 	yearsList!: DataSets[];
@@ -50,7 +52,8 @@ export class PayrollListNewAddComponent implements OnInit {
 	businessId: string;
 
 	errors : error[] = [];
-	addForm: FormGroup;
+	fileForm: FormGroup;
+	wantcopy=false
 
 
 	constructor(
@@ -61,7 +64,7 @@ export class PayrollListNewAddComponent implements OnInit {
 
 		public route: ActivatedRoute
 	) {
-		this.addForm = this.fb.group({
+		this.fileForm = this.fb.group({
 			file: ['', Validators.compose([Validators.required])],
 		});
 	}
@@ -132,7 +135,12 @@ export class PayrollListNewAddComponent implements OnInit {
 	async getData() {
 		this.datasList = [];
 		if (this.segmentType=='manual') {
-			this.getImportManualData()
+			if (this.wantcopy) {
+				this.getImportManualCopyData()
+			}else{
+
+				this.getImportManualData()
+			}
 		}else{
 			this.getExcelManualData()
 		}
@@ -167,15 +175,45 @@ export class PayrollListNewAddComponent implements OnInit {
 			//  console.log( this.datasList);
 		}
 	}
+	async getImportManualCopyData(){
+		if (this.monthNumber && this.yeraNumber && this.business_id&&this.fromMonthNumber&&this.fromYeraNumber) {
+			this.loading = true;
+
+			await this.global.showLoading();
+			this.global
+				.httpPost('payroll/copyPayroll', {
+					business_id: this.business_id,
+					year: this.yeraNumber,
+					month: this.monthNumber,
+					from_year:this.fromYeraNumber,
+					from_month:this.fromMonthNumber
+
+				})
+				.subscribe(
+					async (res: any) => {
+						await this.global.dismisLoading();
+						//  console.log(res);
+						this.setData(res.list)
+						
+					},
+					async (error: any) => {
+						await this.global.dismisLoading();
+						await this.global.showError(error);
+						this.loading = false;
+					}
+				);
+			//  console.log( this.datasList);
+		}
+	}
 	async getExcelManualData(){
-		this.addForm.markAllAsTouched()
-		if (this.monthNumber && this.yeraNumber && this.business_id&&this.addForm.valid) {
+		this.fileForm.markAllAsTouched()
+		if (this.monthNumber && this.yeraNumber && this.business_id&&this.fileForm.valid) {
 			this.loading = true;
 
 
 			this.errors=[]
 			var formData: any = new FormData();
-			formData.append("file", this.addForm.get('file').value);
+			formData.append("file", this.fileForm.get('file').value);
 			formData.append("business_id",  this.business_id);
 			formData.append("year",  this.yeraNumber);
 			formData.append("month",  this.monthNumber);
@@ -200,7 +238,7 @@ export class PayrollListNewAddComponent implements OnInit {
 							});
 							this.errors = _.sortBy(this.errors, ['row']);
 							console.log(this.errors);
-							this.addForm.reset();
+							this.fileForm.reset();
 							this.global.showError(err);
 							this.loading = false;
 
@@ -224,7 +262,7 @@ export class PayrollListNewAddComponent implements OnInit {
 						});
 						this.errors = _.sortBy(this.errors, ['row']);
 						console.log(this.errors);
-						this.addForm.reset();
+						this.fileForm.reset();
 						this.global.showError(err);
 						this.loading = false;
 
@@ -250,12 +288,12 @@ export class PayrollListNewAddComponent implements OnInit {
 	uploadFile(event: any) {
 		const file = (event.target as HTMLInputElement).files[0];
 		console.log(file);
-		// this.addForm.get('file').setValue(file)
+		// this.fileForm.get('file').setValue(file)
 
-		this.addForm.patchValue({
+		this.fileForm.patchValue({
 			file: file,
 		});
-		this.addForm.get('file').updateValueAndValidity();
+		this.fileForm.get('file').updateValueAndValidity();
 		this.getData()
 		if (!this.monthNumber) { this.global.showToast( 'لطفا ماه را انتخاب کنید',700,'top','danger','ios' ) }
 		if ( !this.yeraNumber ) { this.global.showToast( 'لطفا سال را انتخاب کنید',700,'top','danger','ios' ) }
@@ -368,4 +406,5 @@ export class PayrollListNewAddComponent implements OnInit {
 				}
 			);
 	}
+	
 }

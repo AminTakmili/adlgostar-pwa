@@ -1,10 +1,8 @@
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Employee } from './../../../core/models/employee.model';
-import { GlobalService } from './../../../core/services/global.service';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { reportLoan } from 'src/app/core/models/report.model';
+import { reportLeave } from 'src/app/core/models/report.model';
 import { groupBy } from 'lodash';
 import {
 	catchError,
@@ -16,17 +14,20 @@ import {
 	tap,
 } from 'rxjs/operators';
 import { Observable, Subject, concat, of, throwError } from 'rxjs';
+import { Employee } from 'src/app/core/models/employee.model';
+import { GlobalService } from 'src/app/core/services/global.service';
 
 @Component({
-	selector: 'app-business-report-loan',
-	templateUrl: './business-report-loan.component.html',
-	styleUrls: ['./business-report-loan.component.scss'],
+  selector: 'app-business-report-leave-withoutpayleave',
+  templateUrl: './business-report-leave-withoutpayleave.component.html',
+  styleUrls: ['./business-report-leave-withoutpayleave.component.scss'],
 })
-export class BusinessReportLoanComponent implements OnInit {
-	pageTitle:string='گزارش وام ها'
+export class BusinessReportLeaveWithoutpayleaveComponent implements OnInit {
+ 
+  @Input('businessId')businessId:string
 	columnHighcharts: typeof Highcharts = Highcharts;
 	plotShow: boolean = false;
-	data: reportLoan[];
+	data: reportLeave[];
 	columnChartOptions: Highcharts.Options = {
 		chart: {
 			type: 'Highcharts',
@@ -35,7 +36,7 @@ export class BusinessReportLoanComponent implements OnInit {
 			text: '',
 		},
 	};
-	id: string;
+	// id: string;
 	// filtered_to_date: string;
 	// filtered_from_date: string;
 	filtered_employee_id: number;
@@ -50,8 +51,8 @@ export class BusinessReportLoanComponent implements OnInit {
 	endDatepickerIsChange:boolean=false
 	loading:boolean=false
 
-	constructor(private global: GlobalService, private rout: ActivatedRoute, private fb:FormBuilder) {
-		this.id = rout.snapshot.paramMap.get('id');
+	constructor(private global: GlobalService,  private fb:FormBuilder) {
+		// this.id = rout.snapshot.paramMap.get('id');
 		this.startDate=fb.group({
 			filtered_from_date:[]
 		})
@@ -64,9 +65,16 @@ export class BusinessReportLoanComponent implements OnInit {
 	ngOnInit() {
 		this.loadEmployee()
 	}
-	ionViewWillEnter() {
-		this.getData();
-	}
+	// ionViewWillEnter() {
+	// 	this.getData();
+	// }
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log(changes);
+    // console.log(changes.businessId.currentValue);
+    this.getData(changes.businessId.currentValue)
+  
+  }
+  
 	loadEmployee() {
 		this.employeelist$ = concat(
 			of([]), // default items
@@ -86,14 +94,16 @@ export class BusinessReportLoanComponent implements OnInit {
 			)
 		);
 	}
-	startdatepickerChange(){
+	startdatepickerChange(e:any){
+   
 		if (!this.startDatepickerIsChange) {
-			this.getData() 
+    //   console.log( this.startDate.value.filtered_from_date);
+			this.getData(this.businessId,e.shamsi?e.shamsi:null,this.endDate.get('filtered_to_date').value) 
 		}
 	}
-	enddatepickerChange(){
+	enddatepickerChange(e:any){
 		if (!this.endDatepickerIsChange) {
-			this.getData() 
+			this.getData(this.businessId,this.startDate.get('filtered_from_date').value,e.shamsi?e.shamsi:null) 
 		}
 	}
 
@@ -101,6 +111,8 @@ export class BusinessReportLoanComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.businessId,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -118,7 +130,7 @@ export class BusinessReportLoanComponent implements OnInit {
 			);
 	}
 
-	setcolumnChart(dataSet: reportLoan[]) {
+	setcolumnChart(dataSet: reportLeave[]) {
 		if (this.plotShow) {
 			this.plotShow=false
 		}
@@ -128,10 +140,14 @@ export class BusinessReportLoanComponent implements OnInit {
 		const dataSetgroupBy = groupBy(dataSet, (x) => {
 			return x.year;
 		});
-
+// console.log(dataSetgroupBy);
 		let fackData = [];
+		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
+		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
+		
 		for (const year in dataSetgroupBy) {
-			for (let index = 1; index <= 12; index++) {
+			for (let index = startMonth; index <= endMonth; index++) {
+				
 				
 				if (
 					dataSet.findIndex((item) => {
@@ -139,11 +155,11 @@ export class BusinessReportLoanComponent implements OnInit {
 					}) == -1
 				) {
 					fackData.push(
-						new reportLoan().deserialize({
+						new reportLeave().deserialize({
 							business_name: '',
 							year,
 							month: index,
-							sum_loan_amount: 0,
+							amount: 0,
 						})
 					);
 				} else {
@@ -157,19 +173,23 @@ export class BusinessReportLoanComponent implements OnInit {
 			}
 		}
 
-		const dataColumn = fackData.map((item: reportLoan) => {
-			return item.sum_loan_amount;
+		const dataColumn = fackData.map((item: reportLeave) => {
+			return Math.round(item.amount*10)/10 ;
 		});
-		const dataCategories = fackData.map((item: reportLoan) => {
+		const dataCategories = fackData.map((item: reportLeave) => {
 			if (Object.keys(dataSetgroupBy).length>1 ) {
 				return this.global.getMonthName[item.month]+'/'+item.year;
 
 			}else{
-				return this.global.getMonthName[item.month];
 
+				if (item.month<=endMonth||item.month>=startMonth) {
+					return this.global.getMonthName[item.month];
+
+				}
+				
 			}
 		});
-	
+		
 		this.columnChartOptions = {
 			chart:{
 				style:{
@@ -177,22 +197,24 @@ export class BusinessReportLoanComponent implements OnInit {
 				}
 			},
 			title: {
-				text: Object.keys(dataSetgroupBy).length!=1?'وام ها':' وام های سال '+Object.keys(dataSetgroupBy)[0],
+				text: Object.keys(dataSetgroupBy).length!=1?'مرخصی های بدون حقوق':' مرخصی های بدون حقوق سال '+Object.keys(dataSetgroupBy)[0],
 			},
 			subtitle: {
 				text:
-					' مجموع وام های هرماه را به تفکیک میتوانید مشاهده کنید ' 
+					' مجموع مرخصی های بدون حقوق هرماه را به تفکیک میتوانید مشاهده کنید ' 
 					
 			},
-			// tooltip: {
-			// 	headerFormat: `<span style="font-size:10px">{dataSet.business_name}</span><table>`,
-			// 	pointFormat:
-			// 		'<tr><td style="color:{series.color};padding:0">{point.x}: </td>' +
-			// 		'<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-			// 	footerFormat: '</table>',
-			// 	shared: true,
-			// 	useHTML: true,
-			// },
+			tooltip: {
+				// headerFormat:,
+				pointFormat:
+        `<table dir="rtl"><tr><td  style="font-size:10px ">{series.name}</td></tr>`+
+					'<tr><td style="padding:0;text-align: "center";width: 100%;margin="0 auto""><b>{point.y:.1f}</b></td></tr>',
+				footerFormat: '</table>',
+				shared: true,
+				useHTML: true,
+       
+			},
+     
 			xAxis: {
 				categories: dataCategories,
 				labels: {
@@ -219,21 +241,22 @@ export class BusinessReportLoanComponent implements OnInit {
 			series: [
 				{
 					type: 'column',
-					name: 'مجموع وام ها',
+					name: 'مجموع مرخصی های بدون حقوق',
 					colorByPoint: true,
 					data: dataColumn,
 					showInLegend: false,
+          
 					
 					// tittle:''
 				},
 			],
 		};
-		
+		// console.log(dataColumn);
 		setTimeout(() => {
 			this.plotShow = true;
 		}, 500);
 	}
-	async getData() {
+	async getData(	filtered_business_id:string=this.businessId,filtered_from_date:string=this.startDate.get('filtered_from_date').value,filtered_to_date:string=this.endDate.get('filtered_to_date').value) {
 		
 		this.startDatepickerIsChange=true
 		this.endDatepickerIsChange=true
@@ -244,11 +267,11 @@ export class BusinessReportLoanComponent implements OnInit {
 		// 	this.plotShow=false
 		// }
 		this.global
-			.httpPost('report/businessEmployee/loanList', {
-				filtered_business_id: this.id,
+			.httpPost('report/payroll/withoutPayLeaveList', {
+				filtered_business_id ,
 				filtered_employee_id: this.filtered_employee_id,
-				filtered_to_date: this.endDate.value.filtered_to_date,
-				filtered_from_date: this.startDate.value.filtered_from_date,
+				filtered_to_date ,
+				filtered_from_date,
 			})
 			.subscribe(
 				async (res: any) => {
@@ -258,9 +281,10 @@ export class BusinessReportLoanComponent implements OnInit {
 					// await this.global.dismisLoading();
 					this.loading=false
 					console.log(res);
-					this.data = res.list.map((item: reportLoan) => {
-						return new reportLoan().deserialize(item);
+					this.data = res.list.map((item: reportLeave) => {
+						return new reportLeave().deserialize(item);
 					});
+       
 					this.setcolumnChart(this.data);
 				},
 				async (error: any) => {
@@ -275,4 +299,6 @@ export class BusinessReportLoanComponent implements OnInit {
 			);
 	}
 	
+
+
 }

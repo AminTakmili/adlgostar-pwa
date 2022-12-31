@@ -1,0 +1,35 @@
+<ion-header mode="md">
+	<ion-toolbar color="white">
+		<ion-title class="font-size-14"> لیست قرارداد غیر فعال </ion-title>
+		<ion-badge slot="end" mode="ios" color="success" class="ml-3 font-weight-normal">{{ total }} قرارداد</ion-badge>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div *ngIf="!loading && !dataList.length" class="empty-item">
+		<ion-icon name="person"></ion-icon>
+		<p>قراردادی یافت نشد.</p>
+	</div>
+	<div *ngIf="loading || dataList.length" class="listItem">
+		<div class="bookmark">
+			<!-- [routerLink]="['/contracts/detail/',item.id]" -->
+			<ion-item color="white" lines="full" *ngFor="let item of dataList" detail>
+				<ion-icon color="primary" name="document-text" slot="start"></ion-icon>
+				<ion-label>
+					<h2 class="font-size-10">{{ item.title }}  </h2>
+          <span class="sub-title d-none d-sm-inline-flex">
+       ( {{item.contract_year}} )
+          </span>
+					<p>
+						<ion-text class="font-size-12" color="medium"> نوع کسب کار : {{ item.business_category }}
+						</ion-text>
+					</p>
+				</ion-label>
+			</ion-item>
+		</div>
+	</div>
+	<!--  -->
+	<ion-infinite-scroll threshold="20" *ngIf="!this.end" (ionInfinite)="getData($event)">
+		<ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!--  -->
+</ion-content>

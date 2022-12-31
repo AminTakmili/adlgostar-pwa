@@ -1,0 +1,73 @@
+<form [formGroup]="loanForm" (ngSubmit)="onSubmit()">
+  <div class="row mt-4">
+    <!-- title -->
+    <div class="col-12">
+      <div class="title-1 my-4">
+        <h2 class="title"> عملگرهای فرم </h2>
+        <p class="dsec">ابتدا تاریخ وامی که میخواهید برای ان قسط تعیین کنید را وارد کنید سپس از اقساط موجود یکی را انتخاب کنید</p>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+    <div class="form-input mb-3 col-12" >
+      <label>تاریخ وام</label>
+     
+      <ng-select [items]="remainingLoanReceivedList" bindLabel="date" loadingText="لطفا صبر کنید ..."
+    formControlName="business_employee_form_id" notFoundText="مناسفانه وامی یافت نشد" bindValue="id" (change)="getRemainingLoanInstallmentList()"
+    placeholder="انتخاب کنید">
+  </ng-select>
+  
+      <span class="error">
+        <app-validator [control]="loanForm.get('business_employee_form_id')" [controlName]="'انتخاب تاریخ'">
+        </app-validator>
+      </span>
+    </div>
+    <hr>
+    <ion-list *ngIf="remainingLoanInstallmentList&&remainingLoanInstallmentList.length&&loanForm.valid">
+      <ion-list-header>
+        <ion-label> اقساط موجود این وام </ion-label>
+      </ion-list-header>
+      <ion-radio-group  [value]="0">
+        <ion-item *ngFor="let item of remainingLoanInstallmentList;index as index" >
+
+          <ion-radio (ionFocus)="setValue(item)" slot="start" [value]="item.installment_num"></ion-radio>
+          <div class="text">
+
+            <ion-label>{{global.getMonthName[item.month] }} ماه سال {{item.year}}</ion-label>
+              <span>
+                مبلغ:
+              {{item.installment_amount}}
+              ریال
+              </span>
+          </div>
+        </ion-item>
+    
+      </ion-radio-group>
+    </ion-list>
+    <div class="col-lg-12 mb-4">
+      <div class="row ion-justify-content-end ion-align-items-center">
+           <div class="col-lg-3">
+          <ion-button type="button" (click)="emitGoBack()" expand="block" color="warning" fill="solid" shape="round">
+            بازگشت به مرحله قبل
+          </ion-button>
+        </div>
+        <div class="col-lg-2">
+
+          <ion-button expand="block" (click)="global.emptyFrom(loanForm)" color="medium"
+            fill="outline" shape="round">
+            پاک کردن فرم
+          </ion-button>
+        </div>
+ <!-- (click)="onSubmit(true)" -->
+     
+        <div class="col-lg-3">
+          <ion-button type="submit" expand="block" color="success" fill="solid" shape="round">
+            ثبت عملگرهای فرم
+          </ion-button>
+        </div>
+      </div>
+    </div>
+ 
+</form>

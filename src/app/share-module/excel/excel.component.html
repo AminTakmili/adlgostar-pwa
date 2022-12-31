@@ -1,5 +1,5 @@
  <!-- (click)="setCellClickValue($event)" -->
-<div class="main-content">
+ <div class="main-content">
 	<div  *ngIf="false"  class="title">Book1 - Excel</div>
 	<div  *ngIf="false" dir="ltr" class="menu-bar">
 		<div><span>File</span></div>
@@ -181,7 +181,7 @@
   <!-- 40px repeat('+gridColumns + ', calc((100% - 50px) /'+gridColumns+'))' -->
  
   
-  
+
   <div   class="col-12 my-4 pt-10 header">
 	  <div  class="title-1">
 		  <h5 class="title"> افزودن ستون</h5>
@@ -255,6 +255,7 @@
 	  </div>
 
   </div>
+
   <form [formGroup]="excelForm" id="form"  (submit)="submit()">
 	  
 		<!-- <div class="col-lg-auto">
@@ -265,8 +266,8 @@
 		  </div>
 	  </div> -->
 	  <!-- -((this.custom_additions[0]?.value?.length+this.custom_deductions[0]?.value?.length)*2) -->
-	  <!-- (scroll)="onScroll($event)" -->
-	<div formArrayName="excelCell"   class="cells"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px  35px 70px 80px 222px 105px repeat('+(gridColumns-5) + ',max(100%/'+(gridColumns-5)+', 170px))'" >
+	 
+	<div   (scroll)="onScroll($event)"formArrayName="excelCell"   class="cells ion-content-scroll-host"   [style.grid-template-rows]=" 'auto 35px repeat('+gridRows+', 25px)'" [style.grid-template-columns]="'40px  35px 70px 80px 222px 105px repeat('+(gridColumns-5) + ',max(100%/'+(gridColumns-5)+', 170px))'" >
 		<div class="cells__spacer"></div>
 		<div class="cells__alphabet" *ngFor="let dummy of  this.alfaArray ;let i = index; trackBy: trackByIndex" >{{ this.alfaArray[i]}}</div>
 			<!-- *for form array or all data araay (arr1) -->
@@ -375,24 +376,25 @@
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('hardship_allowance')!=-1?true:false"  formControlName="hardship_allowance"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('operation_bonus')!=-1?true:false"  formControlName="operation_bonus"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('loan_received_amount')!=-1?true:false"  formControlName="loan_received_amount"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('commission')!=-1?true:false"  formControlName="commission"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('car_fuel')!=-1?true:false"  formControlName="car_fuel"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('transportation_price')!=-1?true:false"  formControlName="transportation_price"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [debounce]="750" [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('insurance_day_count')!=-1?true:false"  formControlName="insurance_day_count"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [debounce]="750"  [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('insurance_wage')!=-1?true:false"  formControlName="insurance_wage"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('commission')!=-1?true:false"  formControlName="commission"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('car_fuel')!=-1?true:false"  formControlName="car_fuel"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('transportation_price')!=-1?true:false"  formControlName="transportation_price"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [debounce]="750" [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_day_count')!=-1?true:false"  formControlName="insurance_day_count"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [debounce]="750"  [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('insurance_wage')!=-1?true:false"  formControlName="insurance_wage"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('insurance_allowance')!=-1?true:false"  formControlName="insurance_allowance"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('employer_insurance_allowance')!=-1?true:false"  formControlName="employer_insurance_allowance"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="true"  formControlName="calc_payroll_tax"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('payroll_tax')!=-1?true:false"  formControlName="payroll_tax"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('advance_money')!=-1?true:false"  formControlName="advance_money"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('advance_money')!=-1?true:false"  formControlName="advance_money"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('loan_installment_amount')!=-1?true:false"  formControlName="loan_installment_amount"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('food_cost')!=-1?true:false"  formControlName="food_cost"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('pension_cost')!=-1?true:false"  formControlName="pension_cost"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [debounce]="750"   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('working_deficit_hours')!=-1?true:false"  formControlName="working_deficit_hours"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('working_deficit_amount')!=-1?true:false"  formControlName="working_deficit_amount"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('fund_reserve')!=-1?true:false"  formControlName="fund_reserve"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('working_deficit_rate')!=-1?true:false"  formControlName="working_deficit_rate"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('fund_reserve')!=-1?true:false"  formControlName="fund_reserve"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('fund_reserve_yearly_repay')!=-1?true:false"  formControlName="fund_reserve_yearly_repay"  type="text"  class="cells__input"></ion-input>
-		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('purchase_invoice_from_company')!=-1?true:false"  formControlName="purchase_invoice_from_company"  type="text"  class="cells__input"></ion-input>
+		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||calcparametr.indexOf('purchase_invoice_from_company')!=-1?true:false"  formControlName="purchase_invoice_from_company"  type="text"  class="cells__input"></ion-input>
 
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('sum_payroll_additions')!=-1?true:false"  formControlName="sum_payroll_additions"  type="text"  class="cells__input"></ion-input>
 		<ion-input   [class.title-cell]="i==0" [readonly]="i==0||item.value.is_inverse=='true'||item.value.is_inverse==true||calcparametr.indexOf('sum_payroll_deductions')!=-1?true:false"  formControlName="sum_payroll_deductions"  type="text"  class="cells__input"></ion-input>
@@ -459,7 +461,9 @@
 
 
 	</ng-template> --> 
-	</div>
+	
+
+</div>
 	<div class="row mb-5">
 		<div class="col-12">
 			<hr>
@@ -482,5 +486,4 @@
 
 
 </div>
-
 

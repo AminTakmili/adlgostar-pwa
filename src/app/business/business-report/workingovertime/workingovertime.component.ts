@@ -2,7 +2,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { reportLeave } from 'src/app/core/models/report.model';
+import { reportWorkingOverTime } from 'src/app/core/models/report.model';
 import { groupBy } from 'lodash';
 import {
 	catchError,
@@ -26,7 +26,7 @@ export class WorkingovertimeComponent implements OnInit {
   pageTitle:string='گزارشات اضافه کاری'
 	columnHighcharts: typeof Highcharts = Highcharts;
 	plotShow: boolean = false;
-	data: reportLeave[];
+	data: reportWorkingOverTime[];
 	columnChartOptions: Highcharts.Options = {
 		chart: {
 			type: 'Highcharts',
@@ -110,6 +110,8 @@ export class WorkingovertimeComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.id,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -127,7 +129,7 @@ export class WorkingovertimeComponent implements OnInit {
 			);
 	}
 
-	setcolumnChart(dataSet: reportLeave[]) {
+	setcolumnChart(dataSet: reportWorkingOverTime[]) {
 		if (this.plotShow) {
 			this.plotShow=false
 		}
@@ -139,8 +141,11 @@ export class WorkingovertimeComponent implements OnInit {
 		});
 console.log(dataSetgroupBy);
 		let fackData = [];
+		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
+		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
+		
 		for (const year in dataSetgroupBy) {
-			for (let index = 1; index <= 12; index++) {
+			for (let index = startMonth; index <= endMonth; index++) {
 				
 				if (
 					dataSet.findIndex((item) => {
@@ -148,11 +153,12 @@ console.log(dataSetgroupBy);
 					}) == -1
 				) {
 					fackData.push(
-						new reportLeave().deserialize({
+						new reportWorkingOverTime().deserialize({
 							business_name: '',
 							year,
 							month: index,
-							amount: 0,
+							working_over_time_hour_count: 0,
+							working_over_time_price: 0,
 						})
 					);
 				} else {
@@ -166,16 +172,23 @@ console.log(dataSetgroupBy);
 			}
 		}
 
-		const dataColumn = fackData.map((item: reportLeave) => {
-			return Math.round(item.amount*10)/10 ;
+		const dataworkingOverTimeHourCount = fackData.map((item: reportWorkingOverTime) => {
+			return Math.round(item.working_over_time_hour_count*10)/10 ;
 		});
-		const dataCategories = fackData.map((item: reportLeave) => {
+		const dataworkingOverTimePrice = fackData.map((item: reportWorkingOverTime) => {
+			return Math.round(item.working_over_time_price*10)/10 ;
+		});
+		const dataCategories = fackData.map((item: reportWorkingOverTime) => {
 			if (Object.keys(dataSetgroupBy).length>1 ) {
 				return this.global.getMonthName[item.month]+'/'+item.year;
 
 			}else{
-				return this.global.getMonthName[item.month];
 
+				if (item.month<=endMonth||item.month>=startMonth) {
+					return this.global.getMonthName[item.month];
+
+				}
+				
 			}
 		});
     console.log(dataCategories);
@@ -231,9 +244,19 @@ console.log(dataSetgroupBy);
 			series: [
 				{
 					type: 'column',
-					name: 'مجموع اضافه کاری',
-					colorByPoint: true,
-					data: dataColumn,
+					name: 'مجموع مبلغ اضافه کاری',
+					// colorByPoint: true,
+					data: dataworkingOverTimePrice,
+					showInLegend: false,
+          
+					
+					// tittle:''
+				},
+				{
+					type: 'column',
+					name: 'مجموع ساعت اضافه کاری',
+					// colorByPoint: true,
+					data: dataworkingOverTimeHourCount,
 					showInLegend: false,
           
 					
@@ -271,8 +294,8 @@ console.log(dataSetgroupBy);
 					// await this.global.dismisLoading();
 					this.loading=false
 					console.log(res);
-					this.data = res.list.map((item: reportLeave) => {
-						return new reportLeave().deserialize(item);
+					this.data = res.list.map((item: reportWorkingOverTime) => {
+						return new reportWorkingOverTime().deserialize(item);
 					});
        
 					this.setcolumnChart(this.data);

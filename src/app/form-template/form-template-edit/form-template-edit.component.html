@@ -12,7 +12,7 @@
 			</div>
 			<div class="col-lg-auto">
 
-				<ion-back-button defaultHref="contracts/conditions" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
+				<ion-back-button defaultHref="form/template/list" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 				</ion-back-button>
 			</div>
 		</div>
@@ -26,6 +26,19 @@
 							<h2 class="title">{{ pageTitle }}</h2>
 							<p class="dsec">در این قسمت میتوانید یک قالب  فرم جدید تعریف کنید
 							</p>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="form-input mb-3" *ngIf="formTemplateTypeList && formTemplateTypeList.length">
+							<label>نوع قالب</label>
+							<ng-select (change)="getFormTemplateVariable()" placeholder="نوع قالب را انتخاب کنید" [items]="formTemplateTypeList"
+								bindLabel="fa_name" bindValue="id" [clearable]="false" formControlName="form_type_id">
+
+							</ng-select>
+							<span class="error">
+								<app-validator [control]="editForm.controls['form_type_id']"
+									[controlName]="'انتخاب نوع قالب'"></app-validator>
+							</span>
 						</div>
 					</div>
 					<!-- varable List -->
