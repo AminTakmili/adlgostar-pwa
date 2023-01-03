@@ -82,7 +82,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['last_name']" [controlName]="'نام خانوادگی'"></app-validator>
 								</span>
-								<span class="hint">مثلا : دهقان</span>
+								<span class="hint">مثلا دهقان</span>
 							</div>
 						</div>
 						<div class="col-lg-6">
@@ -92,7 +92,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['birth_certificate_number']" [controlName]="'شماره شناسنامه'"></app-validator>
 								</span>
-								<span class="hint">مثلا : 321321</span>
+								<span class="hint">مثلا 321321</span>
 							</div>
 						</div>
 						<div class="col-lg-6">
@@ -119,7 +119,7 @@
 						<!-- formControlName="birth_date" -->
 						<div class="form-input mb-3">
 							<label>تاریخ تولد</label>
-							<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+							<ng-persian-datepicker [dateInitValue]="false" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 								<input type="text" formControlName="birth_date" />
 							 </ng-persian-datepicker>
 							<span class="error">
@@ -136,7 +136,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['birth_place']" [controlName]="'محل تولد'"></app-validator>
 								</span>
-								<span class="hint">مثلا : شیراز</span>
+								<span class="hint">مثلا شیراز</span>
 							</div>
 						</div>
 						<div class="col-lg-6">
@@ -147,7 +147,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['birth_certificate_issuance_place']" [controlName]="'محل صدور شناسنامه'"></app-validator>
 								</span>
-								<span class="hint">مثلا : شیراز</span>
+								<span class="hint">مثلا شیراز</span>
 							</div>
 						</div>
 						<div class="col-lg-6" *ngIf="StaticData">
@@ -191,7 +191,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['father_name']" controlName="'نام پدر'"></app-validator>
 								</span>
-								<span class="hint">مثلا : حبیب</span>
+								<span class="hint">مثلا حبیب</span>
 							</div>
 						</div>
 						<div class="col-lg-6 " *ngIf="StaticData">
@@ -219,7 +219,7 @@
 								<span class="error">
 									<app-validator #validation [control]="employeeForm.controls['field_of_study']" controlName="'رشته ی تحصیلی'"></app-validator>
 								</span>
-								<span class="hint">مثلا : حسابداری</span>
+								<span class="hint">مثلا حسابداری</span>
 							</div>
 						</div>
 						<!--  -->
@@ -241,7 +241,7 @@
 											<span class="error">
 												<app-validator #validation [control]="item.get('military_state')" [controlName]="'وضعیت نظام وظیفه'"></app-validator>
 											</span>
-											<span class="hint">مثلا : معاف</span>
+											<span class="hint">مثلا معاف</span>
 										</div>
 									</div>
 
@@ -308,7 +308,7 @@
 									<span class="error">
 										<app-validator #validation [control]="item.get('address')" [controlName]="' آدرس منزل '"></app-validator>
 									</span>
-									<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
+									<span class="hint">مثلا شیراز خیابان زند خیابان رودکی </span>
 								</div>
 							</div>
 							<!-- کد پستی منزل -->
@@ -319,7 +319,7 @@
 									<span class="error">
 										<app-validator #validation [control]="item.get('postal_code')" [controlName]="'کد پستی منزل '"></app-validator>
 									</span>
-									<span class="hint">مثلا : 1234512345</span>
+									<span class="hint">مثلا 1234512345</span>
 								</div>
 							</div>
 							<!-- شماره تماس منزل -->
@@ -330,7 +330,7 @@
 									<span class="error">
 										<app-validator #validation [control]="item.get('phone')" [controlName]="'شماره تماس منزل'"></app-validator>
 									</span>
-									<span class="hint">مثلا : 071*******</span>
+									<span class="hint">مثلا 071*******</span>
 								</div>
 							</div>
 						</div>

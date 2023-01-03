@@ -18,7 +18,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 export class ContractTemplateAddComponent implements OnInit {
 
 
-	pageTitle: string = "افزودن قالب قرار داد جدید";
+	pageTitle: string = "افزودن قالب قرارداد جدید";
 
 	addForm: FormGroup;
 
@@ -118,7 +118,7 @@ export class ContractTemplateAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/template');
-					this.global.showToast('قالب قرار داد با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.global.showToast('قالب قرارداد با نام  ' + this.addForm.value.name + ' ثبت شد .');
 					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

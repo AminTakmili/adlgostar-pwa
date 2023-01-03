@@ -7,9 +7,9 @@
 		<div class="row justify-content-between ion-align-items-center">
 			<div class="col-lg-auto">
 				<div class="page-info">
-					<h1 class="title">جزییات قرار داد {{ dataList?.title }}</h1>
+					<h1 class="title">جزییات قرارداد {{ dataList?.title }}</h1>
 					<p class="dsec">
-						قرار داد {{ dataList?.business_info.name }} ({{ dataList?.business_info.category }})
+						قرارداد {{ dataList?.business_info.name }} ({{ dataList?.business_info.category }})
 					</p>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 				<ion-button shape="round" [routerLink]="['/contracts/edit/'+dataList.id]" color="secondary"
 					*ngIf="global.userPermision['contract_edit']">
 					<ion-icon slot="start" name="build"></ion-icon>
-					ویرایش قرار داد
+					ویرایش قرارداد
 				</ion-button>
 
 			</div>
@@ -59,9 +59,9 @@
 
 				<ion-item lines="none" class="confirm-item">
 					<ion-label slot="start">
-						<h2 class="title">وضعیت قرار داد</h2>
+						<h2 class="title">وضعیت قرارداد</h2>
 						<p class="posts"><span
-								[innerHtml]="dataList.is_confirmed==1? '<strong> تایید شده </strong> توسط '+dataList.confirmer_info.full_name +' در تاریخ  ' + dataList.confirm_date :'پیشنویس'"></span>
+								[innerHtml]="dataList.is_confirmed==1? '<strong> تایید شده </strong> توسط '+dataList.confirmer_info.full_name +' در تاریخ <span dir=ltr> ' +    dataList.confirm_date+' </span>' :'پیشنویس'"></span>
 						</p>
 					</ion-label>
 					<ion-button (click)="submitConfirm()" slot="end" shape="round" color="success"
@@ -104,7 +104,7 @@
 				<div class="row align-items-center justify-content-between mt-4">
 					<div class="col-md-auto">
 						<div class="title-1 ">
-							<h2 class="title">لیست کارمندان در قرار داد</h2>
+							<h2 class="title">لیست کارمندان در قرارداد</h2>
 						</div>
 					</div>
 				</div>
@@ -127,15 +127,15 @@
 			<div class="container">
 				<div class="col-md-auto">
 					<div class="title-1 ">
-						<h2 class="title">اطلاعات قرار داد</h2>
+						<h2 class="title">اطلاعات قرارداد</h2>
 					</div>
 				</div>
 				<div class="row">
-					<!-- اطلاعات حقوق و دستمزد قرار داد -->
+					<!-- اطلاعات حقوق و دستمزد قرارداد -->
 					<div class="col-lg-6">
 						<!--  -->
 						<ion-list class="full-info">
-							<ion-list-header>اطلاعات حقوق و دستمزد قرار داد</ion-list-header>
+							<ion-list-header>اطلاعات حقوق و دستمزد قرارداد</ion-list-header>
 							<ion-item lines="full" color="white">
 								<ion-label>
 									<h2 class="value">{{ dataList?.wage ?? 0 | number }} ریال</h2>
@@ -163,7 +163,7 @@
 							<ion-item lines="full" color="white">
 								<ion-label>
 									<h2 class="value">{{ dataList?.day_count }} روز</h2>
-									<p class="title">تعداد روز قرار داد</p>
+									<p class="title">تعداد روز قرارداد</p>
 								</ion-label>
 							</ion-item>
 							<ion-item lines="full" color="white">
@@ -175,7 +175,7 @@
 							<ion-item lines="full" color="white" *ngIf="dataList?.contract_year">
 								<ion-label>
 									<h2 class="value">سال {{ dataList?.contract_year }} </h2>
-									<p class="title">سال عقد قرار داد</p>
+									<p class="title">سال عقد قرارداد</p>
 								</ion-label>
 							</ion-item>
 							<ion-item lines="full" color="white" *ngIf="dataList?.end_date">
@@ -218,7 +218,7 @@
 							<ion-item lines="full" color="white" *ngIf="dataList?.month_count">
 								<ion-label>
 									<h2 class="value">{{ dataList?.month_count }} ماه</h2>
-									<p class="title">ماه های موجود در قرار داد</p>
+									<p class="title">ماه های موجود در قرارداد</p>
 								</ion-label>
 							</ion-item>
 						</ion-list>
@@ -234,10 +234,10 @@
 						</ion-list>
 
 					</div>
-					<!-- محاسبات قرار داد -->
+					<!-- محاسبات قرارداد -->
 					<div class="col-lg-6">
 						<ion-list class="full-info">
-							<ion-list-header>محاسبات قرار داد</ion-list-header>
+							<ion-list-header>محاسبات قرارداد</ion-list-header>
 							<ion-item lines="full" color="white">
 								<ion-label>
 									<h2 class="value">{{ dataList?.calc_bonus_monthly ? 'فعال' : 'غیرفعال' }}</h2>
@@ -273,7 +273,7 @@
 							<ion-item lines="full" color="white">
 								<ion-label>
 									<h2 class="value">{{ dataList?.is_hourly_contract ? 'فعال' : 'غیرفعال' }}</h2>
-									<p class="title">محاسبه قرار داد به صورت ساعتی</p>
+									<p class="title">محاسبه قرارداد به صورت ساعتی</p>
 								</ion-label>
 							</ion-item>
 							<ion-item lines="full" color="white">
@@ -304,7 +304,7 @@
 			<div class="container">
 				<div class="col-md-auto">
 					<div class="title-1 ">
-						<h2 class="title">متون اصلی قرار داد</h2>
+						<h2 class="title">متون اصلی قرارداد</h2>
 					</div>
 				</div>
 				<!-- header -->
@@ -320,7 +320,7 @@
 				</ion-list>
 				<!-- متن -->
 				<ion-list>
-					<ion-list-header>متن قرار داد</ion-list-header>
+					<ion-list-header>متن قرارداد</ion-list-header>
 					<ion-card class="mb-4 main-text" color="white">
 						<ion-card-content>
 							<div class="inner-html-dev"
@@ -330,7 +330,7 @@
 				</ion-list>
 				<!-- شروط -->
 				<ion-list>
-					<ion-list-header>شروط ضمن عقد قرار داد</ion-list-header>
+					<ion-list-header>شروط ضمن عقد قرارداد</ion-list-header>
 					<ion-card class="mb-4" color="white" *ngFor="let item of dataList?.provisos">
 						<ion-card-content>
 							<div class="inner-html-dev" [innerHTML]="item.proviso_text|safeHtml"></div>
@@ -346,7 +346,7 @@
 
 				<!-- -->
 				<ion-list>
-					<ion-list-header>متن پایانی قرار داد</ion-list-header>
+					<ion-list-header>متن پایانی قرارداد</ion-list-header>
 					<ion-card class="mb-4" color="white">
 						<ion-card-content>
 							<div class="inner-html-dev"
@@ -393,7 +393,7 @@
 						<th class="ion-text-center">#</th>
 						<th scope="col">تاریخ حکم</th>
 						<th scope="col">کسب و کار</th>
-						<!-- <th scope="col">کارمندان در قرار داد</th> -->
+						<!-- <th scope="col">کارمندان در قرارداد</th> -->
 						<th scope="col">دستمزد روزانه</th>
 						<th scope="col"> وضعیت حکم </th>
 						<th scope="col">تاریخ ثبت</th>

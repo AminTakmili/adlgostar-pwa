@@ -77,6 +77,8 @@ export class EmployeeLeaveEditComponent implements OnInit {
 				await this.global.dismisLoading();
 				console.log(res);
 				this.editForm.get('amount').setValue(res.amount);
+				// console.log(res.amount.split(':'));
+				this.date=res.amount?.split(':')[0]+' ساعت و '+res.amount?.split(':')[1]+' دقیقه '
 				this.editForm.get('month').setValue(res.month);
 				this.editForm.get('year').setValue(res.year);
         this.employee_id=res.employee_info.id

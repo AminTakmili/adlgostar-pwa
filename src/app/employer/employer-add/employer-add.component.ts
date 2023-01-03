@@ -100,6 +100,30 @@ export class EmployerAddComponent implements OnInit {
 				this.province = this.global.createCountry(countriesData);
 			});
 	}
+	goToBusbusinesses() {
+
+		this.global.showAlert('افزودن کسب وکار',
+		'آیا میخواهید کسب و کار جدید نیز ثبت کنید ؟ ',
+		[
+			{
+				text: 'خیر',
+				role: 'cancel'
+			},
+			{
+				text: 'بلی',
+				role: 'yes'
+			}
+		]).then((alert) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					this.navCtrl.navigateForward('/businesses/add')
+				}else{
+					this.navCtrl.navigateForward('/employers')
+				}
+			});
+		});
+	}
 
 
 
@@ -120,7 +144,7 @@ export class EmployerAddComponent implements OnInit {
 
 					this.global.showToast('کارفرما با نام ' + this.addForm.value.first_name + ' ' + this.addForm.value.last_name + ' ثبت شد .');
 					this.addForm.reset();
-					if(!AddAnOther){this.navCtrl.navigateForward('/employers');}else{location.reload();}
+					if(!AddAnOther){this.goToBusbusinesses();}else{location.reload();}
 				}, async (error: any) => {
 					await this.global.dismisLoading();
 					this.global.showError(error);

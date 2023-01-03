@@ -58,7 +58,7 @@
 								<app-validator [control]="loanForm.controls['amount']" [controlName]="'مقدار وام'">
 								</app-validator>
 							</span>
-							<span class="hint">مقدار وام را به ریال وارد کنید. مثلا 400</span>
+							<span class="hint">مقدار وام را به ریال وارد کنید. مثلا 100000000 ریال</span>
 						</div>
 					</div>
 				
@@ -76,13 +76,14 @@
 						<div formArrayName="details">
 							<div class="business-address"
 								*ngFor="let item of  detailsFormGroup.controls ; let i = index" [formGroupName]="i">
-								<div class="row mb-3 justify-content-between align-items-center" *ngIf="i > 0">
+								<!-- *ngIf="detailsFormGroup.controls.length > 1" -->
+								<div class="row mb-3 justify-content-between align-items-center" >
 									<div class="col-12">
 										<hr>
 									</div>
 									<div class="col-9">
 										<div class="title-1">
-											<h2 class="title"> قسط شماره {{ i }}</h2>
+											<h2 class="title"> قسط شماره {{ i+1 }}</h2>
 										</div>
 									</div>
 									<div class="col-auto">

@@ -105,7 +105,11 @@ const routes: Routes = [
     loadChildren: () => import('./form-template/form-template.module').then( m => m.FormTemplatePageModule),
 	canActivate: [LoginGuard],
 
+  },  {
+    path: 'admin-report',
+    loadChildren: () => import('./admin-report/admin-report.module').then( m => m.AdminReportPageModule)
   },
+
  
 
 

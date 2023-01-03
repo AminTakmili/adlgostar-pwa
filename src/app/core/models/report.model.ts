@@ -23,6 +23,53 @@ export class  reportLeave implements Deserializable {
 		return this;
 	}
 }
+
+export class  reportWorkingOverTime implements Deserializable {
+	working_over_time_price !: number ;
+	working_over_time_hour_count !: number ;
+	month !: number ;
+	year !: number ;
+	business_name !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class  reportWorkingNight implements Deserializable {
+	working_night_price !: number ;
+	working_night_hour_count !: number ;
+	month !: number ;
+	year !: number ;
+	business_name !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+export class  reportWorkingFriday implements Deserializable {
+	working_friday_price !: number ;
+	working_friday_hour_count !: number ;
+	month !: number ;
+	year !: number ;
+	business_name !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
+
+export class  reportPayrollSummery implements Deserializable {
+	sum_payroll_additions!: number ; 
+				sum_payroll_deductions!: number ;
+				payroll_received!: number ;
+	month !: number ;
+	year !: number ;
+	business_name !: string;
+	deserialize(input: any): this {
+		Object.assign(this, input);
+		return this;
+	}
+}
 export class  reportNewYearGiftAndBonusList implements Deserializable {
 	month !: number ;
 	new_year_gift_amount !: number ;

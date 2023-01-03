@@ -4,7 +4,7 @@
 			<div class="row ">
 				<div class="col-12 position-sticky">
 					<div class="row align-items-center justify-content-between 	">
-						<div class="col-auto">پرینت قرار داد {{ dataList?.title }}</div>
+						<div class="col-auto">پرینت قرارداد {{ dataList?.title }}</div>
 						<div class="col-auto d-flex flex-row">
 							<ion-back-button [defaultHref]="'/contracts/detail/'+dataList?.id" text="بازگشت"
 								icon="arrow-back"></ion-back-button>
@@ -21,11 +21,11 @@
 						</div>
 					</div>
 				</div>
-				<!-- قرار داد -->
+				<!-- قرارداد -->
 				<div class="col">
 					<ion-item lines="full">
 						<ion-checkbox slot="start" [(ngModel)]="contractBorder"></ion-checkbox>
-						<ion-label>پرینت قرار داد با حاشیه</ion-label>
+						<ion-label>پرینت قرارداد با حاشیه</ion-label>
 					</ion-item>
 					<ion-card class="my-4 mx-0" color="white">
 						<ion-card-content>

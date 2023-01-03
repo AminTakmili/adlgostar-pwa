@@ -245,8 +245,8 @@ export class BusinessDetailComponent implements OnInit {
 		const alert = await this.alertController.create({
 			cssClass: 'my-custom-class',
 			header: item.title,
-			subHeader: 'حذف قرار داد',
-			message: ' حذف افراد از قرار داد' + item.title,
+			subHeader: 'حذف قرارداد',
+			message: ' حذف افراد از قرارداد' + item.title,
 			inputs: employee,
 			buttons: [
 				{
@@ -552,4 +552,43 @@ export class BusinessDetailComponent implements OnInit {
 			});
 		});
 	}
+	download(item : settlementList) {
+		item.loadingDownload = true;
+	
+	
+		this.global
+			.httpPost('settlement/pdf', { settlement_id:item.id })
+			.subscribe(
+				async (res: any) => {
+					item.loadingDownload = false;
+				;
+	
+					// console.log(res);
+					// console.log(res.file);
+					const byteArray = new Uint8Array(atob(res.file).split('').map(char => char.charCodeAt(0)));
+	
+					
+					var file = new Blob([byteArray], {
+						 type: 'application/pdf',
+					});
+					var fileURL = URL.createObjectURL(file);
+					
+					const link = document.createElement('a');
+					link.href = fileURL;
+					link.download = ` تسویه حساب ${item.employee_name} .pdf`;
+					document.body.append(link);
+					link.click();
+					link.remove();
+					setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+				},
+				async (error: any) => {
+					item.loadingDownload = false;
+					this.global.showError(error);
+					// console.log(error);
+	
+				}
+			);
+	}
+	
+
 }

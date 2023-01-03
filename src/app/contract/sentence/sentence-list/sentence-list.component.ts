@@ -57,7 +57,7 @@ export class SentenceListComponent implements OnInit {
       })
       console.log(this.dataList);
     
-			this.pageTitle = `حکم های قرار داد ${	this.dataList[0].contract_info.title}`;
+			this.pageTitle = `حکم های قرارداد ${	this.dataList[0].contract_info.title}`;
 			this.contractsTitle = 	this.dataList[0].contract_info.title;
 			this.setTitle();
 

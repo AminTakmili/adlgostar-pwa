@@ -1,0 +1,46 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+	<!-- top bar content -->
+	<div class="content-header">
+		<div class="row justify-content-between ion-align-items-center">
+			<div class="col-lg-auto">
+				<div class="page-info">
+					<h1 class="title"> گزارشات ادمین </h1>
+					<p class="dsec">
+            در این صفحه گزارشات مربوط به ادمین را میتوانید مشاهده کنید 
+					</p>
+				</div>
+			</div>
+			<!-- <div class="col-lg-auto">
+				<ion-button *ngIf="global.userPermision['business_import']" shape="round" color="warning" [routerLink]="['importer']" class="ml-3">
+					<ion-icon slot="start" name="push"></ion-icon>
+					افزودن کسب کار با اکسل
+				</ion-button>
+				<ion-button *ngIf="global.userPermision['business_add']" shape="round" color="success" [routerLink]="['add']">
+					<ion-icon slot="start" name="add-circle"></ion-icon>
+					افزودن کسب و کار جدید
+				</ion-button>
+
+			</div> -->
+		</div>
+	</div>
+	<!-- top bar content -->
+	<!-- main -->
+	<main>
+
+		<div class="container" >
+
+      <section class="mt-10 content">
+        <app-admin-report-expertlist ></app-admin-report-expertlist>
+        <app-admin-report-activecontract ></app-admin-report-activecontract>
+        <app-admin-report-inactivecontract ></app-admin-report-inactivecontract>
+
+      </section>
+		
+			</div>
+		
+	</main>
+</ion-content>

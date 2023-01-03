@@ -69,7 +69,7 @@ export class EmployeeAddComponent implements OnInit {
 			mobile: [ '' , Validators.compose([Validators.required,Validators.minLength(11),Validators.maxLength(11)])],
 			gender: [ '' , Validators.compose([Validators.required])],
 			marital_status: [ '' , Validators.compose([Validators.required])],
-			birth_date: [ '' , Validators.compose([Validators.required])],
+			birth_date: [  , Validators.compose([Validators.required])],
 			birth_place: [ '' , Validators.compose([Validators.required])],
 			birth_certificate_number: ['' , Validators.compose([Validators.required])],
 			birth_certificate_issuance_place: ['' , Validators.compose([Validators.required])],

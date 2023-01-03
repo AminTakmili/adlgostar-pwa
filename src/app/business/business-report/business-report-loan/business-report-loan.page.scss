@@ -1,0 +1,17 @@
+.content-main{
+    min-height: 80vh;
+    width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // flex-wrap: nowrap;
+    // align-content: center;
+    // justify-content: center;
+    margin: 15px auto;
+    align-items: center;
+    app-business-report-loan-loan,
+    aapp-business-report-loan-paidloan,
+    app-business-report-loan-unpaidloan{
+        min-height: 200px;
+        margin: 2px auto;
+    }
+}

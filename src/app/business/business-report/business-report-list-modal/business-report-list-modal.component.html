@@ -30,8 +30,11 @@
     <ion-item [routerLink]="['/businesses/report/insurance',id] " (click)=" this.modalController.dismiss('insurance', 'cancel');" detail="true" button="true">
       <ion-label> گزارشات  بیمه </ion-label>
     </ion-item>
-    <ion-item [routerLink]="['/businesses/report/workingovertime',id] " (click)=" this.modalController.dismiss('workingovertime', 'cancel');" detail="true" button="true">
-      <ion-label> گزارشات  اضافه کاری </ion-label>
+    <ion-item [routerLink]="['/businesses/report/workinghour',id] " (click)=" this.modalController.dismiss('workinghour', 'cancel');" detail="true" button="true">
+      <ion-label> گزارشات کارکرد </ion-label>
+    </ion-item>
+    <ion-item [routerLink]="['/businesses/report/workinghourcount',id] " (click)=" this.modalController.dismiss('workinghourcount', 'cancel');" detail="true" button="true">
+      <ion-label> گزارش زمان حضور در کارگاه </ion-label>
     </ion-item>
  
     <ion-item [routerLink]="['/businesses/report/newyeargift_bonus',id] " (click)=" this.modalController.dismiss('newyeargift_bonus', 'cancel');" detail="true" button="true">

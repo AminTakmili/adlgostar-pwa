@@ -168,7 +168,7 @@ export class FooterTemplateEditComponent implements OnInit {
 
 				await this.global.dismisLoading();
 				// console.log(res:any);
-				this.global.showToast('قالب قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
+				this.global.showToast('قالب قرارداد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
 				this.navCtrl.navigateForward('/contracts/footer/template/list');
 				this.editForm.reset();
 			}, async (error:any) => {

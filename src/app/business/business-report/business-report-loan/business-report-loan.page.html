@@ -1,0 +1,51 @@
+<ion-header>
+	<app-header [title]="pageTitle"></app-header>
+</ion-header>
+
+<ion-content>
+
+	<!-- top bar content -->
+	<div class="content-header ">
+		<div class="row justify-content-between ion-align-items-center container">
+			<div class="col-lg-8">
+				<div class="page-info">
+					<h1 class="title">{{ pageTitle }}</h1>
+					<p class="dsec">گزارش های وام
+						<span *ngIf="rout.snapshot.paramMap.get('id')">
+							 مربوط به کسب و کار
+
+						</span> 
+					</p>
+				</div>
+
+			</div>
+			<div *ngIf="!rout.snapshot.paramMap.get('id')" class="col-lg-4 mt-3">
+				<div class="form-input ">
+					<!-- <label>جستجو در کسب کار</label> -->
+					<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+						bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+					</ng-select> -->
+					<ng-select [items]="businesslist$ | async" placeholder="جستجو در کسب و کارها"
+						[loading]="businessInputLoading" bindLabel="name" bindValue="id"
+						typeToSearchText="لطفا حداقل {{minLengthTerm}} کارکتر تایپ کنید" [typeahead]="businessInput$"
+						[(ngModel)]="businessId" [clearable]="true" loadingText="لطفا صبر کنید ..."
+						notFoundText="مناسفانه کسب و کاری یافت نشد">
+					</ng-select>
+					<!-- (change)="changeFilter()" -->
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- top bar content -->
+	<main>
+		<div class="content-main">
+
+			<app-business-report-loan-loan [businessId]="businessId"></app-business-report-loan-loan>
+			<app-business-report-loan-paidloan [businessId]="businessId"></app-business-report-loan-paidloan>
+			<app-business-report-loan-unpaidloan [businessId]="businessId"></app-business-report-loan-unpaidloan>
+
+		</div>
+	</main>
+</ion-content>

@@ -29,10 +29,13 @@ export class settlementList implements Deserializable {
 	createdAtEn ! : string;
 	updatedAt ! : string;
 	updatedAtEn ! : string;
+	loadingDownload!:boolean
 
 	
 	deserialize(input: any): this {
 		Object.assign(this, input);
+		this.loadingDownload=false
+
 		return this;
 	}
 }

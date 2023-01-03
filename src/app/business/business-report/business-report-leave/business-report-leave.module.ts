@@ -1,3 +1,5 @@
+import { BusinessReportLeaveUnpaidleaveComponent } from './components/business-report-leave-unpaidleave/business-report-leave-unpaidleave.component';
+import { BusinessReportLeaveWithoutpayleaveComponent } from './components/business-report-leave-withoutpayleave/business-report-leave-withoutpayleave.component';
 import { BusinessReportLeavePaidleaveComponent } from './components/business-report-leave-paidleave/business-report-leave-paidleave.component';
 import { BusinessReportLeaveUnusedleaveComponent } from './components/business-report-leave-unusedleave/business-report-leave-unusedleave.component';
 import { BusinessReportLeaveUsedleaveComponent } from './components/business-report-leave-usedleave/business-report-leave-usedleave.component';
@@ -33,7 +35,9 @@ import { BusinessReportLeavePage } from './business-report-leave.page';
 		BusinessReportLeaveRemainingleaveComponent,
 		BusinessReportLeaveUsedleaveComponent,
     BusinessReportLeaveUnusedleaveComponent,
-    BusinessReportLeavePaidleaveComponent
+    BusinessReportLeavePaidleaveComponent,
+	BusinessReportLeaveUnpaidleaveComponent,
+	BusinessReportLeaveWithoutpayleaveComponent
 	],
 })
 export class BusinessReportLeavePageModule {}

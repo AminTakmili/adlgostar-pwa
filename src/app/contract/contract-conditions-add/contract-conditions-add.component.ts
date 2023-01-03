@@ -15,7 +15,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class ContractConditionsAddComponent implements OnInit {
 
-	pageTitle: string = "افزودن شروط ضمن قرار داد جدید";
+	pageTitle: string = "افزودن شروط ضمن قرارداد جدید";
 
 	addForm: FormGroup;
 
@@ -102,7 +102,7 @@ export class ContractConditionsAddComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/conditions');
-					this.global.showToast('شروط ضمن عقد قرار داد با نام  ' + this.addForm.value.name + ' ثبت شد .');
+					this.global.showToast('شروط ضمن عقد قرارداد با نام  ' + this.addForm.value.name + ' ثبت شد .');
 					this.addForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

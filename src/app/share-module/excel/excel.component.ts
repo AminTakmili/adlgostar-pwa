@@ -133,6 +133,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		working_deficit_hours: '  ساعت کسری کار ( کسورات )',
 
 		working_deficit_amount: '   مقدار کسری کار ( کسورات )',
+		working_deficit_rate: '   نرخ کسری کار ( کسورات )',
 
 		loan_installment_amount: '   کسر قسط وام ( کسورات )',
 
@@ -207,6 +208,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 		'food_cost',
 		'pension_cost',
 		'working_deficit_amount',
+		'working_deficit_rate',
 		'fund_reserve_yearly_repay',
 	];
 	workingShiftsList: DataSets[];
@@ -482,6 +484,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 			payroll_tax: [employee.payroll_tax],
 			working_deficit_hours: [employee.working_deficit_hours],
 			working_deficit_amount: [employee.working_deficit_amount],
+			working_deficit_rate: [employee.working_deficit_rate],
 			loan_installment_amount: [employee.loan_installment_amount],
 			advance_money: [employee.advance_money],
 			purchase_invoice_from_company: [
@@ -942,7 +945,7 @@ export class ExcelComponent implements OnInit, OnChanges {
 						this.global.showError(error);
 					}
 				);
-		} else if((item.controls.is_inverse.value!='true')){
+		} else if((item.controls.is_inverse.value!='true'||item.controls.is_inverse.value!=true)){
 			// console.log(item);
 			// console.log(item.value);
 			// item.controls.inverse_payroll_received.setValue(0)
@@ -950,6 +953,9 @@ export class ExcelComponent implements OnInit, OnChanges {
 				
 				this.clac(item,true)
 			}
+		}
+		if(!item.controls.inverse_payroll_received.value&&(item.controls.is_inverse.value=='true'||(item.controls.is_inverse.value==true))){
+			this.global.showToast( ' لطفا مبلغ حقوق خالص معکوس را وارد کنید ', 1000,'middle','danger','ios' )
 		}
 	}
 	async resetDefaltData(item: FormGroup,index:number){
@@ -1225,4 +1231,10 @@ export class ExcelComponent implements OnInit, OnChanges {
 		
 		return el.employee_id;
 	  }
+	  onScroll(e:Event){
+		console.log(e);
+		console.log(window.scroll());
+		// console.log(e.scrollTop());
+	  }
+	  
 }

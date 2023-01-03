@@ -35,7 +35,7 @@
 				</div>
 
 			
-        <div  class="col-md-6 mb-3">
+        <div  class="col-md-4 mb-3">
 					<div class="form-input ">
 
 						<ng-select
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<!-- انتخاب کسب کار -->
-				<div  class="col-md-6  mb-3">
+				<div  class="col-md-4  mb-3">
 					<div class="form-input">
 					
 					
@@ -78,6 +78,27 @@
 						loadingText="لطفا صبر کنید ..."
 						notFoundText="مناسفانه کارمندی یافت نشد"
 					></ng-select>
+
+					</div>
+				</div>
+				<div class="col-lg-4 mb-3">
+					<div class="form-input ">
+						<!-- <label>جستجو در افراد تاییدکننده</label> -->
+						<!-- <ng-select [(ngModel)]="filtered_business_id" [items]="businessList" bindLabel="name"
+							bindValue="id" placeholder="انتخاب کنید" (change)="changeFilter()">
+						</ng-select> -->
+						<ng-select
+						[(ngModel)]="filtered_is_confirmed"
+						[items]="[{name:'تایید شده',value:1},{name:'تایید نشده',value:0}]"
+						[clearable]="true"
+						placeholder="وضعیت قرارداد"
+						bindLabel="name"
+						bindValue="value"
+						loadingText="لطفا صبر کنید ..."
+						notFoundText=" چنین فردی تا به حال قراردادی را تایید نکرده"
+						(change)="pageChange(1)"
+						>
+						</ng-select>
 
 					</div>
 				</div>
@@ -157,6 +178,12 @@
 									<ion-icon size="small" color="medium" slot="icon-only" name="build">
 									</ion-icon>
 								</ion-button>
+								<ion-button  *ngIf="!item.loadingDownload" fill="clear" class="px-0 mx-0 tooltip-show" (click)="download(item)"  tooltip="دانلود PDF"  download="MyFavicon" >
+									<ion-icon size="small" color="medium" slot="icon-only" name="download">
+									</ion-icon>
+									</ion-button>
+									<ion-spinner  color="medium" *ngIf="item.loadingDownload" name="lines-small"></ion-spinner>
+											
 								
 							
 							</ion-buttons>
@@ -184,8 +211,8 @@
 			</div>
 			<!-- if search return empty cell -->
 			<div *ngIf="dataList && dataList.length === 0 && (businessId||employeeId)" class="alert alert-warning my-3" role="alert">
-				<h4 class="title"> فیش حقوقیی برای نمایش یافت نشد .</h4>
-				<p class="dsec">  فیش حقوقیی با المان جستجو شده یافت نشد</p>
+				<h4 class="title"> فیش حقوقی برای نمایش یافت نشد .</h4>
+				<p class="dsec">  فیش حقوقی با المان جستجو شده یافت نشد</p>
 			</div>
 		</div>
 	</main>

@@ -1,8 +1,14 @@
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+	Component,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
+} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { reportLeave } from 'src/app/core/models/report.model';
+import { reportPayrollSummery } from 'src/app/core/models/report.model';
 import { groupBy } from 'lodash';
 import {
 	catchError,
@@ -18,16 +24,15 @@ import { Employee } from 'src/app/core/models/employee.model';
 import { GlobalService } from 'src/app/core/services/global.service';
 
 @Component({
-  selector: 'app-business-report-payroll-summarypayroll',
-  templateUrl: './business-report-payroll-summarypayroll.component.html',
-  styleUrls: ['./business-report-payroll-summarypayroll.component.scss'],
+	selector: 'app-business-report-payroll-summarypayroll',
+	templateUrl: './business-report-payroll-summarypayroll.component.html',
+	styleUrls: ['./business-report-payroll-summarypayroll.component.scss'],
 })
 export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
-
-  @Input('businessId')businessId:string
+	@Input('businessId') businessId: string;
 	columnHighcharts: typeof Highcharts = Highcharts;
 	plotShow: boolean = false;
-	data: reportLeave[];
+	data: reportPayrollSummery[];
 	columnChartOptions: Highcharts.Options = {
 		chart: {
 			type: 'Highcharts',
@@ -44,37 +49,35 @@ export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
 	employeeInputLoading = false;
 	employeeInput$ = new Subject<string>();
 	minLengthTerm = 3;
-	startDate:FormGroup
-	endDate:FormGroup
+	startDate: FormGroup;
+	endDate: FormGroup;
 
-	startDatepickerIsChange:boolean=false
-	endDatepickerIsChange:boolean=false
-	loading:boolean=false
+	startDatepickerIsChange: boolean = false;
+	endDatepickerIsChange: boolean = false;
+	loading: boolean = false;
 
-	constructor(private global: GlobalService,  private fb:FormBuilder) {
+	constructor(private global: GlobalService, private fb: FormBuilder) {
 		// this.id = rout.snapshot.paramMap.get('id');
-		this.startDate=fb.group({
-			filtered_from_date:[]
-		})
-		this.endDate=fb.group({
-			filtered_to_date:[]
-		})
-
+		this.startDate = fb.group({
+			filtered_from_date: [],
+		});
+		this.endDate = fb.group({
+			filtered_to_date: [],
+		});
 	}
 
 	ngOnInit() {
-		this.loadEmployee()
+		this.loadEmployee();
 	}
 	// ionViewWillEnter() {
 	// 	this.getData();
 	// }
-  ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes);
-    // console.log(changes.businessId.currentValue);
-    this.getData(changes.businessId.currentValue)
-  
-  }
-  
+	ngOnChanges(changes: SimpleChanges) {
+		// console.log(changes);
+		// console.log(changes.businessId.currentValue);
+		this.getData(changes.businessId.currentValue);
+	}
+
 	loadEmployee() {
 		this.employeelist$ = concat(
 			of([]), // default items
@@ -94,16 +97,23 @@ export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
 			)
 		);
 	}
-	startdatepickerChange(e:any){
-   
+	startdatepickerChange(e: any) {
 		if (!this.startDatepickerIsChange) {
-      console.log( this.startDate.value.filtered_from_date);
-			this.getData(this.businessId,e.shamsi?e.shamsi:null,this.endDate.get('filtered_to_date').value) 
+			console.log(this.startDate.value.filtered_from_date);
+			this.getData(
+				this.businessId,
+				e.shamsi ? e.shamsi : null,
+				this.endDate.get('filtered_to_date').value
+			);
 		}
 	}
-	enddatepickerChange(e:any){
+	enddatepickerChange(e: any) {
 		if (!this.endDatepickerIsChange) {
-			this.getData(this.businessId,this.startDate.get('filtered_from_date').value,e.shamsi?e.shamsi:null) 
+			this.getData(
+				this.businessId,
+				this.startDate.get('filtered_from_date').value,
+				e.shamsi ? e.shamsi : null
+			);
 		}
 	}
 
@@ -111,6 +121,8 @@ export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id: this.businessId,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,
@@ -128,9 +140,9 @@ export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
 			);
 	}
 
-	setcolumnChart(dataSet: reportLeave[]) {
+	setcolumnChart(dataSet: reportPayrollSummery[]) {
 		if (this.plotShow) {
-			this.plotShow=false
+			this.plotShow = false;
 		}
 		console.log(dataSet);
 		// const malePercent=Math.round((dataSet.male_count/dataSet.total_count)*100*100)/100
@@ -138,29 +150,36 @@ export class BusinessReportPayrollSummarypayrollComponent implements OnInit {
 		const dataSetgroupBy = groupBy(dataSet, (x) => {
 			return x.year;
 		});
-console.log(dataSetgroupBy);
+		console.log(dataSetgroupBy);
 		let fackData = [];
-		let startMonth= this.startDate.get('filtered_from_date').value?parseInt(this.startDate.get('filtered_from_date').value.split("/")[1]):1
-		let endMonth=this.endDate.get('filtered_to_date').value?parseInt(this.endDate.get('filtered_to_date').value.split("/")[1]):12
-		
+		let startMonth = this.startDate.get('filtered_from_date').value
+			? parseInt(
+					this.startDate.get('filtered_from_date').value.split('/')[1]
+			  )
+			: 1;
+		let endMonth = this.endDate.get('filtered_to_date').value
+			? parseInt(this.endDate.get('filtered_to_date').value.split('/')[1])
+			: 12;
+
 		for (const year in dataSetgroupBy) {
 			for (let index = startMonth; index <= endMonth; index++) {
-				
 				if (
 					dataSet.findIndex((item) => {
 						return item.month == index;
 					}) == -1
 				) {
 					fackData.push(
-						new reportLeave().deserialize({
+						new reportPayrollSummery().deserialize({
 							business_name: '',
 							year,
 							month: index,
-							amount: 0,
+							// amount: 0,
+							sum_payroll_additions: 0,
+							sum_payroll_deductions:0,
+							payroll_received:0
 						})
 					);
 				} else {
-					
 					fackData.push(
 						dataSet.find((item) => {
 							return item.month == index;
@@ -170,93 +189,129 @@ console.log(dataSetgroupBy);
 			}
 		}
 
-		const dataColumn = fackData.map((item: reportLeave) => {
-			return Math.round(item.amount*10)/10 ;
+		const sumPayrollAdditionsData = fackData.map((item: reportPayrollSummery) => {
+			return Math.round(item.sum_payroll_additions * 10) / 10;
+			
 		});
-		const dataCategories = fackData.map((item: reportLeave) => {
-			if (Object.keys(dataSetgroupBy).length>1 ) {
-				return this.global.getMonthName[item.month]+'/'+item.year;
-
-			}else{
+		const sumPayrollDeductionsData = fackData.map((item: reportPayrollSummery) => {
+			return Math.round(item.sum_payroll_deductions * 10) / 10;
+			
+		});
+		const payrollreceivedData = fackData.map((item: reportPayrollSummery) => {
+			return Math.round(item.payroll_received * 10) / 10;
+			
+		});
+	
+		
+		const dataCategories = fackData.map((item: reportPayrollSummery) => {
+			if (Object.keys(dataSetgroupBy).length > 1) {
+				return this.global.getMonthName[item.month] + '/' + item.year;
+			} else {
 				if (this.endDate.get('filtered_to_date').value) {
-					
-					if (item.month<=parseInt(this.endDate.get('filtered_to_date').value.split("/")[1])) {
+					if (
+						item.month <=
+						parseInt(
+							this.endDate
+								.get('filtered_to_date')
+								.value.split('/')[1]
+						)
+					) {
 						return this.global.getMonthName[item.month];
-
 					}
 				}
 				if (this.startDate.get('filtered_from_date').value) {
-					
-					if (item.month>=parseInt(this.startDate.get('filtered_from_date').value.split("/")[1])) {
+					if (
+						item.month >=
+						parseInt(
+							this.startDate
+								.get('filtered_from_date')
+								.value.split('/')[1]
+						)
+					) {
 						return this.global.getMonthName[item.month];
-
 					}
 				}
-				if (!this.endDate.get('filtered_to_date').value&&!this.startDate.get('filtered_from_date').value) {
-					
+				if (
+					!this.endDate.get('filtered_to_date').value &&
+					!this.startDate.get('filtered_from_date').value
+				) {
 					return this.global.getMonthName[item.month];
 				}
 			}
 		});
-    console.log(dataCategories);
-	
+		console.log(dataCategories);
+
 		this.columnChartOptions = {
-			chart:{
-				style:{
-					fontFamily:'IRANSans'
-				}
+			chart: {
+				style: {
+					fontFamily: 'IRANSans',
+				},
 			},
 			title: {
-				text: Object.keys(dataSetgroupBy).length!=1?'فیش های حقوقی':' فیش های حقوقی سال '+Object.keys(dataSetgroupBy)[0],
+				text:
+					Object.keys(dataSetgroupBy).length != 1
+						? 'خلاصه فیش های حقوقی'
+						: ' خلاصه فیش های حقوقی سال ' +
+						  Object.keys(dataSetgroupBy)[0],
 			},
 			subtitle: {
-				text:
-					' مجموع فیش های حقوقی هرماه را به تفکیک میتوانید مشاهده کنید ' 
-					
+				text: ' مجموع و اضافات و کسورات و خالص پرداختی هرماه را به تفکیک میتوانید مشاهده کنید ',
 			},
 			tooltip: {
 				// headerFormat:,
 				pointFormat:
-        `<table dir="rtl"><tr><td  style="font-size:10px ">{series.name}</td></tr>`+
+					`<table dir="rtl"><tr><td  style="font-size:10px ">{series.name}</td></tr>` +
 					'<tr><td style="padding:0;text-align: "center";width: 100%;margin="0 auto""><b>{point.y:.1f}</b></td></tr>',
 				footerFormat: '</table>',
 				shared: true,
 				useHTML: true,
-       
 			},
-     
+
 			xAxis: {
 				categories: dataCategories,
 				labels: {
 					align: 'right',
 					// x: -10,
-					y: 20
+					y: 20,
 				},
 				// title: {
 				// 	text: 'مقادیر'
 				// }
-			
-				
 			},
-			yAxis:{
-
+			yAxis: {
 				title: {
 					text: 'مقادیر',
-					style:{
-
-						fontSize:'15px'
-					}
-				}
+					style: {
+						fontSize: '15px',
+					},
+				},
 			},
 			series: [
 				{
 					type: 'column',
-					name: 'مجموع فیش های حقوقی',
-					colorByPoint: true,
-					data: dataColumn,
+					name: 'مجموع خالص پرداختی',
+					// colorByPoint: true,
+					data: payrollreceivedData,
 					showInLegend: false,
-          
-					
+
+					// tittle:''
+				},
+				{
+					type: 'column',
+					name: 'مجموع اضافات پرداختی',
+					// colorByPoint: true,
+					data: sumPayrollAdditionsData,
+					showInLegend: false,
+
+					// tittle:''
+				},
+				{
+					type: 'column',
+					name: 'مجموع کسورات پرداختی',
+					// colorByPoint: true,
+					data: sumPayrollDeductionsData,
+					showInLegend: false,
+
 					// tittle:''
 				},
 			],
@@ -266,49 +321,50 @@ console.log(dataSetgroupBy);
 			this.plotShow = true;
 		}, 500);
 	}
-	async getData(	filtered_business_id:string=this.businessId,filtered_from_date:string=this.startDate.get('filtered_from_date').value,filtered_to_date:string=this.endDate.get('filtered_to_date').value) {
-		
-		this.startDatepickerIsChange=true
-		this.endDatepickerIsChange=true
+	async getData(
+		filtered_business_id: string = this.businessId,
+		filtered_from_date: string = this.startDate.get('filtered_from_date')
+			.value,
+		filtered_to_date: string = this.endDate.get('filtered_to_date').value
+	) {
+		this.startDatepickerIsChange = true;
+		this.endDatepickerIsChange = true;
 
 		// await this.global.showLoading();
-		this.loading=true
+		this.loading = true;
 		// if (this.plotShow) {
 		// 	this.plotShow=false
 		// }
 		this.global
-			.httpPost('report/payroll/severancePayList', {
-				filtered_business_id ,
+			.httpPost('report/payroll/summaryPayrollList', {
+				filtered_business_id,
 				filtered_employee_id: this.filtered_employee_id,
-				filtered_to_date ,
+				filtered_to_date,
 				filtered_from_date,
 			})
 			.subscribe(
 				async (res: any) => {
-					this.startDatepickerIsChange=false
-					this.endDatepickerIsChange=false
+					this.startDatepickerIsChange = false;
+					this.endDatepickerIsChange = false;
 
 					// await this.global.dismisLoading();
-					this.loading=false
+					this.loading = false;
 					console.log(res);
-					this.data = res.list.map((item: reportLeave) => {
-						return new reportLeave().deserialize(item);
+					this.data = res.list.map((item: reportPayrollSummery) => {
+						return new reportPayrollSummery().deserialize(item);
 					});
-       
+
 					this.setcolumnChart(this.data);
 				},
 				async (error: any) => {
-					this.startDatepickerIsChange=false
-					this.endDatepickerIsChange=false
+					this.startDatepickerIsChange = false;
+					this.endDatepickerIsChange = false;
 
 					// await this.global.dismisLoading();
-					this.loading=false
-					
+					this.loading = false;
+
 					this.global.showError(error);
 				}
 			);
 	}
-	
-
-
 }

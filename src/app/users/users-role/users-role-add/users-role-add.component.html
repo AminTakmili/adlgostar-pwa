@@ -67,7 +67,7 @@
 							<div class="row">
 								<div class="col-lg-4 col-md-6" *ngFor="let item of cat.permissions" >
 									<ion-item lines="none">
-										<ion-label>{{item.name}}</ion-label>
+										<ion-label text-wrap>{{item.name}}</ion-label>
 									
 										<ion-toggle (ionChange)="setCheck(item)"  slot="start"  [value]="item.id" [id]="item.id"></ion-toggle>
 									</ion-item>

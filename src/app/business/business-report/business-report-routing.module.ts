@@ -1,8 +1,8 @@
+import { BusinessReportLoanWorkinghourcountComponent } from './business-report-loan-workinghourcount/business-report-loan-workinghourcount.component';
 import { BusinessReportNewyeargiftandbonusComponent } from './business-report-newyeargiftandbonus/business-report-newyeargiftandbonus.component';
 import { BusinessReportInsuranceComponent } from './business-report-insurance/business-report-insurance.component';
 import { BusinessReportSeverancepayComponent } from './business-report-severancepay/business-report-severancepay.component';
 import { BusinessReportMonthlywageComponent } from './business-report-monthlywage/business-report-monthlywage.component';
-import { BusinessReportLoanComponent } from './business-report-loan/business-report-loan.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WorkingovertimeComponent } from './workingovertime/workingovertime.component';
@@ -15,12 +15,12 @@ const routes: Routes = [
 	},
 	{
 		path: 'loan',
-		redirectTo: '/businesses',
+		loadChildren: () => import('./business-report-loan/business-report-loan.module').then( m => m.BusinessReportLoanPageModule),
 		pathMatch: 'full',
 	},
 	{
 		path: 'loan/:id',
-		component: BusinessReportLoanComponent,
+		loadChildren: () => import('./business-report-loan/business-report-loan.module').then( m => m.BusinessReportLoanPageModule),
 		pathMatch: 'prefix',
 	},
 	{
@@ -31,7 +31,9 @@ const routes: Routes = [
 	// wage
 	{
 		path: 'wage',
-		redirectTo: '/businesses',
+		// redirectTo: '/businesses',
+		component: BusinessReportMonthlywageComponent,
+
 		pathMatch: 'full',
 	},
 	{
@@ -47,7 +49,7 @@ const routes: Routes = [
 	// severance
 	{
 		path: 'severance',
-		redirectTo: '/businesses',
+		component: BusinessReportSeverancepayComponent,
 		pathMatch: 'full',
 	},
 	{
@@ -63,7 +65,7 @@ const routes: Routes = [
 	// insurance
 	{
 		path: 'insurance',
-		redirectTo: '/businesses',
+		component: BusinessReportInsuranceComponent,
 		pathMatch: 'full',
 	},
 	{
@@ -77,27 +79,43 @@ const routes: Routes = [
 		pathMatch: 'prefix',
 	},
 	
-	// workingovertime
+	// workingHOURE
 	{
-		path: 'workingovertime',
-		redirectTo: '/businesses',
+		path: 'workinghour',
+		loadChildren: () => import('./business-report-workinghour/business-report-workinghour.module').then( m => m.BusinessReportWorkinghourPageModule),
 		pathMatch: 'full',
 	},
 	{
-		path: 'workingovertime/:id',
-		component: WorkingovertimeComponent,
+		path: 'workinghour/:id',
+		loadChildren: () => import('./business-report-workinghour/business-report-workinghour.module').then( m => m.BusinessReportWorkinghourPageModule),
 		pathMatch: 'prefix',
 	},
 	{
-		path: 'Workingovertime/:id',
-		redirectTo: 'workingovertime/:id',
+		path: 'Workinghour/:id',
+		redirectTo: 'workinghour/:id',
 		pathMatch: 'prefix',
 	},
+	// // workingovertime
+	// {
+	// 	path: 'workingovertime',
+	// 	redirectTo: '/businesses',
+	// 	pathMatch: 'full',
+	// },
+	// {
+	// 	path: 'workingovertime/:id',
+	// 	component: WorkingovertimeComponent,
+	// 	pathMatch: 'prefix',
+	// },
+	// {
+	// 	path: 'Workingovertime/:id',
+	// 	redirectTo: 'workingovertime/:id',
+	// 	pathMatch: 'prefix',
+	// },
 	
 	// newyeargift_bonus
 	{
 		path: 'newyeargift_bonus',
-		redirectTo: '/businesses',
+		component: BusinessReportNewyeargiftandbonusComponent,
 		pathMatch: 'full',
 	},
 	{
@@ -120,6 +138,23 @@ const routes: Routes = [
 		redirectTo: 'newyeargift_bonus/:id',
 		pathMatch: 'prefix',
 	},
+	// workinghourcount
+	{
+		path: 'workinghourcount',
+		component: BusinessReportLoanWorkinghourcountComponent,
+		pathMatch: 'full',
+	},
+	{
+		path: 'workinghourcount/:id',
+		component: BusinessReportLoanWorkinghourcountComponent,
+		pathMatch: 'prefix',
+	},
+	{
+		path: 'Workinghourcount/:id',
+		redirectTo: 'workinghourcount/:id',
+		pathMatch: 'prefix',
+	},
+	
 	// leave
 	{
 		path: 'leave/:id',
@@ -131,8 +166,11 @@ const routes: Routes = [
 	},
 	{
 		path: 'leave',
-		redirectTo: '/businesses',
-		pathMatch: 'full',
+		loadChildren: () =>
+		import('./business-report-leave/business-report-leave.module').then(
+			(m) => m.BusinessReportLeavePageModule
+		),
+				pathMatch: 'full',
 	},
 	
 	{
@@ -147,7 +185,9 @@ const routes: Routes = [
   },
   {
 	path: 'payroll',
-	redirectTo: '/businesses',
+	// redirectTo: '/businesses',
+	loadChildren: () => import('./business-report-payroll/business-report-payroll.module').then( m => m.BusinessReportPayrollPageModule),
+
 	pathMatch: 'full',
 },
 
@@ -156,6 +196,15 @@ const routes: Routes = [
 	redirectTo: 'payroll/:id',
 	pathMatch: 'prefix',
 },
+//   {
+//     path: 'business-report-workinghour',
+//     loadChildren: () => import('./business-report-workinghour/business-report-workinghour.module').then( m => m.BusinessReportWorkinghourPageModule)
+//   },
+
+//   {
+//     path: 'business-report-loan',
+//     loadChildren: () => import('./business-report-loan/business-report-loan.module').then( m => m.BusinessReportLoanPageModule)
+//   },
 ];
 
 @NgModule({

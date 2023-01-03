@@ -16,7 +16,7 @@ import { BusinessList } from 'src/app/core/models/business.model';
 })
 export class ContractConditionsEditComponent implements OnInit {
 
-	pageTitle: string = "افزودن شروط ضمن قرار داد جدید";
+	pageTitle: string = "افزودن شروط ضمن قرارداد جدید";
 	editForm: FormGroup;
 	businessCatgeories: businessClass[] = [];
 
@@ -138,7 +138,7 @@ export class ContractConditionsEditComponent implements OnInit {
 					await this.global.dismisLoading();
 					// console.log(res:any);
 					this.navCtrl.navigateForward('/contracts/conditions');
-					this.global.showToast('شروط ضمن عقد قرار داد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
+					this.global.showToast('شروط ضمن عقد قرارداد با نام  ' + this.editForm.value.name + ' ویرایش شد .');
 					this.editForm.reset();
 				}, async (error:any) => {
 					await this.global.dismisLoading();

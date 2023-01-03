@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderTemplateListComponent implements OnInit {
 
   
-	pageTitle: string = "قالب های سربرگ قرار داد";
+	pageTitle: string = "قالب های سربرگ قرارداد";
 
 	limit: number = 10;
 	offset: number = 0;

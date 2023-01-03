@@ -112,6 +112,8 @@ export class BusinessReportPayrollDelayedpayrolComponent implements OnInit {
 		return this.global
 			.httpPost('employee/filteredList', {
 				filtered_name: term,
+				business_id:this.businessId,
+
 				for_combo: true,
 				limit: 1000,
 				offset: 0,

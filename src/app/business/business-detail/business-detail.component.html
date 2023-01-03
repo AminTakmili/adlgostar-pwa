@@ -10,7 +10,7 @@
 				<div class="page-info">
 					<h1 class="title">جزییات {{ business?.name }}</h1>
 					<p class="dsec">
-						نمایس لیست کارمندان و قرارداد ها و ویرایش کسب و کار
+						نمایش لیست کارمندان و قرارداد ها و ویرایش کسب و کار
 					</p>
 				</div>
 			</div>
@@ -86,7 +86,7 @@
 					<div class="col-md-auto">
 						<div class="search-input-2">
 							<ion-searchbar enterkeyhint="" type="text" (ionChange)="filterEmployee($event)"
-								debounce="500" placeholder="جستجو در کارمندان">
+								debounce="1500" placeholder="جستجو در کارمندان">
 							</ion-searchbar>
 						</div>
 					</div>
@@ -138,7 +138,7 @@
 					<app-business-back-severance-pay-list-table [businessId]="businessId">
 					</app-business-back-severance-pay-list-table>
 				</div>
-				<!-- قرار داد ها -->
+				<!-- قرارداد ها -->
 				<hr>
 
 				<section>
@@ -147,7 +147,7 @@
 						<div class="row align-items-center justify-content-between mt-4">
 							<div class="col-md-3">
 								<div class="title-1">
-									<h2 class="title">لیست قرار داد ها</h2>
+									<h2 class="title">لیست قرارداد ها</h2>
 								</div>
 							</div>
 							<div class="col-md-3 ion-text-left">
@@ -171,7 +171,7 @@
 
 							<div class="col-md-3">
 								<div class="search-input-2">
-									<ion-searchbar (ionChange)="changeFilterContract($event)" [debounce]=750
+									<ion-searchbar (ionChange)="changeFilterContract($event)" debounce="1500"
 										enterkeyhint="" type="text" #SearchContarct
 										placeholder="جستجو در عناوین قراردادها">
 									</ion-searchbar>
@@ -180,7 +180,7 @@
 
 						</div>
 						<hr>
-						<!-- لیست قرار داد ها -->
+						<!-- لیست قرارداد ها -->
 						<!-- table -->
 						<table *ngIf="dataList&&dataList.length!=0" class="width-100 theme-table ">
 							<thead class="thead-dark">
@@ -188,9 +188,9 @@
 									<th class="ion-text-center">#</th>
 									<th scope="col">عنوان</th>
 									<th scope="col">کسب و کار</th>
-									<th scope="col">کارمندان در قرار داد</th>
+									<th scope="col">کارمندان در قرارداد</th>
 									<th scope="col">شروع و پایان</th>
-									<th scope="col">مدت قرار داد</th>
+									<th scope="col">مدت قرارداد</th>
 									<th scope="col">تاریخ ثبت</th>
 									<th class="ion-text-left" scope="col"></th>
 								</tr>
@@ -279,7 +279,7 @@
 						</table>
 
 						<div *ngIf="dataList && dataList.length === 0" class="alert alert-warning my-3" role="alert">
-							<h4 class="title"> قرادادی برای نمایش یافت نشد .</h4>
+							<h4 class="title"> قراردادی برای نمایش یافت نشد .</h4>
 						</div>
 
 
@@ -487,6 +487,7 @@
 
 									<th scope="col">تاریخ اخرین ویرایش</th>
 									<th scope="col">تاریخ ایجاد</th>
+									<!-- <th scope="col">#</th> -->
 									<th class="ion-text-left" scope="col"></th>
 								</tr>
 							</thead>
@@ -538,6 +539,12 @@
 												<ion-icon size="small" color="medium" slot="icon-only" name="build">
 												</ion-icon>
 											</ion-button>
+											<ion-button  *ngIf="!item.loadingDownload" fill="clear" class="px-0 mx-0 tooltip-show" (click)="download(item)"  tooltip="دانلود PDF"  download="MyFavicon" >
+												<ion-icon size="small" color="medium" slot="icon-only" name="download">
+												</ion-icon>
+												</ion-button>
+												<ion-spinner  color="medium" *ngIf="item.loadingDownload" name="lines-small"></ion-spinner>
+														
 
 
 										</ion-buttons>

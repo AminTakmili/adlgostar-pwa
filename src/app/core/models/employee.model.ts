@@ -39,8 +39,10 @@ export class Employee implements Deserializable {
 	packDetail!:string
 	is_collaboration_ended!:number
 	settlement_id!:number|string
+	businessEmployeePackInfo:string
 
 	deserialize(input: any): this {
+		// console.log(input);
 		Object.assign(this, input);
 
 		if (input.posts && input.posts.length) {
@@ -61,12 +63,21 @@ export class Employee implements Deserializable {
 				return new businessEmployeeInfo().deserialize(item);
 			});
 		}
+		
+		if (input?.business_employee_info && input?.business_employee_info?.length==1) {
+			this.businessEmployeePackInfo=('نام  :'+input.first_name.trim()+' '+input.last_name.trim() +   ' نام شرکت  :'+input.business_employee_info[0]?.business?.name+'| تاریخ شروع به کار کارمند:'+	input.business_employee_info[0]?.employee_start_date
+			)
+			
+		}else if(input?.business_employee_info &&input?.business_employee_info?.length){
+			this.businessEmployeePackInfo='نام  :'+(input.first_name.trim()+' '+input.last_name.trim())+ ' | تعداد کسب و کار ' +(input?.business_employee_info.length)
+		}else{
+			this.businessEmployeePackInfo='نام  :'+(input.first_name.trim()+' '+input.last_name.trim())+ ' ( بدون کسب وکار ) '
+		}
 		if (this.full_name&&this.national_code) {
 			this.packDetail=` نام : ${this.full_name} ,کد ملی :${this.national_code}  `
 		}
 
 		this.full_name = input.first_name.trim()+' '+input.last_name.trim();
-
 
 		return this;
 	}
@@ -90,6 +101,7 @@ export class businessEmployeeInfo implements Deserializable {
 	updatedAt !: string;
 	updatedAtEn !: string;
 	employee_start_date!:string
+	businessEmployeePackInfo!:string
 
 	deserialize(input: any): this {
 
@@ -99,6 +111,7 @@ export class businessEmployeeInfo implements Deserializable {
 				return new businessEmployee().deserialize(item);
 			});
 		}
+		this.businessEmployeePackInfo= 'نام :'+input.business.name+'| تاریخ شروع به کار کارمند:'+input.employee_start_date
 
 		return this;
 	}

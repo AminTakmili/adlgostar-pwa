@@ -57,6 +57,8 @@ export class PayrollListListComponent implements OnInit {
 	businessInputLoading = false;
 	businessInput$ = new Subject<string>();
 	minLengthTerm = 3;
+	filtered_is_confirmed :number
+
   
 
 	@ViewChildren('searchInp') Search: IonInput;
@@ -92,7 +94,8 @@ export class PayrollListListComponent implements OnInit {
 				limit: this.limit,
 				offset: this.offset,
 				filtered_employee_id:this.employeeId,
-				filtered_business_id:this.businessId
+				filtered_business_id:this.businessId,
+				filtered_is_confirmed:this.filtered_is_confirmed
 			})
 			.subscribe(
 				async (res: any) => {
@@ -200,7 +203,7 @@ export class PayrollListListComponent implements OnInit {
 
 	removeItem(item: contractExtraField) {
 		this.global
-			.showAlert('حذف قرار داد', 'آیا برای حذف اطمینان دارید؟', [
+			.showAlert('حذف قرارداد', 'آیا برای حذف اطمینان دارید؟', [
 				{
 					text: 'بلی',
 					role: 'yes',
@@ -238,6 +241,44 @@ export class PayrollListListComponent implements OnInit {
 				});
 			});
 	}
+	download(item : workingHourList) {
+		item.loadingDownload = true;
+	
+	
+		this.global
+			.httpPost('payroll/pdf', { payroll_id:item.id })
+			.subscribe(
+				async (res: any) => {
+					item.loadingDownload = false;
+				;
+	
+					// console.log(res);
+					// console.log(res.file);
+					const byteArray = new Uint8Array(atob(res.file).split('').map(char => char.charCodeAt(0)));
+	
+					
+					var file = new Blob([byteArray], {
+						 type: 'application/pdf',
+					});
+					var fileURL = URL.createObjectURL(file);
+					
+					const link = document.createElement('a');
+					link.href = fileURL;
+					link.download = ` فیش حقوقی .pdf`;
+					document.body.append(link);
+					link.click();
+					link.remove();
+					setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+				},
+				async (error: any) => {
+					item.loadingDownload = false;
+					this.global.showError(error);
+					// console.log(error);
+	
+				}
+			);
+	}
+	
 
 	setTitle() {
 		this.seo.generateTags({

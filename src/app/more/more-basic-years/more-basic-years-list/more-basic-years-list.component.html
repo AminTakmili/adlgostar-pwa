@@ -40,7 +40,7 @@
 			<div class="row mt-4">
 				<div class="col-md-6">
 					<div class="form-input mb-3">
-						<label>سال عقد قرار داد</label>
+						<label>سال عقد قرارداد</label>
 						<ng-select (change)="ChangeYear()" [(ngModel)]="contract_year" [clearable]="false"
 							placeholder="انتخاب کنید">
 							<ng-option *ngFor="let car of [].constructor(35); let i = index" [value]="1400 - i">
@@ -68,7 +68,7 @@
 						<tr class="ion-text-center">
 							<th class="ion-text-center">#</th>
 							<th scope="col">سال شروع به کار </th>
-							<th scope="col">سال عقد قرار داد</th>
+							<th scope="col">سال عقد قرارداد</th>
 							<th scope="col">پایه سنوات</th>
 							<th scope="col">تاریخ ثبت</th>
 						</tr>

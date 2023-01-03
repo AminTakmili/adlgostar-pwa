@@ -20,7 +20,8 @@ export class EmployeeFormTableComponent implements OnInit,OnChanges {
   loaded:boolean=false
   formTempeletList: formTemplate[];
   formTempeletObj:any={};
-  
+  loadingDownload: boolean = false;
+
 
   constructor(
     public global:GlobalService
@@ -68,7 +69,7 @@ export class EmployeeFormTableComponent implements OnInit,OnChanges {
 		// this.getData();
 	}
   removeform(item:form){
-    this.global.showAlert('حذف فرم داد', 'آیا برای حذف اطمینان دارید؟', [
+    this.global.showAlert('حذف فرم ', 'آیا برای حذف اطمینان دارید؟', [
 			{
 				text: 'بلی',
 				role: 'yes'
@@ -103,6 +104,80 @@ export class EmployeeFormTableComponent implements OnInit,OnChanges {
 		});
 
   }
+  confirmform(item:form){
+    this.global.showAlert('تایید فرم ', 'آیا برای تایید اطمینان دارید؟', [
+			{
+				text: 'بلی',
+				role: 'yes'
+			},
+			{
+				text: 'خیر',
+				role: 'cancel'
+			}
+		]).then((alert: any) => {
+			alert.present();
+			alert.onDidDismiss().then(async (e: any) => {
+				if (e.role === 'yes') {
+					await this.global.showLoading('لطفا منتظر بمانید...');
+					this.global.httpPost('businessEmployee/form/confirm', {
+						id: item.id,
+					}).subscribe(async (res: any) => {
+
+						await this.global.dismisLoading();
+
+						this.offset = 0;
+						this.CurrentPage = 1;
+						this.getData(this.businessEmployeeId);
+
+						this.global.showToast(res.msg);
+
+					}, async (error: any) => {
+						await this.global.dismisLoading();
+						this.global.showError(error);
+					});
+				}
+			});
+		});
+
+  }
+  download(item : form) {
+	item.loadingDownload = true;
+
+
+	this.global
+		.httpPost('businessEmployee/form/pdf', { id:item.id })
+		.subscribe(
+			async (res: any) => {
+				item.loadingDownload = false;
+			;
+
+				// console.log(res);
+				// console.log(res.file);
+				const byteArray = new Uint8Array(atob(res.file).split('').map(char => char.charCodeAt(0)));
+
+				
+				var file = new Blob([byteArray], {
+					 type: 'application/pdf',
+				});
+				var fileURL = URL.createObjectURL(file);
+				
+				const link = document.createElement('a');
+				link.href = fileURL;
+				link.download = ` فرم ${item.form_date}.pdf`;
+				document.body.append(link);
+				link.click();
+				link.remove();
+				setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+			},
+			async (error: any) => {
+				item.loadingDownload = false;
+				this.global.showError(error);
+				// console.log(error);
+
+			}
+		);
+}
+
   async getformFormTempeletData() {
 		// await this.global.showLoading();
 		this.global

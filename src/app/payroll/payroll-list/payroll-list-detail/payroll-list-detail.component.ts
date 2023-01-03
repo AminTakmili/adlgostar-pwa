@@ -13,7 +13,7 @@ export class PayrollListDetailComponent implements OnInit {
   id:string
   dataObject:payrolDetail
   constructor(
-    private global:GlobalService,
+    public global:GlobalService,
     private rout:ActivatedRoute,
   ) { 
 
@@ -64,6 +64,48 @@ export class PayrollListDetailComponent implements OnInit {
 		}, 500);
 
 	}
+  confirmedPayrollHour() {
+		this.global
+			.showAlert('تایید  ' + this.pageTitle,			
+			 `آیا برای تایید فیش حقوقی ${this.global.getMonthName[this.dataObject.month]} ماه سال ${this.dataObject.year} ${this.dataObject.full_name }  اطمینان دارید؟`, [
+				{
+					text: 'بلی',
+					role: 'yes',
+					cssClass: 'dark',
+				},
+				{
+					text: 'خیر',
+					role: 'cancel',
+					cssClass: 'medium',
+				},
+			])
+			.then((alert) => {
+				alert.present();
+				alert.onDidDismiss().then(async (e: any) => {
+					if (e.role === 'yes') {
+						await this.global.showLoading('لطفا منتظر بمانید...');
+						this.global
+							.httpPost('payroll/confirm', {
+								id: this.dataObject.id,
+							})
+							.subscribe(
+								
+								async (res: any) => {
+									await this.global.dismisLoading();
+									
+									this.getData();
+									this.global.showToast(res.msg);
+								},
+								async (error: any) => {
+									await this.global.dismisLoading();
+									this.global.showError(error);
+								}
+							);
+					}
+				});
+			});
+	}
+
 
 
 }

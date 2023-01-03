@@ -134,19 +134,19 @@
 			<hr>
 		</section>
 
-		<!-- لیست قرار داد ها -->
+		<!-- لیست قرارداد ها -->
 		<section *ngIf=" global.userPermision['contract_list'] ">
 			<div class="container">
 				<div class="row align-items-center justify-content-between mt-4">
 					<div class="col-md-auto">
 						<div class="title-1">
-							<h2 class="title">لیست قرار داد ها</h2>
+							<h2 class="title">لیست قرارداد ها</h2>
 						</div>
 					</div>
 					<div class="col-md-auto">
 						<ion-button *ngIf="global.userPermision['contract_add']" shape="round" color="success" [routerLink]="['/contracts/add']">
 							<ion-icon slot="start" name="add-circle"></ion-icon>
-							افزودن قرار داد جدید
+							افزودن قرارداد جدید
 						</ion-button>
 
 					</div>
@@ -159,9 +159,9 @@
 							<thead class="thead-dark">
 								<tr class="ion-text-center">
 									<th class="ion-text-center">#</th>
-									<th scope="col">عنوان قرار داد</th>
+									<th scope="col">عنوان قرارداد</th>
 									<th scope="col">شروع و پایان</th>
-									<th scope="col">مدت قرار داد</th>
+									<th scope="col">مدت قرارداد</th>
 									<th class="ion-text-left" scope="col"></th>
 								</tr>
 							</thead>
@@ -203,7 +203,7 @@
 					</div>
 					<!--  -->
 					<div *ngIf="contactList && contactList.length === 0 " class="alert alert-warning my-3" role="alert">
-						<h4 class="title mb-0"> قرار دادی برای نمایش یافت نشد </h4>
+						<h4 class="title mb-0"> قراردادی برای نمایش یافت نشد </h4>
 					</div>
 				</div>
 			</div>

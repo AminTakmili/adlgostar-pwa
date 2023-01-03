@@ -1,10 +1,10 @@
+import { BusinessReportLoanWorkinghourcountComponent } from './business-report-loan-workinghourcount/business-report-loan-workinghourcount.component';
 import { BusinessReportNewyeargiftandbonusComponent } from './business-report-newyeargiftandbonus/business-report-newyeargiftandbonus.component';
 import { BusinessReportInsuranceComponent } from './business-report-insurance/business-report-insurance.component';
 import { BusinessReportSeverancepayComponent } from './business-report-severancepay/business-report-severancepay.component';
 import { BusinessReportMonthlywageComponent } from './business-report-monthlywage/business-report-monthlywage.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
-import { BusinessReportLoanComponent } from './business-report-loan/business-report-loan.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ShareModulePageModule } from './../../share-module/share-module.module';
 import { BusinessReportListModalComponent } from './business-report-list-modal/business-report-list-modal.component';
@@ -31,12 +31,12 @@ import { WorkingovertimeComponent } from './workingovertime/workingovertime.comp
 	],
 	declarations: [
 		BusinessReportListModalComponent,
-		BusinessReportLoanComponent,
 		BusinessReportMonthlywageComponent,
 		BusinessReportSeverancepayComponent,
 		BusinessReportInsuranceComponent,
 		WorkingovertimeComponent,
 		BusinessReportNewyeargiftandbonusComponent,
+		BusinessReportLoanWorkinghourcountComponent
 	],
 })
 export class BusinessReportPageModule {}

@@ -18,6 +18,10 @@
 				<ion-icon slot="start" name="print"></ion-icon>
 				پرینت کن
 			</ion-button>
+			<ion-button *ngIf="global.userPermision['payroll_confirm']&&dataObject&&!dataObject.is_confirmed" shape="round" color="success" (click)="confirmedPayrollHour()">
+				<ion-icon slot="start" name="checkmark-done"></ion-icon>
+				 تایید فیش حقوقی
+			</ion-button>
 				<ion-button shape="round" color="medium" fill="outline">
 					<ion-back-button defaultHref="/payrolls/payroll" [text]=" 'بازگشت' " [icon]="'arrow-back-outline'">
 					</ion-back-button>

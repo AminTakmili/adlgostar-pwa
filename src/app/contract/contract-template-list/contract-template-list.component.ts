@@ -11,7 +11,7 @@ import { SeoService } from 'src/app/core/services/seo.service';
 })
 export class ContractTemplateListComponent implements OnInit {
 
-	pageTitle: string = "قالب های قرار داد";
+	pageTitle: string = "قالب های قرارداد";
 
 	limit: number = 10;
 	offset: number = 0;

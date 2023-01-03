@@ -40,7 +40,7 @@ export class ContractExtendModalComponent implements OnInit  {
 	}
 	ngOnInit() {
 		console.log(this.employeeList);
-		this.getData()
+		// this.getData()
 	}
 	
 	 async getData(){

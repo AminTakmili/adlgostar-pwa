@@ -104,7 +104,7 @@ export class PayrollBaseInfoWorkingHourListComponent implements OnInit {
 
 	removeItem(item: contractExtraField) {
 		this.global
-			.showAlert('حذف قرار داد', 'آیا برای حذف اطمینان دارید؟', [
+			.showAlert('حذف قرارداد', 'آیا برای حذف اطمینان دارید؟', [
 				{
 					text: 'بلی',
 					role: 'yes',

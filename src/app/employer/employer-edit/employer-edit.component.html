@@ -57,7 +57,7 @@
 									<app-validator [control]="editForm.controls['birth_certificate_code']" [controlName]="'شماره شناسنامه'">
 									</app-validator>
 								</span>
-								<span class="hint">مثلا : 2434</span>
+								<span class="hint">مثلا 2434</span>
 							</div>
 						</div>
 						<!-- -->
@@ -102,7 +102,7 @@
 						<div class="col-md-6">
 							<div class="form-input mb-3">
 								<label>تاریخ تولد</label>
-								<ng-persian-datepicker [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
+								<ng-persian-datepicker [dateInitValue]="false" [timeMeridian]="true" [timeEnable]="false" [dateIsGregorian]="true" dateFormat="jYYYY/jMM/jDD">
 									<input type="text" formControlName="born_at" />
 								</ng-persian-datepicker>
 								<span class="error">
@@ -316,7 +316,7 @@
 										<span class="error">
 											<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 										</span>
-										<span class="hint">مثلا : شیراز خیابان زند خیابان رودکی </span>
+										<span class="hint">مثلا شیراز خیابان زند خیابان رودکی </span>
 									</div>
 								</div>
 								<!-- کد پستی منزل -->
@@ -327,7 +327,7 @@
 										<span class="error">
 											<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 										</span>
-										<span class="hint">مثلا : 1234512345</span>
+										<span class="hint">مثلا 1234512345</span>
 									</div>
 								</div>
 								<!-- شماره تماس منزل -->
@@ -338,7 +338,7 @@
 										<span class="error">
 											<!-- <app-validator [control]="businessForm.controls['name']" [controlName]="'نام شرکت'"></app-validator> -->
 										</span>
-										<span class="hint">مثلا : 071*******</span>
+										<span class="hint">مثلا 071*******</span>
 									</div>
 								</div>
 

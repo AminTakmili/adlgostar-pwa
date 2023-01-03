@@ -100,9 +100,9 @@
                                     </span>
                                   
                                     
-                                    <span *ngIf="list?.used_leave"> مرخصی استفاده شده</span>
+                                    <span *ngIf="list?.used_leave!='0'"> مرخصی استفاده شده</span>
                                     <span *ngIf="list?.unused_leave"> مرخصی استفاده نشده</span>
-                                    <span *ngIf="list?.without_pay_leave"> تعداد مرخصی بدون حقوق</span>
+                                    <span *ngIf="list.without_pay_leave!='0'&&list?.without_pay_leave">  مرخصی بدون حقوق</span>
                                 </div>
                                 <div class="detail-table-body-tr-th-cat-detail">
                                   <span *ngIf="list?.working_hour_count"> {{list?.working_hour_count}}</span>
@@ -115,9 +115,9 @@
                                   <span *ngIf="list?.working_friday_hour_count"> {{list?.working_friday_hour_count}} </span>
                                   <span *ngIf="list?.addition_hour_friday_or_holiday"> {{list?.addition_hour_friday_or_holiday}} </span>
                                  
-                                  <span *ngIf="list?.used_leave"> {{list?.used_leave}} </span>
+                                  <span *ngIf="list?.used_leave!='0'"> {{list?.used_leave}} </span>
                                   <span *ngIf="list?.unused_leave"> {{list?.unused_leave}} </span>
-                                  <span *ngIf="list?.without_pay_leave"> {{list?.unused_leave}} </span>
+                                  <span *ngIf="list.without_pay_leave!='0'&&list?.without_pay_leave"> {{list?.without_pay_leave}} </span>
                                 </div>
                             </section>
                         </th>
@@ -163,9 +163,9 @@
                                     <span *ngIf="list?.loan_received_amount">  وام دریافتی
 
                                     </span>
-                                    <span *ngIf="list?.sum_over_night_friday_amounts">  اضافه کاری و شبکاری و جمعه کاری
+                                    <!-- <span *ngIf="list?.sum_over_night_friday_amounts">  اضافه کاری و شبکاری و جمعه کاری
 
-                                    </span>
+                                    </span> -->
                                     <section *ngFor="let addition of list.custom_additions">
                                       <span *ngIf="addition?.amount"  >     
                                         {{addition?.name}}                          
@@ -239,9 +239,9 @@
                                   <span  *ngIf="list?.loan_received_amount">     
                                     {{list?.loan_received_amount}}                          
                                 </span>
-                                  <span  *ngIf="list?.sum_over_night_friday_amounts">     
+                                  <!-- <span  *ngIf="list?.sum_over_night_friday_amounts">     
                                     {{list?.sum_over_night_friday_amounts}}                          
-                                </span>
+                                </span> -->
                                 <section *ngFor="let addition of list.custom_additions">
                                   <span *ngIf="addition?.amount"  >     
                                     {{addition?.amount}}                          

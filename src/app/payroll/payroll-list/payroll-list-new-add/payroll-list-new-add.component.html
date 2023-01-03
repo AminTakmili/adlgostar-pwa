@@ -26,7 +26,8 @@
 		<div class="container mt-4">
 
 			<ion-toolbar class="container">
-				<ion-segment #segment [(ngModel)]="segmentType" color="primary" select-on-focus="true" (ionChange)="getData()" mode="md" scrollable>
+				<ion-segment #segment [(ngModel)]="segmentType" color="primary" select-on-focus="true"
+					(ionChange)="getData()" mode="md" scrollable>
 					<ion-segment-button *ngIf="global.userPermision['contract_list']" value="manual">
 						<ion-icon name="create"></ion-icon>
 
@@ -45,6 +46,8 @@
 					<h2 class="title"> اطلاعات اولیه فیش حقوقی</h2>
 					<p class="dsec">
 						ابتدا نام کسب وکار و سال و ماهی که میخواهید برای آن فیش حقوقی تنظیم کنید وارد کنید
+						<!-- <br>
+						در صورتی که میخواهید از فیش حقوقی تاریخ دیگری اطلاعات جایگذاری شود دکمه مربوطه را انتخاب کنید و سپس تاریخ فیش مبدا برای کپی کردن از آن را وارد کنید -->
 					</p>
 				</div>
 			</div>
@@ -70,7 +73,7 @@
 				<div class="col-lg-4 mt-3">
 					<div class="form-input ">
 						<label> انتخاب ماه </label>
-						<ng-select [(ngModel)]="monthNumber" (change)="getData()" [items]="monthList" bindLabel="name"
+						<ng-select [clearable]="false" [(ngModel)]="monthNumber" (change)="getData()" [items]="monthList" bindLabel="name"
 							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
 							placeholder="انتخاب کنید">
 						</ng-select>
@@ -82,7 +85,47 @@
 					<div class="form-input ">
 						<label> انتخاب سال</label>
 
-						<ng-select [(ngModel)]="yeraNumber" (change)="getData()" [items]="yearsList" bindLabel="year"
+						<ng-select [(ngModel)]="yeraNumber" (change)="getData()" [clearable]="false" [items]="yearsList" bindLabel="year" 
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه سال یافت نشد" bindValue="year" 
+							placeholder="انتخاب کنید">
+						</ng-select>
+						<!-- (change)="changeFilter()" -->
+
+
+					</div>
+				</div>
+				
+			</div>
+			
+			<div  *ngIf="segment.value=='manual'" class="row ">
+				<div class="form-input col-lg-4 mt-5 ">
+					<ion-item lines="none">
+						<ion-label> جایگذاری از فیش حقوقی تاریخ دیگر</ion-label>
+						<ion-checkbox (ionChange)="getData()" [(ngModel)]="wantcopy" mode="md" type="string" slot="start"></ion-checkbox>
+					</ion-item>
+				</div>
+
+
+
+
+
+
+				<div *ngIf="wantcopy" class="col-lg-4 mt-4">
+					<div class="form-input ">
+						<label> انتخاب ماه </label>
+						<ng-select [(ngModel)]="fromMonthNumber" (change)="getData()" [items]="monthList" bindLabel="name"
+							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه ماه یافت نشد" bindValue="number"
+							placeholder="انتخاب کنید">
+						</ng-select>
+
+
+					</div>
+				</div>
+				<div *ngIf="wantcopy" class="col-lg-4 mt-4">
+					<div class="form-input ">
+						<label> انتخاب سال</label>
+
+						<ng-select [(ngModel)]="fromYeraNumber" (change)="getData()" [items]="yearsList" bindLabel="year"
 							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه سال یافت نشد" bindValue="year"
 							placeholder="انتخاب کنید">
 						</ng-select>
@@ -91,95 +134,116 @@
 
 					</div>
 				</div>
-			</div>
 
-			<div class="col-12">
+				<div class="title-1 mt-3 col-12 container">
+					<p class="dsec">
+						در صورتی که میخواهید از فیش حقوقی تاریخ دیگری اطلاعات جایگذاری شود دکمه مربوطه را انتخاب کنید و سپس تاریخ فیش مبدا برای کپی کردن از آن را وارد کنید
+					</p>
+				</div>
+
+				<!-- <div class="col-12"> -->
 				<hr>
+
 			</div>
+			<hr>
 
 
-				<section class="row"*ngIf="segment.value=='excel'">
-					<div class="col-12 my-4">
-						<div class="title-1">
-							<h2 class="title"> افزودن فایل اکسل </h2>
-							<p class="dsec">
-								فایل اکسل مربوط به فیش حقوقی که در قالب استاندارد نوشته شده را آپلود کنید
-							</p>
-						</div>
+
+			<section class="row" *ngIf="segment.value=='excel'">
+				<div class="col-12 my-4">
+					<div class="title-1">
+						<h2 class="title"> افزودن فایل اکسل </h2>
+						<p class="dsec">
+							فایل اکسل مربوط به فیش حقوقی که در قالب استاندارد نوشته شده را آپلود کنید
+						</p>
 					</div>
-							<!-- form -->
-						<div class="col-md-6 my-4 ">
-							<!-- عنوان کسب و کار -->
+				</div>
+				<!-- form -->
+				<div class="col-md-6 my-4 ">
+					<!-- عنوان کسب و کار -->
 
-							<section >
-							<div class="form-input mb-3">
-								<label>انتخاب نوع</label>
-							
-								<ng-select  [clearable]="false"	[(ngModel)]="isInverse"(change)="getData()" [items]="[{name:'قانونی',value:false},{name:'معکوس',value:true}]" bindLabel="name"
-							loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه نوع یافت نشد" bindValue="value"
-							placeholder="انتخاب کنید">
-						</ng-select>
+					<section>
+						<div class="form-input mb-3">
+							<label>انتخاب نوع</label>
 
-								
-								<span class="hint">فایل اکسل را انتخاب کنید .</span>
-							</div>
-							</section>
-							<section  >
-							<div  [formGroup]="addForm"class="form-input mb-3">
-								<label>فایل اکسل</label>
-								<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file" (change)="uploadFile($event)">
-								</ion-input>
-								<span class="error">
-									<app-validator [control]="addForm.controls['file']" [controlName]="'فایل اکسل'">
-									</app-validator>
-								</span>
-								<span class="hint">فایل اکسل را انتخاب کنید .</span>
-							</div>
-							<!-- errors -->
-							<div class="errors" *ngIf="errors && errors.length">
-								<p>خطاها : </p>
-								<ul>
-									<li class="font-size-12" *ngFor="let item of errors"><ion-text color="danger">سطر {{ item.row  }} - {{ item.msg  }}</ion-text></li>
-								</ul>
-							</div>
-							</section>
-						
+							<ng-select [clearable]="false" [(ngModel)]="isInverse" (change)="getData()"
+								[items]="[{name:'قانونی',value:false},{name:'معکوس',value:true}]" bindLabel="name"
+								loadingText="لطفا صبر کنید ..." notFoundText="مناسفانه نوع یافت نشد" bindValue="value"
+								placeholder="انتخاب کنید">
+							</ng-select>
+
+
+							<span class="hint">فایل اکسل را انتخاب کنید .</span>
 						</div>
-						<!-- desc -->
-						<div class="col-md-6 my-4">
-							<ion-card mode="ios" class="mb-0" color="white">
-								<ion-card-header>
-									<ion-card-title class="font-size-20">فایل نمونه </ion-card-title>
-								</ion-card-header>
-								<ion-card-content>
-									<p class="font-size-14 line-height-30">مشاهده فایل نمونه فیش حقوقی {{isInverse?'معکوس':'قانونی'}} ابتدا فیلد ها را پر کنید . </p>
-									<p class="font-size-14 line-height-30">
-										<a *ngIf="!isInverse" href="./assets/excell/payrolls.xlsx">دانلود
-											فایل نمونه</a>
-											 <!-- href="./assets/excell/employer.xlsx" -->
-										<a *ngIf="isInverse" href="./assets/excell/inverse_payrolls.xlsx">دانلود
-											فایل نمونه</a>
-										</p>
-	
-								</ion-card-content>
-							</ion-card>
-	
+					</section>
+					<section>
+						<div [formGroup]="fileForm" class="form-input mb-3">
+							<label>فایل اکسل</label>
+							<ion-input type="file" accept="excell*" autocomplete="new-pass" formControlName="file"
+								(change)="uploadFile($event)">
+							</ion-input>
+							<span class="error">
+								<app-validator [control]="fileForm.controls['file']" [controlName]="'فایل اکسل'">
+								</app-validator>
+							</span>
+							<span class="hint">فایل اکسل را انتخاب کنید .</span>
 						</div>
-					<hr class="col-12 my-4">
+						<!-- errors -->
+						<div class="errors" *ngIf="errors && errors.length">
+							<p>خطاها : </p>
+							<ul>
+								<li class="font-size-12" *ngFor="let item of errors">
+									<ion-text color="danger">سطر {{ item.row  }} - {{ item.msg  }}</ion-text>
+								</li>
+							</ul>
+						</div>
+					</section>
 
-				</section>
-				<app-excel *ngIf="!loading&&datasList&&datasList.length&&yeraNumber&&monthNumber&&business_id"
-					[list]="datasList" [year]="yeraNumber" [month]="monthNumber" (Data)="onSubmit($event)">
-				</app-excel>
+				</div>
+				<!-- desc -->
+				<div class="col-md-6 my-4">
+					<ion-card mode="ios" class="mb-0" color="white">
+						<ion-card-header>
+							<ion-card-title class="font-size-20">فایل نمونه </ion-card-title>
+						</ion-card-header>
+						<ion-card-content>
+							<p class="font-size-14 line-height-30">مشاهده فایل نمونه فیش حقوقی
+								{{isInverse?'معکوس':'قانونی'}} ابتدا فیلد ها را پر کنید . </p>
+							<p class="font-size-14 line-height-30">
+								<a *ngIf="!isInverse" href="./assets/excell/payrolls.xlsx">دانلود
+									فایل نمونه</a>
+								<!-- href="./assets/excell/employer.xlsx" -->
+								<a *ngIf="isInverse" href="./assets/excell/inverse_payrolls.xlsx">دانلود
+									فایل نمونه</a>
+							</p>
+
+						</ion-card-content>
+					</ion-card>
+
+				</div>
+				<hr class="col-12 my-4">
+
+			</section>
+			<app-excel *ngIf="!loading&&datasList&&datasList.length&&yeraNumber&&monthNumber&&business_id"
+				[list]="datasList" [year]="yeraNumber" [month]="monthNumber" (Data)="onSubmit($event)">
+			</app-excel>
 
 
-			<div *ngIf="segment.value!='excel'&&!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id"
+			<div *ngIf="segment.value!='excel'&&!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id&&!wantcopy"
 				class="alert alert-warning my-3" role="alert">
-				<h4 class="title">اطلاعاتی  یافت نشد.</h4>
+				<h4 class="title">اطلاعاتی یافت نشد.</h4>
 				<p class="dsec">
-					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قرادادی
+					کارمندی در ماه {{global.getMonthName[monthNumber]}} و سال {{yeraNumber}} با این کسب وکار قراردادی
 					ندارد.
 				</p>
+			</div>
+			<div *ngIf="segment.value!='excel'&&!loading&&datasList&&datasList.length==0&&yeraNumber&&monthNumber&&business_id&&wantcopy&&fromMonthNumber&&fromYeraNumber"
+				class="alert alert-warning my-3" role="alert">
+				<h4 class="title">اطلاعاتی یافت نشد.</h4>
+				<!-- <p class="dsec">
+					
+					مشکلی  پیش امده
+				</p> -->
 			</div>
 
 		</div>

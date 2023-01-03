@@ -25,7 +25,7 @@
 		<!-- <ion-chip *ngIf="contractid" slot="end" color="primary"
 			[routerLink]="['/contracts/print',contractid,employee?.id]">
 			<ion-icon name="print"></ion-icon>
-			<ion-label color="dark"> پرینت قرار داد</ion-label>
+			<ion-label color="dark"> پرینت قرارداد</ion-label>
 		</ion-chip> -->
 		<ion-buttons *ngIf="businessId" class="justify-content-end">
 			<ion-button fill="clear" *ngIf="global.userPermision['payroll_base_info_settlement_addition_add']&&!isCollaboration" class="px-0 mx-0 tooltip-show" [routerLink]=" settlementId?[ '/settlement/edit',settlementId]:[ '/settlement/add',businessId]"  tooltip="تسویه حساب"  >
